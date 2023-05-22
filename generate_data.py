@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 
 
 
-def generate_naive_data(ll=-50., ul=50., n_pnts=100, layers=5): 
+def generate_naive_data(ll=-1., ul=1., n_pnts=100, layers=5): 
     
     unf = np.random.rand(layers, n_pnts)
     
     return unf * (ul - ll) + ll
 
 
-def generate_soph_data(ll=-50., ul=50., n_pnts=100, layers=5): 
+def generate_soph_data(ll=-1., ul=1., n_pnts=100, layers=5): 
     
     first_itcpts = np.random.rand(n_pnts) * (ul - ll) + ll 
     last_itcpts = np.random.rand(n_pnts) * (ul - ll) + ll 
