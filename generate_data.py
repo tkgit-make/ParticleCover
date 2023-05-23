@@ -19,7 +19,7 @@ def generate_soph_data(ll=-1., ul=1., n_pnts=100, layers=5):
 
 
 def plot(arr, show_lines=False): 
-    num_pnts = 5 * np.ones(arr.shape[1])
+    num_pnts = 5 * np.ones(arr.shape[1]) 
     
     for i in range(arr.shape[0]): 
         plt.scatter(arr[i], num_pnts, s=2, c="b")
@@ -38,7 +38,10 @@ def plot(arr, show_lines=False):
     
 
 naive_data = generate_naive_data(n_pnts=100)    
-np.savetxt("naive_data.csv", naive_data, delimiter=",")
+# np.savetxt("naive_data.csv", naive_data, delimiter=",")
 
-soph_data = generate_soph_data(n_pnts=100)
-np.savetxt("soph_data.csv", naive_data, delimiter=",")
+# soph_data = generate_soph_data(n_pnts=100)
+# np.savetxt("soph_data.csv", naive_data, delimiter=",")
+
+# print(naive_data[0])
+
