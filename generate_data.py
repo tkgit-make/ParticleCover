@@ -3,19 +3,19 @@ import matplotlib.pyplot as plt
 
 
 
-def generate_naive_data(ll=-1., ul=1., n_pnts=100, layers=5): 
+def generate_data(ll=-1., ul=1., n_pnts=100, layers=5): 
     
     unf = np.random.rand(layers, n_pnts)
     
     return unf * (ul - ll) + ll
 
 
-def generate_soph_data(ll=-1., ul=1., n_pnts=100, layers=5): 
+# def generate_soph_data(ll=-1., ul=1., n_pnts=100, layers=5): 
     
-    first_itcpts = np.random.rand(n_pnts) * (ul - ll) + ll 
-    last_itcpts = np.random.rand(n_pnts) * (ul - ll) + ll 
+#     first_itcpts = np.random.rand(n_pnts) * (ul - ll) + ll 
+#     last_itcpts = np.random.rand(n_pnts) * (ul - ll) + ll 
 
-    return np.linspace(first_itcpts, last_itcpts, layers) 
+#     return np.linspace(first_itcpts, last_itcpts, layers) 
 
 
 def plot(arr, show_lines=False): 
@@ -37,11 +37,7 @@ def plot(arr, show_lines=False):
     plt.show() 
     
 
-naive_data = generate_naive_data(n_pnts=100)    
-# np.savetxt("naive_data.csv", naive_data, delimiter=",")
+data = generate_data(n_pnts=100)    
+# np.savetxt("data.csv", data, delimiter=",")
 
-# soph_data = generate_soph_data(n_pnts=100)
-# np.savetxt("soph_data.csv", naive_data, delimiter=",")
-
-# print(naive_data[0])
 

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from generate_data import * 
 import math 
 
-naive_data = generate_naive_data(n_pnts=96)    
+data = generate_data(n_pnts=96)    
 
 def partition(array, ll, ul): 
     
@@ -127,4 +127,4 @@ def partition(array, ll, ul):
     # plt.show() 
 
 
-partition(naive_data, -1, 1) 
+partition(data, -1, 1) 
