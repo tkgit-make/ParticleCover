@@ -92,6 +92,12 @@ class Patch():
                 return False 
             
         return True
+
+    def contains_p(self, point:float, layer:int): 
+        layer = layer - 1 
+        
+        sp = self.superpoints[layer] 
+        return sp.contains(point)
     
     def plot(self): 
         heights = np.arange(1, self.env.layers + 1) * self.env.radii 
