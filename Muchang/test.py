@@ -1,8 +1,6 @@
 import numpy as np 
+from data import * 
 
-arr = np.linspace(1, 11, 6)
-print(arr)
-print(arr[1])
-arr = np.delete(arr, 1)
-print(arr)
-print(arr[1])
+hi = [1, 2, 3, 4, 5] 
+for j in range(0, len(hi)): 
+    print(j)

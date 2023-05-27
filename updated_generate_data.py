@@ -34,4 +34,5 @@ def plot(arr, radii = 5.0):
     plt.show()
 
 naive_data = generate_naive_data(l_bound = -1., h_bound = 1., r0_xmin = -0.15, r0_xmax = 0.15, layers = 5, radii = 5., size = 100)
+
 plot(naive_data, radii = 5.0)
