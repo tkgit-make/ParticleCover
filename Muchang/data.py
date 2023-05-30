@@ -42,12 +42,7 @@ class DataSet(Environment):
             plt.plot([-0.15, 0.15], [0.0, 0.0], c="r", alpha=0.5)
             plt.plot([-0.15, -1.0], [0, max_height], c="r", alpha=0.5)
         
-        plt.show()
+        # plt.show()
        
-# env = Environment() 
-# data = DataSet(env, n_points=150) 
-# data.plot(show_lines=True)
-
-# # np.savetxt("data.csv", data, delimiter=",")
 
 

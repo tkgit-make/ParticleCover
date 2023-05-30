@@ -67,7 +67,7 @@ class SuperPoint():
         self.max = np.max(points) 
         
     def contains(self, p:float): 
-        return self.min < p < self.max
+        return self.min <= p <= self.max
     
     def __eq__(self, other): 
         return (self.min, self.max) == (other.min, other.max)
@@ -94,7 +94,6 @@ class Patch():
         return True
 
     def contains_p(self, point:float, layer:int): 
-        layer = layer - 1 
         
         sp = self.superpoints[layer] 
         return sp.contains(point)
@@ -131,9 +130,10 @@ class Cover():
             i = 0 
             while i + 16 < end: 
                 lyr.append(SuperPoint(layer[i:i+16]))
-                i += 15 
+                i += 14 
             if i < end: 
                 lyr.append(SuperPoint(layer[-16:]))
+            
             
             out.append(lyr)
         
@@ -160,9 +160,10 @@ class Cover():
 
     def solve(self, N=100): 
         lGen = LineGenerator(self.env, 0.0) 
+        fitting_lines = lGen.generateGridLines(N)
         
-        # num = 1
-        for line in lGen.generateGridLines(N): 
+        num = 1
+        for line in fitting_lines: 
             
             patch_ingredients = []
             
@@ -180,11 +181,13 @@ class Cover():
             if len(patch_ingredients) == 5: 
                 # line.plot(color="r") 
                 pt = Patch(self.env, tuple(patch_ingredients))
+                # self.data.plot() 
                 # pt.plot()
+                
                 self.add_patch(pt)
-                # plt.savefig(f"Muchang/images2/{num}.png", dpi='figure', format=None)
+                # plt.savefig(f"Muchang/images5/{num}.png", dpi='figure', format=None)
                 # plt.clf()
-                # num+=1 
+                num+=1 
             else: 
                 # line.plot(color="r")
                 pass
@@ -193,7 +196,12 @@ class Cover():
                 
             
     def plot(self): 
+        name = 1 
         for patch in self.patches: 
             patch.plot() 
+            # self.data.plot() 
+            plt.savefig(f"Muchang/images6/{name}.png") 
+            plt.clf()
+            name += 1 
         plt.show() 
         

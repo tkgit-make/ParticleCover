@@ -1,6 +1,16 @@
 import numpy as np 
 from data import * 
+from cover import * 
 
-hi = [1, 2, 3, 4, 5] 
-for j in range(0, len(hi)): 
-    print(j)
+env = Environment()
+data = DataSet(env, n_points=150) 
+# print(data.array)
+# data.plot(show_lines=True)
+# plt.show()
+cover = Cover(env, data) 
+print(cover.n_patches) 
+print(cover.patches)
+cover.solve(100) 
+print(cover.n_patches) 
+print(cover.patches)
+# cover.plot()

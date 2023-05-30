@@ -8,6 +8,7 @@ class Line:
     def __init__(self, env:Environment, start:float, slope:float): 
         self.env = env 
         self.slope = slope
+        self.start = start
         self.points = start + (env.radii / slope) *np.arange(1, env.layers + 1)
 
     def plot(self, color): 
