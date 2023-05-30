@@ -1,13 +1,18 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
-from updated_generate_data.py import *
-
-naive_data = generate_naive_data(l_bound = -1., h_bound = 1., r0_xmin = -0.15, r0_xmax = 0.15, layers = 5, radii = 5., size = 150)
-plot(naive_data, radii = 5.0)
-sorted_data = np.sort(naive_data)
+from updated_generate_data import *
 
 def repeated(covers):
+
+    """Creates covers
     
+    Args:
+        covers (numpy array): 3D numpy array of first set of covers
+    
+    Returns:
+        numpy array: full set of covers
+    """
+
     acover = np.zeros((1, 5, 16))
     loops = len(covers) - 1
     mins = []
@@ -38,6 +43,15 @@ def repeated(covers):
     
     
 def generate_cover(data):
+    """Generates covers
+    
+    Args:
+        covers (numpy array): 3D numpy array of sorted data
+    
+    Returns:
+        numpy array: full set of covers
+    """
+
     covers = np.zeros((1, 5, 16))
     xshape = np.zeros_like(data[0, 42:58])
                     
@@ -49,10 +63,16 @@ def generate_cover(data):
 
     return repeated(covers)
 
-colorset = ['orange', 'k', 'b', 'r', 'y', 'm']
-final = generate_cover(sorted_data)
-for j in range(len(final)):
-    for i in range(5):
-        plt.scatter(final[j, i, :], np.full_like(final[j, i, :], (i+1)*5), s = 10, color = colorset[j%6])
-plt.xlim(-1, 1)
-plt.ylim(0, 26)
+
+if __name__ == "__main__":
+	naive_data = generate_naive_data(l_bound = -1., h_bound = 1., r0_xmin = -0.15, r0_xmax = 0.15, layers = 5, radii = 5., size = 150)
+	plot(naive_data, radii = 5.0)
+	sorted_data = np.sort(naive_data)
+
+	colorset = ['orange', 'k', 'b', 'r', 'y', 'm']
+	final = generate_cover(sorted_data)
+	for j in range(len(final)):
+		for i in range(5):
+			plt.scatter(final[j, i, :], np.full_like(final[j, i, :], (i+1)*5), s = 10, color = colorset[j%6])
+	plt.xlim(-1, 1)
+	plt.ylim(0, 26)
