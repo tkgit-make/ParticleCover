@@ -57,6 +57,7 @@ def acceptSlopePlot(events=100, lines=1000):
                 
                 # print(i)
                 pass
+            #test_lines[i].plot(color = color)
 
     percentage_accepted = [x / 100 for x in percentage_accepted]
     plt.plot(np.arange(1000), percentage_accepted, c="b")
@@ -102,16 +103,16 @@ def pointRepetitionFactor(events=10):
         out += out2
         print(out2)
         
-    plt.scatter(*zip(*unaccept)) 
+    #plt.scatter(*zip(*unaccept)) 
     
-    plt.show() 
+    #plt.show() 
         
     plt.hist(out, bins=np.arange(11) - 0.5, 
              edgecolor='black', 
              rwidth=0.8
             ) 
     
-    print(len(out)) 
+    #print(len(out)) 
         
     plt.show() 
     
