@@ -16,30 +16,33 @@ def repeated(covers):
     acover = np.zeros((1, 5, 16))
     loops = len(covers) - 1
     mins = []
-    print(loops)
 
     for i in np.arange(5):
         amin = (covers[loops, i, 15]/(5*(i+1)))
         mins.append(amin)
 
     min_index = np.argmin(np.array(mins))
-    #find closest points for all other rows
+
     for i in np.arange(5):
         closest_index = np.argmin(np.abs(sorted_data[i]/(5*(i+1)) - covers[loops, min_index, 15]/(min_index+1)/5))
         
-        if closest_index >= 150 - 16:
-            acover[0, :, 0:16] = sorted_data[:, -17:-1]
-            covers = np.append(covers, acover, axis = 0)
-            return covers
+        if closest_index<1:
+        	acover[0, i, 0:16] = data[i, 0:16]
+        elif closest_index >= 150 - 16:
+            acover[0, i, 0:16] = sorted_data[i, -17:-1]
         
         else:
-            acover[0, i, 0:16] = sorted_data[i, closest_index-1:closest_index+15] 
-
-
+            acover[0, i, 0:16] = sorted_data[i, closest_index-1:closest_index+15]
         
-    covers = np.append(covers, acover, axis = 0)
+    if np.array_equal(acover[0, :, :], covers[loops, :, :]):
+        
+        return covers
     
-    return repeated(covers)
+    else:
+        
+        covers = np.append(covers, acover, axis = 0)
+    
+        return repeated(covers)
     
     
 def generate_cover(data):
@@ -53,13 +56,10 @@ def generate_cover(data):
     """
 
     covers = np.zeros((1, 5, 16))
-    xshape = np.zeros_like(data[0, 42:58])
                     
     #generate first cover
     for row in np.arange(5):
-        #min_index = np.argmin(np.abs(sorted_data[row]))
         covers[0, row, 0:16] = data[row, 0:16]
-        #repeated(data, covers)
 
     return repeated(covers)
 
