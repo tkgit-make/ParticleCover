@@ -4,11 +4,11 @@ from data import *
 from cover import * 
 import time 
 
-# cluster_type - "LeftRight", "Center"
-# lines_types - "LeftRight", "CenterGrid", "CenterSpread", "Randomized"
+# clustering - "LeftRight", "Center"
+# linings - "LeftRight", "CenterGrid", "CenterSpread", "Randomized"
 
 
-def numCovers(cluster_type:str, lines_type:str, events=1000): 
+def numCovers(clustering:str, lining:str, events=1000, savefig=False): 
     # Runs a bunch of iterations by generating 1000 datasets and 
     # computing the cover. Then, it just looks at how many covers is
     # being generated for each dataset. The lower the distribution the better. 
@@ -18,24 +18,7 @@ def numCovers(cluster_type:str, lines_type:str, events=1000):
         env = Environment()
         data = DataSet(env, n_points=150) 
         cover = Cover(env, data) 
-        
-        if cluster_type == "LeftRight": 
-            cover.cluster("LR") 
-        elif cluster_type == "Center": 
-            cover.cluster("C")
-        else: 
-            raise Exception("This is not a valid cluster type.")
-        
-        if lines_type == "LeftRight": 
-            cover.solveGridLR(100) 
-        elif lines_type == "Randomized": 
-            cover.solveRandomized(100) 
-        elif lines_type == "CenterSpread": 
-            cover.solveCenterSpread(100)
-        elif lines_type == "CenterGrid": 
-            cover.solveCenterGrid(100) 
-        else: 
-            raise Exception("This is not a valid lines type.")
+        cover.solve(clustering=clustering, lining=lining, nlines=100)
         
         num_covers.append(cover.n_patches)
 
@@ -46,14 +29,15 @@ def numCovers(cluster_type:str, lines_type:str, events=1000):
             )
     avg = np.mean(num_covers) 
     std = np.std(num_covers)
-    print(f"({cluster_type}, {lines_type}) - {format(avg, '.2f')}, {format(std, '.2f')}")
-    plt.title(f"Number of Patches per Cover ({cluster_type}, {lines_type})")
+    print(f"({clustering}, {lining}) - {format(avg, '.2f')}, {format(std, '.2f')}")
+    plt.title(f"Number of Patches per Cover ({clustering}, {lining})")
     plt.xlabel("Number of Patches")
     plt.ylabel("Number of Covers")
-    plt.savefig(f"nPatches_({cluster_type}_{lines_type})")
+    if savefig == True: 
+        plt.savefig(f"nPatches_({clustering}_{lining})")
     plt.show() 
     
-def acceptSlopePlot(cluster_type:str, lines_type:str, events=100, lines=1000):
+def acceptSlopePlot(clustering:str, lining:str, events=100, lines=1000, savefig=False):
     
     percentage_accepted = [0 for _ in range(lines)] 
     
@@ -62,29 +46,7 @@ def acceptSlopePlot(cluster_type:str, lines_type:str, events=100, lines=1000):
         env = Environment()
         data = DataSet(env, n_points=150) 
         cover = Cover(env, data) 
-        
-        if cluster_type == "LeftRight": 
-            cover.cluster("LR") 
-        elif cluster_type == "Center": 
-            cover.cluster("C")
-        else: 
-            raise Exception("This is not a valid cluster type.")
-        
-        if lines_type == "LeftRight": 
-            cover.solveGridLR(100) 
-        elif lines_type == "Randomized": 
-            cover.solveRandomized(100) 
-        elif lines_type == "CenterSpread": 
-            cover.solveCenterSpread(100)
-        elif lines_type == "CenterGrid": 
-            cover.solveCenterGrid(100) 
-        else: 
-            raise Exception("This is not a valid lines type.")
-        
-        # for layer in cover.superPoints: 
-        #     for sp in layer: 
-        #         print(sp.min, sp.max)
-        #     print("------")
+        cover.solve(clustering=clustering, lining=lining, nlines=100)
         
         lg = LineGenerator(env, 0.0)
         test_lines = lg.generateGridLines(lines) 
@@ -106,15 +68,16 @@ def acceptSlopePlot(cluster_type:str, lines_type:str, events=100, lines=1000):
     percentage_accepted = [x / 100 for x in percentage_accepted]
     plt.plot(np.arange(1000), percentage_accepted, c="b")
     mean_accept = format(np.mean(percentage_accepted), ".3f")
-    print(f"({cluster_type}, {lines_type}) - {mean_accept}")
+    print(f"({clustering}, {lining}) - {mean_accept}")
     
-    plt.title(f"Acceptance Rate ({cluster_type}, {lines_type})")
+    plt.title(f"Acceptance Rate ({clustering}, {lining})")
     plt.xlabel("Slope (Indexed from Left to Right)")
     plt.ylabel("Acceptance Probability")
-    plt.savefig(f"Acceptance_Rate_({cluster_type}_{lines_type})")
+    if savefig == True: 
+        plt.savefig(f"Acceptance_Rate_({clustering}_{lining})")
     plt.show() 
             
-def pointRepetitionFactor(cluster_type:str, lines_type:str, events=10): 
+def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False): 
     # for every event, we loop through all the points in the dataset and compute 
     # how many patches contain that point. The lower in general the better, since 
     # this is a metric of non-wastefulness 
@@ -126,28 +89,10 @@ def pointRepetitionFactor(cluster_type:str, lines_type:str, events=10):
         env = Environment()
         data = DataSet(env, n_points=150) 
         cover = Cover(env, data) 
-        
-        if cluster_type == "LeftRight": 
-            cover.cluster("LR") 
-        elif cluster_type == "Center": 
-            cover.cluster("C")
-        else: 
-            raise Exception("This is not a valid cluster type.")
-        
-        if lines_type == "LeftRight": 
-            cover.solveGridLR(100) 
-        elif lines_type == "Randomized": 
-            cover.solveRandomized(100) 
-        elif lines_type == "CenterSpread": 
-            cover.solveCenterSpread(100)
-        elif lines_type == "CenterGrid": 
-            cover.solveCenterGrid(100) 
-        else: 
-            raise Exception("This is not a valid lines type.")
-        
+        cover.solve(clustering=clustering, lining=lining, nlines=100)
         
         out2 = [] 
-        unaccept = []
+        # unaccept = []
         
         for layer in range(env.layers): 
             for point in data.array[layer]: 
@@ -172,7 +117,7 @@ def pointRepetitionFactor(cluster_type:str, lines_type:str, events=10):
     # plt.scatter(*zip(*unaccept)) 
     
     # plt.show() 
-    print(f"({cluster_type}, {lines_type}) - {format(np.mean(out), '.2f')}")
+    print(f"({clustering}, {lining}) - {format(np.mean(out), '.2f')}")
         
     plt.hist(out, bins=np.arange(11) - 0.5, 
              edgecolor='black', 
@@ -180,21 +125,21 @@ def pointRepetitionFactor(cluster_type:str, lines_type:str, events=10):
             ) 
     plt.xlabel("Number of Covering Patches")
     plt.ylabel("Number of Points")
-    
-    plt.title(f"Point Repetition Factor ({cluster_type}, {lines_type})")
-    plt.savefig(f"Muchang/Point_Repetition_Factor_({cluster_type}_{lines_type})")
+    plt.title(f"Point Repetition Factor ({clustering}, {lining})")
+    if savefig == True: 
+        plt.savefig(f"Muchang/Point_Repetition_Factor_({clustering}_{lining})")
     plt.show() 
     
     
     
-numCovers("LeftRight", "LeftRight")
-numCovers("LeftRight", "Randomized")
-numCovers("LeftRight", "CenterGrid")
-numCovers("LeftRight", "CenterSpread")
-numCovers("Center", "LeftRight")
-numCovers("Center", "Randomized")
-numCovers("Center", "CenterGrid",)
-numCovers("Center", "CenterSpread")
+# numCovers("LeftRight", "LeftRight")
+# numCovers("LeftRight", "Randomized")
+# numCovers("LeftRight", "CenterGrid")
+# numCovers("LeftRight", "CenterSpread")
+# numCovers("Center", "LeftRight")
+# numCovers("Center", "Randomized")
+# numCovers("Center", "CenterGrid",)
+# numCovers("Center", "CenterSpread")
 
 # acceptSlopePlot("LeftRight")
 # acceptSlopePlot("Randomized") 
@@ -204,6 +149,8 @@ numCovers("Center", "CenterSpread")
 # numCovers("CenterGrid")
 # numCovers("LeftRight", "CenterGrid")
 # numCovers("Center", "CenterGrid")
+
+numCovers(clustering="LeftRight", lining="SlopeStack", events=10000)
 
 
 

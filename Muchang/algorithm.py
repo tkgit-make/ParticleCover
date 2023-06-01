@@ -8,11 +8,8 @@ import time
 env = Environment()
 data = DataSet(env, n_points=150) 
 cover1 = Cover(env, data) 
-cover1.cluster("LR")
-cover2 = Cover(env, data) 
-cover2.cluster("C")
-cover2.solveGridLR()
-cover2.plot()
+cover1.solve(lining="SlopeStack")
+cover1.plot()
 
 
 # print(cover1.superPoints[0])

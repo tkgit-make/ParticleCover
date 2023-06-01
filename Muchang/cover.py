@@ -276,7 +276,6 @@ class Cover():
                     
             if len(patch_ingredients) == 5: 
                 self.add_patch(Patch(self.env, tuple(patch_ingredients)))
-
         
     def solveRandomized(self, nlines=100): 
         
@@ -374,8 +373,74 @@ class Cover():
                 if contains == False: 
                     self.add_patch(pt)
         
-                
+    def mk_repeated(self):
+
+        loops = self.n_patches - 1
+        mins = []
+
+        #find point in patch with smallest slope
+        for i in range(5):
+            last_patch = self.patches[loops].superpoints
+            amin = last_patch[i].points[15]/(5*(i+1))
+            mins.append(amin)
+
+        min_index = np.argmin(np.array(mins))
+        patch_ingredients = []
+
+        for i in range(5):
+            #find point closest to the point with largest slope for next patch
+
+            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - last_patch[min_index].points[15]/(min_index+1)/5))
+            if closest_index < 1:
+                patch_ingredients.append(SuperPoint(self.data.array[i, 0:16]))
+            elif closest_index >= (self.data.n_points) - 16:
+                patch_ingredients.append(SuperPoint(self.data.array[i, -17:-1]))
+            else:
+                patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-1:closest_index+15]))
+        
+        new_patch = Patch(self.env, tuple(patch_ingredients))
+
+        if np.array_equal(new_patch.superpoints, last_patch):
+            return
+
+        else:
+            self.add_patch(new_patch)
+            return self.mk_repeated()
+
+    def solveSlopeStack(self):
+
+        init_patch = []
+        for row in range(5):
+            init_patch.append(SuperPoint(self.data.array[row, 0:16]))
+
+        self.add_patch(Patch(self.env, tuple(init_patch)))
+
+        return self.mk_repeated()
             
+    def solve(self, clustering:str = "", lining:str = "SlopeStack", nlines:int=100): 
+           
+        if lining == "SlopeStack": 
+            self.solveSlopeStack() 
+            return 
+        
+        elif clustering == "LeftRight": 
+            self.cluster("LR") 
+        elif clustering == "Center": 
+            self.cluster("C") 
+        else: 
+            raise Exception("That is not a valid clustering type. ")
+            
+        if lining == "LeftRight": 
+            self.solveGridLR(nlines) 
+        elif lining == "Randomized": 
+            self.solveRandomized(nlines) 
+        elif lining == "CenterGrid": 
+            self.solveCenterGrid(nlines) 
+        elif lining == "CenterSpread": 
+            self.solveCenterSpread(nlines) 
+        else: 
+            raise Exception("That is not a valid lining type. ")
+             
     def plot(self, data=True, lines=True, patches=True): 
         
         if self.n_patches == 0: 
