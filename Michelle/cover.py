@@ -84,6 +84,11 @@ class Patch():
         
         self.superpoints = superpoints
         # first superpoint in array should be the 1st layer 
+
+    def contains_p(self, point:float, layer:int): 
+        
+        sp = self.superpoints[layer] 
+        return sp.contains(point)
         
     def contains(self, line:Line): 
         
@@ -196,8 +201,6 @@ class Cover():
         loops = self.n_patches - 1
         mins = []
 
-        sat = 0
-
         #find point in patch with smallest slope
         for i in range(5):
             last_patch = self.patches[loops].superpoints
@@ -208,14 +211,13 @@ class Cover():
         patch_ingredients = []
 
         for i in range(5):
-            #find point closest to the point with smallest slope for next patch
+            #find point closest to the point with largest slope for next patch
 
             closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - last_patch[min_index].points[15]/(min_index+1)/5))
             if closest_index < 1:
                 patch_ingredients.append(SuperPoint(self.data.array[i, 0:16]))
-            elif closest_index >= 150 - 16:
+            elif closest_index >= (self.data.n_points) - 16:
                 patch_ingredients.append(SuperPoint(self.data.array[i, -17:-1]))
-                sat += 1
             else:
                 patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-1:closest_index+15]))
         
