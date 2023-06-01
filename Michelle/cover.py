@@ -149,8 +149,6 @@ class Cover():
                     self.n_patches += 1 
                     break 
                 
-            
-        
 
     def solve(self, N=100): 
         lGen = LineGenerator(self.env, 0.0) 

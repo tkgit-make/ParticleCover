@@ -10,7 +10,6 @@ class Environment:
         self.radii = radii   
     
 
-
 class DataSet(Environment): 
     
     def __init__(self, env:Environment, n_points = 150): 
@@ -31,7 +30,7 @@ class DataSet(Environment):
         nums = np.arange(1, self.env.layers + 1)
         heights = self.env.layers * np.linspace(nums, nums, self.n_points).T
         
-        plt.scatter(self.array, heights, c="b", s=2)
+        plt.scatter(self.array, heights, c="g", s=2)
         
         max_height = heights[-1][-1]
         

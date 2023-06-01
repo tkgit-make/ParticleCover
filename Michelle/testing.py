@@ -60,11 +60,10 @@ def acceptSlopePlot(events=100, lines=1000):
 
     percentage_accepted = [x / 100 for x in percentage_accepted]
     plt.plot(np.arange(1000), percentage_accepted, c="b")
+    print(np.mean(percentage_accepted))
     plt.title("Acceptance vs Slope")
     plt.show() 
                 
-            
-    
 
 def pointRepetitionFactor(events=10): 
     # for every event, we loop through all the points in the dataset and compute 
@@ -117,6 +116,16 @@ def pointRepetitionFactor(events=10):
     plt.show() 
     
 
-acceptSlopePlot()
+env = Environment()
+data = DataSet(env, n_points=150) 
+cover = Cover(env, data) 
+cover.michelle() 
+
+for patch in cover.patches: 
+    patch.plot()
+    plt.show() 
+    plt.clf() 
+
+# acceptSlopePlot()
 #pointRepetitionFactor(100)
-numCovers()
+# numCovers()

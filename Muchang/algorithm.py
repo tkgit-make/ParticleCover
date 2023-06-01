@@ -4,26 +4,29 @@ from data import *
 from cover import * 
 import time 
 
-# x = [] 
-# for i in range(10000): 
-    
-#     env = Environment()
-#     data = DataSet(env, n_points=150) 
-#     cover = Cover(env, data) 
-#     cover.solve(100) 
-#     x.append(cover.n_patches)
-
-# plt.hist(x)
-# plt.show() 
 
 env = Environment()
 data = DataSet(env, n_points=150) 
-cover = Cover(env, data) 
-cover.solve(100) 
+cover1 = Cover(env, data) 
+cover1.cluster("LR")
+cover2 = Cover(env, data) 
+cover2.cluster("C")
+cover2.solveGridLR()
+cover2.plot()
 
-num = 1
-for patch in cover.patches: 
-    patch.plot() 
-    plt.savefig(f"Muchang/images3/{num}.png")
-    plt.clf()
-    num += 1
+
+# print(cover1.superPoints[0])
+
+# for i in range(5): 
+#     print(len(cover1.superPoints[i]), len(cover2.superPoints[i]))
+
+
+# for j in range(len(cover1.superPoints[1])): 
+#     print(cover1.superPoints[1][j].min, cover1.superPoints[1][j].max) 
+#     print(cover2.superPoints[1][j].min, cover2.superPoints[1][j].max) 
+
+
+
+# cover.solveCenterGrid(100) 
+
+# cover.plot(data=True, patches=False, lines=True)
