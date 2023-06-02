@@ -130,30 +130,6 @@ def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False):
         plt.savefig(f"Muchang/Point_Repetition_Factor_({clustering}_{lining})")
     plt.show() 
     
-    
-    
-# numCovers("LeftRight", "LeftRight")
-# numCovers("LeftRight", "Randomized")
-# numCovers("LeftRight", "CenterGrid")
-# numCovers("LeftRight", "CenterSpread")
-# numCovers("Center", "LeftRight")
-# numCovers("Center", "Randomized")
-# numCovers("Center", "CenterGrid",)
-# numCovers("Center", "CenterSpread")
-
-# acceptSlopePlot("LeftRight")
-# acceptSlopePlot("Randomized") 
-# acceptSlopePlot("CenterSpread")
-# acceptSlopePlot("CenterGrid")
-
-# numCovers("CenterGrid")
-# numCovers("LeftRight", "CenterGrid")
-# numCovers("Center", "CenterGrid")
-
-numCovers(clustering="LeftRight", lining="SlopeStack", events=10000)
 
 
-
-
-# pointRepetitionFactor(100)
-# numCovers("C")
+numCovers(clustering="", lining="SlopeStack", events=1000)
