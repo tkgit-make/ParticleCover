@@ -603,7 +603,7 @@ class Cover():
                 name = 0
                 for patch in self.patches: 
                     patch.plot("b")
-                    plt.savefig(f"Muchang/temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -612,7 +612,7 @@ class Cover():
                 for patch in self.patches: 
                     self.data.plot("g")
                     patch.plot("b")
-                    plt.savefig(f"Muchang/temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -624,7 +624,7 @@ class Cover():
                             line.plot("r")
                     patch.plot("b")
                 
-                    plt.savefig(f"Muchang/temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -636,12 +636,12 @@ class Cover():
                         if patch.contains(line): 
                             line.plot("r")
                     patch.plot("b")
-                    plt.savefig(f"Muchang/temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
                     plt.clf() 
                     name += 1 
                 
                         
-            image_files = glob.glob("Muchang/temp_image_dir/*.png")
+            image_files = glob.glob("temp_image_dir/*.png")
             
             image_files.sort()
 

@@ -92,31 +92,19 @@ def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False):
         cover.solve(clustering=clustering, lining=lining, nlines=100)
         
         out2 = [] 
-        # unaccept = []
         
         for layer in range(env.layers): 
             for point in data.array[layer]: 
                 
                 num_in = 0
-                
                 for patch in cover.patches: 
                     if patch.contains_p(point, layer): 
                         num_in += 1
-                
-                # if num_in == 0: 
-                #     plt.scatter(point, layer+1, s=2, c="r")
-                #     unaccept.append((point, layer+1))
-                # else: 
-                #     plt.scatter(point, layer+1, s=2, c="b")
                         
                 out2.append(num_in) 
                 
         out += out2
-        # print(out2)
-        
-    # plt.scatter(*zip(*unaccept)) 
-    
-    # plt.show() 
+
     print(f"({clustering}, {lining}) - {format(np.mean(out), '.2f')}")
         
     plt.hist(out, bins=np.arange(11) - 0.5, 
@@ -130,6 +118,15 @@ def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False):
         plt.savefig(f"Muchang/Point_Repetition_Factor_({clustering}_{lining})")
     plt.show() 
     
+def idealData(clustering:str, lining:str): 
+    env = Environment()
+    data = DataSet(env, n_points=150, equal_spacing=True) 
+    cover = Cover(env, data) 
+    cover.solve(clustering=clustering, lining=lining, nlines=100)
+    
+    print(f"Number of Patches: {cover.n_patches}")
+    cover.plot() 
 
 
-numCovers(clustering="", lining="SlopeStack", events=1000)
+idealData(clustering="", lining="SlopeCenterStack1")
+# idealData(clustering="LeftRight", lining="LeftRight")
