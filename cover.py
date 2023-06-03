@@ -527,7 +527,8 @@ class Cover():
 
         #pick center 16 points based on 
         for row in range(5):
-            init_patch.append(SuperPoint(self.data.array[row, int(self.data.n_points/2)-8:int(self.data.n_points/2)+8]))
+            center_point = np.argmin(np.abs(self.data.array[row]))
+            init_patch.append(SuperPoint(self.data.array[row, center_point-8:center_point+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
 

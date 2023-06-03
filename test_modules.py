@@ -22,17 +22,18 @@ def numCovers(clustering:str, lining:str, events=1000, savefig=False):
         
         num_covers.append(cover.n_patches)
 
+    avg = np.mean(num_covers)
+    std = np.std(num_covers)
     plt.hist(num_covers, 
                 bins=np.arange(min(num_covers), max(num_covers)) - 0.5, 
                 edgecolor='black', 
-                rwidth=0.8
+                rwidth=0.8, label = f"mean: {format(avg, '.2f')}, stdev: {format(std, '.2f')}"
             )
-    avg = np.mean(num_covers) 
-    std = np.std(num_covers)
     print(f"({clustering}, {lining}) - {format(avg, '.2f')}, {format(std, '.2f')}")
     plt.title(f"Number of Patches per Cover ({clustering}, {lining})")
     plt.xlabel("Number of Patches")
     plt.ylabel("Number of Covers")
+    plt.legend()
     if savefig == True: 
         plt.savefig(f"nPatches_({clustering}_{lining})")
     plt.show() 
@@ -117,19 +118,25 @@ def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False):
     # plt.scatter(*zip(*unaccept)) 
     
     # plt.show() 
-    print(f"({clustering}, {lining}) - {format(np.mean(out), '.2f')}")
+    print(f"({clustering}, {lining}) mean - {format(np.mean(out), '.2f')}")
+    print(f"({clustering}, {lining}) stdev - {format(np.std(out), '.2f')}")
         
     plt.hist(out, bins=np.arange(11) - 0.5, 
              edgecolor='black', 
+             label = f"mean: {format(np.mean(out), '.2f')}, stdev: {format(np.std(out), '.2f')}",
              rwidth=0.8
             ) 
     plt.xlabel("Number of Covering Patches")
     plt.ylabel("Number of Points")
     plt.title(f"Point Repetition Factor ({clustering}, {lining})")
+    plt.legend()
     if savefig == True: 
         plt.savefig(f"Muchang/Point_Repetition_Factor_({clustering}_{lining})")
     plt.show() 
     
 
-
-numCovers(clustering="", lining="SlopeStack", events=1000)
+#acceptSlopePlot(clustering="", lining="SlopeCenterStack2", events=1000)
+#numCovers(clustering="", lining="SlopeCenterStack2", events=1000)\
+pointRepetitionFactor(clustering="", lining="SlopeStack", events=20)
+pointRepetitionFactor(clustering="", lining="SlopeCenterStack1", events=20)
+pointRepetitionFactor(clustering="", lining="SlopeCenterStack2", events=20)
