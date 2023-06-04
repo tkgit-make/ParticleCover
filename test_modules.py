@@ -25,7 +25,7 @@ def numCovers(clustering:str, lining:str, events=1000, savefig=False):
     avg = np.mean(num_covers)
     std = np.std(num_covers)
     plt.hist(num_covers, 
-                bins=np.arange(min(num_covers), max(num_covers)) - 0.5, 
+                bins=np.arange(np.min(num_covers), np.max(num_covers)+1)-0.5, 
                 edgecolor='black', 
                 rwidth=0.8, label = f"mean: {format(avg, '.2f')}, stdev: {format(std, '.2f')}"
             )
@@ -35,7 +35,7 @@ def numCovers(clustering:str, lining:str, events=1000, savefig=False):
     plt.ylabel("Number of Covers")
     plt.legend()
     if savefig == True: 
-        plt.savefig(f"nPatches_({clustering}_{lining})")
+        plt.savefig(f"Figures/nPatches_({clustering}_{lining})")
     plt.show() 
     
 def acceptSlopePlot(clustering:str, lining:str, events=100, lines=1000, savefig=False):
@@ -75,7 +75,7 @@ def acceptSlopePlot(clustering:str, lining:str, events=100, lines=1000, savefig=
     plt.xlabel("Slope (Indexed from Left to Right)")
     plt.ylabel("Acceptance Probability")
     if savefig == True: 
-        plt.savefig(f"Acceptance_Rate_({clustering}_{lining})")
+        plt.savefig(f"Figures/Acceptance_Rate_({clustering}_{lining})")
     plt.show() 
             
 def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False): 
@@ -125,7 +125,7 @@ def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False):
     plt.title(f"Point Repetition Factor ({clustering}, {lining})")
     plt.legend()
     if savefig == True: 
-        plt.savefig(f"Muchang/Point_Repetition_Factor_({clustering}_{lining})")
+        plt.savefig(f"Figures/Point_Repetition_Factor_({clustering}_{lining})")
     plt.show() 
     
 def idealData(clustering:str, lining:str): 
@@ -134,7 +134,6 @@ def idealData(clustering:str, lining:str):
     cover = Cover(env, data) 
     cover.solve(clustering=clustering, lining=lining, nlines=100)
     
-    print(f"Number of Patches: {cover.n_patches}")
+    print(f"Figures/Number of Patches: {cover.n_patches}")
     cover.plot() 
-
 

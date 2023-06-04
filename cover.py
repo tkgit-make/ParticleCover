@@ -437,7 +437,8 @@ class Cover():
         self.add_patch(Patch(self.env, tuple(init_patch)))
 
         #run main algorithm
-        return self.S_repeated()
+        self.S_repeated()
+        return
 
     def S_repeated_reverse(self):
 
@@ -503,7 +504,8 @@ class Cover():
         self.add_patch(Patch(self.env, tuple(init_patch)))
 
         #run main algorithm
-        return self.S_repeated_reverse()
+        self.S_repeated_reverse()
+        return
 
     def solveS_center1(self):
         init_patch = []
@@ -549,6 +551,9 @@ class Cover():
         if lining == "SlopeStack": 
             self.solveS() 
             return 
+        if lining == "SlopeStackR":
+            self.solveS_reverse()
+            return
         elif lining == "SlopeCenterStack1": 
             self.solveS_center1() 
             return 
