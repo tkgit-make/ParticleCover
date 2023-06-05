@@ -372,11 +372,27 @@ class Cover():
                 
                 if contains == False: 
                     self.add_patch(pt)
+
+    def solveS(self, stop = 1):
+
+        init_patch = []
+
+        #pick first 16 points in each layer
+        for row in range(5):
+            init_patch.append(SuperPoint(self.data.array[row, 0:16]))
+
+        #add to patch
+        self.add_patch(Patch(self.env, tuple(init_patch)))
+
+        #run main algorithm
+        self.S_repeated(stop)
+        return
         
-    def S_repeated(self):
+    def S_repeated(self, stop = 1):
 
         loops = self.n_patches - 1
         mins = []
+        stop_count = 0
 
         #find point in patch with largest slope
         for i in range(5):
@@ -400,7 +416,10 @@ class Cover():
 
             #Goes through the re-scaled value of each layer and find the re-scaled value that is closest to min_value
             closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
-
+            #picks the index of the stop value
+            stop_rescaled = stop*(0.85*(i+1)/5+0.15)
+            stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
+            stop_value = self.data.array[i][stop_index]
             #if the closest index is the first point then pick the first 16 points for a superpoint
             if closest_index < 1:
                 patch_ingredients.append(SuperPoint(self.data.array[i, 0:16]))
@@ -412,10 +431,10 @@ class Cover():
             #otherwise pick 16 points starting from the closest_index-1
             else:
                 patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-1:closest_index+15]))
-        
+            if np.any(patch_ingredients[i].points >= stop_value):
+                stop_count += 1
         #generate new patch from those new superpoints   
         new_patch = Patch(self.env, tuple(patch_ingredients))
-
         #check if the new patch is the same as the last patch; if so, terminate
         if np.array_equal(new_patch.superpoints, last_patch):
             return
@@ -423,27 +442,16 @@ class Cover():
         #otherwise add the patch
         else:
             self.add_patch(new_patch)
-            return self.S_repeated()
+            if stop_count == 5:
+                return
+            else:
+                return self.S_repeated(stop)
 
-    def solveS(self):
-
-        init_patch = []
-
-        #pick first 16 points in each layer
-        for row in range(5):
-            init_patch.append(SuperPoint(self.data.array[row, 0:16]))
-
-        #add to patch
-        self.add_patch(Patch(self.env, tuple(init_patch)))
-
-        #run main algorithm
-        self.S_repeated()
-        return
-
-    def S_repeated_reverse(self):
+    def S_repeated_reverse(self, stop = -1):
 
         loops = self.n_patches - 1
         mins = []
+        stop_count = 0
 
         #find point in patch with largest slope
         for i in range(5):
@@ -468,6 +476,10 @@ class Cover():
             #Goes through the re-scaled value of each layer and find the re-scaled value that is closest to min_value
             closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
 
+            stop_rescaled = stop*(0.85*(i+1)/5+0.15)
+            stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
+            stop_value = self.data.array[i][stop_index]
+
             #if the closest index is the first point then pick the first 16 points for a superpoint
             if closest_index > (self.data.n_points) - 2:
                 patch_ingredients.append(SuperPoint(self.data.array[i, -16:]))
@@ -479,10 +491,10 @@ class Cover():
             #otherwise pick 16 points starting from the closest_index-1
             else:
                 patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-14:closest_index+2]))
-        
+            if np.any(patch_ingredients[i].points <= stop_value):
+                stop_count += 1
         #generate new patch from those new superpoints   
         new_patch = Patch(self.env, tuple(patch_ingredients))
-
         #check if the new patch is the same as the last patch; if so, terminate
         if np.array_equal(new_patch.superpoints, last_patch):
             return
@@ -490,9 +502,12 @@ class Cover():
         #otherwise add the patch
         else:
             self.add_patch(new_patch)
-            return self.S_repeated_reverse()
+            if stop_count == 5:
+                return
+            else:
+                return self.S_repeated_reverse(stop = stop)
 
-    def solveS_reverse(self):
+    def solveS_reverse(self, stop = -1):
 
         init_patch = []
 
@@ -504,7 +519,7 @@ class Cover():
         self.add_patch(Patch(self.env, tuple(init_patch)))
 
         #run main algorithm
-        self.S_repeated_reverse()
+        self.S_repeated_reverse(stop = stop)
         return
 
     def solveS_center1(self):
@@ -524,26 +539,48 @@ class Cover():
         self.n_patches = self.n_patches - 1
         return
 
-    def solveS_center2(self):
+    def solveS_center2(self, center = 0, stop = 'none'):
         init_patch = []
 
         #pick center 16 points based on 
         for row in range(5):
-            center_point = np.argmin(np.abs(self.data.array[row]))
-            init_patch.append(SuperPoint(self.data.array[row, center_point-8:center_point+8]))
+            center_value = center*(0.85*(row+1)/5+0.15)
+            center_index = np.argmin(np.abs(self.data.array[row]-center_value))
+            init_patch.append(SuperPoint(self.data.array[row, center_index-8:center_index+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
 
-        #run main algorithm
-        self.S_repeated()
-        self.add_patch(Patch(self.env, tuple(init_patch)))
-        self.S_repeated_reverse()
-        self.patches = self.patches[1:]
-        self.n_patches = self.n_patches - 1
-        return
+        if stop == 'center':
+            # starts left of center
+            if center < 0:
+                self.S_repeated(stop = 0)
+                self.add_patch(Patch(self.env, tuple(init_patch)))
+                self.S_repeated_reverse()
+                self.patches = self.patches[1:]
+                self.n_patches = self.n_patches - 1
+                return
+            #starts right of center
+            if center > 0:
+                self.S_repeated()
+                self.add_patch(Patch(self.env, tuple(init_patch)))
+                self.S_repeated_reverse(stop = 0)
+                self.patches = self.patches[1:]
+                self.n_patches = self.n_patches - 1
+                return
+        else:
+
+            #run main algorithm
+            self.S_repeated()
+            self.add_patch(Patch(self.env, tuple(init_patch)))
+            self.S_repeated_reverse()
+            self.patches = self.patches[1:]
+            self.n_patches = self.n_patches - 1
+            return
         
-    def solveQ(self): 
-        pass     
+    def solveQ(self):
+        self.solveS_center2(center = -0.5, stop = 'center') 
+        self.solveS_center2(center = 0.5, stop = 'center')
+        return
         
     def solve(self, clustering:str = "", lining:str = "SolveS", nlines:int=100): 
         lGen = LineGenerator(self.env, 0.0)
@@ -560,7 +597,7 @@ class Cover():
         elif lining == "solveS_center2": 
             self.solveS_center2()
             return 
-        elif lining == "SolveQuartileStack": 
+        elif lining == "solveQ": 
             self.solveQ() 
             return 
         
@@ -686,3 +723,4 @@ class Cover():
                 
             cv2.destroyAllWindows()
                     
+
