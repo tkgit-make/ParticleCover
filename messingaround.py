@@ -11,15 +11,17 @@ import glob
 env = Environment()
 data = DataSet(env, n_points=150) 
 cover = Cover(env, data)
-#cover.solveS()
+#cover.solveS_center2(center = -0.5, stop = 'center')
 cover.solveQ()
 cover.plot(data=True, lines=True, patches=True)
+acceptSlopePlot(clustering='', lining='solveQ')
+#acceptSlopePlot(clustering='', lining='solveQ', ideal = True)
 #numCovers(clustering='', lining='solveQ')
 final = cover.patches
 
 colorset = ['orange', 'k', 'b', 'r', 'y', 'm']
 shapeset = ['o', '^']
-print(len(final), 'patches')
+#print(len(final), 'patches')
 '''
 for j in range(len(final)):
     for i in range(5):

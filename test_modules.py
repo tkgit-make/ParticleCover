@@ -65,7 +65,7 @@ def acceptSlopePlot(clustering:str, lining:str, events=100, lines=1000, savefig=
         
         for i in range(len(test_lines)): 
             color = "r"
-            co_tan.append(1/test_lines[i].slope)
+            co_tan.append(100/test_lines[i].slope)
             for patch in cover.patches: 
                 if patch.contains(test_lines[i]): 
                     color="g"

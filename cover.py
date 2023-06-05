@@ -416,10 +416,14 @@ class Cover():
 
             #Goes through the re-scaled value of each layer and find the re-scaled value that is closest to min_value
             closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+
             #picks the index of the stop value
-            stop_rescaled = stop*(0.85*(i+1)/5+0.15)
+            #stop_rescaled = stop*(0.85*(i+1)/5+0.15)
+            #stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
+            stop_rescaled = stop*(i+1)/5
             stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
             stop_value = self.data.array[i][stop_index]
+
             #if the closest index is the first point then pick the first 16 points for a superpoint
             if closest_index < 1:
                 patch_ingredients.append(SuperPoint(self.data.array[i, 0:16]))
@@ -476,7 +480,9 @@ class Cover():
             #Goes through the re-scaled value of each layer and find the re-scaled value that is closest to min_value
             closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
 
-            stop_rescaled = stop*(0.85*(i+1)/5+0.15)
+            #stop_rescaled = stop*(0.85*(i+1)/5+0.15)
+            #stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
+            stop_rescaled = stop*(i+1)/5
             stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
             stop_value = self.data.array[i][stop_index]
 
@@ -544,8 +550,10 @@ class Cover():
 
         #pick center 16 points based on 
         for row in range(5):
-            center_value = center*(0.85*(row+1)/5+0.15)
-            center_index = np.argmin(np.abs(self.data.array[row]-center_value))
+            center_value = center*(row+1)/5
+            center_index = np.argmin(np.abs(self.data.array[row] - center_value))
+            #center_value = center*(0.85*(row+1)/5+0.15)
+            #center_index = np.argmin(np.abs(self.data.array[row]-center_value))
             init_patch.append(SuperPoint(self.data.array[row, center_index-8:center_index+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -553,27 +561,30 @@ class Cover():
         if stop == 'center':
             # starts left of center
             if center < 0:
+                n_patch_start = self.n_patches
                 self.S_repeated(stop = 0)
                 self.add_patch(Patch(self.env, tuple(init_patch)))
                 self.S_repeated_reverse()
-                self.patches = self.patches[1:]
+                del self.patches[n_patch_start-1]
                 self.n_patches = self.n_patches - 1
                 return
             #starts right of center
             if center > 0:
+                n_patch_start = self.n_patches
                 self.S_repeated()
                 self.add_patch(Patch(self.env, tuple(init_patch)))
                 self.S_repeated_reverse(stop = 0)
-                self.patches = self.patches[1:]
+                del self.patches[n_patch_start-1]
                 self.n_patches = self.n_patches - 1
                 return
         else:
 
             #run main algorithm
+            n_patch_start = self.n_patches
             self.S_repeated()
             self.add_patch(Patch(self.env, tuple(init_patch)))
             self.S_repeated_reverse()
-            self.patches = self.patches[1:]
+            del self.patches[n_patch_start-1]
             self.n_patches = self.n_patches - 1
             return
         
