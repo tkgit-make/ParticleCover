@@ -545,19 +545,19 @@ class Cover():
     def solveQ(self): 
         pass     
         
-    def solve(self, clustering:str = "", lining:str = "SlopeStack", nlines:int=100): 
+    def solve(self, clustering:str = "", lining:str = "SolveS", nlines:int=100): 
         lGen = LineGenerator(self.env, 0.0)
         self.fitting_lines = lGen.generateGridLines(nlines)
-        if lining == "SlopeStack": 
+        if lining == "solveS": 
             self.solveS() 
             return 
-        if lining == "SlopeStackR":
+        if lining == "solveS_reverse":
             self.solveS_reverse()
             return
-        elif lining == "SlopeCenterStack1": 
-            self.solveS_center1() 
+        elif lining == "solveS_center1": 
+            self.solveS_center1()
             return 
-        elif lining == "SlopeCenterStack2": 
+        elif lining == "solveS_center2": 
             self.solveS_center2()
             return 
         elif lining == "SolveQuartileStack": 
@@ -686,7 +686,3 @@ class Cover():
                 
             cv2.destroyAllWindows()
                     
-                
-
-
-
