@@ -112,3 +112,33 @@ where $j_1 \geq 3, j_2 \geq 3, j_3 \geq 4, j_4 \geq 2, j_5 \geq 1$. This will sa
 5. We repeat the above steps for all 100 lines. To detect repeated patches, unfortunately we cannot use hashsets since patches are not hashable objects (implementing this would be very nice). Therefore, for every generated patch $P_k$ for line $l_k$, we just compare it with the latest patch that is stored in `cover.n_patches`. Just this one comparison is sufficient since again, since the patches are generated from left to right, and therefore, $l_k \not\in P_{k-1} \implies l_k \not\in P_1, \ldots, P_{k-2}$. 
 
 6. After all repetitions we have our desired cover stored in the `cover.patches` list. 
+
+### Additional Solving Algorithms
+The `solveS` method for the `Cover` class generates a cover for a given set of data $D_{ij}$ where $i$ is the layer and $j$ indexes the points in the layer. The goal was to minimize the amount of patches. This assumes 150 points but the code will work for more or less points. The algorithm proceeds as follows:
+
+1. The first patch is contrasted from a superpoint of the first 16 points of each layer. $$S_i = [D_{i,1}, D_{i,2}, ..., D_{i,16}]$$
+
+2. The `S_repeated method` is run, which is the main part of the algorithm. This generates all the other patches.
+
+3. `S_repeated method` loops through the rightmost point in each layer. It takes the point and 're-scales' it based on the y-value. Let the re-scaled value be $D_{i, j}'$ where $$D'{i, j} = \frac{D_{i, j}}{5i}$$ The minimum of $D_{i, j}'$ for $i \in [1, 5]$ is $i_{min}$. $i_{min}$ is stored in `min_index`. 
+    
+4. Next re-scale each layer to find the index of the point closest in value to $D_{i_{min},j}'$. Let the index of this point be $j = m$. There are three cases.
+    
+    1. $m$ is the leftmost point of a given layer ($m<1$), which happens the first few patches due to the radius offset. In this case, the first 16 points is the superpoint for that layer. $$S_i = [D_{i,0}, D_{i,1}, ..., D_{i,16}]$$
+
+    2. There are not enough points left for 16 new points ($m >= 150-16$.) The superpoint is then the rightmost 16 points in the layer. $$S_i = [D_{i,(150-16)}, D_{i,(150-15)}, ..., D_{i,150}]$$
+
+    3. The closest index is neither of the above cases. The superpoint starts at $m-1$ to ensure overlap then picks the next 15 points.$$S_i = [D_{i,(m-1)}, D_{i,(m)}, ..., D_{i,(m+15)}]$$
+    
+    These superpoints are added to the list `patch_ingredients`.
+    
+5. Checks to see if the new patch equals the last patch added. This happens when Case 2 is true for all five layers. Once that happens, the algorithm terminates. Otherwise, `S_repeated` is run again.
+
+After the algorithm terminates, the patches are stored in `cover.patches`.
+
+Using the same logic, there are several methods that vary on this premise.
+1. `solveS`: Starts with the left most 16 points and works its way right to generate the cover using `S_repeated`.
+2. `solveS_reverse`: Starts with the right most 16 points and works its way left to generate the cover using `S_repeated_reverse`.
+3. `solveS_center1`: Starts with the center 16 points in each layer then uses `S_repeated` on the right half of data and `S_repeated_reverse` on left half of data.
+4. `solveS_center2` Starts with a superpoint containing the 8 points to the left and right of 0 in each layer then uses `S_repeated` on the right half of data and `S_repeated_reverse` on left half of data.
+5. `SolveQ`: Starts at Q1 and Q3 by x value and runs `solveS_center2` starting at those points and ending at the center

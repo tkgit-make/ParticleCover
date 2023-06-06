@@ -11,11 +11,14 @@ import glob
 env = Environment()
 data = DataSet(env, n_points=150) 
 cover = Cover(env, data)
-#cover.solveS_center2(center = -0.5, stop = 'center')
-cover.solveQ()
+#cover.solveS_center2(center = 1)
+cover.solve(clustering='', lining='solveQ', nlines=100)
+#cover.solveS_center1()
 cover.plot(data=True, lines=True, patches=True)
-acceptSlopePlot(clustering='', lining='solveQ')
-#acceptSlopePlot(clustering='', lining='solveQ', ideal = True)
+#acceptSlopePlot(clustering='', lining='solveQ', savefig=True)
+#numCovers(clustering='', lining='solveQ', savefig=True)
+#pointRepetitionFactor(clustering='', lining='solveQ', savefig=True)
+#pointRepetitionFactor(clustering='', lining='solveQ', ideal = True, savefig=True)
 #numCovers(clustering='', lining='solveQ')
 final = cover.patches
 

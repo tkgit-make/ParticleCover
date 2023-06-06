@@ -435,8 +435,10 @@ class Cover():
             #otherwise pick 16 points starting from the closest_index-1
             else:
                 patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-1:closest_index+15]))
-            if np.any(patch_ingredients[i].points >= stop_value):
+
+            if np.any(patch_ingredients[i].points > stop_value):
                 stop_count += 1
+
         #generate new patch from those new superpoints   
         new_patch = Patch(self.env, tuple(patch_ingredients))
         #check if the new patch is the same as the last patch; if so, terminate
@@ -497,8 +499,10 @@ class Cover():
             #otherwise pick 16 points starting from the closest_index-1
             else:
                 patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-14:closest_index+2]))
-            if np.any(patch_ingredients[i].points <= stop_value):
+
+            if np.any(patch_ingredients[i].points < stop_value):
                 stop_count += 1
+
         #generate new patch from those new superpoints   
         new_patch = Patch(self.env, tuple(patch_ingredients))
         #check if the new patch is the same as the last patch; if so, terminate
