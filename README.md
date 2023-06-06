@@ -63,12 +63,12 @@ This constructor actually will check that the `sp_array` contains `env.layers` s
 patch.contains(line) 
 # returns true if patch contains line 
 ``` 
-Remember previously that a line can be characterized by the `env.layers`=$5$ points lying on each layer. We can describe a line as 
+Remember previously that a line can be characterized by the `env.layers`= $5$ points lying on each layer. We can describe a line as 
 $$l = [l_1, l_2, l_3, l_4, l_5]$$ 
 with $l_i$ is the float value on the $i$th layer. We can also characterize a patch as a 5-tuple of superpoints, which are essentially closed intervals. 
 $$P = ([\min{S_1}, \max{S_1}], [\min{S_2}, \max{S_2}], [\min{S_3}, \max{S_3}], [\min{S_4}, \max{S_4}], [\min{S_5}, \max{S_5}])$$ 
 Therefore, the contains method $\mathcal{C}$ determines whether $l \in P$ by determining whether $l_i \in [\min{S_i}, \max{S_i}]$ for $i \in [5]$. That is 
-$$\mathcal{C}(P, l) \coloneqq \begin{cases} 
+ $$\mathcal{C}(P, l) \coloneqq \begin{cases} 
 \text{True} & \text{ if } l_i \in [\min{S_i}, \max{S_i}] \text{ for } i \in [5] \\
 \text{False} & \text{ if else }
 \end{cases}$$
@@ -128,7 +128,7 @@ The `solveS` method for the `Cover` class generates a cover for a given set of d
 
     2. There are not enough points left for 16 new points ($m >= 150-16$.) The superpoint is then the rightmost 16 points in the layer. $$S_i = [D_{i,(150-16)}, D_{i,(150-15)}, ..., D_{i,150}]$$
 
-    3. The closest index is neither of the above cases. The superpoint starts at $m-1$ to ensure overlap then picks the next 15 points.$$S_i = [D_{i,(m-1)}, D_{i,(m)}, ..., D_{i,(m+15)}]$$
+    3. The closest index is neither of the above cases. The superpoint starts at $m-1$ to ensure overlap then picks the next 15 points. $$S_i = [D_{i,(m-1)}, D_{i,(m)}, ..., D_{i,(m+15)}]$$
     
     These superpoints are added to the list `patch_ingredients`.
     

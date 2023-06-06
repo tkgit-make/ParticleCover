@@ -11,26 +11,18 @@ import glob
 env = Environment()
 data = DataSet(env, n_points=150) 
 cover = Cover(env, data)
-#cover.solveS_center2(center = 1)
-cover.solve(clustering='', lining='solveQ', nlines=100)
-#cover.solveS_center1()
-cover.plot(data=True, lines=True, patches=True)
-#acceptSlopePlot(clustering='', lining='solveQ', savefig=True)
-#numCovers(clustering='', lining='solveQ', savefig=True)
-#pointRepetitionFactor(clustering='', lining='solveQ', savefig=True)
-#pointRepetitionFactor(clustering='', lining='solveQ', ideal = True, savefig=True)
-#numCovers(clustering='', lining='solveQ')
-final = cover.patches
 
-colorset = ['orange', 'k', 'b', 'r', 'y', 'm']
-shapeset = ['o', '^']
+#cover.solve(lining='solveQ_relaxed_end', nlines=100)
+#cover.solveS_center1()
+
+#cover.plot(data=True, lines=True, patches=True)
+
+acceptSlopePlot(lining='solveQ_relaxed_end', savefig = True)
+numCovers(lining='solveQ_relaxed_end', savefig=True)
+pointRepetitionFactor(lining='solveQ_relaxed_end', savefig=True)
+pointRepetitionFactor(lining='solveQ_relaxed_end', savefig=True)
+
+
+final = cover.patches
 #print(len(final), 'patches')
-'''
-for j in range(len(final)):
-    for i in range(5):
-    	points_to_plot = final[j].superpoints[i].points
-    	plt.scatter(points_to_plot, np.full_like(points_to_plot, (i+1)*5), s = 15, color = colorset[j%6], marker = shapeset[j%2])
-plt.xlim(-1.1, 1.1)
-plt.ylim(0, 26)
-plt.show()
-'''
+#print(cover.n_patches)

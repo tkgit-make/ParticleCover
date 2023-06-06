@@ -8,7 +8,7 @@ import time
 # linings - "LeftRight", "CenterGrid", "CenterSpread", "Randomized"
 
 
-def numCovers(clustering:str, lining:str, events=1000, savefig=False, ideal=False): 
+def numCovers(clustering:str = "", lining:str = "solveS", events=1000, savefig=False, ideal=False): 
     # Runs a bunch of iterations by generating 1000 datasets and 
     # computing the cover. Then, it just looks at how many covers is
     # being generated for each dataset. The lower the distribution the better. 
@@ -44,7 +44,7 @@ def numCovers(clustering:str, lining:str, events=1000, savefig=False, ideal=Fals
             plt.savefig(f"Figures/nPatches_({clustering}_{lining})")
     plt.show() 
     
-def acceptSlopePlot(clustering:str, lining:str, events=100, lines=1000, savefig=False, ideal=False):
+def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, lines=1000, savefig=False, ideal=False):
     
     percentage_accepted = [0 for _ in range(lines)] 
     
@@ -93,7 +93,7 @@ def acceptSlopePlot(clustering:str, lining:str, events=100, lines=1000, savefig=
             plt.savefig(f"Figures/Acceptance_Rate_({clustering}_{lining})")
     plt.show() 
             
-def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False, ideal=False): 
+def pointRepetitionFactor(clustering:str = "", lining:str = "solveS", events=10, savefig=False, ideal=False): 
     # for every event, we loop through all the points in the dataset and compute 
     # how many patches contain that point. The lower in general the better, since 
     # this is a metric of non-wastefulness 
@@ -149,7 +149,7 @@ def pointRepetitionFactor(clustering:str, lining:str, events=10, savefig=False, 
             plt.savefig(f"Figures/Point_Repetition_Factor_({clustering}_{lining})")
     plt.show() 
     
-def idealData(clustering:str, lining:str): 
+def idealData(clustering:str = "", lining:str = "solveS"): 
     env = Environment()
     data = DataSet(env, n_points=150, equal_spacing=True) 
     cover = Cover(env, data) 
