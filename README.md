@@ -42,16 +42,16 @@ We define three things:
  - A **superpoint** $S$ is a collection of 16 consecutive points in one layer. 
 For further developers, I would recommend only adding extra attributes and methods to the `Patch` class. The cover itself should essentially be a collection of patches, no more, and a superpoint is something I've used for my personal algorithm. 
 
-####1. Superpoints
+#### 1. Superpoints
 A superpoint is characterized by the smallest interval of a layer that contains all 16 points. By abuse of notation, we can mathematically express it either a list of 16 numbers 
-$$ S = [s_1, s_2, \ldots, s_{16}] \text{ with } s_1 < s_2 < \ldots < s_{16}$$
+ $$ S = [s_1, s_2, \ldots, s_{16}] \text{ with } s_1 < s_2 < \ldots < s_{16}$$ 
 or as the closed interval between the minimum and maximum values 
-$$S = [s_1, s_{16}]$$
+ $$S = [s_1, s_{16}]$$ 
 If we would like to see if a float value $p$ is contained within a superpoint, then we can run the `contains(p)` method, which returns a boolean describing whether $p \in [s_1, s_{16}]$. This is the basic functionality of the superpoint. 
 
 #### 2. Patches
 A patch is simply a collection of 5 superpoints. They should all be from different layers, but this check (for computational reasons) have not been implemented. Given superpoints $S_1, \ldots, S_5$, a patch $P$ is mathematically expressed as 
-$$P = (S_1, S_2, S_3, S_4, S_5)$$ 
+ $$P = (S_1, S_2, S_3, S_4, S_5)$$
 Note that this is implemented as a tuple, since there should be no further mutation of this collection. We initialize a `Patch` object by inputting a tuple of superpoints objects and the underlying environment. 
 ```
 # assume the sp1,...,sp5 have been initialized 
