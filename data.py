@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 class Environment: 
     
-    def __init__(self, top_layer_lim = 1.0, bottom_layer_lim = 0.15, layers = 5, radii = 5.0): 
+    def __init__(self, top_layer_lim = 100, bottom_layer_lim = 15, layers = 5, radii = 5.0): 
         self.top_layer_lim = top_layer_lim
         self.bottom_layer_lim = bottom_layer_lim
         self.layers = layers 
@@ -42,9 +42,9 @@ class DataSet(Environment):
         plt.yticks(np.arange(0, max_height + 1, self.env.layers))
         
         if show_lines == True: 
-            plt.plot([0.15, 1.0], [0, max_height], c="r", alpha=0.5)
-            plt.plot([-0.15, 0.15], [0.0, 0.0], c="r", alpha=0.5)
-            plt.plot([-0.15, -1.0], [0, max_height], c="r", alpha=0.5)
+            plt.plot([15, 100], [0, max_height], c="r", alpha=0.5)
+            plt.plot([-15, 15], [0.0, 0.0], c="r", alpha=0.5)
+            plt.plot([-15, -100], [0, max_height], c="r", alpha=0.5)
         
         #plt.show()
        

@@ -23,7 +23,7 @@ class LineGenerator():
         self.env = env 
         self.start = start 
         
-        if not(-env.bottom_layer_lim < start < env.bottom_layer_lim): 
+        if not(-env.bottom_layer_lim <= start <= env.bottom_layer_lim): 
             raise Exception("Start point is out of range. ")
         
         max_height = env.radii * env.layers
@@ -42,14 +42,21 @@ class LineGenerator():
         theta = np.linspace(angle_ul, angle_ll, n) 
         
         slopes = np.tan(theta) 
+        return [Line(self.env, self.start, slope) for slope in slopes] 
+
+    def generateEvenGrid(self, n=100):
+
+        ycoor = 25
+        xcoor = np.linspace(-self.env.top_layer_lim, self.env.top_layer_lim, n)
         
+        slopes = ycoor/xcoor
         return [Line(self.env, self.start, slope) for slope in slopes] 
     
     def generateRandomLines(self, n=100): 
         
         angle_ll = math.atan(self.slope_ul)
         angle_ul = math.atan(self.slope_ll) + np.pi
-        # print(angle_ll, angle_ul) 
+        # print(angle_ll, angle_ul)
         
         theta = np.random.uniform(low=angle_ll, high=angle_ul, size=n) 
         
@@ -90,8 +97,7 @@ class LineGenerator():
         
         slopes = np.tan(angles)
         
-        return [Line(self.env, self.start, slope) for slope in slopes] 
-        
+        return [Line(self.env, self.start, slope) for slope in slopes]         
         
 class SuperPoint(): 
     
@@ -157,7 +163,7 @@ class Patch():
             
             plt.plot([sp.min, sp.max], [heights[i], heights[i]], c=color)
         
-        plt.xticks(np.arange(-self.env.top_layer_lim, self.env.top_layer_lim, 0.1))
+        plt.xticks(np.arange(-self.env.top_layer_lim, self.env.top_layer_lim, 10))
         plt.yticks(np.arange(0, max_height + 1, self.env.layers))
         # plt.show()
         
@@ -371,8 +377,7 @@ class Cover():
                 if contains == False: 
                     self.add_patch(pt)
 
-    '''
-    def solveS(self, stop = 1):
+    def solveS_old(self, stop = 1):
 
         init_patch = []
 
@@ -387,7 +392,7 @@ class Cover():
         self.S_repeated(stop)
         return
     
-    def solveS_reverse(self, stop = -1):
+    def solveS_reverse_old(self, stop = -1):
 
         init_patch = []
 
@@ -401,7 +406,6 @@ class Cover():
         #run main algorithm
         self.S_repeated_reverse(stop = stop)
         return
-    '''
         
     def S_repeated(self, stop = 1):
 
@@ -416,7 +420,7 @@ class Cover():
             last_patch = self.patches[loops].superpoints
 
             #finds the rescaled point for each layer
-            amin = last_patch[i].points[15]/(5*(i+1))
+            amin = last_patch[i].points[15]/((i+1)/20)
             mins.append(amin)
 
         #find the layer with the lowest re-scaled point value
@@ -424,18 +428,18 @@ class Cover():
         patch_ingredients = []
 
         #lowest re-scaled point value
-        min_value = last_patch[min_index].points[15]/(min_index+1)/5
+        min_value = last_patch[min_index].points[15]/(min_index+1)*20
 
         #loops through each layer again
         for i in range(5):
 
             #Goes through the re-scaled value of each layer and find the re-scaled value that is closest to min_value
-            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
 
             #picks the index of the stop value
             #stop_rescaled = stop*(0.85*(i+1)/5+0.15)
             #stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
-            stop_rescaled = stop*(i+1)/5
+            stop_rescaled = stop*(i+1)*20
             stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
             stop_value = self.data.array[i][stop_index]
 
@@ -481,7 +485,7 @@ class Cover():
             last_patch = self.patches[loops].superpoints
 
             #finds the rescaled point for each layer
-            amin = last_patch[i].points[0]/(5*(i+1))
+            amin = last_patch[i].points[0]/((i+1)/20)
             mins.append(amin)
 
         #find the layer with the lowest re-scaled point value
@@ -489,17 +493,17 @@ class Cover():
         patch_ingredients = []
 
         #lowest re-scaled point value
-        min_value = last_patch[min_index].points[0]/(min_index+1)/5
+        min_value = last_patch[min_index].points[0]/(min_index+1)*20
 
         #loops through each layer again
         for i in range(5):
 
             #Goes through the re-scaled value of each layer and find the re-scaled value that is closest to min_value
-            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
 
             #stop_rescaled = stop*(0.85*(i+1)/5+0.15)
             #stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
-            stop_rescaled = stop*(i+1)/5
+            stop_rescaled = stop*(i+1)*20
             stop_index = np.argmin(np.abs(self.data.array[i] - stop_rescaled))
             stop_value = self.data.array[i][stop_index]
 
@@ -532,6 +536,42 @@ class Cover():
             else:
                 return self.S_repeated_reverse(stop = stop)
 
+    def solveS(self, stop = 1):
+
+        init_patch = []
+
+        #pick first 16 points in each layer
+        for row in range(5):
+            start_index = np.argmin(np.abs(self.data.array[row] + (row+1)*20))
+            if start_index != 0:
+                start_index -= 1
+            init_patch.append(SuperPoint(self.data.array[row, start_index:start_index+16]))
+
+        #add to patch
+        self.add_patch(Patch(self.env, tuple(init_patch)))
+
+        #run main algorithm
+        self.S_loop_improved(stop = 1)
+        return
+
+    def solveS_reverse(self, stop = -1):
+
+        init_patch = []
+
+        #pick first 16 points in each layer
+        for row in range(5):
+            start_index = np.argmin(np.abs(self.data.array[row] - (row+1)*20))
+            if start_index != 149:
+                start_index += 1
+            init_patch.append(SuperPoint(self.data.array[row, start_index-15:start_index+1]))
+
+        #add to patch
+        self.add_patch(Patch(self.env, tuple(init_patch)))
+
+        #run main algorithm
+        self.S_rloop_improved(stop = -1)
+        return
+
     def solveS_center1(self):
         init_patch = []
 
@@ -554,7 +594,7 @@ class Cover():
 
         #pick center 16 points based on 
         for row in range(5):
-            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)/5))
+            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)*20))
             init_patch.append(SuperPoint(self.data.array[row, center_index-8:center_index+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -599,7 +639,7 @@ class Cover():
 
         #pick center 16 points based on 
         for row in range(5):
-            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)/5))
+            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)*20))
             init_patch.append(SuperPoint(self.data.array[row, center_index-8:center_index+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -645,7 +685,7 @@ class Cover():
 
         #pick center 16 points based on 
         for row in range(5):
-            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)/5))
+            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)*20))
             init_patch.append(SuperPoint(self.data.array[row, center_index-8:center_index+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -679,12 +719,13 @@ class Cover():
             del self.patches[n_patch_start-1]
             self.n_patches = self.n_patches - 1
             return
+
     def solveS_relaxed_both(self, center = 0, stop = 'none'):
         init_patch = []
 
         #pick center 16 points based on 
         for row in range(5):
-            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)/5))
+            center_index = np.argmin(np.abs(self.data.array[row] - center*(row+1)*20))
             init_patch.append(SuperPoint(self.data.array[row, center_index-8:center_index+8]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -705,6 +746,7 @@ class Cover():
                 n_patch_start = self.n_patches
                 self.S_relaxed_gap()
                 del self.patches[self.n_patches-1]
+                self.n_patches = self.n_patches - 1
                 self.add_patch(Patch(self.env, tuple(init_patch)))
                 self.S_reverse_relaxed_gap(stop = 0)
                 del self.patches[n_patch_start-1]
@@ -712,11 +754,11 @@ class Cover():
                 return
         else:
 
-            #run main algorithm
             n_patch_start = self.n_patches
             self.S_relaxed_gap()
             del self.patches[self.n_patches-1]
             self.add_patch(Patch(self.env, tuple(init_patch)))
+            self.n_patches = self.n_patches - 1
             self.S_reverse_relaxed_gap()
             del self.patches[n_patch_start-1]
             self.n_patches = self.n_patches - 2
@@ -732,32 +774,50 @@ class Cover():
         self.solveS_relaxed_gap(center = -0.5, stop = 'center') 
         self.solveS_relaxed_gap(center = 0.5, stop = 'center')
         return
-    def solveQ_relaxed_gap(self):
+
+    def solveQ_relaxed_both(self):
         self.solveS_relaxed_both(center = -0.5, stop = 'center') 
         self.solveS_relaxed_both(center = 0.5, stop = 'center')
+        return
+
+    def solveS15(self, shift = 0, stop = 1):
+
+        init_patch = []
+
+        #pick first 16 points in each layer
+        for row in range(5):
+            start_index = np.argmin(np.abs((self.data.array[row] - (((row+1)*(-100+shift)/20)+shift))))
+            if start_index != 0:
+                start_index -= 1
+            init_patch.append(SuperPoint(self.data.array[row, start_index:start_index+16]))
+
+        #add to patch
+        self.add_patch(Patch(self.env, tuple(init_patch)))
+
+        #run main algorithm
+        self.S_loop15(shift, stop)
         return
 
     def S_relaxed_gap(self, stop = 1):
 
         loops = self.n_patches - 1
         mins = []
-        stop_count = 0
 
         for i in range(5):
 
             last_patch = self.patches[loops].superpoints
 
-            amin = last_patch[i].points[15]/(5*(i+1))
+            amin = last_patch[i].points[15]/((i+1)/20)
             mins.append(amin)
 
         min_index = np.argmin(np.array(mins))
         patch_ingredients = []
 
-        min_value = last_patch[min_index].points[15]/(min_index+1)/5
+        min_value = last_patch[min_index].points[15]/((min_index+1)/20)
 
         for i in range(5):
 
-            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
 
             stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)/5))
             if stop_index != 149:
@@ -783,25 +843,24 @@ class Cover():
 
         loops = self.n_patches - 1
         mins = []
-        stop_count = 0
 
         for i in range(5):
 
             last_patch = self.patches[loops].superpoints
 
-            amin = last_patch[i].points[0]/(5*(i+1))
+            amin = last_patch[i].points[0]/((i+1)/20)
             mins.append(amin)
 
         min_index = np.argmax(np.array(mins))
         patch_ingredients = []
 
-        min_value = last_patch[min_index].points[0]/(min_index+1)/5
+        min_value = last_patch[min_index].points[0]/((min_index+1)/20)
 
         for i in range(5):
 
-            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
 
-            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)/5))
+            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)*20))
             if stop_index != 0:
                 stop_index -= 1
             stop_value = self.data.array[i][stop_index]
@@ -825,25 +884,24 @@ class Cover():
         
         loops = self.n_patches - 1
         mins = []
-        stop_count = 0
 
         for i in range(5):
 
             last_patch = self.patches[loops].superpoints
 
-            amin = last_patch[i].points[15]/(5*(i+1))
+            amin = last_patch[i].points[15]/((i+1)/20)
             mins.append(amin)
 
         min_index = np.argmin(np.array(mins))
         patch_ingredients = []
 
-        min_value = last_patch[min_index].points[15]/(min_index+1)/5
+        min_value = last_patch[min_index].points[15]/((min_index+1)/20)
 
         for i in range(5):
 
-            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
 
-            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)/5))
+            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)*20))
             if stop_index != 149:
                 stop_index += 1
             stop_value = self.data.array[i][stop_index]
@@ -867,25 +925,24 @@ class Cover():
 
         loops = self.n_patches - 1
         mins = []
-        stop_count = 0
 
         for i in range(5):
 
             last_patch = self.patches[loops].superpoints
 
-            amin = last_patch[i].points[0]/(5*(i+1))
+            amin = last_patch[i].points[0]/((i+1)/20)
             mins.append(amin)
 
         min_index = np.argmax(np.array(mins))
         patch_ingredients = []
 
-        min_value = last_patch[min_index].points[0]/(min_index+1)/5
+        min_value = last_patch[min_index].points[0]/((min_index+1)/20)
 
         for i in range(5):
 
-            closest_index = np.argmin(np.abs(self.data.array[i]/(5*(i+1)) - min_value))
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
 
-            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)/5))
+            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)*20))
             if stop_index != 0:
                 stop_index -= 1
             stop_value = self.data.array[i][stop_index]
@@ -905,50 +962,106 @@ class Cover():
             self.add_patch(new_patch)
             return self.S_rloop_improved(stop)
 
-    def solveS(self, stop = 1):
+    def S_loop15(self, shift = '0', stop = 1):
+        
+        loops = self.n_patches - 1
+        mins = []
+        max_slope = 100 - shift
 
-        init_patch = []
+        for i in range(5):
 
-        #pick first 16 points in each layer
-        for row in range(5):
-            start_index = np.argmin(np.abs(self.data.array[row] + (row+1)/5))
-            if start_index != 0:
-                start_index -= 1
-            init_patch.append(SuperPoint(self.data.array[row, start_index:start_index+16]))
+            last_patch = self.patches[loops].superpoints
 
-        #add to patch
-        self.add_patch(Patch(self.env, tuple(init_patch)))
+            amin = (last_patch[i].points[15]-shift)/((i+1)/20)
+            mins.append(amin)
 
-        #run main algorithm
-        self.S_loop_improved(stop = 1)
-        return
+        min_index = np.argmin(np.array(mins))
+        patch_ingredients = []
 
-    def solveS_reverse(self, stop = -1):
+        min_value = (last_patch[min_index].points[15]-shift)/((min_index+1)/20)
 
-        init_patch = []
+        for i in range(5):
 
-        #pick first 16 points in each layer
-        for row in range(5):
-            start_index = np.argmin(np.abs(self.data.array[row] - (row+1)/5))
-            if start_index != 149:
-                start_index += 1
-            init_patch.append(SuperPoint(self.data.array[row, start_index-15:start_index+1]))
+            closest_index = np.argmin(np.abs((self.data.array[i]-shift)/((i+1)/20) - min_value))
 
-        #add to patch
-        self.add_patch(Patch(self.env, tuple(init_patch)))
+            stop_index = np.argmin(np.abs((self.data.array[i] - stop*(((i+1)*max_slope*20)+shift))))
+            if stop_index != 149:
+                stop_index += 1
+            stop_value = self.data.array[i][stop_index]
 
-        #run main algorithm
-        self.S_rloop_improved(stop = -1)
-        return
+            if closest_index > stop_index - 15:
+                patch_ingredients.append(SuperPoint(self.data.array[i, stop_index-15:stop_index+1]))
+            
+            else:
+                patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-1:closest_index+15]))
 
-    def solve(self, clustering:str = "", lining:str = "SolveS", nlines:int=100): 
-        lGen = LineGenerator(self.env, 0.0)
-        self.fitting_lines = lGen.generateGridLines(nlines)
+        new_patch = Patch(self.env, tuple(patch_ingredients))
+
+        if np.array_equal(new_patch.superpoints, last_patch):
+            return
+
+        else:
+            self.add_patch(new_patch)
+            return self.S_loop15(shift, stop)
+
+    def S_rloop15(self, stop = -1):
+        #NOT WRITTEN YET
+
+        loops = self.n_patches - 1
+        mins = []
+        stop_count = 0
+
+        for i in range(5):
+
+            last_patch = self.patches[loops].superpoints
+
+            amin = last_patch[i].points[0]/((i+1)/20)
+            mins.append(amin)
+
+        min_index = np.argmax(np.array(mins))
+        patch_ingredients = []
+
+        min_value = last_patch[min_index].points[0]/(min_index+1)*20
+
+        for i in range(5):
+
+            closest_index = np.argmin(np.abs(self.data.array[i]/((i+1)/20) - min_value))
+
+            stop_index = np.argmin(np.abs(self.data.array[i] - stop*(i+1)*20))
+            if stop_index != 0:
+                stop_index -= 1
+            stop_value = self.data.array[i][stop_index]
+
+            if closest_index < stop_index + 15:
+                patch_ingredients.append(SuperPoint(self.data.array[i, stop_index:stop_index+16]))
+            
+            else:
+                patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-14:closest_index+2]))
+
+        new_patch = Patch(self.env, tuple(patch_ingredients))
+
+        if np.array_equal(new_patch.superpoints, last_patch):
+            return
+
+        else:
+            self.add_patch(new_patch)
+            return self.S_rloop_improved(stop)         
+
+    def solve(self, clustering:str = "", lining:str = "SolveS", z0=0, nlines:int=100): 
+        lGen = LineGenerator(self.env, 0)
+        #self.fitting_lines = lGen.generateGridLines(nlines)
+        self.fitting_lines = lGen.generateEvenGrid(nlines)
         if lining == "solveS": 
             self.solveS() 
             return 
-        if lining == "solveS_reverse":
+        elif lining == "solveS_reverse":
             self.solveS_reverse()
+            return
+        elif lining == "solveS_old": 
+            self.solveS_old() 
+            return 
+        elif lining == "solveS_reverse_old":
+            self.solveS_reverse_old()
             return
         elif lining == "solveS_center1": 
             self.solveS_center1()
@@ -977,6 +1090,9 @@ class Cover():
         elif lining == "solveQ_relaxed_both":
             self.solveQ_relaxed_both()
             return
+        elif lining =="solveS15":
+            self.solveS15(z0, 1)
+            return
         
         if clustering == "LeftRight": 
             self.cluster("LR") 
@@ -1000,7 +1116,7 @@ class Cover():
         
         if self.n_patches == 0: 
             raise Exception("You must run the solve method first to generate the patches. ")
-        
+
         if patches == False: 
             if lines == False and data == False: 
                 pass 
@@ -1016,7 +1132,7 @@ class Cover():
                 for line in self.fitting_lines: 
                     line.plot('r') 
                 plt.show() 
-                
+            
         elif patches == True: 
             
             if lines == False and data == False: 
@@ -1059,6 +1175,7 @@ class Cover():
                     plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
                     plt.clf() 
                     name += 1 
+   
                 
                         
             image_files = glob.glob("temp_image_dir/*.png")

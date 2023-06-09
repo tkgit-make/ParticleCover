@@ -43,6 +43,55 @@ def numCovers(clustering:str = "", lining:str = "solveS", events=1000, savefig=F
         else:
             plt.savefig(f"Figures/nPatches_({clustering}_{lining})")
     plt.show() 
+
+def acceptSlopePlotL(clustering:str = "", lining:str = "solveS", events=100, lines=1000, savefig=False, ideal=False):
+    
+    percentage_accepted = [0 for _ in range(lines)] 
+    
+    
+    for k in range(events): 
+        env = Environment()
+        if ideal == True:
+            data = DataSet(env, n_points=150, equal_spacing = True)
+        else:
+            data = DataSet(env, n_points=150)
+        cover = Cover(env, data) 
+        cover.solve(clustering=clustering, lining=lining, nlines=100)
+        
+        lg = LineGenerator(env, -15)
+        test_lines = lg.generateGridLines(lines)
+        co_tan = []
+        
+        
+        for i in range(len(test_lines)): 
+            color = "r"
+            co_tan.append(100/test_lines[i].slope)
+            for patch in cover.patches: 
+                if patch.contains(test_lines[i]): 
+                    color="g"
+                    percentage_accepted[i] += 1 
+                    break 
+            
+            if color == "r": 
+                
+                # print(i)
+                pass
+
+    percentage_accepted = [x / events for x in percentage_accepted]
+    mean_accept = format(np.mean(percentage_accepted), ".3f")
+    plt.plot(co_tan, percentage_accepted, c="b", label = "Mean acceptance: "+mean_accept)
+    print(f"({clustering}, {lining}) - {mean_accept}")
+    
+    plt.title(f"Acceptance Rate ({clustering}, {lining})", fontsize = '20')
+    plt.xlabel("dZ/dr", fontsize = '16')
+    plt.ylabel("Acceptance Probability", fontsize = '16')
+    plt.legend(fontsize = '16')
+    if savefig == True: 
+        if ideal == True:
+            plt.savefig(f"Figures/Acceptance_Rate_({clustering}_{lining}_ideal)")
+        else:
+            plt.savefig(f"Figures/Acceptance_Rate_({clustering}_{lining})")
+    plt.show() 
     
 def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, lines=1000, savefig=False, ideal=False):
     
@@ -59,7 +108,7 @@ def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, line
         cover.solve(clustering=clustering, lining=lining, nlines=100)
         
         lg = LineGenerator(env, 0.0)
-        test_lines = lg.generateGridLines(lines)
+        test_lines = lg.generateEvenGrid(lines)
         co_tan = []
         
         
