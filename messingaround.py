@@ -13,12 +13,18 @@ data = DataSet(env, n_points=150, equal_spacing = False)
 cover = Cover(env, data)
 #data.plot()
 
-cover.solve(lining='solveS', nlines=100, z0 = 0)
+#cover.solve(lining='solveS_relaxed_both', nlines=100, z0 = -15)
+#cover.solve(lining='solveS_center2', nlines=100, z0 = -15)
+#cover.plot(data=True, lines=True, patches=True)
+'''
+lGen = LineGenerator(env, -15)
+fitting_lines = lGen.generateEvenGrid(100)
+for line in fitting_lines:
+    line.plot('r')
 
-cover.plot(data=True, lines=True, patches=True)
-
-
-
+plt.ylim(-5, 30)
+plt.show()
+'''
 def all_test(lining, ideal = False):
 
     acceptSlopePlot(lining=lining, savefig = True, ideal = ideal)
@@ -26,13 +32,12 @@ def all_test(lining, ideal = False):
     pointRepetitionFactor(lining=lining, savefig = True, ideal = ideal)
 
 
+#duplicates('solveQ_relaxed_end', z0 = [-10, 0, 10], events = 1000)
+fourTests(lining = 'solveQ_relaxed_both', solve_at = [-10, 0, 10], z0 = np.arange(-15, 15.5, 0.5), savefig = True)
 #all_test('solveS', False)
-#acceptSlopePlotL(lining = 'solveS_center2')
-#pointRepetitionFactor(lining='solveS_relaxed_end', ideal = True, savefig=True)
-#pointRepetitionFactor(lining='solveQ_relaxed_end', ideal = True, savefig=True)
-#pointRepetitionFactor(lining='solveS_relaxed_gaps', ideal = True, savefig=True)
 
 
-final = cover.patches
-print(len(final), 'patches')
+
+#final = cover.patches
+#print(len(final), 'patches')
 #print(cover.n_patches)
