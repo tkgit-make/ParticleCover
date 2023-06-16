@@ -30,7 +30,7 @@ class DataSet(Environment):
             self.array = array * limits[:, None] 
 
     def input_data(self, wedge):
-        
+        pass
             
         
     def plot(self, show_lines = False): 
