@@ -44,7 +44,7 @@ def numCovers(clustering:str = "", lining:str = "solveS", events=1000, savefig=F
             plt.savefig(f"Figures/nPatches_({clustering}_{lining})")
     plt.show() 
 
-def fourTests(clustering:str = "", lining:str = "solveS", solve_at = 0, z0 = 0, events=100, lines=1000, savefig=False, ideal=False):
+def fourTests(clustering:str = "", lining:str = "solveS", solve_at = 0, z0 = 0, n = 16, events=100, lines=1000, savefig=False, ideal=False):
     mean_list = []
     num_covers = [] 
     for z in np.array(z0):
@@ -57,7 +57,7 @@ def fourTests(clustering:str = "", lining:str = "solveS", solve_at = 0, z0 = 0, 
             else:
                 data = DataSet(env, n_points=150)
             cover = Cover(env, data)
-            cover.solve(clustering=clustering, z0 = solve_at, lining=lining, show = False)
+            cover.solve(clustering=clustering, z0 = solve_at, lining=lining, n = n, show = False)
             num_covers.append(cover.n_patches)
             
             lg = LineGenerator(env, z)
@@ -80,16 +80,16 @@ def fourTests(clustering:str = "", lining:str = "solveS", solve_at = 0, z0 = 0, 
     plt.plot(z0, mean_list, color = 'k')
     plt.xlabel('z0 offset [cm]', fontsize = 16)
     plt.ylabel('Acceptance Rate',  fontsize = 16)
-    plt.ylim(-0.1, 1.1)
+    plt.ylim(0, 1.0)
     plt.title(f'z0 Offset vs Acceptance Rate for {lining}', fontsize = 16)
-    PRF = pointRepetitionFactor(lining = lining, ideal = ideal, z0 = solve_at, show = False)
+    PRF = pointRepetitionFactor(lining = lining, ideal = ideal, z0 = solve_at, n = n, show = False)
     plt.legend([f"""Number of Patches: {mean_num}+-{std_num}\nPoint Reptition Factor: {PRF[0]}+-{PRF[1]}\nPatches generated at z0 = {solve_at}"""],
         loc = 8, fontsize = 12)
     if savefig == True: 
         if ideal == True:
             plt.savefig(f"Figures/Accept_vs_z0_({lining}_ideal)")
         else:
-            plt.savefig(f"Figures/Accept_vs_z0_({lining}_10)")
+            plt.savefig(f"Figures/Accept_vs_z0_({lining}_10_n{n})")
     plt.show()
     
     
@@ -142,7 +142,7 @@ def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, line
             plt.savefig(f"Figures/Acceptance_Rate_({clustering}_{lining})")
     plt.show() 
             
-def pointRepetitionFactor(clustering:str = "", lining:str = "solveS", z0 = 0, events=10, savefig=False, ideal=False, show = True): 
+def pointRepetitionFactor(clustering:str = "", lining:str = "solveS", z0 = 0, n = 16, events=10, savefig=False, ideal=False, show = True): 
     # for every event, we loop through all the points in the dataset and compute 
     # how many patches contain that point. The lower in general the better, since 
     # this is a metric of non-wastefulness 
@@ -157,7 +157,7 @@ def pointRepetitionFactor(clustering:str = "", lining:str = "solveS", z0 = 0, ev
         else:
             data = DataSet(env, n_points=150)
         cover = Cover(env, data) 
-        cover.solve(clustering=clustering, lining=lining, z0 = z0, nlines=100, show = False)
+        cover.solve(clustering=clustering, lining=lining, z0 = z0, n = n, nlines=100, show = False)
         
         out2 = [] 
         

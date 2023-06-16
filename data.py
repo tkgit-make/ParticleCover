@@ -28,6 +28,9 @@ class DataSet(Environment):
             col = np.ones(5)
             array, _ = np.meshgrid(pnts, col) 
             self.array = array * limits[:, None] 
+
+    def input_data(self, wedge):
+        
             
         
     def plot(self, show_lines = False): 
