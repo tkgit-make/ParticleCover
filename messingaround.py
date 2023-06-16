@@ -40,7 +40,7 @@ def all_test(lining, ideal = False):
 
 
 #duplicates('solveQ_relaxed_end', z0 = [-10, 0, 10], events = 1000)
-fourTests(lining = 'solveQ_relaxed_both', solve_at =  [-10, 0, 10], n = 32, z0 = np.arange(-15, 15.5, 0.5), savefig = True)
+#fourTests(lining = 'solveS_center2', solve_at =  [-10, 0, 10], n = 16, z0 = np.arange(-15, 15.5, 0.5), savefig = False)
 #all_test('solveS', False)
 
 #wedge_data = np.loadtxt('Wedged_Spacepoints.txt', max_rows=1, usecols = np.arange(1699)+1)
@@ -48,6 +48,7 @@ fourTests(lining = 'solveQ_relaxed_both', solve_at =  [-10, 0, 10], n = 32, z0 =
 #line = np.genfromtxt(r'Wedge_Data.txt', delimiter=',', max_rows = 1)
 
 file = open("Wedge_Data.txt", 'r')
+'''
 counter = np.zeros(5)
 for i, line in enumerate(file.readlines()):
     d = np.array(ast.literal_eval(line))
@@ -58,12 +59,38 @@ for i, line in enumerate(file.readlines()):
         break
 print(counter)
 print(counter/128)
-'''
-plt.scatter(d[:, 3],d[:, 1])
-plt.plot([15, np.max(d[:, 3])], [0, 25], 'r')
-plt.plot([-15, np.min(d[:, 3])], [0, 25], 'r')
-plt.ylim(-2, 27)
-plt.xlim(-200, 200)
 
-plt.show()
+file.readline()
+line = file.readline()
+d = np.array(ast.literal_eval(line))
+
+#plt.show()
+data.input_data(d)
+cover = Cover(env, data)
+cover.solve(lining = 'solveS_center2')
+cover.plot()
+acceptSlopePlot(events=1, custom = d)
 '''
+z0test = []
+count = []
+acc = []
+for i, line in enumerate(file.readlines()):
+    d = np.array(ast.literal_eval(line))
+    data.input_data(d)
+    cover = Cover(env, data)
+    cover.solve(lining = 'solveS_center2', z0 =[-7.5, 7.5], show = False)
+    count.append(cover.n_patches)
+    acc.append(acceptSlopePlot(events=1, custom = d, show = False))
+    for z0 in np.arange(-15, 15.5, 0.5):
+        z0test.append(acceptSlopePlot(events=1, custom = d, show = False, solve_at=[-7.5, 7.5], z0 = z0))
+    if i == 0:
+        break
+print(f'acc: {np.mean(acc)}')
+print(f'mean: {np.mean(count)}')
+plt.scatter(np.arange(-15, 15.5, 0.5), z0test, color = 'r')
+plt.plot(np.arange(-15, 15.5, 0.5), z0test, color = 'k')
+plt.xlabel('z0 offset [cm]', fontsize = 16)
+plt.ylabel('Acceptance Rate',  fontsize = 16)
+plt.ylim(0, 1.0)
+plt.title(f'z0 Offset vs Acceptance Rate for Wedge 1', fontsize = 16)
+plt.show()

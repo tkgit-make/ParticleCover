@@ -583,7 +583,7 @@ class Cover():
             start_index = np.argmin(np.abs(self.data.array[row] - (((-z0-100)*y)/25+z0)))
             if start_index != 0:
                 start_index -= 1
-            init_patch.append(SuperPoint(self.data.array[row, start_index:start_index+n]))
+            init_patch.append(SuperPoint(self.data.array[row][start_index:start_index+n]))
 
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -603,7 +603,7 @@ class Cover():
 
             if start_index != len(self.data.array[row])-1:
                 start_index += 1
-            init_patch.append(SuperPoint(self.data.array[row, start_index-n+1:start_index+1]))
+            init_patch.append(SuperPoint(self.data.array[row][start_index-n+1:start_index+1]))
 
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -676,12 +676,11 @@ class Cover():
         for row in range(5):
             y = 5*(row+1)
             center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
-            if (center_index -int(n/2)) < 0:
-                init_patch.append(SuperPoint(self.data.array[row, 0:n]))
-            elif (center_index +int(n/2)) > 150:
-                init_patch.append(SuperPoint(self.data.array[row, 150-n:150]))
-            else:
-                init_patch.append(SuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
+            if (center_index-int(n/2)) < 0:
+                center_index = int(n/2)
+            elif (center_index+int(n/2)) > len(self.data.array[row]):
+                center_index = center_index+int(n/2)-1
+            init_patch.append(SuperPoint(self.data.array[row][center_index-int(n/2):center_index+int(n/2)]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
 
@@ -729,8 +728,8 @@ class Cover():
             center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
             if (center_index-int(n/2)) < 0:
                 center_index = int(n/2)
-            elif (center_index+int(n/2)) > len(self.data.array[row]):
-                center_index = center_index+int(n/2)
+            elif (center_index+int(n/2))+1 > len(self.data.array[row]):
+                center_index = len(self.data.array[row])-int(n/2)
             init_patch.append(SuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
         #add to patch
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -779,8 +778,8 @@ class Cover():
             center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
             if (center_index-int(n/2)) < 0:
                 center_index = int(n/2)
-            elif (center_index+int(n/2)) > len(self.data.array[row]):
-                center_index = center_index+int(n/2)
+            elif (center_index+int(n/2))+1 > len(self.data.array[row]):
+                center_index = len(self.data.array[row])-int(n/2)
             init_patch.append(SuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
 
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -823,8 +822,8 @@ class Cover():
             center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
             if (center_index-int(n/2)) < 0:
                 center_index = int(n/2)
-            elif (center_index+int(n/2)) > len(self.data.array[row]):
-                center_index = center_index+int(n/2)
+            elif (center_index+int(n/2))+1 > len(self.data.array[row]):
+                center_index = len(self.data.array[row])-int(n/2)
             init_patch.append(SuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
 
         self.add_patch(Patch(self.env, tuple(init_patch)))
@@ -905,11 +904,14 @@ class Cover():
                 stop_index += 1
             stop_value = self.data.array[i][stop_index]
 
-            if closest_index > stop_index - n +1:
-                patch_ingredients.append(SuperPoint(self.data.array[i, stop_index-n+1:stop_index+1]))
+            if closest_index > stop_index - n + 1:
+                if (stop_index - n +1) < 0:
+                    stop_index = n-1
+                patch_ingredients.append(SuperPoint(self.data.array[i][stop_index-n+1:stop_index+1]))
+
             
             else:
-                patch_ingredients.append(SuperPoint(self.data.array[i, closest_index:closest_index+n]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][closest_index:closest_index+n]))
 
         new_patch = Patch(self.env, tuple(patch_ingredients))
 
@@ -948,10 +950,12 @@ class Cover():
             stop_value = self.data.array[i][stop_index]
 
             if closest_index < stop_index + n - 1:
-                patch_ingredients.append(SuperPoint(self.data.array[i, stop_index:stop_index+n]))
+                if (stop_index + n) > len(self.data.array[i]):
+                    stop_index = int(len(self.data.array[i]) - stop_index-1)
+                patch_ingredients.append(SuperPoint(self.data.array[i][stop_index:stop_index+n]))
             
             else:
-                patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-n+1:closest_index+1]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-n+1:closest_index+1]))
 
         new_patch = Patch(self.env, tuple(patch_ingredients))
 
@@ -1071,14 +1075,10 @@ class Cover():
             stop_value = self.data.array[i][stop_index]
 
             if closest_index > stop_index - n + 1:
-                patch_ingredients.append(SuperPoint(self.data.array[i, stop_index-n + 1:stop_index+1]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][ stop_index-n+1:stop_index+1]))
             
             else:
-                try:
-                    patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-1:closest_index + n - 1]))
-                except:
-                    print(closest_index)
-                    patch_ingredients.append(SuperPoint(self.data.array[i, closest_index:closest_index+n]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-1:closest_index + n - 1]))
 
         new_patch = Patch(self.env, tuple(patch_ingredients))
 
@@ -1117,16 +1117,12 @@ class Cover():
             stop_value = self.data.array[i][stop_index]
 
             if closest_index < stop_index + n - 1:
-                try:
-                    patch_ingredients.append(SuperPoint(self.data.array[i, stop_index:stop_index+n]))
-                except:
-                    print(stop_index)
-                    break
+                if (stop_index + n) > len(self.data.array[i]):
+                    stop_index = int(len(self.data.array[i]) - stop_index-1)
+                patch_ingredients.append(SuperPoint(self.data.array[i][stop_index:stop_index+n]))
             else:
-                try:
-                    patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-n+2:closest_index+2]))
-                except:
-                    patch_ingredients.append(SuperPoint(self.data.array[i, closest_index-n+1:closest_index+1]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-n+2:closest_index+2]))
+
 
         new_patch = Patch(self.env, tuple(patch_ingredients))
 
@@ -1146,9 +1142,9 @@ class Cover():
         if lining =="solveS":
             try:
                 for s in z0:
-                    self.solveS(s, 1, n = n)
+                    self.solveS(z0=s, n = n)
             except:
-                self.solveS(z0, 1, n = n)
+                self.solveS(z0=z0, n = n)
             return
 
         elif lining =="solveS_reverse":

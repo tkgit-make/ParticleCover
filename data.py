@@ -30,15 +30,19 @@ class DataSet(Environment):
             self.array = array * limits[:, None] 
 
     def input_data(self, wedge):
-        pass
-            
-        
+        a = [[],[],[],[],[]]
+        for point in wedge:
+            a[int(point[0]-1)].append(point[3])
+        self.array = []
+        for i in range(5):
+            self.array.append(np.sort(np.array(a[i])))
+
     def plot(self, show_lines = False): 
         
         nums = np.arange(1, self.env.layers + 1)
         heights = self.env.layers * np.linspace(nums, nums, self.n_points).T
-        
-        plt.scatter(self.array, heights, c="g", s=2)
+        for r, x in enumerate(self.array):
+            plt.scatter(x, np.full_like(x, 5*(r+1)), c="g", s=2)
         
         max_height = heights[-1][-1]
         

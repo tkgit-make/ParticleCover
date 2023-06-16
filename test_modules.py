@@ -93,7 +93,7 @@ def fourTests(clustering:str = "", lining:str = "solveS", solve_at = 0, z0 = 0, 
     plt.show()
     
     
-def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, lines=1000, savefig=False, ideal=False):
+def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, lines=1000, z0= 0, solve_at=0, savefig=False, ideal=False, show = True, custom=''):
     
     percentage_accepted = [0 for _ in range(lines)] 
     
@@ -104,10 +104,12 @@ def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, line
             data = DataSet(env, n_points=150, equal_spacing = True)
         else:
             data = DataSet(env, n_points=150)
+        if '' not in custom:
+            data.input_data(custom)
         cover = Cover(env, data) 
-        cover.solve(clustering=clustering, lining=lining, nlines=100)
+        cover.solve(clustering=clustering, lining=lining, z0 = solve_at, show = False)
         
-        lg = LineGenerator(env, 0.0)
+        lg = LineGenerator(env, z0)
         test_lines = lg.generateEvenGrid(lines)
         co_tan = []
         
@@ -128,8 +130,12 @@ def acceptSlopePlot(clustering:str = "", lining:str = "solveS", events=100, line
 
     percentage_accepted = [x / events for x in percentage_accepted]
     mean_accept = format(np.mean(percentage_accepted), ".3f")
-    plt.plot(co_tan, percentage_accepted, c="b", label = "Mean acceptance: "+mean_accept)
+    
+    if show == False:
+        return np.mean(percentage_accepted)
+
     print(f"({clustering}, {lining}) - {mean_accept}")
+    plt.plot(co_tan, percentage_accepted, c="b", label = "Mean acceptance: "+mean_accept)
     
     plt.title(f"Acceptance Rate ({clustering}, {lining})", fontsize = '20')
     plt.xlabel("dZ/dr", fontsize = '16')
