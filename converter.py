@@ -1,8 +1,8 @@
 from wedgedata import WedgeData
-from eventdata import EventData
+from spaceptcollection import SpacePtCollection
 from data import Environment
 
-def convertToDataset(data:EventData):
+def convertToDataset(data:SpacePtCollection):
     layer_radius = data.spacePoints[1][0].radius
     n_points = [len(data.spacePoints[i+1]) for i in range(0, data.num_layers)]
 

@@ -1,4 +1,4 @@
-from eventdata import *
+from spaceptcollection import *
 
 import ast
 import time
@@ -11,7 +11,7 @@ def readFile(filepath):
         idx = 0
         for line in f:
             if line.strip():
-                event = EventData(idx)
+                event = SpacePtCollection(idx)
                 tuples = ast.literal_eval(line)
                 num_layer = 0
 

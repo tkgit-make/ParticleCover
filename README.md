@@ -15,7 +15,26 @@ Once we have generated the environment, we can generate a dataset by constructin
 ``` 
 data = DataSet(env, n_points = 150) 
 ```
-To access the data, we just need to call `data.array`, which gives us a $L \times N$ matrix $A$, where ($L$ is the number of layers and $N$ is the number of points in each layer). Furthermore, for each $i = 1, \ldots, L$, row $i$ is already sorted in its points from least to greatest. Plotting it usig the `plot` method should give a shape that approximately looks like an inverted symmetric trapezoid. 
+To access the data, we just need to call `data.array`, which gives us a $L \times N$ matrix $A$, where ($L$ is the number of layers and $N$ is the number of points in each layer). Furthermore, for each $i = 1, \ldots, L$, row $i$ is already sorted in its points from least to greatest. Plotting it usig the `plot` method should give a shape that approximately looks like an inverted symmetric trapezoid.
+
+## Using Realistic Versions of Collider Data
+
+The `DataSet` object assumes that the data points are generated from uniform distribution. Hence it may be possible that such data may not holistically represent the data actually generated from the collider. To use realistic versions of collider data, we can simply read in the data file given in .txt format using `readFile` function in reader.py module.
+
+`readFile` reads in the given data file line by line, where each line represents a spacepoint collection that can be used as an input data for our algorithms. As every line represents tuples separated by a comma, `readFile` stores the information in every tuple as an instance of class `SpacePoint` and appends all of the `SpacePoint` objects into an instance of class `SpacePtCollection`. In the end, `readFile` function would return a list of `SpacePtCollection` objects.
+
+Then, one can use the converter function `convertToDataset` in converter.py module to convert each `SpacePtCollection` object into an instance of class `WedgeData`, which can be found in wedgedata.py module. `WedgeData` is a subclass of class `DataSet`, thus inheriting its attributes. Yet `WedgeData` class differs from `DataSet` in that the number of points for each layer vary instead of being the same. Hence the attribute `n_points` is a list with the dimensions $L \times 1$, with each element representing the number of points in the corresponding layer. Moreover, the attribute `array` is a nested list of `SpacePoint` objects, with the shape being $(L, )$. The shape being described in this way can be ascribed to the fact that each layer may have different number of points, so `array` may not be a $L \times N$ matrix, which is the case for our `DataSet` object. Essentially, `convertToDataset` function returns a `WedgeData` object that can be directly inputted into our algorithms.
+
+Here is an example of how `readFile` and `convertToDataSet` functions can be used to read in a wedge data file and be converted to be applicable for use with our algorithms:
+```
+from reader import readFile                 # Import readFile function
+from converter import convertToDataset      # Import convertToDataset function
+
+wedges = readFile("Wedge_Data.txt")         # readFile reads Wedge_Data.txt, stores into a list of SpacePtCollection objects
+
+firstWedge = convertToDataset(wedges[0])    # Converts the first element in wedges into a WedgeData object
+firstWedge.plot(show_lines = True)          # Plots the converted first wedge data in a r vs. z plot
+```
 
 ## Point and Line Objects 
 A line can be characterized by two things: a point $(x_0, y_0)$ on the line and its slope $m$. It is clear that $y_0$, the height, should be $0$, but the $x_0$ may vary (by default we set $x_0 = 0$). Therefore, a line should have two parameters: the $x_0$ value of its originating point and the slope $m$. We can construct it by calling: 

@@ -13,7 +13,7 @@ class SpacePoint:
         self.phi = phi
         self.z = z
 
-class EventData:
+class SpacePtCollection:
     def __init__(self, event_num):
         self.event_num = event_num
         self.spacePoints = dict()
