@@ -8,7 +8,7 @@ class WedgeData(DataSet):
         self.n_points = n_points
         self.array = data_arr # data_arr: nested list of respective SpacePoints per layer for self.env.layers
     
-    def plot(self, show_lines = False):
+    def plot(self, show_lines = False, show = True):
         z_arr = [pt.z for pt in np.hstack(self.array)]
         r_arr = np.array([])
 
@@ -24,5 +24,5 @@ class WedgeData(DataSet):
             plt.plot([self.env.bottom_layer_lim, self.env.top_layer_lim], [0, max_radius], c="r", alpha=0.5)
             plt.plot([-self.env.bottom_layer_lim, self.env.bottom_layer_lim], [0.0, 0.0], c="r", alpha=0.5)
             plt.plot([-self.env.bottom_layer_lim, -self.env.top_layer_lim], [0, max_radius], c="r", alpha=0.5)
-        
-        plt.show()
+        if show == True:
+            plt.show()

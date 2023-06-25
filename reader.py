@@ -3,7 +3,7 @@ from spaceptcollection import *
 import ast
 import time
 
-def readFile(filepath):
+def readFile(filepath, stop = 128):
     events = []
 
     start = time.time()
@@ -23,6 +23,8 @@ def readFile(filepath):
                 event.retrieveNumLayer(num_layer)
                 events.append(event)
                 idx += 1
+            if idx == stop:
+                return events
     # print(f"Time Taken:{time.time() - start}")
 
     return events

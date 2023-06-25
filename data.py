@@ -29,8 +29,12 @@ class DataSet(Environment):
             array, _ = np.meshgrid(pnts, col) 
             self.array = array * limits[:, None] 
 
-    def input_data(self, wedge):
-        a = [[],[],[],[],[]]
+    def input_data(self, wedge, add = False):
+        if add == True:
+            #a = [[-33, 33],[-50, 50],[-67, 67],[-84, 84],[-101, 101]]
+            a = [[-32.1, 32.1],[-49.1, 49.1],[-66.1, 66.1],[-83.1, 83.1],[-100.1, 100.1]]
+        if add == False:
+            a = [[],[],[],[],[]]
         for point in wedge:
             a[int(point[0]-1)].append(point[3])
         self.array = []
