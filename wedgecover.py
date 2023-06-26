@@ -21,11 +21,16 @@ class wedgeSuperPoint():
         self.min = np.min(z_list) 
         self.max = np.max(z_list)
         
-    def contains(self, p:float): 
+    def contains(self, p): 
+        try:
+             p = p.z
+        except:
+            p = p
         return self.min <= p <= self.max
     
     def __eq__(self, other): 
         return (self.min, self.max) == (other.min, other.max)
+
 class wedgePatch(): 
     
     # Should be hashable (nvm we can't make it hashable) 
@@ -271,7 +276,7 @@ class wedgeCover():
 
             if closest_index < stop_index + n - 1:
                 if (stop_index + n) > len(self.data.array[i]):
-                    stop_index = int(len(self.data.array[i]) - stop_index-1)
+                    stop_index = int(len(self.data.array[i]) - n)
                 patch_ingredients.append(wedgeSuperPoint(row_data[i][stop_index:stop_index+n]))
             else:
                 patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-n+2:closest_index+2]))
@@ -380,253 +385,6 @@ class wedgeCover():
         self.solveS_center2(center = -50, stop = 'center', z0 = z0, n = n) 
         self.solveS_center2(center = 50, stop = 'center', z0 = z0, n = n)
         return
-
-    def solveS_relaxed_end(self, center = 0, z0 = 0, stop = 'none', n = 16):
-        init_patch = []
-
-        #pick center 16 points based on 
-        for row in range(5):
-            y = 5*(row+1)
-            center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
-            if (center_index-int(n/2)) < 0:
-                center_index = int(n/2)
-            elif (center_index+int(n/2))+1 > len(self.data.array[row]):
-                center_index = len(self.data.array[row])-int(n/2)
-            init_patch.append(wedgeSuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
-        #add to patch
-        self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-
-        if stop == 'center':
-            # starts left of center
-            if center < 0:
-                n_patch_start = self.n_patches
-                self.S_loop15(z0 = z0, stop = 0, n = n)
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-                self.S_rloop15(z0 = z0, n = n)
-                del self.patches[n_patch_start-1]
-                self.n_patches = self.n_patches - 2
-                del self.patches[self.n_patches]
-                return
-            #starts right of center
-            if center > 0:
-                n_patch_start = self.n_patches
-                self.S_loop15(z0 = z0, n = n)
-                del self.patches[self.n_patches-1]
-                self.n_patches = self.n_patches - 1
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-                self.S_rloop15(z0 = z0, stop = 0, n = n)
-                del self.patches[n_patch_start-1]
-                self.n_patches = self.n_patches - 1 
-                return
-        else:
-
-            #run main algorithm
-            n_patch_start = self.n_patches
-            self.S_loop15(z0 = z0, n = n)
-            del self.patches[self.n_patches-1]
-            self.n_patches = self.n_patches - 1
-            self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-            self.S_rloop15(z0 = z0, n = n)
-            del self.patches[n_patch_start-1]
-            self.n_patches = self.n_patches - 2
-            del self.patches[self.n_patches]
-            return
-
-    def solveS_relaxed_gap(self, center = 0, z0 = 0, stop = 'none', n = 16):
-        init_patch = []
-
-        for row in range(5):
-            y = 5*(row+1)
-            center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
-            if (center_index-int(n/2)) < 0:
-                center_index = int(n/2)
-            elif (center_index+int(n/2))+1 > len(self.data.array[row]):
-                center_index = len(self.data.array[row])-int(n/2)
-            init_patch.append(wedgeSuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
-
-        self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-
-        if stop == 'center':
-            # starts left of center
-            if center < 0:
-                n_patch_start = self.n_patches
-                self.S_relaxed_gap(z0 = z0, stop = 0, n = n)
-                self.add_patch(Patch(self.env, tuple(init_patch)))
-                self.S_reverse_relaxed_gap(z0 = z0, n = n)
-                del self.patches[n_patch_start-1]
-                self.n_patches = self.n_patches - 1
-                return
-            #starts right of center
-            if center > 0:
-                n_patch_start = self.n_patches
-                self.S_relaxed_gap(z0 = z0, n = n)
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-                self.S_reverse_relaxed_gap(z0 = z0, stop = 0, n = n)
-                del self.patches[n_patch_start-1]
-                self.n_patches = self.n_patches - 1
-                return
-        else:
-
-            #run main algorithm
-            n_patch_start = self.n_patches
-            self.S_relaxed_gap(z0 = z0, n = n)
-            self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-            self.S_reverse_relaxed_gap(z0 = z0, n = n)
-            del self.patches[n_patch_start-1]
-            self.n_patches = self.n_patches - 1
-            return
-
-    def solveS_relaxed_both(self, center = 0, z0 = 0, stop = 'none', n = 16):
-        init_patch = []
-
-        for row in range(5):
-            y = 5*(row+1)
-            center_index = np.argmin(np.abs(self.data.array[row] - ((y*(center-z0)/25)+z0)))
-            if (center_index-int(n/2)) < 0:
-                center_index = int(n/2)
-            elif (center_index+int(n/2))+1 > len(self.data.array[row]):
-                center_index = len(self.data.array[row])-int(n/2)
-            init_patch.append(wedgeSuperPoint(self.data.array[row, center_index-int(n/2):center_index+int(n/2)]))
-
-        self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-
-        if stop == 'center':
-            # starts left of center
-            if center < 0:
-                n_patch_start = self.n_patches
-                self.S_relaxed_gap(z0 = z0, stop = 0, n = n)
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-                self.S_reverse_relaxed_gap(z0 = z0, n = n)
-                del self.patches[n_patch_start-1]
-                self.n_patches = self.n_patches - 2
-                del self.patches[self.n_patches]
-                return
-            #starts right of center
-            if center > 0:
-                n_patch_start = self.n_patches
-                self.S_relaxed_gap(z0 = z0, n = n)
-                del self.patches[self.n_patches-1]
-                self.n_patches = self.n_patches - 1
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-                self.S_reverse_relaxed_gap(z0 = z0, stop = 0, n = n)
-                del self.patches[n_patch_start-1]
-                self.n_patches = self.n_patches - 1
-                return
-        else:
-
-            n_patch_start = self.n_patches
-            self.S_relaxed_gap(z0 = z0, n = n)
-            del self.patches[self.n_patches-1]
-            self.add_patch(wedgePatch(self.env, tuple(init_patch)))
-            self.n_patches = self.n_patches - 1
-            self.S_reverse_relaxed_gap(z0 = z0, n = n)
-            del self.patches[n_patch_start-1]
-            self.n_patches = self.n_patches - 2
-            del self.patches[self.n_patches]
-            return
-
-    def solveQ_relaxed_end(self, z0 = 0, n = 16):
-        self.solveS_relaxed_end(center = -50, z0 = z0, stop = 'center', n = n) 
-        self.solveS_relaxed_end(center = 50,  z0 = z0, stop = 'center', n = n)
-        return
-
-    def solveQ_relaxed_gap(self, z0 = 0, n = 16):
-        self.solveS_relaxed_gap(center = -50,  z0 = z0, stop = 'center', n = n) 
-        self.solveS_relaxed_gap(center = 50,  z0 = z0, stop = 'center', n = n)
-        return
-
-    def solveQ_relaxed_both(self,z0 = 0, n = 16):
-        self.solveS_relaxed_both(center = -50,  z0 = z0, stop = 'center', n = n) 
-        self.solveS_relaxed_both(center = 50,  z0 = z0, stop = 'center', n = n)
-        return
-
-    def S_relaxed_gap(self, z0 = 0, stop = 1, n = 16):
-        
-        loops = self.n_patches - 1
-        mins = []
-
-        for i in range(5):
-            y = 5*(i+1)
-            last_patch = self.patches[loops].superpoints
-
-            amin = (last_patch[i].points[n-1]-z0)/(y/100)
-            mins.append(amin)
-
-        min_index = np.argmin(np.array(mins))
-        patch_ingredients = []
-
-        min_value = (last_patch[min_index].points[n-1]-z0)/((min_index+1)/20)
-
-        for i in range(5):
-            y = 5*(i+1)
-            closest_index = np.argmin(np.abs((self.data.array[i]-z0)/((i+1)/20) - min_value))
-            stop_index = np.argmin(np.abs(self.data.array[i] - (stop*(100-z0)*y/25 + z0)))
-
-            if stop_index != len(self.data.array[i])-1:
-                stop_index += 1
-            stop_value = self.data.array[i][stop_index]
-
-            if closest_index > stop_index - n + 1:
-                if (stop_index - n +1) < 0:
-                    stop_index = n-1
-                patch_ingredients.append(wedgeSuperPoint(self.data.array[i][stop_index-n+1:stop_index+1]))
-
-            
-            else:
-                patch_ingredients.append(wedgeSuperPoint(self.data.array[i][closest_index:closest_index+n]))
-
-        new_patch = wedgePatch(self.env, tuple(patch_ingredients))
-
-        if np.array_equal(new_patch.superpoints, last_patch):
-            return
-
-        else:
-            self.add_patch(new_patch)
-            return self.S_relaxed_gap(z0=z0, stop=stop, n = n)
-
-    def S_reverse_relaxed_gap(self, z0= 0, stop = -1, n = 16):
-
-        loops = self.n_patches - 1
-        mins = []
-        stop_count = 0
-
-        for i in range(5):
-
-            last_patch = self.patches[loops].superpoints
-
-            amin = (last_patch[i].points[0]-z0)/((i+1)/20)
-            mins.append(amin)
-
-        min_index = np.argmax(np.array(mins))
-        patch_ingredients = []
-
-        min_value = (last_patch[min_index].points[0]-z0)/((min_index+1)/20)
-
-        for i in range(5):
-            y= 5*(i+1)
-            closest_index = np.argmin(np.abs((self.data.array[i]-z0)/((i+1)/20) - min_value))
-
-            stop_index = np.argmin(np.abs(self.data.array[i] - (((stop*(z0+100)*y)/25+z0))))
-            if stop_index != 0:
-                stop_index -= 1
-            stop_value = self.data.array[i][stop_index]
-
-            if closest_index < stop_index + n:
-                if (stop_index + n) > len(self.data.array[i]):
-                    stop_index = int(len(self.data.array[i]) - n)
-                patch_ingredients.append(wedgeSuperPoint(self.data.array[i][stop_index:stop_index+n]))
-            
-            else:
-                patch_ingredients.append(wedgeSuperPoint(self.data.array[i][closest_index-n+1:closest_index+1]))
-
-        new_patch = wedgePatch(self.env, tuple(patch_ingredients))
-
-        if np.array_equal(new_patch.superpoints, last_patch):
-            return
-
-        else:
-            self.add_patch(new_patch)
-            return self.S_reverse_relaxed_gap(z0=z0, stop=stop, n = n)
              
     def plot(self, data=True, lines=True, patches=True): 
         

@@ -1114,8 +1114,8 @@ class Cover():
         for i in range(5):
             y= 5*(i+1)
             closest_index = np.argmin(np.abs((self.data.array[i]-z0)/((i+1)/20) - min_value))
-
             stop_index = np.argmin(np.abs(self.data.array[i] - (((stop*(z0+100)*y)/25+z0))))
+
             if stop_index != 0:
                 stop_index -= 1
             stop_value = self.data.array[i][stop_index]
@@ -1125,6 +1125,8 @@ class Cover():
                     stop_index = int(len(self.data.array[i]) - n)
                 patch_ingredients.append(SuperPoint(self.data.array[i][stop_index:stop_index+n]))
             else:
+                if closest_index == len(self.data.array[i]) - 1:
+                    closest_index -=1
                 patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-n+2:closest_index+2]))
 
 

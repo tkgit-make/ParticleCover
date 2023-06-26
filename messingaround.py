@@ -135,9 +135,21 @@ f = np.array(ast.literal_eval(line1))
 print(np.all(d == f))
 events2= readFile('wedgeData_v2.1_128.txt', 5)
 
-first_wedge2 = convertToDataset(events2[2])
-print([first_wedge2.array[4][x].z for x in range(len(first_wedge2.array[4]))])
-#first_wedge2.plot(True)
+
+
+
+for i in range(128):
+    first_wedge3 = convertToDataset(events3[i])
+    print(first_wedge3.array[0][0].phi)
+
+events3 = readFile('wedgeData_v3_128.txt', 128)
+first_wedge3 = convertToDataset(events3[1])
+#first_wedge3.plot(True)
+#first_wedge3.add()
+#first_wedge3.plot(True)
 '''
 
-wedge_test(lining = 'solveQ', solve_at = [-10,0,10], n = 16, z0 = np.arange(-15, 15.5, 0.5), ranges = [0,128], savefig = False, v = 'v2')
+wedge_test(lining = 'solveS_center2', solve_at = [-10,0,10], n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,2], savefig = False, v = 'v3')
+wedge_test(lining = 'solveS', solve_at = 0, n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,1], savefig = False, v = 'v3')
+#wedge_test(lining = 'solveS_reverse', solve_at = 0, n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,30], savefig = False, v = 'v3')
+#wedge_test(lining = 'solveQ', solve_at = [-10,0,10], n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,128], savefig = True, v = 'v3')

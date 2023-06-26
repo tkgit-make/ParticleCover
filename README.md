@@ -5,10 +5,10 @@
 Before we do anything, we must import the data.py module and create an environment. An environment object contains information about the kind of collider that the data will be generated in. It can be initialized with a constructor, and it has the following attributes 
 ```
 env = Environment() 
-print(env.top_layer_lim)        # a float representing the upper and lower limits of the top layer (default 1.0m)
-print(env.bottom_layer_lim)     # a float representing the upper and lower limits of layer 0 in m (default 0.15m) 
+print(env.top_layer_lim)        # a float representing the upper and lower limits of the top layer (default 100cm)
+print(env.bottom_layer_lim)     # a float representing the upper and lower limits of layer 0 in m (default 15cm) 
 print(env.layers)               # a integer representing the number of layers, excluding layer 0 (default 5) 
-print(env.radii)                # a float representing the distance between consecutive layers in m (default 5.0m)
+print(env.radii)                # a float representing the distance between consecutive layers in m (default 5.0cm)
 ```
 
 Once we have generated the environment, we can generate a dataset by constructing the `Dataset` object with the environment and number of points per layer as its argument. 
@@ -160,4 +160,4 @@ Using the same logic, there are several methods that vary on this premise.
 2. `solveS_reverse`: Starts with the right most 16 points and works its way left to generate the cover using `S_repeated_reverse`.
 3. `solveS_center1`: Starts with the center 16 points in each layer then uses `S_repeated` on the right half of data and `S_repeated_reverse` on left half of data.
 4. `solveS_center2` Starts with a superpoint containing the 8 points to the left and right of 0 in each layer then uses `S_repeated` on the right half of data and `S_repeated_reverse` on left half of data.
-5. `SolveQ`: Starts at Q1 and Q3 by x value and runs `solveS_center2` starting at those points and ending at the center
+5. `SolveQ`: Starts at Q1 and Q3 by z value and runs `solveS_center2` starting at those points and ending at the center
