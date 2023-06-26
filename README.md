@@ -35,6 +35,37 @@ wedges = readFile("Wedge_Data.txt")         # readFile reads Wedge_Data.txt, sto
 firstWedge = convertToDataset(wedges[0])    # Converts the first element in wedges into a WedgeData object
 firstWedge.plot(show_lines = True)          # Plots the converted first wedge data in a r vs. z plot
 ```
+## Running Tests on Methods
+
+The file `test_modules.py` contains the function `wedge_test` that generates the plots found in the LaTex document. All that is required to generate the plots is running the function on a python file that has the wedgeData text files in the same directory. The files should be named with the format `wedgeData_{VERSION}_128.txt`. Below is a list of the arguments in the function.
+1. lining (str, optional): solving method, default is solveS
+2. solve_at (int, optional): the z values the patches are being made in accordance to
+3. z0 (num or list, optional): array of z0 values we are testing over, default is range of -15 to 15 with 0.5 spacing
+4. n (int, optional): ppl (point per patch per layer), default is 16
+5. wedges (list, optional): which wedges, enter in list of [starting wedge, ending wedge]. Default is [0, 128]
+6. lines (int, optional): how many line to test acceptance with at each z0 value
+7. savefig (bool, optional): `True` to save figure
+8. v (str, optional): version of data, ensure data file is in directory as "wedgeData_{v}_128.txt"
+
+## Constructing wedgeData Covers
+In order to accommodate for the different data structure and avoid confusion, I made a new module for solving with `wedgeData` class called `wedgeCover`. It operates exactly the same as the `cover` class. There are currently four solving methods: `solveS`, `solveS_reverse`, `solveS_center2`, and `solveQ`. The easiest way to solve for a plot and obtain a visualization is to use the methods `solve` from `wedgeCover`.
+
+The arguments for the `solve` method are
+1. lining (str): solving method
+2. z0 (num or list): where on the z axis the patches are being solved with respect to. This can be a single number or a list.
+3. n (int): points per patch per layer
+4. nlines (int): number of lines used in visualization.
+5. show (bool): prevents line generation for visualization. This should be set to `False` when patches are solved for at multiple z0's.
+
+After solving, the cover can be visualized with the `plot` method. An example of how to solve and visualize a cover follows.
+```
+env = Environment()                             #init environment
+events = readFile('wedgeData_v3_128.txt', 128)  #read file that has wedge data
+wedge1 = convertToDataset(events[0])            #convert into wedgeData format
+cover = wedgeCover(env, wedge1)                 #init wedgeCover class
+cover.solve('solveS', z0 = 0, show = True)      #solve for cover with respect to z0 = 0 
+cover.plot()                                    #plots cover
+```
 
 ## Point and Line Objects 
 A line can be characterized by two things: a point $(x_0, y_0)$ on the line and its slope $m$. It is clear that $y_0$, the height, should be $0$, but the $x_0$ may vary (by default we set $x_0 = 0$). Therefore, a line should have two parameters: the $x_0$ value of its originating point and the slope $m$. We can construct it by calling: 
@@ -62,8 +93,8 @@ We define three things:
 For further developers, I would recommend only adding extra attributes and methods to the `Patch` class. The cover itself should essentially be a collection of patches, no more, and a superpoint is something I've used for my personal algorithm. 
 
 #### 1. Superpoints
-A superpoint is characterized by the smallest interval of a layer that contains all 16 points. By abuse of notation, we can mathematically express it either a list of 16 numbers 
- $$ S = [s_1, s_2, \ldots, s_{16}] \text{ with } s_1 < s_2 < \ldots < s_{16}$$ 
+A superpoint is characterized by the smallest interval of a layer that contains all 16 points. By abuse of notation, we can mathematically express it either a list of 16 numbers
+$$S = [s_1, s_2, \ldots, s_{16}] \text{ with } s_1 < s_2 < \ldots < s_{16}$$
 or as the closed interval between the minimum and maximum values 
  $$S = [s_1, s_{16}]$$ 
 If we would like to see if a float value $p$ is contained within a superpoint, then we can run the `contains(p)` method, which returns a boolean describing whether $p \in [s_1, s_{16}]$. This is the basic functionality of the superpoint. 
@@ -86,15 +117,12 @@ Remember previously that a line can be characterized by the `env.layers`= $5$ po
 $$l = [l_1, l_2, l_3, l_4, l_5]$$ 
 with $l_i$ is the float value on the $i$th layer. We can also characterize a patch as a 5-tuple of superpoints, which are essentially closed intervals. 
 $$P = ([\min{S_1}, \max{S_1}], [\min{S_2}, \max{S_2}], [\min{S_3}, \max{S_3}], [\min{S_4}, \max{S_4}], [\min{S_5}, \max{S_5}])$$ 
-Therefore, the contains method $\mathcal{C}$ determines whether $l \in P$ by determining whether $l_i \in [\min{S_i}, \max{S_i}]$ for $i \in [5]$. That is 
- $$\mathcal{C}(P, l) \coloneqq \begin{cases} 
-\text{True} & \text{ if } l_i \in [\min{S_i}, \max{S_i}] \text{ for } i \in [5] \\
-\text{False} & \text{ if else }
-\end{cases}$$
+Therefore, the contains method $\mathcal{C}$ determines whether $l \in P$ by determining whether $l_i \in [\min{S_i}, \max{S_i}]$ for $i \in [5]$. That is
+$$\mathcal{C}(P, l) \coloneqq \begin{cases} \text{True} & \text{ if } l_i \in [\min{S_i}, \max{S_i}] \text{ for } i \in [5] \\ \text{False} & \text{ if else } \end{cases}$$
 This function will be clearly useful for constructing a cover and performance testing it. 
 
 
-####3. Covers
+#### 3. Covers
 
 A cover $C$ is essentially a list of patches. Therefore, given $n$ patches, $P_1, \ldots, P_n$, a cover is mathematically described as 
 $$C = [P_1, \ldots, P_n]$$
@@ -113,12 +141,12 @@ In the constructor, we do the following for each layer $i$, which contains $n$ p
 - We take points $16, \ldots, 31$ to make a second superpoint and add this to the list. Note that there is an overlap of one point between adjacent superpoints. 
 - We continue this until there are less than 16 points left for the final superpoint. 
 - The final superpoint is constructed by taking the last 16 points and added to the list. 
-For $n = 150$, this should create $10$ superpoints for each layer, and if we have 5 layers, $cover.superPoints$ should be a list of 5 lists, each containing 10 superpoints. 
+For $n = 150$, this should create $10$ superpoints for each layer, and if we have 5 layers, `cover.superPoints` should be a list of 5 lists, each containing 10 superpoints. 
 
 #### Attaining Estimations of the Minimal Cover 
-The `solve` method of the `Cover` object is where the main algorithm resides. Now that we have a list of list of superpoints upon initialization, which we will label 
-$$[[S_{1,1}, S_{1, 10}], \ldots, [S_{5,1}, S_{5, 10}]]
-where $S_{i, j}$ represents the $j$th superpoint in the $i$th layer. The algorithm is run as such: 
+The `solve` method of the `Cover` object is where the main algorithm resides. Now that we have a list of list of superpoints upon initialization, which we will label
+$$[[S_{1,1}, S_{1, 10}], \ldots, [S_{5,1}, S_{5, 10}]]$$
+where $S_{i, j}$ represents the $j$ th superpoint in the $i$ th layer. The algorithm is run as such: 
 1. We construct a `LineGenerator` object and have it generate 100 equally spaced lines in the environment. These list of lines are generated "from left to right," meaning that the line that resides in the leftmost portion is the first element of the list, and the rightmost in the last element. 
 2. For the first line $l = [l_1, l_2, l_3, l_4, l_5]$, we look at $l_i$ and find which superpoint in the $i$th list of `cover.superPoints` it is contained in. After $i = 1, \ldots, 5$, we should have a collection of $5$ superpoints, which are stored in the `patch_ingredients` variable. 
 3. We construct the patch $P$ from the elements of `patch_ingredients`, which is guaranteed by construction to contain line $l$ and add it to `cover.patches` (and increment `cover.n_patches` by $1$). 
@@ -137,9 +165,9 @@ The `solveS` method for the `Cover` class generates a cover for a given set of d
 
 1. The first patch is contrasted from a superpoint of the first 16 points of each layer. $$S_i = [D_{i,1}, D_{i,2}, ..., D_{i,16}]$$
 
-2. The `S_repeated method` is run, which is the main part of the algorithm. This generates all the other patches.
+2. The `S_loop15` method is run, which is the main part of the algorithm. This generates all the other patches.
 
-3. `S_repeated method` loops through the rightmost point in each layer. It takes the point and 're-scales' it based on the y-value. Let the re-scaled value be $D_{i, j}'$ where $$D'{i, j} = \frac{D_{i, j}}{5i}$$ The minimum of $D_{i, j}'$ for $i \in [1, 5]$ is $i_{min}$. $i_{min}$ is stored in `min_index`. 
+3. `S_loop15` method loops through the rightmost point in each layer. It takes the point and 're-scales' it based on the r-value. Let the re-scaled value be $D_{i, j}'$ where $$D'{i, j} = \frac{D_{i, j}}{5i}$$ The minimum of $D_{i, j}'$ for $i \in [1, 5]$ is $i_{min}$. $i_{min}$ is stored in `min_index`. 
     
 4. Next re-scale each layer to find the index of the point closest in value to $D_{i_{min},j}'$. Let the index of this point be $j = m$. There are three cases.
     
