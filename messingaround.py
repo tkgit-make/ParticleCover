@@ -13,46 +13,35 @@ import time
 from reader import *
 from converter import *
 from wedgecover import *
+
 '''
+f = open('wedgeData_v2_128.txt')
+env = Environment()
+#f.readline()
+for i in range(7):
+    line = f.readline()
+d = np.array(ast.literal_eval(f.readline()))
+data = DataSet(env = env, n_points = 150)
+data.input_data(d, add = True)
+cover = Cover(env, data)
+cover.solve(z0 = 0, lining='solveS', n = 16, show = True)
+cover.plot()
+'''
+
 env = Environment()
 data = DataSet(env, n_points=150, equal_spacing = True) 
-events = readFile('wedgeData_v2_128.txt', 5)
-wedge1 = convertToDataset(events[0])
+events = readFile('wedgeData_v2_128.txt', 8)
+wedge1 = convertToDataset(events[2])
 #cover = Cover(env, data)
 cover = wedgeCover(env, wedge1)
-cover.solve('solveS', z0 = [-10,0,10], show = False)
+cover.solve('solveQ', z0 = 0, show = True)
 cover.plot()
 #cover.plot()
 #data.plot()
-'''
-#cover.solve(lining='solveS', nlines=100, z0 = 0, n = 16)
-#print(cover.patches[0].superpoints[4].points)
-#print(cover.patches[1].superpoints[4].points)
-#cover.plot()
-#print(cover.patches)
-#print(cover.patches[0].superpoints[4].points)
-#cover.solve(lining='solveS', nlines=100, z0 = 0, ideal = True)
-#cover.plot(data=True, lines=True, patches=True)
-#acceptSlopePlot(lining = 'solveS', ideal = True)
-'''
-lGen = LineGenerator(env, -15)
-fitting_lines = lGen.generateEvenGrid(100)
-for line in fitting_lines:
-    line.plot('r')
 
-plt.ylim(-5, 30)
-plt.show()
-'''
-
-#duplicates('solveQ_relaxed_end', z0 = [-10, 0, 10], events = 1000)
-#fourTests(lining = 'solveS_center2', solve_at =  [-10, 0, 10], n = 16, z0 = np.arange(-15, 15.5, 0.5), savefig = False)
-#all_test('solveS', False)
-
-#wedge_data = np.loadtxt('Wedged_Spacepoints.txt', max_rows=1, usecols = np.arange(1699)+1)
-
-#line = np.genfromtxt(r'Wedge_Data.txt', delimiter=',', max_rows = 1)
 
 '''
+
 counter = np.zeros(5)
 for i, line in enumerate(file.readlines()):
     d = np.array(ast.literal_eval(line))
@@ -75,6 +64,9 @@ cover.solve(lining = 'solveS_center2')
 cover.plot()
 acceptSlopePlot(events=1, custom = d)
 
+env = Environment()
+data = DataSet(enqv = env, n_points = 150)
+file = open('wedgeData_v2_128.txt')
 
 for i, line in enumerate(file.readlines()):
     z0test = []
@@ -145,11 +137,32 @@ for i in range(128):
 events3 = readFile('wedgeData_v3_128.txt', 128)
 first_wedge3 = convertToDataset(events3[1])
 #first_wedge3.plot(True)
-#first_wedge3.add()
-#first_wedge3.plot(True)
+first_wedge3.add()
+first_wedge3.plot(True)
 '''
-
-wedge_test(lining = 'solveS_center2', solve_at = [-10,0,10], n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,2], savefig = False, v = 'v3')
-wedge_test(lining = 'solveS', solve_at = 0, n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,1], savefig = False, v = 'v3')
+#wedgeSlopePlot(lining = 'solveQ', z0 =-10)
+#wedge_test_old(lining = 'solveS_reverse', solve_at = 0, n = 16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,128], savefig = False, v = 'v3')
+#wedge_test_old(lining = 'solveQ', solve_at = [-10,0,10], n = 16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,128], savefig = False, v = 'v2')
+#wedge_test_old(lining = 'solveS_center2', solve_at = 0, n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,128], savefig = False, v = 'v2')
 #wedge_test(lining = 'solveS_reverse', solve_at = 0, n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,30], savefig = False, v = 'v3')
 #wedge_test(lining = 'solveQ', solve_at = [-10,0,10], n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,128], savefig = True, v = 'v3')
+
+def odd_loop(lining = 'solveS', v = 'v2'):
+    accep = 0.0
+    zvalues = 3
+    while accep < 0.999:
+        accep = wedge_test_old(lining = lining, solve_at = np.linspace(-15, 15, zvalues), n = 16, wedges = [0, 128], v = v)
+        zvalues +=2
+    print(accep)
+
+def even_loop(lining = 'solveS', v = 'v2'):
+    accep = 0.0
+    zvalues = 2
+    while accep < 0.999:
+        accep = wedge_test_old(lining = lining, solve_at = np.linspace(-15, 15, zvalues), n = 16, wedges = [0, 128], v = v)
+        zvalues +=2
+    print(accep)
+    
+
+#odd_loop('solveS_reverse', v = 'v3')
+#even_loop('solveS_reverse', v = 'v3')

@@ -582,6 +582,7 @@ class Cover():
             y = 5*(row + 1)
             start_index = np.argmin(np.abs(self.data.array[row] - (((-z0-100)*y)/25+z0)))
             if start_index != 0:
+            #if self.data.array[row][start_index] > (((-z0-100)*y)/25+z0):
                 start_index -= 1
             init_patch.append(SuperPoint(self.data.array[row][start_index:start_index+n]))
 
@@ -602,6 +603,7 @@ class Cover():
             start_index = np.argmin(np.abs((self.data.array[row] - ((100-z0)*y/25 + z0))))
 
             if start_index != len(self.data.array[row])-1:
+            #if self.data.array[row][start_index] < ((100-z0)*y/25 + z0):
                 start_index += 1
             init_patch.append(SuperPoint(self.data.array[row][start_index-n+1:start_index+1]))
 
@@ -1065,28 +1067,43 @@ class Cover():
 
         min_value = (last_patch[min_index].points[n-1]-z0)/(5*(min_index+1)/100)
 
+        term = 0
+
         for i in range(5):
             y = 5*(i+1)
             closest_index = np.argmin(np.abs((self.data.array[i]-z0)/(y/100) - min_value))
+            #if (self.data.array[i][closest_index]-z0)/(y/100) >= min_value:
+            #    closest_index -=1
             stop_index = np.argmin(np.abs(self.data.array[i] - (stop*(100-z0)*y/25 + z0)))
+            layer_size = len(self.data.array[i])
 
-            if stop_index != len(self.data.array[i])-1:
-                stop_index += 1
-            stop_value = self.data.array[i][stop_index]
+            #if stop_index != len(self.data.array[i])-1:
+            #    stop_index += 1
+            stop_index += 1
 
-            if closest_index > stop_index - n + 1:
-                if (stop_index - n + 1) < 0:
-                    stop_index = n - 1
-                patch_ingredients.append(SuperPoint(self.data.array[i][stop_index-n+1:stop_index+1]))
+            if closest_index + n -1 > stop_index:
+            #if closest_index + n > stop_index:
+                term += 1
+
+            #if closest_index > stop_index - n + 1:
+            if closest_index + n - 1 >= layer_size:
+                #if (stop_index - n + 1) < 0:
+                #    stop_index = n - 1
+                #patch_ingredients.append(SuperPoint(self.data.array[i][stop_index-n+1:stop_index+1]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][layer_size-n:]))
             
             else:
                 if closest_index == 0:
                     closest_index = 1
                 patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-1:closest_index + n - 1]))
+                #patch_ingredients.append(SuperPoint(self.data.array[i][closest_index:closest_index + n]))
 
         new_patch = Patch(self.env, tuple(patch_ingredients))
 
-        if np.array_equal(new_patch.superpoints, last_patch):
+        #if np.array_equal(new_patch.superpoints, last_patch):
+            #return
+        if term == 5:
+            self.add_patch(new_patch)
             return
 
         else:
@@ -1097,7 +1114,6 @@ class Cover():
 
         loops = self.n_patches - 1
         mins = []
-        stop_count = 0
 
         for i in range(5):
 
@@ -1111,29 +1127,45 @@ class Cover():
 
         min_value = (last_patch[min_index].points[0]-z0)/((min_index+1)/20)
 
+        term = 0
+
         for i in range(5):
             y= 5*(i+1)
             closest_index = np.argmin(np.abs((self.data.array[i]-z0)/((i+1)/20) - min_value))
+            #if (self.data.array[i][closest_index]-z0)/(y/100) <= min_value:
+            #    closest_index +=1
             stop_index = np.argmin(np.abs(self.data.array[i] - (((stop*(z0+100)*y)/25+z0))))
 
-            if stop_index != 0:
-                stop_index -= 1
-            stop_value = self.data.array[i][stop_index]
+            stop_index -= 1
 
-            if closest_index < stop_index + n:
-                if (stop_index + n) > len(self.data.array[i]):
-                    stop_index = int(len(self.data.array[i]) - n)
-                patch_ingredients.append(SuperPoint(self.data.array[i][stop_index:stop_index+n]))
+            if closest_index - n + 2 < stop_index:
+            #if closest_index - n + 1 < stop_index:
+                term += 1
+
+            #if stop_index != 0:
+            #    stop_index -= 1
+
+            #if closest_index < stop_index + n:
+                #if (stop_index + n) > len(self.data.array[i]):
+                #    stop_index = int(len(self.data.array[i]) - n)
+            if closest_index + 1 < n:
+                #patch_ingredients.append(SuperPoint(self.data.array[i][stop_index:stop_index+n]))
+                patch_ingredients.append(SuperPoint(self.data.array[i][:n]))
+
             else:
                 if closest_index == len(self.data.array[i]) - 1:
                     closest_index -=1
                 patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-n+2:closest_index+2]))
+                #patch_ingredients.append(SuperPoint(self.data.array[i][closest_index-n+1:closest_index+1]))
 
 
         new_patch = Patch(self.env, tuple(patch_ingredients))
-
-        if np.array_equal(new_patch.superpoints, last_patch):
+        if term == 5:
+            self.add_patch(new_patch)
             return
+
+        #if np.array_equal(new_patch.superpoints, last_patch):
+            #return
 
         else:
             self.add_patch(new_patch)

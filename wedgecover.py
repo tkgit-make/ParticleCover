@@ -199,110 +199,194 @@ class wedgeCover():
             return
 
     def S_loop15(self, z0 = 0, stop = 1, n = 16):
-        
-        loops = self.n_patches - 1
-        mins = []
+        """Loop for creating patches left to right
 
+        Args:
+            z0 (num, optional): Places to generate patch. Defaults to 0.
+            stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
+            n (int, optional): points per layer per patch. Defaults to 16.
+
+        Returns:
+            function: reruns loop if it hasn't reached the end of the dataset
+        """
+
+        #count how many times this has been run
+        loops = self.n_patches - 1
+        #create list for points closest to starting line and patch ingredients
+        mins = []
+        patch_ingredients = []
+        #creates count for terminating patch making. loop stops when all layers are beyond line from (z0, 0) to (100, 25)
+        term = 0
+
+        #loops through layers
         for i in range(5):
             y = 5*(i+1)
+            #reads last patch made
             last_patch = self.patches[loops].superpoints
+            #create compatible arrays from data structure
             row_data = last_patch[i].points
             row_list = np.array([row_data[x].z for x in range(len(row_data))])
+            #rescales point for layer and add to mins list
             amin = (row_list[n-1]-z0)/(y/100)
             mins.append(amin)
 
+        #find which layer of the next n points from last patch stops first and find rescaled value of that point
         min_index = np.argmin(np.array(mins))
-        patch_ingredients = []
         min_value = (last_patch[min_index].points[n-1].z-z0)/(5*(min_index+1)/100)
-
+        
+        #loops through layers again
         for i in range(5):
             y = 5*(i+1)
+            #create compatible array from data structure
             row_data = self.data.array
             row_list = np.array([row_data[i][x].z for x in range(len(row_data[i]))])
+            #finds point closest to line from (z0, 0) to leftmost rescaled point
             closest_index = np.argmin(np.abs((row_list-z0)/(y/100) - min_value))
+            #find where the stopping index is based on the line from (z0, 0) to (100*stop, 25)
             stop_index = np.argmin(np.abs(row_list - (stop*(100-z0)*y/25 + z0)))
 
-            if stop_index != len(row_list)-1:
-                stop_index += 1
-            stop_value = row_list[stop_index]
+            #add one to stop index in case it is left of the line from (z0, 0) to (100*stop, 25)
+            #this makes sure there is full coverage
+            ########if stop_index != len(row_list)-1: (old conditional that I'm not sure if we need)
+            stop_index += 1
 
-            if closest_index > stop_index - n + 1:
-                if (stop_index - n + 1) < 0:
-                    stop_index = n - 1
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][stop_index-n+1:stop_index+1]))
+            #checks to see if patch will go past stop index, if so, add one to term variable
+            if closest_index + n -1 > stop_index:
+                term += 1
+
+
+            #if there is not enough points left, pick last n points
+            if closest_index + n - 1 > len(row_list):
+                patch_ingredients.append(wedgeSuperPoint(row_data[i][len(row_list)-n:]))
             
+            #if there are enough points left, pick point closest to slope and next n-1 points
             else:
+                #makes sure there won't be an error of negative indices
                 if closest_index == 0:
                     closest_index = 1
+                #closest_index - 1 insures point is to left of line ie ensuring patches overlap
                 patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-1:closest_index + n - 1]))
 
+        #creates new patch
         new_patch = wedgePatch(self.env, tuple(patch_ingredients))
 
-        if np.array_equal(new_patch.superpoints, last_patch):
+        #if all layers have points beyond stop index, add patch and stop
+        if term == 5:
+            self.add_patch(new_patch)
             return
 
+        #if new patches are still being created, add patch to cover instance and repeat loop
         else:
             self.add_patch(new_patch)
             return self.S_loop15(z0, stop, n = n)
 
     def S_rloop15(self, z0 = 0, stop = -1, n = 16):
+        """Loop for creating patches right to left
 
+        Args:
+            z0 (num, optional): Places to generate patch. Defaults to 0.
+            stop (num, optional): stopping location, normalized to 1m. Defaults to -1.
+            n (int, optional): points per layer per patch. Defaults to 16.
+
+        Returns:
+            function: reruns loop if it hasn't reached the end of the dataset
+        """
+
+        #count how many times this has been run
         loops = self.n_patches - 1
+        #create list for points closest to starting line and patch ingredients
         mins = []
-        stop_count = 0
-
-        for i in range(5):
-        	y = 5*(i+1)
-        	last_patch = self.patches[loops].superpoints
-        	row_data = last_patch[i].points
-        	row_list = np.array([row_data[x].z for x in range(len(row_data))])
-        	amin = (row_list[0]-z0)/(y/100)
-        	mins.append(amin)
-
-        min_index = np.argmax(np.array(mins))
         patch_ingredients = []
+        #creates count for terminating patch making. loop stops when all layers are beyond line from (z0, 0) to (-100, 25)
+        term = 0
+
+        #loops through layers
+        for i in range(5):
+            y = 5*(i+1)
+            #reads last patch made
+            last_patch = self.patches[loops].superpoints
+            #create compatible arrays from data structure
+            row_data = last_patch[i].points
+            row_list = np.array([row_data[x].z for x in range(len(row_data))])
+            #rescales point for layer and add to mins list
+            amin = (row_list[0]-z0)/(y/100)
+            mins.append(amin)
+
+        #find which layer of the next n points from last patch stops first and find rescaled value of that point
+        min_index = np.argmax(np.array(mins))
         min_value = (last_patch[min_index].points[0].z-z0)/((min_index+1)/20)
 
+        #loops through layers again
         for i in range(5):
             y= 5*(i+1)
+            #create compatible array from data structure
             row_data = self.data.array
             row_list = np.array([row_data[i][x].z for x in range(len(row_data[i]))])
+            #finds point closest to line from (z0, 0) to leftmost rescaled point
             closest_index = np.argmin(np.abs((row_list-z0)/((i+1)/20) - min_value))
+            #find where the stopping index is based on the line from (z0, 0) to (-100*stop, 25)
             stop_index = np.argmin(np.abs(row_list - (((stop*(z0+100)*y)/25+z0))))
 
-            if stop_index != 0:
-                stop_index -= 1
-            stop_value = row_list[stop_index]
+            #subtract one from stop index in case it is right of the line from (z0, 0) to (-100*stop, 25)
+            #this makes sure there is full coverage
+            ########if stop_index != 0: (old conditional that I'm not sure if we need)
+            stop_index -= 1
 
-            if closest_index < stop_index + n - 1:
-                if (stop_index + n) > len(self.data.array[i]):
-                    stop_index = int(len(self.data.array[i]) - n)
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][stop_index:stop_index+n]))
+            #checks to see if patch will go past stop index, if so, add one to term variable
+            if closest_index - n + 1 < stop_index:
+                term += 1
+
+            #if there aren't enough points left, pick leftmost n points
+            if closest_index + 2 < n:
+                patch_ingredients.append(wedgeSuperPoint(row_data[i][:n]))
+
+            #if there are enough points left, pick point closest to slope and n-1 points to the left
             else:
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-n+2:closest_index+2]))
+                #makes sure there won't be an error of indices beyond length of list
+                if closest_index == len(row_list) - 1:
+                    closest_index -=1
+                #closest_index + 2 insures point is to right of line ie ensures patches overlap
+                patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index - n + 2:closest_index + 2]))
 
-
+        #creates new patch
         new_patch = wedgePatch(self.env, tuple(patch_ingredients))
 
-        if np.array_equal(new_patch.superpoints, last_patch):
+        #if all layers have points beyond stop index, add patch and stop
+        if term == 5:
+            self.add_patch(new_patch)
             return
 
+        #if new patches are still being created, add patch to cover instance and repeat loop
         else:
             self.add_patch(new_patch)
             return self.S_rloop15(z0, stop, n = n)         
 
     def solveS(self, z0 = 0, stop = 1, n = 16):
+        """Creates patches left to right
 
+        Args:
+            z0 (num, optional): Places to generate patch. Defaults to 0.
+            stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
+            n (int, optional): points per layer per patch. Defaults to 16.
+
+        Returns:
+            function: runs loop to make patches
+        """
+        #create list for inital patch
         init_patch = []
 
-        #pick first 16 points in each layer
+        #loops through each layer and picks n points closest to (z0, 0) and (-100, 25)
         for row in range(5):
             y = 5*(row + 1)
+            #create compatible arrays from data structure
             row_data = self.data.array
             row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
+            #picks picks n points closest to (z0, 0) and (-100, 25) 
             start_index = np.argmin(np.abs(row_list - (((-z0-100)*y)/25+z0)))
+            #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
             if start_index != 0:
                 start_index -= 1
+            #add superpoint
             init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+n]))
 
         #add to patch
@@ -313,18 +397,31 @@ class wedgeCover():
         return
 
     def solveS_reverse(self, z0 = 0, stop = -1, n = 16):
+        """Creates patches right to left
 
+        Args:
+            z0 (num, optional): Places to generate patch. Defaults to 0.
+            stop (num, optional): stopping location, normalized to 1m. Defaults to -1.
+            n (int, optional): points per layer per patch. Defaults to 16.
+
+        Returns:
+            function: runs loop to make patches
+        """
+        #create list for inital patch
         init_patch = []
 
-        #pick first 16 points in each layer
+        #loops through layers and picks picks n points closest to (z0, 0) and (100, 25) 
         for row in range(5):
             y = 5*(row+1)
+            #create compatible array from data structure
             row_data = self.data.array
             row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
+            #picks picks n points closest to (z0, 0) and (100, 25) 
             start_index = np.argmin(np.abs((row_list - ((100-z0)*y/25 + z0))))
-
+            #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
             if start_index != len(self.data.array[row])-1:
                 start_index += 1
+            #add superpoint
             init_patch.append(wedgeSuperPoint(row_data[row][start_index-n+1:start_index+1]))
 
         #add to patch
@@ -335,53 +432,86 @@ class wedgeCover():
         return
 
     def solveS_center2(self, center = 0, z0 = 0, stop = 'none', n = 16):
+        """generate patches starting from center or specified value
+
+        Args:
+            center (num, optional): picks where patch making starts from -100 to 100. Defaults to 0.
+            z0 (num, optional): Places to generate patch. Defaults to 0.
+            stop (str, optional): 'none' or 'center', if center, patch making stops at z = 0. Defaults to 'none'.
+            n (int, optional): points per layer per patch. Defaults to 16.
+        """
+        #create list for inital patch
         init_patch = []
 
-        #pick center 16 points based on 
+        #loops through layers and picks picks 16 points closest to (z0, 0) and (0, center) 
         for row in range(5):
             y = 5*(row+1)
+            #create compatible array from data structure
             row_data = self.data.array
             row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
+            #picks n/2 points left and right of point closest to line from (0, 0) to (center, 25)
             center_index = np.argmin(np.abs(row_list - ((y*(center-z0)/25)+z0)))
+            #conditionals make sure no negative indices indices past length of array
             if (center_index-int(n/2)) < 0:
                 center_index = int(n/2)
             elif (center_index+int(n/2)) > len(self.data.array[row]):
                 center_index = len(self.data.array[row]) - int(n/2)
             init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(n/2):center_index+int(n/2)]))
-        #add to patch
+        #add initial patch
         self.add_patch(wedgePatch(self.env, tuple(init_patch)))
 
+        #for solveQ loops when it needs to stop at line from (0, 0) to (center, 25)
         if stop == 'center':
             # starts left of center
             if center < 0:
+                #create index for deleting a patch
                 n_patch_start = self.n_patches
+                #generates patches right of starting, stopping at center
                 self.S_loop15(z0 = z0, stop = 0, n = n)
+                #add initial patch again
                 self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+                #generate point left of starting
                 self.S_rloop15(z0 = z0, n = n)
+                #delete one of the inital patches so no duplices
                 del self.patches[n_patch_start-1]
                 self.n_patches = self.n_patches - 1
                 return
             #starts right of center
             if center > 0:
+                #create index for deleting a patch
                 n_patch_start = self.n_patches
+                #generates patches right of starting
                 self.S_loop15(z0 = z0, n = n)
+                #add initial patch again
                 self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+                #generates patches left of starting, stopping at center
                 self.S_rloop15(z0 = z0, stop = 0, n = n)
+                #delete one of the initial patches so no duplicates
                 del self.patches[n_patch_start-1]
                 self.n_patches = self.n_patches - 1
                 return
         else:
-
-            #run main algorithm
+            #create index for deleting a patch
             n_patch_start = self.n_patches
+            #generates patches right of starting
             self.S_loop15(z0 = z0, n = n)
+            #add initial patch again
             self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+            #generates patches left of starting
             self.S_rloop15(z0 = z0, n = n)
+            #delete one of the initial patches so no duplicates
             del self.patches[n_patch_start-1]
             self.n_patches = self.n_patches - 1
             return
         
     def solveQ(self, z0 = 0, n = 16):
+        """solves starting at Q1 and Q3 (-50 and 50)
+
+        Args:
+            z0 (num, optional): Places to generate patch. Defaults to 0.
+            n (int, optional): points per layer per patch. Defaults to 16.
+        """
+        #solves center starting at -50 and 50, ending at center
         self.solveS_center2(center = -50, stop = 'center', z0 = z0, n = n) 
         self.solveS_center2(center = 50, stop = 'center', z0 = z0, n = n)
         return
