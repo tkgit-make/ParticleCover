@@ -1,12 +1,12 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
-from data import * 
-from cover import * 
-import time 
-from converter import *
-import ast
-from reader import *
-from wedgecover import *
+import time, ast
+
+from coverers.data_structs import * 
+from coverers.cover import * 
+from src.readers.reader import *
+from src.coverers.wedgecover import *
+from src.deprecated.reader import * 
 
 def wedge_test(lining:str = "solveS", solve_at = 0, z0 = np.arange(-15, 15.5, 0.5), n = 16, wedges = [0, 128], lines=1000, v = 'v3', savefig=False):
     """Creates acceptance vs z0 plot

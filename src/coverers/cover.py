@@ -1,39 +1,130 @@
+from src.coverers.data_structs import * 
+
+from operator import attrgetter
+from cv2 import imread, imshow, waitKey, destroyAllWindows
 import numpy as np 
 import matplotlib.pyplot as plt 
-from data import * 
-from wedgedata import *
-import math
-import cv2 
-import os 
-import glob
-from cover import *
-        
-class wedgeSuperPoint(): 
+import math, os, glob
+
+class Line: 
     
-    def __init__(self, points):
+    def __init__(self, env:Environment, start:float, slope:float): 
+        self.env = env 
+        self.slope = slope
+        self.points = (1 / slope) * np.array([0] + self.env.radii) + start 
+
+    def plot(self, color): 
+        # # Plot grey lines 
+        # for radius in self.env.radii: 
+        #     plt.plot([-self.env.top_layer_lim, self.env.top_layer_lim], 
+        #              [radius, radius], 
+        #              color=(0.5, 0.5, 0.5, 0.5), 
+        #              linewidth=1)
         
-        if np.size(points) != 16:
-            if np.size(points) != 32:
-                raise Exception("This patch does not have 16 or 32 points in each layer")
-        z_list = np.array([points[x].z for x in range(len(points))])
-        self.z_values = z_list
+        plt.plot(self.points, [0] + self.env.radii, c=color)
+
+class LineGenerator(): 
+    
+    def __init__(self, env:Environment, start:float): 
+        
+        self.env = env 
+        self.start = start 
+        
+        if not(-env.bottom_layer_lim <= start <= env.bottom_layer_lim): 
+            raise Exception("Start point is out of range. ")
+        
+        max_height = env.radii[-1]
+        self.slope_ll = max_height / (-env.top_layer_lim - start)
+        self.slope_ul = max_height / (env.top_layer_lim - start)
+        
+    def generateGridLines(self, n=100): 
+        
+        angle_ll = math.atan(self.slope_ul)
+        angle_ul = math.atan(self.slope_ll) + np.pi
+        
+        theta = np.linspace(angle_ul, angle_ll, n) 
+        
+        slopes = np.tan(theta) 
+        return [Line(self.env, self.start, slope) for slope in slopes] 
+
+    def generateEvenGrid(self, n=100):
+
+        ycoor = 25
+        xcoor = np.linspace(-self.env.top_layer_lim, self.env.top_layer_lim, n)
+        
+        slopes = ycoor/(xcoor-self.start)
+        return [Line(self.env, self.start, slope) for slope in slopes] 
+    
+    def generateRandomLines(self, n=100): 
+        
+        angle_ll = math.atan(self.slope_ul)
+        angle_ul = math.atan(self.slope_ll) + np.pi
+        # print(angle_ll, angle_ul)
+        
+        theta = np.random.uniform(low=angle_ll, high=angle_ul, size=n) 
+        
+        slopes = np.tan(theta) 
+        
+        return [Line(self.env, self.start, slope) for slope in slopes] 
+    
+    def generateCenterSpreadLines(self, n=100): 
+        
+        angle_ll = math.atan(self.slope_ul)
+        angle_ul = math.atan(self.slope_ll) + np.pi
+        
+        ranges = angle_ul - angle_ll
+        
+        angles = np.empty(shape=0)
+        
+        for exp in range(1, int(np.log2(n)) + 2):
+            denom = 2 ** exp 
+            angles = np.concatenate((angles, np.arange(1, denom, 2) / denom))
+        
+        angles = angles * ranges + angle_ll 
+        
+        slopes = np.tan(angles)
+        
+        return [Line(self.env, self.start, slope) for slope in slopes] 
+    
+    def generateCenterGridLines(self, n=100): 
+        
+        if n%2 == 0: 
+            n += 1 
+        
+        angle_ll = math.atan(self.slope_ul)
+        angle_ul = math.atan(self.slope_ll) + np.pi
+        ranges = angle_ul - angle_ll 
+        
+        angles = np.linspace(-0.5, 0.5, n)
+        angles = ranges * (np.array(sorted(angles, key=np.abs)) + 0.5) + angle_ll
+        
+        slopes = np.tan(angles)
+        
+        return [Line(self.env, self.start, slope) for slope in slopes]         
+        
+class SuperPoint(): 
+    
+    def __init__(self, points:list):
+        
+        if len(points) not in [16, 32]:
+            raise Exception("This superpoint does not have 16 or 32 points. ")
+        
+        layers = set([p.layer_num for p in points])
+        if len(layers) != 1: 
+            raise Exception("These points are not all on the same layer. ")
+        
         self.points = points 
-        self.min = np.min(z_list) 
-        self.max = np.max(z_list)
+        self.min = min(points, key=attrgetter("z")) 
+        self.max = max(points, key=attrgetter("z")) 
+        self.layer = layers[0]
         
-    def contains(self, p): 
-        try:
-             p = p.z
-        except:
-            p = p
-        return self.min <= p <= self.max
+    def contains(self, p:Point): 
+        return self.min <= p.z <= self.max 
     
     def __eq__(self, other): 
-        return (self.min, self.max) == (other.min, other.max)
+        return (self.min, self.max) == (other.min, other.max) and self.layers == other.layers
 
-class wedgePatch(): 
-    
-    # Should be hashable (nvm we can't make it hashable) 
+class Patch(): 
     
     def __init__(self, env:Environment, superpoints:tuple): 
         self.env = env 
@@ -42,23 +133,21 @@ class wedgePatch():
             raise Exception("The patch layers does not match environment layers. ")
         
         self.superpoints = superpoints
-        # first superpoint in array should be the 1st layer 
         
     def contains(self, line:Line): 
         
         for i in range(len(self.superpoints)): 
-            if not self.superpoints[i].contains(line.points[i]): 
+            if not self.superpoints[i].min <= line.points[i] <= self.superpoints[i].max: 
                 return False 
             
         return True
 
-    def contains_p(self, point:float, layer:int): 
-        
-        sp = self.superpoints[layer] 
-        return sp.contains(point)
+    def contains_p(self, p:Point): 
+        relevant_superpoint = self.superpoints[p.layer_num - 1]
+        return relevant_superpoint.contains(p)
     
     def __eq__(self, other): 
-        if not isinstance(other, wedgePatch): 
+        if not isinstance(other, Patch): 
             return NotImplemented 
         
         for i in range(len(self.superpoints)): 
@@ -67,7 +156,6 @@ class wedgePatch():
             
         return True 
         
-    
     def plot(self, color='g'): 
         heights = np.arange(1, self.env.layers + 1) * self.env.radii 
         
@@ -80,19 +168,19 @@ class wedgePatch():
         
         plt.xticks(np.arange(-self.env.top_layer_lim, self.env.top_layer_lim, 10))
         plt.yticks(np.arange(0, max_height + 1, self.env.layers))
-        # plt.show()
 
-class wedgeCover(): 
+class Cover(): 
     
-    def __init__(self, env:Environment, data:WedgeData): 
+    def __init__(self, data:DataSet): 
         self.n_patches = 0 
         self.patches = [] 
-        self.env = env 
+        self.env = data.env 
         self.data = data 
         self.fitting_lines = [] 
         self.superPoints = [] 
         
-    def add_patch(self, curr_patch:wedgePatch): 
+        
+    def add_patch(self, curr_patch:Patch): 
         if self.n_patches == 0: 
             self.patches.append(curr_patch) 
             self.n_patches += 1 
@@ -257,7 +345,7 @@ class wedgeCover():
 
             #if there is not enough points left, pick last n points
             if closest_index + n - 1 > len(row_list):
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][len(row_list)-n:]))
+                patch_ingredients.append(SuperPoint(row_data[i][len(row_list)-n:]))
             
             #if there are enough points left, pick point closest to slope and next n-1 points
             else:
@@ -265,10 +353,10 @@ class wedgeCover():
                 if closest_index == 0:
                     closest_index = 1
                 #closest_index - 1 insures point is to left of line ie ensuring patches overlap
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-1:closest_index + n - 1]))
+                patch_ingredients.append(SuperPoint(row_data[i][closest_index-1:closest_index + n - 1]))
 
         #creates new patch
-        new_patch = wedgePatch(self.env, tuple(patch_ingredients))
+        new_patch = Patch(self.env, tuple(patch_ingredients))
 
         #if all layers have points beyond stop index, add patch and stop
         if term == 5:
@@ -338,7 +426,7 @@ class wedgeCover():
 
             #if there aren't enough points left, pick leftmost n points
             if closest_index + 2 < n:
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][:n]))
+                patch_ingredients.append(SuperPoint(row_data[i][:n]))
 
             #if there are enough points left, pick point closest to slope and n-1 points to the left
             else:
@@ -346,10 +434,10 @@ class wedgeCover():
                 if closest_index == len(row_list) - 1:
                     closest_index -=1
                 #closest_index + 2 insures point is to right of line ie ensures patches overlap
-                patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index - n + 2:closest_index + 2]))
+                patch_ingredients.append(SuperPoint(row_data[i][closest_index - n + 2:closest_index + 2]))
 
         #creates new patch
-        new_patch = wedgePatch(self.env, tuple(patch_ingredients))
+        new_patch = Patch(self.env, tuple(patch_ingredients))
 
         #if all layers have points beyond stop index, add patch and stop
         if term == 5:
@@ -387,10 +475,10 @@ class wedgeCover():
             if start_index != 0:
                 start_index -= 1
             #add superpoint
-            init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+n]))
+            init_patch.append(SuperPoint(row_data[row][start_index:start_index+n]))
 
         #add to patch
-        self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+        self.add_patch(Patch(self.env, tuple(init_patch)))
 
         #run main algorithm
         self.S_loop15(z0=z0, stop=stop, n=n)
@@ -422,10 +510,10 @@ class wedgeCover():
             if start_index != len(self.data.array[row])-1:
                 start_index += 1
             #add superpoint
-            init_patch.append(wedgeSuperPoint(row_data[row][start_index-n+1:start_index+1]))
+            init_patch.append(SuperPoint(row_data[row][start_index-n+1:start_index+1]))
 
         #add to patch
-        self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+        self.add_patch(Patch(self.env, tuple(init_patch)))
 
         #run main algorithm
         self.S_rloop15(z0 = z0, stop = -1, n = n)
@@ -456,9 +544,9 @@ class wedgeCover():
                 center_index = int(n/2)
             elif (center_index+int(n/2)) > len(self.data.array[row]):
                 center_index = len(self.data.array[row]) - int(n/2)
-            init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(n/2):center_index+int(n/2)]))
+            init_patch.append(SuperPoint(row_data[row][center_index-int(n/2):center_index+int(n/2)]))
         #add initial patch
-        self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+        self.add_patch(Patch(self.env, tuple(init_patch)))
 
         #for solveQ loops when it needs to stop at line from (0, 0) to (center, 25)
         if stop == 'center':
@@ -469,7 +557,7 @@ class wedgeCover():
                 #generates patches right of starting, stopping at center
                 self.S_loop15(z0 = z0, stop = 0, n = n)
                 #add initial patch again
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+                self.add_patch(Patch(self.env, tuple(init_patch)))
                 #generate point left of starting
                 self.S_rloop15(z0 = z0, n = n)
                 #delete one of the inital patches so no duplices
@@ -483,7 +571,7 @@ class wedgeCover():
                 #generates patches right of starting
                 self.S_loop15(z0 = z0, n = n)
                 #add initial patch again
-                self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+                self.add_patch(Patch(self.env, tuple(init_patch)))
                 #generates patches left of starting, stopping at center
                 self.S_rloop15(z0 = z0, stop = 0, n = n)
                 #delete one of the initial patches so no duplicates
@@ -496,7 +584,7 @@ class wedgeCover():
             #generates patches right of starting
             self.S_loop15(z0 = z0, n = n)
             #add initial patch again
-            self.add_patch(wedgePatch(self.env, tuple(init_patch)))
+            self.add_patch(Patch(self.env, tuple(init_patch)))
             #generates patches left of starting
             self.S_rloop15(z0 = z0, n = n)
             #delete one of the initial patches so no duplicates
@@ -543,7 +631,7 @@ class wedgeCover():
                 name = 0
                 for patch in self.patches: 
                     patch.plot("b")
-                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -552,7 +640,7 @@ class wedgeCover():
                 for patch in self.patches: 
                     self.data.plot(show = False) 
                     patch.plot("b")
-                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -564,7 +652,7 @@ class wedgeCover():
                             line.plot("r")
                     patch.plot("b")
                 
-                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -576,7 +664,7 @@ class wedgeCover():
                         if patch.contains(line): 
                             line.plot("r")
                     patch.plot("b")
-                    plt.savefig(f"temp_image_dir/{two_digit(name)}.png")
+                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
    
@@ -591,11 +679,11 @@ class wedgeCover():
                     
             while True:
                 # read and display the current image
-                image = cv2.imread(image_files[current_image_idx])
-                cv2.imshow("Slideshow", image)
+                image = imread(image_files[current_image_idx])
+                imshow("Slideshow", image)
 
                 # wait for a key press and check its value
-                key = cv2.waitKey(0) & 0xFF
+                key = waitKey(0) & 0xFF
 
                 # if the 'e' key is pressed, go to the next image
                 if key == ord('e'):
@@ -619,6 +707,4 @@ class wedgeCover():
                 os.remove(file) 
                 print(f"Deleted File: {file}")
                 
-            cv2.destroyAllWindows()
-                    
-
+            destroyAllWindows()

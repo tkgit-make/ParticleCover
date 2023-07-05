@@ -1,6 +1,6 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
-from data import * 
+from coverers.data_structs import * 
 import math
 import cv2 
 import os 
@@ -153,7 +153,6 @@ class Patch():
             
         return True 
         
-    
     def plot(self, color='g'): 
         heights = np.arange(1, self.env.layers + 1) * self.env.radii 
         
@@ -183,7 +182,6 @@ class Cover():
         self.data = data 
         self.fitting_lines = [] 
         self.superPoints = [] 
-        
         
     def cluster(self, type): 
         # type can be LR or C

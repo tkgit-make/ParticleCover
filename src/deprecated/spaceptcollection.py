@@ -1,4 +1,4 @@
-from utils import *
+from src.deprecated.utils import *
 from prettytable import PrettyTable
 from decimal import Decimal
 
@@ -7,11 +7,13 @@ import numpy as np
 import math
 
 class SpacePoint:
+    # represents a point 
+    
     def __init__(self, layer_num, radius, phi, z):
-        self.layer_num = layer_num
-        self.radius = radius
-        self.phi = phi
-        self.z = z
+        self.layer_num = layer_num  # index of which layer it is in (1~5)
+        self.radius = radius        # the radius 
+        self.phi = phi              # angle phi
+        self.z = z                  # the thing we're interested in
 
 class SpacePtCollection:
     def __init__(self, event_num):

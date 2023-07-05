@@ -1,18 +1,11 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
-from data import * 
-from cover import *
-from test_modules import *
-import math
-import cv2 
-import os 
-import glob
-import matplotlib
-import ast
-import time
-from reader import *
-from converter import *
-from wedgecover import *
+import math, os, glob, ast, time, cv2 
+
+from src.coverers.data_structs import * 
+from src.coverers.cover import *
+from src.testers.test import *
+from src.deprecated.reader import *
 
 '''
 f = open('wedgeData_v2_128.txt')

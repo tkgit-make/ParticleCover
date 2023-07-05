@@ -1,9 +1,23 @@
-from data import *
-from spaceptcollection import *
+from src.deprecated.spaceptcollection import *
 
 import numpy as np
+import matplotlib.pyplot as plt
 
-class WedgeData(DataSet):
+class Environment: 
+    
+    def __init__(self, 
+                 top_layer_lim:float = 100.0,       
+                 bottom_layer_lim:float = 15.0, 
+                 num_layers:int = 5,            # number of layers
+                 radius:float = 5.0             # distance between adjacent layers
+                ): 
+        self.top_layer_lim = top_layer_lim
+        self.bottom_layer_lim = bottom_layer_lim
+        self.num_layers = num_layers 
+        self.radius = radius
+
+class WedgeData(Environment):
+    
     def __init__(self, env:Environment, n_points, data_arr):
         self.env = env
         self.n_points = n_points
@@ -32,11 +46,5 @@ class WedgeData(DataSet):
             plt.show()
 
 
-    def add(self, offset = 0.1):
-
-        for i, value in enumerate([[-32, 32],[-49, 49],[-66, 66],[-83, 83],[-100, 100]]):
-            phi0 = self.array[i][0].phi
-            self.array[i].insert(0,SpacePoint(int(i+1), int((i+1)*5), phi0, value[0]-offset))
-            self.array[i].append(SpacePoint(int(i+1), int((i+1)*5), phi0, value[1]+offset))
-            self.n_points[i] = int(self.n_points[i]+2)
+    
 
