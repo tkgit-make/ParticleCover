@@ -14,15 +14,15 @@ class Environment:
     
     def __init__(self, 
                  top_layer_lim:float = 100.0,       
-                 bottom_layer_lim:float = 15.0, 
-                 num_layers:int = 5,            # number of layers
-                 radii:list = [5., 10., 15., 20., 25.]             # distance between adjacent layers
+                 beam_axis_lim:float = 15.0, 
+                 num_layers:int = 5,                        # number of layers
+                 radii:list = [5., 10., 15., 20., 25.]      # distance between adjacent layers
                 ): 
-        if top_layer_lim < bottom_layer_lim: 
+        if top_layer_lim < beam_axis_lim: 
             raise Exception("The top layer limits cannot be smaller than the bottom layer limits.")
         
         self.top_layer_lim = top_layer_lim
-        self.bottom_layer_lim = bottom_layer_lim
+        self.beam_axis_lim = beam_axis_lim
         
         if len(radii) != num_layers: 
             raise Exception("The radii do not match the number of layers.")
@@ -61,7 +61,7 @@ class DataSet():
         else: 
             self.n_points = n_points
         
-        limits_per_layer = np.linspace(self.env.bottom_layer_lim, 
+        limits_per_layer = np.linspace(self.env.beam_axis_lim, 
                                        self.env.top_layer_lim, 
                                        self.env.num_layers+1)[1:]
         
@@ -79,7 +79,7 @@ class DataSet():
             self.n_points = n_points
          
         
-        limits_per_layer = np.linspace(self.env.bottom_layer_lim, 
+        limits_per_layer = np.linspace(self.env.beam_axis_lim, 
                                        self.env.top_layer_lim, 
                                        self.env.num_layers+1)[1:]
         
@@ -113,9 +113,9 @@ class DataSet():
     
         if show_lines == True: 
             
-            plt.plot([self.env.bottom_layer_lim, self.env.top_layer_lim], [0.0, max_height], c="r", alpha=0.5)
-            plt.plot([-self.env.bottom_layer_lim, self.env.bottom_layer_lim], [0.0, 0.0], c="r", alpha=0.5)
-            plt.plot([-self.env.bottom_layer_lim, -self.env.top_layer_lim], [0.0, max_height], c="r", alpha=0.5)
+            plt.plot([self.env.beam_axis_lim, self.env.top_layer_lim], [0.0, max_height], c="r", alpha=0.5)
+            plt.plot([-self.env.beam_axis_lim, self.env.beam_axis_lim], [0.0, 0.0], c="r", alpha=0.5)
+            plt.plot([-self.env.beam_axis_lim, -self.env.top_layer_lim], [0.0, max_height], c="r", alpha=0.5)
         
         if show == True:
             plt.show()

@@ -3,6 +3,10 @@ import time
 
 
 def readFile(filepath, stop:int = 128, performance:bool=False): 
+    # returns a list of wedges 
+    # Each wedge is represented by tuple (env, pnts) 
+    # env is an Environment, and pnts is a list of Points 
+    
     start = time.time()
     
     # Create a list of events, with each event consisting of an environment and its list of Points 
@@ -15,7 +19,7 @@ def readFile(filepath, stop:int = 128, performance:bool=False):
                 tuples = line.strip()[1:-1].split("),(")
                 tuples = [tup.split(",") for tup in tuples]
                 
-                list_of_Points = [Point(int(tupl[0]), int(tupl[1]), float(tupl[2]), float(tupl[3])) for tupl in tuples]
+                list_of_Points = [Point(int(tupl[0]), float(tupl[1]), float(tupl[2]), float(tupl[3])) for tupl in tuples]
                 radii = sorted(list(set([point.radius for point in list_of_Points])))
                 num_layers = len(radii)
                 

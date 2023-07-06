@@ -30,7 +30,7 @@ class LineGenerator():
         self.env = env 
         self.start = start 
         
-        if not(-env.bottom_layer_lim <= start <= env.bottom_layer_lim): 
+        if not(-env.beam_axis_lim <= start <= env.beam_axis_lim): 
             raise Exception("Start point is out of range. ")
         
         max_height = env.radii[-1]
@@ -708,3 +708,4 @@ class Cover():
                 print(f"Deleted File: {file}")
                 
             destroyAllWindows()
+            
