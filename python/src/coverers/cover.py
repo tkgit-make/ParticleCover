@@ -194,7 +194,7 @@ class Cover():
                     self.patches.append(curr_patch) 
                     self.n_patches += 1 
                     break             
-
+    
     def solve(self, lining:str = "SolveS", z0=0, n = 16, nlines:int=100, show = True): 
         if show == True:
             lGen = LineGenerator(self.env, z0)
