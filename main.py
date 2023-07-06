@@ -6,13 +6,19 @@ import time
 
 filepath = "data/wedgeData_v3_128.txt"
 
-N = 50
-filedata = readFile(filepath, stop=1, performance=False)
+
+filedata = readFile(filepath, stop=10, performance=False)
+# filedata is a list of wedges 
+# Each wedge is represented by tuple (env, pnts)
+# env is an Environment, and pnts is a list of Points
+
+
 env, points = filedata[0] 
 ds = DataSet(env)
 ds.importData(points) 
+ds.plot() 
+plt.show() 
 
+# cov = Cover(ds) 
 
-cov = Cover(ds) 
-
-cov.solveS() 
+# cov.solveS() 
