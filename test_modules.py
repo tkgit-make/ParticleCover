@@ -65,9 +65,9 @@ def wedge_test(lining:str = "solveS", solve_at = 0, z0 = np.arange(-15, 15.5, 0.
             
             for i in range(len(test_lines)): 
                 for patch in cover.patches:
-                    if patch.contains(test_lines[i]): 
+                    if patch.contains(test_lines[i]):
                         percentage_accepted += 1 
-                        break 
+                        break
 
             
             percentage_accepted = percentage_accepted/lines
@@ -103,6 +103,235 @@ def wedge_test(lining:str = "solveS", solve_at = 0, z0 = np.arange(-15, 15.5, 0.
             at = 0
         plt.savefig(f"Figures/wedge_test({lining}_{v.replace('.','')}_{at}_n{n})")
     plt.show()
+
+def z099(lining:str = "solveS", accept = 0.999, start = 'odd', n = 16, wedges = [0, 128], v = 'v3', savefig = False):
+    solve_at = [0]
+    real_solve = [0]
+    reached = False
+    z0 = np.arange(-15, 15.5, 0.5)
+    lines = 1000
+    left_index = 0
+    right_index = 60
+    last_left = 30
+    last_right = 31
+    rf = False
+    lf = False
+
+    while reached == False:
+        mean_list = np.zeros((len(z0), wedges[1]-wedges[0]))
+        num_covers = []
+        PRF = []
+        file = f'wedgeData_{v}_128.txt'
+
+        with open(file) as f:
+            for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
+                d = np.array(ast.literal_eval(f.readline()))
+                env = Environment()
+                data = DataSet(env = env)
+                data.input_data(d, add = True)
+                cover = Cover(env, data)
+                cover.solve(z0 = solve_at, lining=lining, n = n, show = False)
+                num_covers.append(cover.n_patches)
+                out = [] 
+
+                for layer in range(env.layers): 
+                    for point in data.array[layer]: 
+                        
+                        num_in = 0
+                        for patch in cover.patches: 
+                            if patch.contains_p(point, layer): 
+                                num_in += 1
+                                
+                        out.append(num_in)
+                PRF.append(out)
+
+                for iz, z in enumerate(np.array(z0)):
+                    percentage_accepted = 0 
+                        
+                    lg = LineGenerator(env, z)
+                    test_lines = lg.generateEvenGrid(lines)
+                    
+                    for i in range(len(test_lines)): 
+                        for patch in cover.patches:
+                            if patch.contains(test_lines[i]): 
+                                percentage_accepted += 1 
+                                break 
+
+                    
+                    percentage_accepted = percentage_accepted/lines
+                    mean_list[iz, ik] = mean_list[iz, ik] + percentage_accepted
+        z0_means = np.mean(mean_list, axis = 1)
+        if np.all(z0_means > accept):
+            break
+        if np.all(z0_means[left_index:last_left] > accept):
+            real_solve = np.append(real_solve, [z0[left_index]])
+            print('new left', z0[left_index])
+            last_left = left_index
+            left_index = -1
+        if np.all(z0_means[last_right:right_index] > accept):
+            real_solve = np.append(real_solve, [z0[right_index]])
+            print('new right', z0[right_index])
+            last_right = right_index
+            right_index = 61
+        left_index +=1
+        right_index -=1
+        real_solve = np.unique(real_solve)
+        solve_at = np.copy(real_solve)
+
+        solve_at = np.append(solve_at, z0[left_index])
+        solve_at = np.append(solve_at,z0[right_index])
+        solve_at = np.unique(solve_at)
+        print(left_index)
+        print(right_index)
+        print(np.sort(real_solve))
+
+    ymin = accept
+    mean_num = format(np.mean(num_covers), ".1f")
+    std_num = format(np.std(num_covers), ".1f")
+
+    plt.scatter(z0, np.mean(mean_list, axis = 1), color = 'r', s = 10)
+    plt.plot(z0, np.mean(mean_list, axis = 1), color = 'k')
+    plt.xlabel('z0 offset [cm]', fontsize = 16)
+    plt.ylabel('Acceptance',  fontsize = 16)
+    plt.ylim(ymin, 1.0)
+    plt.title(f'{lining}', fontsize = 16)
+    PRFm = format(np.mean(out), '.2f')
+    PRFs = format(np.std(out), '.2f')
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\nPatches with " + r'$z_0$' + f" = {np.sort(np.round(np.array(solve_at), 2), axis = 0)}\nppl = {n}, " + r'$N_{wedges}$ ' + f"= {wedges[1]}, {v} events"],
+        loc = 8, fontsize = 12)
+    if savefig == True:
+        try:
+            at = len(solve_at)
+        except:
+            at = solve_at
+        plt.savefig(f"Figures/minimal_z0_odd_({lining}_{v.replace('.','')}_n{n})")
+    plt.show()
+
+
+def wedge_test_old(lining:str = "solveS", solve_at = 0, z0 = np.arange(-15, 15.5, 0.5), n = 16, wedges = [0, 128], lines=1000, savefig=False, v = 'v2'):
+    mean_list = np.zeros((len(z0), wedges[1]-wedges[0]))
+    num_covers = []
+    PRF = []
+    file = f'wedgeData_{v}_128.txt'
+
+    with open(file) as f:
+        for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
+            d = np.array(ast.literal_eval(f.readline()))
+            env = Environment()
+            data = DataSet(env = env, n_points = 150)
+            data.input_data(d, add = True)
+            cover = Cover(env, data)
+            cover.solve(z0 = solve_at, lining=lining, n = n, show = False)
+            #data.plot(True)
+            num_covers.append(cover.n_patches)
+            out = [] 
+
+            for layer in range(env.layers): 
+                for point in data.array[layer]: 
+                    
+                    num_in = 0
+                    for patch in cover.patches: 
+                        if patch.contains_p(point, layer): 
+                            num_in += 1
+                            
+                    out.append(num_in)
+            PRF.append(out)
+
+            for iz, z in enumerate(np.array(z0)):
+                percentage_accepted = 0 
+                    
+                lg = LineGenerator(env, z)
+                test_lines = lg.generateEvenGrid(lines)
+                
+                for i in range(len(test_lines)): 
+                    for patch in cover.patches:
+                        if patch.contains(test_lines[i]): 
+                            percentage_accepted += 1 
+                            break 
+
+                
+                percentage_accepted = percentage_accepted/lines
+                mean_list[iz, ik] = mean_list[iz, ik] + percentage_accepted
+            #print(ik)
+    mean_accept = format(np.mean(mean_list), ".3f")
+    mean_num = format(np.mean(num_covers), ".1f")
+    std_num = format(np.std(num_covers), ".1f")
+    if type(solve_at) == float:
+        ymin = 0
+    elif type(solve_at) == int:
+        ymin = 0
+    else:
+        ymin = 0.90
+
+    plt.scatter(z0, np.mean(mean_list, axis = 1), color = 'r', s = 10)
+    plt.plot(z0, np.mean(mean_list, axis = 1), color = 'k')
+    plt.xlabel('z0 offset [cm]', fontsize = 16)
+    plt.ylabel('Acceptance',  fontsize = 16)
+    plt.ylim(ymin, 1.0)
+    plt.title(f'{lining}', fontsize = 16)
+    PRFm = format(np.mean(out), '.2f')
+    PRFs = format(np.std(out), '.2f')
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\nPatches with " + r'$z_0$' + f" = {np.round(np.array(solve_at), 2)}\nppl = {n}, " + r'$N_{wedges}$ ' + f"= {wedges[1]}, {v} events"],
+        loc = 8, fontsize = 12)
+    if savefig == True:
+        try:
+            at = len(solve_at)
+        except:
+            at = solve_at
+        plt.savefig(f"Figures/wedge_test({lining}_{v.replace('.','')}_{at}_n{n})")
+    if np.mean(np.mean(mean_list, axis = 1)) > 0.999:
+        plt.show()
+        return np.mean(np.mean(mean_list, axis = 1))
+    else:
+        plt.clf()
+        return np.mean(np.mean(mean_list, axis = 1))
+
+def wedgeSlopePlot(lining:str = "solveS", events=128, lines=1000, z0 = 0, savefig=False, show = True, v = 'v2'):
+
+    percentage_accepted = [0 for _ in range(lines)]
+
+    
+    file = open(f'wedgeData_{v}_128.txt')
+    '''    for i in range(7):
+        line = file.readline()'''
+    for k in range(events):
+        line = file.readline()
+        env = Environment()
+        data = DataSet(env, n_points=150)
+        d = np.array(ast.literal_eval(line))
+        data.input_data(d, add = True)
+        cover = Cover(env, data) 
+        cover.solve(lining=lining, z0 = z0, show = False)
+        
+        lg = LineGenerator(env, z0)
+        test_lines = lg.generateEvenGrid(lines)
+        co_tan = []
+        
+        
+        for i in range(len(test_lines)):
+            co_tan.append(100/test_lines[i].slope)
+            for patch in cover.patches: 
+                if patch.contains(test_lines[i]): 
+                    percentage_accepted[i] += 1 
+                    break
+
+
+    percentage_accepted = [x / events for x in percentage_accepted]
+    mean_accept = format(np.mean(percentage_accepted), ".3f")
+    
+    if show == False:
+        return np.mean(percentage_accepted)
+
+    print(f"({lining}) - {mean_accept}")
+    plt.plot(co_tan, percentage_accepted, c="b", label = "Mean acceptance: "+mean_accept)
+    
+    plt.title(f"Acceptance Rate ({lining})", fontsize = '20')
+    plt.xlabel("dZ/dr", fontsize = '16')
+    plt.ylabel("Acceptance Probability", fontsize = '16')
+    plt.legend(fontsize = '16')
+    if savefig == True: 
+        plt.savefig(f"Figures/Acceptance_Rate_({lining})")
+    plt.show() 
 
 def numCovers(clustering:str = "", lining:str = "solveS", events=1000, savefig=False, ideal=False): 
     # Runs a bunch of iterations by generating 1000 datasets and 
@@ -341,127 +570,3 @@ def duplicates(lining:str = "solveS", z0 = 0, events=1000, ideal=False):
 
     print(f'{lining} - mean: {np.mean(dupes)} std: {np.std(dupes)}')
 
-def wedge_test_old(lining:str = "solveS", solve_at = 0, z0 = np.arange(-15, 15.5, 0.5), n = 16, wedges = [0, 128], lines=1000, savefig=False, v = 'v2'):
-    mean_list = np.zeros((len(z0), wedges[1]-wedges[0]))
-    num_covers = []
-    PRF = []
-    file = f'wedgeData_{v}_128.txt'
-
-    with open(file) as f:
-        for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
-            d = np.array(ast.literal_eval(f.readline()))
-            env = Environment()
-            data = DataSet(env = env, n_points = 150)
-            data.input_data(d, add = True)
-            cover = Cover(env, data)
-            cover.solve(z0 = solve_at, lining=lining, n = n, show = False)
-            #data.plot(True)
-            num_covers.append(cover.n_patches)
-            out = [] 
-
-            for layer in range(env.layers): 
-                for point in data.array[layer]: 
-                    
-                    num_in = 0
-                    for patch in cover.patches: 
-                        if patch.contains_p(point, layer): 
-                            num_in += 1
-                            
-                    out.append(num_in)
-            PRF.append(out)
-
-            for iz, z in enumerate(np.array(z0)):
-                percentage_accepted = 0 
-                    
-                lg = LineGenerator(env, z)
-                test_lines = lg.generateEvenGrid(lines)
-                
-                for i in range(len(test_lines)): 
-                    for patch in cover.patches:
-                        if patch.contains(test_lines[i]): 
-                            percentage_accepted += 1 
-                            break 
-
-                
-                percentage_accepted = percentage_accepted/lines
-                mean_list[iz, ik] = mean_list[iz, ik] + percentage_accepted
-            #print(ik)
-    mean_accept = format(np.mean(mean_list), ".3f")
-    mean_num = format(np.mean(num_covers), ".1f")
-    std_num = format(np.std(num_covers), ".1f")
-    if type(solve_at) == float:
-        ymin = 0
-    elif type(solve_at) == int:
-        ymin = 0
-    else:
-        ymin = 0.90
-
-    plt.scatter(z0, np.mean(mean_list, axis = 1), color = 'r', s = 10)
-    plt.plot(z0, np.mean(mean_list, axis = 1), color = 'k')
-    plt.xlabel('z0 offset [cm]', fontsize = 16)
-    plt.ylabel('Acceptance',  fontsize = 16)
-    plt.ylim(ymin, 1.0)
-    plt.title(f'{lining}', fontsize = 16)
-    PRFm = format(np.mean(out), '.2f')
-    PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\nPatches with " + r'$z_0$' + f" = {np.round(np.array(solve_at), 2)}\nppl = {n}, " + r'$N_{wedges}$ ' + f"= {wedges[1]}, {v} events"],
-        loc = 8, fontsize = 12)
-    if savefig == True:
-        try:
-            at = len(solve_at)
-        except:
-            at = solve_at
-        plt.savefig(f"Figures/wedge_test({lining}_{v.replace('.','')}_{at}_n{n})")
-    if np.mean(np.mean(mean_list, axis = 1)) > 0.999:
-        plt.show()
-        return np.mean(np.mean(mean_list, axis = 1))
-    else:
-        plt.clf()
-        return np.mean(np.mean(mean_list, axis = 1))
-
-def wedgeSlopePlot(lining:str = "solveS", events=128, lines=1000, z0 = 0, savefig=False, show = True, v = 'v2'):
-    
-    percentage_accepted = [0 for _ in range(lines)]
-
-    
-    file = open(f'wedgeData_{v}_128.txt')
-    '''    for i in range(7):
-        line = file.readline()'''
-    for k in range(events):
-        line = file.readline()
-        env = Environment()
-        data = DataSet(env, n_points=150)
-        d = np.array(ast.literal_eval(line))
-        data.input_data(d, add = True)
-        cover = Cover(env, data) 
-        cover.solve(lining=lining, z0 = z0, show = False)
-        
-        lg = LineGenerator(env, z0)
-        test_lines = lg.generateEvenGrid(lines)
-        co_tan = []
-        
-        
-        for i in range(len(test_lines)):
-            co_tan.append(100/test_lines[i].slope)
-            for patch in cover.patches: 
-                if patch.contains(test_lines[i]): 
-                    percentage_accepted[i] += 1 
-                    break
-
-
-    percentage_accepted = [x / events for x in percentage_accepted]
-    mean_accept = format(np.mean(percentage_accepted), ".3f")
-    
-    if show == False:
-        return np.mean(percentage_accepted)
-
-    print(f"({lining}) - {mean_accept}")
-    plt.plot(co_tan, percentage_accepted, c="b", label = "Mean acceptance: "+mean_accept)
-    
-    plt.title(f"Acceptance Rate ({lining})", fontsize = '20')
-    plt.xlabel("dZ/dr", fontsize = '16')
-    plt.ylabel("Acceptance Probability", fontsize = '16')
-    plt.legend(fontsize = '16')
-    if savefig == True: 
-        plt.savefig(f"Figures/Acceptance_Rate_({lining})")
-    plt.show() 

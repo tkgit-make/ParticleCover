@@ -129,10 +129,6 @@ class wedgeCover():
                 self.solveS_reverse(z0=z0, stop = -1, n = n)
             return
 
-        elif lining == "solveS_center1": 
-            self.solveS_center1(n = n)
-            return 
-
         elif lining == "solveS_center2":
             try:
                 for s in z0:
@@ -204,7 +200,7 @@ class wedgeCover():
         Args:
             z0 (num, optional): Places to generate patch. Defaults to 0.
             stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
-            n (int, optional): points per layer per patch. Defaults to 16.
+            n (int, optional): points per patch per layer. Defaults to 16.
 
         Returns:
             function: reruns loop if it hasn't reached the end of the dataset
@@ -212,6 +208,8 @@ class wedgeCover():
 
         #count how many times this has been run
         loops = self.n_patches - 1
+        #reads last patch made
+        last_patch = self.patches[loops].superpoints
         #create list for points closest to starting line and patch ingredients
         mins = []
         patch_ingredients = []
@@ -221,8 +219,6 @@ class wedgeCover():
         #loops through layers
         for i in range(5):
             y = 5*(i+1)
-            #reads last patch made
-            last_patch = self.patches[loops].superpoints
             #create compatible arrays from data structure
             row_data = last_patch[i].points
             row_list = np.array([row_data[x].z for x in range(len(row_data))])
@@ -234,11 +230,11 @@ class wedgeCover():
         min_index = np.argmin(np.array(mins))
         min_value = (last_patch[min_index].points[n-1].z-z0)/(5*(min_index+1)/100)
         
+        #row_data[layer] gives spacepoints in layer
+        row_data = self.data.array
         #loops through layers again
         for i in range(5):
             y = 5*(i+1)
-            #create compatible array from data structure
-            row_data = self.data.array
             row_list = np.array([row_data[i][x].z for x in range(len(row_data[i]))])
             #finds point closest to line from (z0, 0) to leftmost rescaled point
             closest_index = np.argmin(np.abs((row_list-z0)/(y/100) - min_value))
@@ -267,17 +263,16 @@ class wedgeCover():
                 #closest_index - 1 insures point is to left of line ie ensuring patches overlap
                 patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-1:closest_index + n - 1]))
 
-        #creates new patch
+        #add superpoints to patch
         new_patch = wedgePatch(self.env, tuple(patch_ingredients))
-
-        #if all layers have points beyond stop index, add patch and stop
+        #add patch to cover
+        self.add_patch(new_patch)
+        
+        #if all layers have points beyond stop index, stop
         if term == 5:
-            self.add_patch(new_patch)
             return
-
-        #if new patches are still being created, add patch to cover instance and repeat loop
+        #if new patches are still being created, repeat loop
         else:
-            self.add_patch(new_patch)
             return self.S_loop15(z0, stop, n = n)
 
     def S_rloop15(self, z0 = 0, stop = -1, n = 16):
@@ -367,7 +362,7 @@ class wedgeCover():
         Args:
             z0 (num, optional): Places to generate patch. Defaults to 0.
             stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
-            n (int, optional): points per layer per patch. Defaults to 16.
+            n (int, optional): points per patch per layer. Defaults to 16.
 
         Returns:
             function: runs loop to make patches
@@ -375,21 +370,22 @@ class wedgeCover():
         #create list for inital patch
         init_patch = []
 
+        #row_data[layer] contains spacepoints for each layer
+        row_data = self.data.array
         #loops through each layer and picks n points closest to (z0, 0) and (-100, 25)
         for row in range(5):
             y = 5*(row + 1)
             #create compatible arrays from data structure
-            row_data = self.data.array
             row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
-            #picks picks n points closest to (z0, 0) and (-100, 25) 
+            #picks picks n points closest to line from (z0, 0) to (-100, 25) 
             start_index = np.argmin(np.abs(row_list - (((-z0-100)*y)/25+z0)))
             #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
             if start_index != 0:
                 start_index -= 1
-            #add superpoint
+            #add superpoint to patch
             init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+n]))
 
-        #add to patch
+        #add patch to cover
         self.add_patch(wedgePatch(self.env, tuple(init_patch)))
 
         #run main algorithm

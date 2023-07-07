@@ -46,11 +46,11 @@ class LineGenerator():
 
     def generateEvenGrid(self, n=100):
 
-        ycoor = 25
+        ycoor = 25 #set to radius of outermost layer when list of radii is avaliable
         xcoor = np.linspace(-self.env.top_layer_lim, self.env.top_layer_lim, n)
         
         slopes = ycoor/(xcoor-self.start)
-        return [Line(self.env, self.start, slope) for slope in slopes] 
+        return [Line(self.env, self.start, slope) for slope in slopes]
     
     def generateRandomLines(self, n=100): 
         

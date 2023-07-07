@@ -26,7 +26,7 @@ data.input_data(d, add = True)
 cover = Cover(env, data)
 cover.solve(z0 = 0, lining='solveS', n = 16, show = True)
 cover.plot()
-'''
+
 
 env = Environment()
 data = DataSet(env, n_points=150, equal_spacing = True) 
@@ -38,7 +38,7 @@ cover.solve('solveQ', z0 = 0, show = True)
 cover.plot()
 #cover.plot()
 #data.plot()
-
+'''
 
 '''
 
@@ -147,6 +147,8 @@ first_wedge3.plot(True)
 #wedge_test(lining = 'solveS_reverse', solve_at = 0, n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,30], savefig = False, v = 'v3')
 #wedge_test(lining = 'solveQ', solve_at = [-10,0,10], n =16, z0 = np.arange(-15, 15.5, 0.5), wedges = [0,128], savefig = True, v = 'v3')
 
+
+'''
 def odd_loop(lining = 'solveS', v = 'v2'):
     accep = 0.0
     zvalues = 3
@@ -166,3 +168,14 @@ def even_loop(lining = 'solveS', v = 'v2'):
 
 #odd_loop('solveS_reverse', v = 'v3')
 #even_loop('solveS_reverse', v = 'v3')
+
+
+
+env = Environment()
+events = readFile('wedgeData_v2_128.txt', 10)
+wedge1 = convertToDataset(events[5])
+cover = wedgeCover(env, wedge1)
+cover.solve(lining = 'solveS_center2', z0 = 15)
+cover.plot()
+'''
+z099(lining =  "solveS_reverse",wedges = [0,128], savefig=True, v = 'v2')
