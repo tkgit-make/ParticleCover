@@ -1,3 +1,6 @@
+#ifndef WEDGECOVER_H
+#define WEDGECOVER_H
+
 const int numLayers = 5;
 const int numPtsPerSuperpoint = 16;
 const int maxPatches = 100;
@@ -24,3 +27,5 @@ struct Patch { // patch
 struct Cover { // cover, consisting of patches
     struct Patch patches[maxPatches];
 };
+
+#endif
