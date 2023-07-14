@@ -24,8 +24,4 @@ struct Patch { // patch
     float Superpoints[numLayers][numPtsPerSuperpoint];
 };
 
-struct Cover { // cover, consisting of patches
-    struct Patch patches[maxPatches];
-};
-
 #endif
