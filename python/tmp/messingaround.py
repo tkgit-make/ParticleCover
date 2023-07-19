@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import math, os, glob, ast, time, cv2 
 
 from src.coverers.data_structs import * 
-from src.coverers.cover import *
+from src.coverers.line import *
 from src.testers.test import *
 from src.deprecated.reader import *
 

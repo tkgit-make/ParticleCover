@@ -16,7 +16,7 @@ class Environment:
                  top_layer_lim:float = 100.0,       
                  beam_axis_lim:float = 15.0, 
                  num_layers:int = 5,                        # number of layers
-                 radii:list = [5., 10., 15., 20., 25.]      # distance between adjacent layers
+                 radii:list = [5., 10., 15., 20., 25.]      # radius of layers
                 ): 
         if top_layer_lim < beam_axis_lim: 
             raise Exception("The top layer limits cannot be smaller than the bottom layer limits.")
@@ -103,7 +103,7 @@ class DataSet():
         coords = [(point.z, point.radius) for layer in self.array for point in layer]
         max_height = self.env.radii[-1]
     
-        plt.scatter(*zip(*coords), c="b", s=3)
+        plt.scatter(*zip(*coords), c="g", s=3)
         
         # X Y Labels
         plt.xlabel('z [cm]', fontsize = 16)
@@ -120,12 +120,16 @@ class DataSet():
         if show == True:
             plt.show()
         
-    # Muchang - "I don't know what this is so I kept it here. "
-    # def add(self, offset = 0.1):
+    def add(self, offset = 0.1):
+        """Adds one point on each side of the trapezoid for better acceptance
 
-    #     for i, value in enumerate([[-32, 32],[-49, 49],[-66, 66],[-83, 83],[-100, 100]]):
-    #         phi0 = self.array[i][0].phi
-    #         self.array[i].insert(0,SpacePoint(int(i+1), int((i+1)*5), phi0, value[0]-offset))
-    #         self.array[i].append(SpacePoint(int(i+1), int((i+1)*5), phi0, value[1]+offset))
-    #         self.n_points[i] = int(self.n_points[i]+2)
+        Args:
+            offset (float, optional): How much is the offset in cms. Defaults to 0.1.
+        """
+
+        for i, value in enumerate([[-32, 32],[-49, 49],[-66, 66],[-83, 83],[-100, 100]]):
+            phi0 = self.array[i][0].phi
+            self.array[i].insert(0,Point(int(i+1), int((i+1)*5), phi0, value[0]-offset))
+            self.array[i].append(Point(int(i+1), int((i+1)*5), phi0, value[1]+offset))
+            self.n_points[i] = int(self.n_points[i]+2)
        

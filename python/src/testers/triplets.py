@@ -1,19 +1,12 @@
+from src.coverers.data_structs import * 
+from src.coverers.line import * 
+from src.readers.reader import *
+from src.coverers.wedgecover import *
+from src.deprecated.reader import * 
 import numpy as np 
 import matplotlib.pyplot as plt 
-from data import * 
-from cover import *
-from test_modules import *
-import math
-import cv2 
-import os 
-import glob
-import matplotlib
-import ast
-import time
-from reader import *
-from converter import *
-from wedgecover import *
 import matplotlib as mpl
+
 
 def create_triplets(version = 'v2', random = False, anchor_layer = 1):
     if (anchor_layer < 1) or (anchor_layer > 3):

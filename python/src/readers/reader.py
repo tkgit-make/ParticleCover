@@ -24,7 +24,7 @@ def readFile(filepath, stop:int = 128, performance:bool=False):
                 num_layers = len(radii)
                 
                 env = Environment(top_layer_lim= 100.0, 
-                                  bottom_layer_lim = 15.0, 
+                                  beam_axis_lim = 15.0, 
                                   num_layers=num_layers, 
                                   radii=radii
                                 )
