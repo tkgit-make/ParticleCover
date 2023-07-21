@@ -5,17 +5,18 @@ from src.coverers.wedgecover import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective", solve_at = 0, z0 = np.arange(-15, 15.5, 0.5), n = 16, wedges = [0, 128], lines=1000, v = 'v3', savefig=False):
+def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, wedges = [0, 128], lines=1000, v = 'v3', accept_cutoff = 10., uniform_N_points = False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
         lining (str, optional): solving method, default is solveS
-        solve_at (int, optional): the z values the patches are being made in accordance to
+        apexZ0 (int, optional): the z values the patches are being made in accordance to
         z0 (num or list, optional): array of z0 values we are testing over, default is range of -15 to 15 with 0.5 spacing
         n (int, optional): ppl (point per patch per layer), default is 16
         wedges (list, optional): which wedges, enter in list of [starting wedge, ending wedge]
         lines (int, optional): how many line to test acceptance with at each z0 value
         savefig (bool, optional): True to save figure
+        uniform_N_points(False or int): number of points in each layer or False to be not uniform
         v (str, optional): version of data, ensure data file is in directory as "wedgeData_{v}_128.txt"
     """
 
@@ -23,6 +24,10 @@ def wedge_test(lining:str = "makePatches_Projective", solve_at = 0, z0 = np.aran
     mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
     PRF = []
+    data_string = f'{v} events'
+    if uniform_N_points != False:
+        data_string = f'Uniform {uniform_N_points} points'
+        wedges = [0, 1]
 
     #read wedgeData file and create environment
     all_data = readFile(f'data/wedgeData_{v}_128.txt', wedges[1])
@@ -31,12 +36,15 @@ def wedge_test(lining:str = "makePatches_Projective", solve_at = 0, z0 = np.aran
         #convert to existing data format
         env, points = all_data[k] 
         data = DataSet(env)
-        data.importData(points)
+        if uniform_N_points == False:
+            data.importData(points)
+        else:
+            data.generateUniform([uniform_N_points, uniform_N_points, uniform_N_points, uniform_N_points, uniform_N_points])
         #add the 0.1 cm points
         data.add()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(z0 = solve_at, lining=lining, n = n, show = False)
+        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
         #append number of covers in the patch
         num_covers.append(cover.n_patches)
         out = [] 
@@ -74,9 +82,9 @@ def wedge_test(lining:str = "makePatches_Projective", solve_at = 0, z0 = np.aran
     std_num = format(np.std(num_covers), ".1f")
 
     #sets minimum for plot
-    if type(solve_at) == float:
+    if type(apexZ0) == float:
         ymin = 0
-    elif type(solve_at) == int:
+    elif type(apexZ0) == int:
         ymin = 0
     else:
         ymin = 0.9
@@ -88,21 +96,26 @@ def wedge_test(lining:str = "makePatches_Projective", solve_at = 0, z0 = np.aran
     plt.ylabel('Acceptance',  fontsize = 16)
     plt.ylim(ymin, 1.0)
     plt.title(f'{lining}', fontsize = 16)
+    mask = np.abs(z0) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\nPatches with " + r'$z_0$' + f" = {solve_at}\nppl = {n}, " + r'$N_{wedges}$ ' + f"= {wedges[1]}, {v} events\nAverage Acceptance: {np.round(np.mean(mean_list), 3)}"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
-            at = len(solve_at)
+            at = len(apexZ0)
         except:
             at = 0
-        plt.savefig(f"Figures/wedge_test({lining}_{v.replace('.','')}_{at}_n{n})")
+        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl})")
     plt.show()
 
-def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', n = 16, wedges = [0, 128], v = 'v3', savefig = False):
-    solve_at = [0]
-    real_solve = [0]
+def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', ppl = 16, wedges = [0, 128], v = 'v3', savefig = False):
+    if start == 'odd':
+        apexZ0 = [0]
+        real_solve = [0]
+    else:
+        apexZ0 = []
+        real_solve = []     
     reached = False
     z0 = np.arange(-15, 15.5, 0.5)
     lines = 1000
@@ -110,6 +123,7 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', n
     right_index = 60
     last_left = 30
     last_right = 31
+    data_string = f"{v} events"
     rf = False
     lf = False
 
@@ -129,7 +143,7 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', n
             data.add()
             #solve for cover
             cover = wedgeCover(env, data)
-            cover.solve(z0 = solve_at, lining=lining, n = n, show = False)
+            cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
             num_covers.append(cover.n_patches)
             out = [] 
 
@@ -175,11 +189,11 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', n
         left_index +=1
         right_index -=1
         real_solve = np.unique(real_solve)
-        solve_at = np.copy(real_solve)
+        apexZ0 = np.copy(real_solve)
 
-        solve_at = np.append(solve_at, z0[left_index])
-        solve_at = np.append(solve_at,z0[right_index])
-        solve_at = np.unique(solve_at)
+        apexZ0 = np.append(apexZ0, z0[left_index])
+        apexZ0 = np.append(apexZ0,z0[right_index])
+        apexZ0 = np.unique(apexZ0)
         print(left_index)
         print(right_index)
         print(np.sort(real_solve))
@@ -196,23 +210,23 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', n
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\nPatches with " + r'$z_0$' + f" = {np.sort(np.round(np.array(solve_at), 2), axis = 0)}\nppl = {n}, " + r'$N_{wedges}$ ' + f"= {wedges[1]}, {v} events\nAverage Acceptance: {np.round(np.mean(mean_list), 3)}"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
-            at = len(solve_at)
+            at = len(apexZ0)
         except:
-            at = solve_at
-        plt.savefig(f"Figures/minimal_z0_odd_({lining}_{v.replace('.','')}_n{n})")
+            at = apexZ0
+        plt.savefig(f"Figures/minimal_z0_{start}_({lining}_{data_string}_ppl{16})")
     plt.show()
 
-def numCovers(lining:str = "makePatches_Projective", events=1000, solve_at = 0, n = 16, savefig=False, v = 'v3'): 
+def numCovers(lining:str = "makePatches_Projective", events=1000, apexZ0 = 0, ppl = 16, savefig=False, v = 'v3'): 
     """Returns histogram of the number of patches
 
     Args:
         lining (str, optional): Solving method. Defaults to "makePatches_Projective".
         events (int, optional): number of wedges. Defaults to 1000.
-        solve_at (num or list, optional): z0 locations patches are generated at. Defaults to 0.
+        apexZ0 (num or list, optional): z0 locations patches are generated at. Defaults to 0.
         n (int, optional): points per patch per layer. Defaults to 16.
         savefig (bool, optional): Saves figure in Figures folder if True. Defaults to False.
         v (str, optional): Data version type. Defaults to 'v3'.
@@ -228,7 +242,7 @@ def numCovers(lining:str = "makePatches_Projective", events=1000, solve_at = 0, 
         data.add()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(z0 = solve_at, lining=lining, n = n, show = False)
+        cover.solve(apexZ0 = apexZ0, lining=lining, ppll = ppl, show = False)
         
         num_covers.append(cover.n_patches)
     avg = np.mean(num_covers)
@@ -247,7 +261,7 @@ def numCovers(lining:str = "makePatches_Projective", events=1000, solve_at = 0, 
         plt.savefig(f"Figures/nPatches_({lining})")
     plt.show()    
     
-def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=1000, z0= 0, n = 16, solve_at=0, v = 'v3', savefig=False, show = True):
+def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=1000, z0= 0, ppl = 16, apexZ0=0, v = 'v3', savefig=False, show = True):
     """Generates plot of acceptance for a given z0 value
 
     Args:
@@ -256,7 +270,7 @@ def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=100
         lines (int, optional): Number of lines tested. Defaults to 1000.
         z0 (num, optional): Where lines are coming from on z axis. Defaults to 0.
         n (int, optional): points per patch per layer. Defaults to 16.
-        solve_at (num or list, optional): z0 locations patches are generated at. Defaults to 0.
+        apexZ0 (num or list, optional): z0 locations patches are generated at. Defaults to 0.
         v (str, optional): data version. Defaults to 'v3'.
         savefig (bool, optional): Saves figure in Figures folder if True. Defaults to False.
         show (bool, optional): Set to False to just return acceptance list without plot. Defaults to True.
@@ -277,7 +291,7 @@ def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=100
         data.add()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(lining=lining, z0 = solve_at, show = False)
+        cover.solve(lining=lining, apexZ0 = apexZ0, ppl = ppl, show = False)
         
         lg = LineGenerator(env, z0)
         test_lines = lg.generateEvenGrid(lines)
@@ -313,7 +327,7 @@ def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=100
         plt.savefig(f"Figures/Acceptance_Rate_({lining})")
     plt.show() 
             
-def pointRepetitionFactor(lining:str = "makePatches_Projective", events=128, solve_at = 0, n = 16, savefig=False, v = 'v3', show = True): 
+def pointRepetitionFactor(lining:str = "makePatches_Projective", events=128, apexZ0 = 0, ppl = 16, savefig=False, v = 'v3', show = True): 
     """for every event, we loop through all the points in the dataset and 
         compute how many patches contain that point. The lower in general 
         the better, since this is a metric of non-wastefulness 
@@ -321,7 +335,7 @@ def pointRepetitionFactor(lining:str = "makePatches_Projective", events=128, sol
     Args:
         lining (str, optional): Solving method. Defaults to "makePatches_Projective".
         events (int, optional): number of wedges. Defaults to 128.
-        solve_at (num or list, optional): z0 locations patches are generated at. Defaults to 0.
+        apexZ0 (num or list, optional): z0 locations patches are generated at. Defaults to 0.
         n (int, optional): points per patch per layer. Defaults to 16.
         savefig (bool, optional): Saves figure in Figures folder if True. Defaults to False.
         v (str, optional): data version. Defaults to 'v3'.
@@ -343,7 +357,7 @@ def pointRepetitionFactor(lining:str = "makePatches_Projective", events=128, sol
         data.add()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(lining=lining, z0 = solve_at, n = n, show = False)
+        cover.solve(lining=lining, apexZ0 = apexZ0, ppl = ppl, show = False)
 
         
         out2 = [] 

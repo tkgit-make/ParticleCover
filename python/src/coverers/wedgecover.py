@@ -35,10 +35,10 @@ class wedgePatch():
     
     # Should be hashable (nvm we can't make it hashable) 
     
-    def __init__(self, env:Environment, superpoints:tuple, z0): 
+    def __init__(self, env:Environment, superpoints:tuple, apexZ0): 
         self.env = env 
-        self.end_layer = 0
-        self.z0 = z0
+        self.end_layer = -1
+        self.apexZ0 = apexZ0
         
         if len(superpoints) != env.num_layers: 
             raise Exception("The patch layers does not match environment layers. ")
@@ -111,65 +111,65 @@ class wedgeCover():
                     self.n_patches += 1 
                     break
 
-    def solve(self, lining:str = "makePatches_Projective", z0=0, n = 16, nlines:int=100, show = True, leftRight = True):
+    def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, show = True, leftRight = True):
         if show == True:
             fitting_lines = []
-            if (type(z0) == int) or (type(z0) == float):
-                lGen = LineGenerator(self.env, z0)
+            if (type(apexZ0) == int) or (type(apexZ0) == float):
+                lGen = LineGenerator(self.env, apexZ0)
                 fitting_lines = fitting_lines + lGen.generateEvenGrid(nlines)
             else:
-                for s in z0:
+                for s in apexZ0:
                     lGen = LineGenerator(self.env, s)
                     fitting_lines = fitting_lines + lGen.generateEvenGrid(nlines)
             self.fitting_lines = fitting_lines
         
         if lining == 'makePatches_Projective':
             try:
-                for s in z0:
-                    self.makePatches_Projective(z0=s, n = n, leftRight = leftRight)
+                for s in apexZ0:
+                    self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = leftRight)
             except:
-                self.makePatches_Projective(z0=z0, n = n, leftRight = leftRight)
+                self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = leftRight)
             return
         
         elif (lining == 'makePatches_Projective_center') or (lining == 'c'):
             try:
-                for s in z0:
-                    self.makePatches_Projective_center(z0=s, n = n)
+                for s in apexZ0:
+                    self.makePatches_Projective_center(apexZ0=s, ppl = ppl)
             except:
-                self.makePatches_Projective_center(z0=z0, n = n)
+                self.makePatches_Projective_center(apexZ0=apexZ0, ppl = ppl)
             return
         
         elif (lining == 'makePatches_Projective_quartile') or (lining == 'q'):
             try:
-                for s in z0:
-                    self.makePatches_Projective_quartile(z0=s, n = n)
+                for s in apexZ0:
+                    self.makePatches_Projective_quartile(apexZ0=s, ppl = ppl)
             except:
-                self.makePatches_Projective_quartile(z0=z0, n = n)
+                self.makePatches_Projective_quartile(apexZ0=apexZ0, ppl = ppl)
             return
         
         elif lining == 'lr':
             try:
-                for s in z0:
-                    self.makePatches_Projective(z0=s, n = n, leftRight = True)
+                for s in apexZ0:
+                    self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = True)
             except:
-                self.makePatches_Projective(z0=z0, n = n, leftRight = True)
+                self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = True)
             return
         
         elif lining == 'rl':
             try:
-                for s in z0:
-                    self.makePatches_Projective(z0=s, n = n, leftRight = False)
+                for s in apexZ0:
+                    self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = False)
             except:
-                self.makePatches_Projective(z0=z0, n = n, leftRight = False)
+                self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = False)
             return
 
-    def makePatches_Projective_Loop(self, z0 = 0, stop = 1, n = 16, leftRight = True):
+    def makePatches_Projective_Loop(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
             """Loop for creating patches left to right or right to left depending on argument leftRight
 
             Args:
-                z0 (num, optional): Places to generate patch. Defaults to 0.
+                apexZ0 (num, optional): Places to generate patch. Defaults to 0.
                 stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
-                n (int, optional): points per patch per layer. Defaults to 16.
+                ppl (int, optional): points per patch per layer. Defaults to 16.
                 leftRight(Bool): If set to true, make patches from left to right, if false, then make from right to left
 
             Returns:
@@ -193,9 +193,9 @@ class wedgeCover():
                 row_list = np.array([row_data[x].z for x in range(len(row_data))])
                 #rescales point for layer and add to mins list
                 if leftRight == True:
-                    lambdaZ = (row_list[n-1]-z0)/y 
+                    lambdaZ = (row_list[ppl-1]-apexZ0)/y 
                 else:
-                    lambdaZ = (row_list[0]-z0)/(y)
+                    lambdaZ = (row_list[0]-apexZ0)/(y)
                 lambdaZ_list.append(lambdaZ)
 
             #find which layer of the next n points from last patch stops first and find rescaled value of that point
@@ -218,10 +218,10 @@ class wedgeCover():
                 y = self.env.radii[i]
                 row_list = np.array([row_data[i][x].z for x in range(len(row_data[i]))])
                 #finds point closest to line from (z0, 0) to leftmost rescaled point
-                closest_index = np.argmin(np.abs((row_list-z0)/(y) - min_lambdaZ))
-                #find where the stopping index is based on the line from (z0, 0) to (100*stop, 25)
+                closest_index = np.argmin(np.abs((row_list-apexZ0)/(y) - min_lambdaZ))
+                #find where the stopping index is based on the line from (z0, 0) to z-edge of outermost layer
                 if leftRight == True:
-                    stop_index = np.argmin(np.abs(row_list - (stop*(z_max-z0)*y/r_max + z0)))
+                    stop_index = np.argmin(np.abs(row_list - (stop*(z_max-apexZ0)*y/r_max + apexZ0)))
 
                     #add one to stop index in case it is left of the line from (z0, 0) to (100*stop, 25)
                     #this makes sure there is full coverage
@@ -229,13 +229,13 @@ class wedgeCover():
                         stop_index += 1
 
                     #checks to see if patch will go past stop index, if so, add one to term variable
-                    if closest_index + n - 1 > stop_index:
+                    if closest_index + ppl - 1 > stop_index:
                         term += 1
 
 
                     #if there is not enough points left, pick last n points
-                    if closest_index + n - 1 > len(row_list):
-                        patch_ingredients.append(wedgeSuperPoint(row_data[i][len(row_list)-n:]))
+                    if closest_index + ppl - 1 > len(row_list):
+                        patch_ingredients.append(wedgeSuperPoint(row_data[i][len(row_list)-ppl:]))
                     
                     #if there are enough points left, pick point closest to slope and next n-1 points
                     else:
@@ -243,10 +243,10 @@ class wedgeCover():
                         if closest_index == 0:
                             closest_index = 1
                         #closest_index - 1 insures point is to left of line ie ensuring patches overlap
-                        patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-1:closest_index + n - 1]))
+                        patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-1:closest_index + ppl - 1]))
                 
                 else:
-                    stop_index = np.argmin(np.abs(row_list - (stop*(z_max+z0)*y/r_max+z0)))
+                    stop_index = np.argmin(np.abs(row_list - (stop*(z_max+apexZ0)*y/r_max+apexZ0)))
                     #for the extremely specific condition where two z's are equal and it is the edgepoint
                     try:
                         if row_list[closest_index] == row_list[closest_index+1]:
@@ -257,12 +257,12 @@ class wedgeCover():
                     if stop_index != 0: 
                         stop_index -= 1
                     #checks to see if patch will go past stop index, if so, add one to term variable
-                    if closest_index - n + 2 <= stop_index:
+                    if closest_index - ppl + 2 <= stop_index:
                         term += 1
 
                     #if there aren't enough points left, pick leftmost n points
-                    if closest_index + 2 < n:
-                        patch_ingredients.append(wedgeSuperPoint(row_data[i][:n]))
+                    if closest_index + 2 < ppl:
+                        patch_ingredients.append(wedgeSuperPoint(row_data[i][:ppl]))
 
                     #if there are enough points left, pick point closest to slope and n-1 points to the left
                     else:
@@ -270,10 +270,10 @@ class wedgeCover():
                         if closest_index == len(row_list) - 1:
                             closest_index -=1
                         #closest_index + 2 ensures point is to right of line ie ensures patches overlap
-                        patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index - n + 2:closest_index + 2]))
+                        patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index - ppl + 2:closest_index + 2]))
 
             #add superpoints to patch
-            new_patch = wedgePatch(self.env, tuple(patch_ingredients), z0=z0)
+            new_patch = wedgePatch(self.env, tuple(patch_ingredients), apexZ0=apexZ0)
             #add patch to cover
             self.add_patch(new_patch)
             
@@ -282,13 +282,13 @@ class wedgeCover():
                 return
             #if new patches are still being created, repeat loop
             else:
-                return self.makePatches_Projective_Loop(z0, stop, n = n, leftRight = leftRight)
+                return self.makePatches_Projective_Loop(apexZ0, stop, ppl = ppl, leftRight = leftRight)
             
-    def makePatches_Projective(self, z0 = 0, stop = 1, n = 16, leftRight = True):
+    def makePatches_Projective(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
             """Creates patches left to right or right to left depending on argument leftRight
 
             Args:
-                z0 (num, optional): Places to generate patch. Defaults to 0.
+                apexZ0 (num, optional): Places to generate patch. Defaults to 0.
                 stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
                 n (int, optional): points per patch per layer. Defaults to 16.
                 leftRight(Bool): If set to true, make patches from left to right, if false, then make from right to left
@@ -313,35 +313,35 @@ class wedgeCover():
                 z_max = self.env.top_layer_lim
 
                 if leftRight == True:
-                    start_index = np.argmin(np.abs(row_list - (((-z0-z_max)*y)/r_max+z0)))
+                    start_index = np.argmin(np.abs(row_list - (((-apexZ0-z_max)*y)/r_max+apexZ0)))
                     #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
                     if start_index != 0:
                         start_index -= 1
                     #add superpoint to patch
-                    init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+n]))
+                    init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+ppl]))
                 else:
-                    start_index = np.argmin(np.abs((row_list - ((z_max-z0)*y/r_max + z0))))
+                    start_index = np.argmin(np.abs((row_list - ((z_max-apexZ0)*y/r_max + apexZ0))))
                     #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
                     if start_index != len(row_list)-1:
                         start_index += 1
                     #add superpoint
-                    init_patch.append(wedgeSuperPoint(row_data[row][start_index-n+1:start_index+1]))
+                    init_patch.append(wedgeSuperPoint(row_data[row][start_index-ppl+1:start_index+1]))
 
                 
 
             #add patch to cover
-            self.add_patch(wedgePatch(self.env, tuple(init_patch), z0=z0))
+            self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
 
             #run main algorithm
-            self.makePatches_Projective_Loop(z0=z0, stop=stop, n=n, leftRight = leftRight)
+            self.makePatches_Projective_Loop(apexZ0=apexZ0, stop=stop, ppl = ppl, leftRight = leftRight)
             return
 
-    def makePatches_Projective_center(self, center = 0, z0 = 0, stop = 'none', n = 16):
+    def makePatches_Projective_center(self, center = 0, apexZ0 = 0, stop = 'none', ppl = 16):
         """generate patches starting from center or specified value
 
         Args:
             center (num, optional): picks where patch making starts from -100 to 100. Defaults to 0.
-            z0 (num, optional): Places to generate patch. Defaults to 0.
+            apexZ0 (num, optional): Places to generate patch. Defaults to 0.
             stop (str, optional): 'none' or 'center', if center, patch making stops at z = 0. Defaults to 'none'.
             n (int, optional): points per layer per patch. Defaults to 16.
         """
@@ -355,17 +355,22 @@ class wedgeCover():
             row_data = self.data.array
             row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
             #picks n/2 points left and right of point closest to line from (0, 0) to (center, 25)
-            center_index = np.argmin(np.abs(row_list - ((y*(center-z0)/r_max)+z0)))
+            center_index = np.argmin(np.abs(row_list - ((y*(center-apexZ0)/r_max)+apexZ0)))
             #conditionals make sure no negative indices indices past length of array
-            if (center_index-int(n/2)) < 0:
-                center_index = int(n/2)
+            if (center_index-int(ppl/2)) < 0:
+                center_index = int(ppl/2)
                 #init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(n/2):center_index+int(n/2)])) #DONT COMMENT IN BUT IS AN ALTERNATIVE
-            elif (center_index+int(n/2)) > len(self.data.array[row]):
-                center_index = len(self.data.array[row]) - int(n/2)
+            elif (center_index+int(ppl/2)) > len(self.data.array[row]):
+                center_index = len(self.data.array[row]) - int(ppl/2)
                 #init_patch.append(wedgeSuperPoint(row_data[row][len(self.data.array-16:len(self.data.array)])) #DONT COMMENT IN BUT IS AN ALTERNATIVE
-            init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(n/2):center_index+int(n/2)]))
+            if self.data.array[row][center_index].z >= 0:
+                init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(ppl/2):center_index+int(ppl/2)]))
+            else:
+                init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(ppl/2)+1:center_index+int(ppl/2)+1]))            
+            
+            #init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(ppl/2):center_index+int(ppl/2)]))
         #add initial patch
-        self.add_patch(wedgePatch(self.env, tuple(init_patch), z0=z0))
+        self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
 
         #for solveQ loops when it needs to stop at line from (0, 0) to (center, 25)
         if stop == 'center':
@@ -374,11 +379,11 @@ class wedgeCover():
                 #create index for deleting a patch
                 n_patch_start = self.n_patches
                 #generates patches right of starting, stopping at center
-                self.makePatches_Projective_Loop(z0, stop = 0, n = n, leftRight = True)
+                self.makePatches_Projective_Loop(apexZ0, stop = 0, ppl = ppl, leftRight = True)
                 #add initial patch again
-                self.add_patch(wedgePatch(self.env, tuple(init_patch), z0 = z0))
+                self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0 = apexZ0))
                 #generate point left of starting
-                self.makePatches_Projective_Loop(z0, stop = -1, n = n, leftRight = False)
+                self.makePatches_Projective_Loop(apexZ0, stop = -1, ppl = ppl, leftRight = False)
                 #delete one of the inital patches so no duplices
                 del self.patches[n_patch_start-1]
                 self.n_patches = self.n_patches - 1
@@ -388,11 +393,11 @@ class wedgeCover():
                 #create index for deleting a patch
                 n_patch_start = self.n_patches
                 #generates patches right of starting
-                self.makePatches_Projective_Loop(z0, n = n, leftRight = True)
+                self.makePatches_Projective_Loop(apexZ0, ppl = ppl, leftRight = True)
                 #add initial patch again
-                self.add_patch(wedgePatch(self.env, tuple(init_patch), z0=z0))
+                self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
                 #generates patches left of starting, stopping at center
-                self.makePatches_Projective_Loop(z0, stop = 0, n = n, leftRight = False)
+                self.makePatches_Projective_Loop(apexZ0, stop = 0, ppl = ppl, leftRight = False)
                 #delete one of the initial patches so no duplicates
                 del self.patches[n_patch_start-1]
                 self.n_patches = self.n_patches - 1
@@ -401,27 +406,27 @@ class wedgeCover():
             #create index for deleting a patch
             n_patch_start = self.n_patches
             #generates patches right of starting
-            self.makePatches_Projective_Loop(z0, n = n, leftRight = True)
+            self.makePatches_Projective_Loop(apexZ0, ppl = ppl, leftRight = True)
             #add initial patch again
-            self.add_patch(wedgePatch(self.env, tuple(init_patch), z0=z0))
+            self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
             #generates patches left of starting
-            self.makePatches_Projective_Loop(z0, n = n, stop = -1, leftRight = False)
+            self.makePatches_Projective_Loop(apexZ0, ppl = ppl, stop = -1, leftRight = False)
             #delete one of the initial patches so no duplicates
             del self.patches[n_patch_start-1]
             self.n_patches = self.n_patches - 1
             return          
         
-    def makePatches_Projective_quartile(self, z0 = 0, n = 16):
+    def makePatches_Projective_quartile(self, apexZ0 = 0, ppl = 16):
         """solves starting at Q1 and Q3 (-50 and 50)
 
         Args:
-            z0 (num, optional): Places to generate patch. Defaults to 0.
+            apexZ0 (num, optional): Places to generate patch. Defaults to 0.
             n (int, optional): points per layer per patch. Defaults to 16.
         """
         #solves center starting at -50 and 50, ending at center
         quartile_value = self.env.top_layer_lim / 2
-        self.makePatches_Projective_center(center = -quartile_value, stop = 'center', z0 = z0, n = n) 
-        self.makePatches_Projective_center(center = quartile_value, stop = 'center', z0 = z0, n = n)
+        self.makePatches_Projective_center(center = -quartile_value, stop = 'center', apexZ0 = apexZ0, ppl = ppl) 
+        self.makePatches_Projective_center(center = quartile_value, stop = 'center', apexZ0 = apexZ0, ppl = ppl)
         return
              
     def plot(self, data=True, lines=True, patches=True): 
