@@ -11,6 +11,7 @@ v3_patch = np.loadtxt('data/solveS_center2_Acceptv3_transpose.csv', delimiter=',
 mask = np.abs(z0) <= 10.
 a = np.mean(v3_patch[:, mask], axis = 1)
 event = []
+
 for i in range(7, 10):
     print(len(a[128*i:128*(i+1)]))
     #event.append(np.mean(a[128*i:128*(i+1)]))

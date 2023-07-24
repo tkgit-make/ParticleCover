@@ -126,10 +126,11 @@ class DataSet():
         Args:
             offset (float, optional): How much is the offset in cms. Defaults to 0.1.
         """
-
-        for i, value in enumerate([[-32, 32],[-49, 49],[-66, 66],[-83, 83],[-100, 100]]):
+        x_edges = np.array(self.env.radii)*(self.env.top_layer_lim-self.env.beam_axis_lim)/(self.env.radii[-1]) + self.env.beam_axis_lim
+        #print(x_edges)
+        for i, value in enumerate(x_edges):
             phi0 = self.array[i][0].phi
-            self.array[i].insert(0,Point(int(i+1), int((i+1)*5), phi0, value[0]-offset))
-            self.array[i].append(Point(int(i+1), int((i+1)*5), phi0, value[1]+offset))
+            self.array[i].insert(0,Point(int(i+1), int((i+1)*5), phi0, -1*value-offset))
+            self.array[i].append(Point(int(i+1), int((i+1)*5), phi0, value+offset))
             self.n_points[i] = int(self.n_points[i]+2)
        

@@ -5,7 +5,7 @@ from src.coverers.wedgecover import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, wedges = [0, 128], lines=1000, v = 'v3', accept_cutoff = 10., uniform_N_points = False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -35,6 +35,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         #convert to existing data format
         env, points = all_data[k] 
+        env = Environment(top_layer_lim = z0_cutoff, beam_axis_lim=z0_luminousRegion)
         data = DataSet(env)
         if uniform_N_points == False:
             data.importData(points)
@@ -108,6 +109,92 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
             at = 0
         plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl})")
     plt.show()
+
+def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', z0_cutoff = 100., uniform_points = False):
+    filepath = f"data/wedgeData_{v}_128.txt"
+    f = open(f'data/{v}_patches.txt')
+    filedata = readFile(filepath, stop=128, performance=False)
+    env, points = filedata[wedge_number]
+    env = Environment(top_layer_lim = z0_cutoff)
+    ds = DataSet(env)
+    if uniform_points != False:
+        ds.generateUniform([uniform_points,uniform_points,uniform_points, uniform_points,uniform_points])
+    else:
+        ds.importData(points)
+    ds.add()
+    colors = ['b', 'orange', 'm', 'c', 'k']
+    plt.figure(figsize = (10, 8))
+    lines_to_plot = []
+    fitting_lines = []
+    for z in line_origin:
+        lGen = LineGenerator(env, z)
+        fitting_lines = fitting_lines + lGen.generateEvenGrid(100)
+    for i in range(len(apexZ0)):
+        cov = wedgeCover(env, ds)
+        cov.makePatches_Projective_center(apexZ0 = apexZ0[i])
+        for j, patch in enumerate(cov.patches):
+            top = env.radii[-1]
+            lambdaZ_list_left = []
+            lambdaZ_list_right = []
+            to_plot_l = []
+            to_plot_r = []
+            for layer in range(cov.env.num_layers):
+                to_plot_l.append(min(patch.superpoints[layer].z_values))
+                to_plot_r.append(max(patch.superpoints[layer].z_values))
+                left = min(patch.superpoints[layer].z_values)
+                right = max(patch.superpoints[layer].z_values)   
+                lambdaZ_list_left.append((left - apexZ0[i])/env.radii[layer])
+                lambdaZ_list_right.append((right - apexZ0[i])/env.radii[layer])
+                #plt.scatter(left,env.radii[layer], color = colors[int(j%5)])
+                #plt.scatter(right,env.radii[layer], color = colors[int(j%5)])
+            min_lambdaZ = np.max(lambdaZ_list_left)
+            max_lambdaZ = np.min(lambdaZ_list_right)
+            to_plot_r.reverse()
+            
+            #patch.plot(color = colors[int(j%5)])
+            if j ==0:
+                label = r"$apexZ_0$ = " + f"{apexZ0[i]}"
+            else:
+                label = '_'
+            flipped = [25, 20, 15, 10, 5]
+            new_radiis = env.radii+flipped 
+            plt.plot(to_plot_l + to_plot_r, new_radiis, color = colors[i], label = label, alpha = 0.5)
+            plt.fill(to_plot_l + to_plot_r, new_radiis, color = colors[i], alpha = 0.2)
+            #plt.fill(to_plot_l + to_plot_r, new_radiis, color = colors[i], alpha = 0.2)
+            '''lambdaZ_list_left = np.array(lambdaZ_list_left) * np.array(env.radii)
+            lambdaZ_list_right = np.array(lambdaZ_list_right) * np.array(env.radii)
+            lambdaZ_list_left = np.insert(lambdaZ_list_left,0, apexZ0[i])
+            lambdaZ_list_right = np.append(lambdaZ_list_right, apexZ0[i])
+            new_radiis = [0]+env.radii+env.radii +[0]
+            plt.plot(np.concatenate([lambdaZ_list_left,lambdaZ_list_right]),new_radiis, color = colors[i], label = label, alpha = 0.5)
+            plt.fill(np.concatenate([lambdaZ_list_left,lambdaZ_list_right]),new_radiis, color = colors[i], alpha = 0.2)'''
+            #plt.plot([apexZ0[i],min_lambdaZ*top+apexZ0[i], max_lambdaZ*top+apexZ0[i], apexZ0[i]], [0, top, top, 0], color = colors[i], label = label, alpha = 0.5)
+            #plt.fill_between([apexZ0[i],min_lambdaZ*top+apexZ0[i], max_lambdaZ*top+apexZ0[i], apexZ0[i]], [0, top, top, 0], color = colors[i], alpha = 0.2)
+            for line_index, line in enumerate(fitting_lines):
+                if patch.contains(line) == True:
+                    lines_to_plot.append(line_index)
+    lines_to_plot = np.unique(lines_to_plot)
+    for l, line in enumerate(fitting_lines):
+        if l in lines_to_plot:
+            if accepted == True:
+                line.plot('g')
+            else:
+                pass
+        else:
+            if unaccepted == True:
+                line.plot('r')
+            else:
+                pass
+    if accepted == True:
+        plt.plot([0],color = 'g', label = 'Lines Accepted')
+    if unaccepted == True:
+        plt.plot([0],color = 'r', label = f'Lines Not Accepted from {line_origin}')
+    
+    plt.legend()
+    plt.xlim(-z0_cutoff, z0_cutoff)
+    ds.plot(True, True)
+    #plt.title(f"Wedge {wedge_number} Event {v}")
+
 
 def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', ppl = 16, wedges = [0, 128], v = 'v3', savefig = False):
     if start == 'odd':
