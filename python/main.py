@@ -9,23 +9,40 @@ import ast
 
 filepath = "data/wedgeData_v3_128.txt"
 f = open("data/wedgeData_v3_128.txt")
+#unaccepted_lines(apexZ0=[0, 10], line_origin=[5], wedge_number=10, z0_cutoff=50.)
+filedata = readFile(filepath, stop=1280, performance=False)
+
+'''
+
 #filedata = readFile(filepath, stop=128, performance=False)
 hist_data = [[],[],[],[],[]]
-plt.figure(figsize=(15, 12))
-for i in range(1):
+env = Environment(50)
+plt.figure(figsize=(15, 7))
+for i in range(1280):
     d = ast.literal_eval(f.readline())
-    d = np.array(d[:,3])
+    d = np.array(d)
+    x_edges = np.array(env.radii)*(env.top_layer_lim-env.beam_axis_lim)/(env.radii[-1]) + env.beam_axis_lim
+    count = np.zeros(5)
+    for point in d:
+        if np.abs(point[3]) <= x_edges[int(point[0]-1)]:
+            count[int(point[0]-1)] += 1
     for j in range(5):
-        hist_data[j].append(d[:,j] <= 50)
+        hist_data[j].append(count[j])
 for j in range(5):
     plt.subplot(1, 5, j+1)
-    plt.hist(hist_data[j])
+    plt.hist(hist_data[j], bins = np.arange(20, 110, 10),edgecolor='black', rwidth=0.8, label = f"Average: {np.round(np.mean(hist_data[j]), 2)}\n std: {np.round(np.std(hist_data[j]), 2)}\n Density: {np.round(np.mean(hist_data[j])/x_edges[j], 2)}")
+    plt.ylabel('Count', fontsize = 13)
+    plt.xlabel('Number of Hits', fontsize = 13)
+    plt.title(f'Layer {j+1}', fontsize = 15)
+    plt.legend(fontsize = 13)
+    print(np.mean(hist_data[j])/x_edges[j])
+plt.suptitle('Points Between z = [-50, 50]', fontsize = 20)
 plt.show()
+
 
 #unaccepted_lines(z0_cutoff=50,  line_origin = [13], apexZ0= [-10, 0, 10], uniform_points=85)
 #wedge_test(lining = 'c',wedges=[0,1], apexZ0=[-10,0,10], z0_cutoff=50., uniform_N_points = 85)
 
-'''
 env, points = filedata[0]
 ds = DataSet(env)
 ds.generateUniform([150, 150, 150, 150, 150])
@@ -57,17 +74,16 @@ for i in range(128):
     else:
         print('all good')
 
+
 env, points = filedata[0]
+env = Environment(50)
 ds = DataSet(env)
-num_points = 85
-ds.generateUniform([num_points, num_points, num_points, num_points, num_points])
+ds.importData(points)
 ds.add()
-#ds.plot(True, True)
+#ds.plot(True)
 cov = wedgeCover(env, ds)
 cov.solve('makePatches_Projective_center', leftRight=False, apexZ0 = [-10, 0, 10])
-ends = []
-for patch in cov.patches:
-    ends.append(patch.end_layer)
-plt.hist(ends, bins = np.arange(-0.5, 6.5, 1))
-plt.show()
+#cov.plot()
 '''
+#pointRepetitionFactor()
+pointRepetitionFactorLayer(wedges=128, z_5=50)

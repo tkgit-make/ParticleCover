@@ -133,4 +133,12 @@ class DataSet():
             self.array[i].insert(0,Point(int(i+1), int((i+1)*5), phi0, -1*value-offset))
             self.array[i].append(Point(int(i+1), int((i+1)*5), phi0, value+offset))
             self.n_points[i] = int(self.n_points[i]+2)
+
+        self.total_points = len(self.array)
+
+        ln = 0
+        for layer in self.array: 
+            layer.sort(key=lambda point: point.z) 
+            self.n_points[ln] = len(layer)
+            ln += 1
        

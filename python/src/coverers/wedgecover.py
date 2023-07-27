@@ -155,13 +155,15 @@ class wedgeCover():
                 self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = True)
             return
         
-        elif lining == 'rl':
+        elif (lining == 'rl') or (lining == 'makePatches_Projective_Rightleft'):
             try:
                 for s in apexZ0:
                     self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = False)
             except:
                 self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = False)
             return
+        else:
+            raise("Please choose valid solving method")
 
     def makePatches_Projective_Loop(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
             """Loop for creating patches left to right or right to left depending on argument leftRight
@@ -244,7 +246,7 @@ class wedgeCover():
                             closest_index = 1
                         #closest_index - 1 insures point is to left of line ie ensuring patches overlap
                         patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index-1:closest_index + ppl - 1]))
-                
+                    #print(term)
                 else:
                     stop_index = np.argmin(np.abs(row_list - (stop*(z_max+apexZ0)*y/r_max+apexZ0)))
                     #for the extremely specific condition where two z's are equal and it is the edgepoint
@@ -271,7 +273,7 @@ class wedgeCover():
                             closest_index -=1
                         #closest_index + 2 ensures point is to right of line ie ensures patches overlap
                         patch_ingredients.append(wedgeSuperPoint(row_data[i][closest_index - ppl + 2:closest_index + 2]))
-
+                    #print(term)
             #add superpoints to patch
             new_patch = wedgePatch(self.env, tuple(patch_ingredients), apexZ0=apexZ0)
             #add patch to cover
