@@ -101,4 +101,3 @@ class LineGenerator():
         slopes = np.tan(angles)
         
         return [Line(self.env, self.start, slope) for slope in slopes]         
-        

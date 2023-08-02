@@ -10,8 +10,9 @@ import ast
 filepath = "data/wedgeData_v3_128.txt"
 f = open("data/wedgeData_v3_128.txt")
 #unaccepted_lines(apexZ0=[0, 10], line_origin=[5], wedge_number=10, z0_cutoff=50.)
-filedata = readFile(filepath, stop=1280, performance=False)
-
+#filedata = readFile(filepath, stop=1280, performance=False)
+minimal_cover_binary_search(wedges=1)
+#z099(wedges=[0,1])
 '''
 
 #filedata = readFile(filepath, stop=128, performance=False)
@@ -86,4 +87,4 @@ cov.solve('makePatches_Projective_center', leftRight=False, apexZ0 = [-10, 0, 10
 #cov.plot()
 '''
 #pointRepetitionFactor()
-pointRepetitionFactorLayer(wedges=128, z_5=50)
+#pointRepetitionFactorLayer(wedges=128, z_5=50, apexZ0=[-10,0,10])
