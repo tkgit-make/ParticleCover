@@ -49,10 +49,17 @@ class LineGenerator():
 
     def generateEvenGrid(self, n=100):
 
-        ycoor = self.env.radii[-1]
-        xcoor = np.linspace(-self.env.top_layer_lim, self.env.top_layer_lim, n)
+        Rcoor = self.env.radii[-1]
+        Zcoor = np.linspace(-self.env.top_layer_lim, self.env.top_layer_lim, n)
         
-        slopes = ycoor/(xcoor-self.start)
+        slopes = Rcoor/(Zcoor-self.start)
+        return [Line(self.env, self.start, slope) for slope in slopes] 
+    
+    def generateRandomGrid(self, n=100): 
+        Rcoor = self.env.radii[-1]
+        Zcoor = np.random.uniform(low=-self.env.top_layer_lim, high=self.env.top_layer_lim, size=n)
+        
+        slopes = Rcoor/(Zcoor-self.start)
         return [Line(self.env, self.start, slope) for slope in slopes] 
     
     def generateRandomLines(self, n=100): 
