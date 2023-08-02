@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 import time 
 import ast
 
-filepath = "data/wedgeData_v3_128.txt"
-f = open("data/wedgeData_v3_128.txt")
+# filepath = "python/data/wedgeData_v3_128.txt"
+# f = open("python/data/wedgeData_v3_128.txt")
 #unaccepted_lines(apexZ0=[0, 10], line_origin=[5], wedge_number=10, z0_cutoff=50.)
-filedata = readFile(filepath, stop=1280, performance=False)
+# filedata = readFile(filepath, stop=1280, performance=False)
 
 '''
 
@@ -86,4 +86,6 @@ cov.solve('makePatches_Projective_center', leftRight=False, apexZ0 = [-10, 0, 10
 #cov.plot()
 '''
 #pointRepetitionFactor()
-pointRepetitionFactorLayer(wedges=128, z_5=50)
+# pointRepetitionFactorLayer(wedges=128, z_5=50)
+# wedge_test(apexZ0=0)
+# wedge_test(apexZ0 = [-10, 0, 10], wedges = [56, 57])

@@ -5,12 +5,12 @@ from src.coverers.wedgecover import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
         lining (str, optional): solving method, default is solveS
-        apexZ0 (int, optional): the z values the patches are being made in accordance to
+        apexZ0 (int, optional): the z values the patches are being made projected to beam axis
         z0 (num or list, optional): array of z0 values we are testing over, default is range of -15 to 15 with 0.5 spacing
         n (int, optional): ppl (point per patch per layer), default is 16
         wedges (list, optional): which wedges, enter in list of [starting wedge, ending wedge]
@@ -18,6 +18,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
         savefig (bool, optional): True to save figure
         uniform_N_points(False or int): number of points in each layer or False to be not uniform
         v (str, optional): version of data, ensure data file is in directory as "wedgeData_{v}_128.txt"
+        acceptance_method : choose between 'Analytic' or 'MonteCarlo'
     """
 
     #create list for z values we're testing the acceptance of, number of covers, and PRF
@@ -30,7 +31,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
         wedges = [0, 1]
 
     #read wedgeData file and create environment
-    all_data = readFile(f'data/wedgeData_{v}_128.txt', wedges[1])
+    all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         #convert to existing data format
@@ -45,7 +46,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
         data.add()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
+        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, leftRight=False, show = False)
         #append number of covers in the patch
         num_covers.append(cover.n_patches)
         out = [] 
@@ -64,19 +65,35 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
 
         #these loops calculate line acceptance
         for iz, z in enumerate(np.array(z0)):
-            percentage_accepted = 0 
+            
+            if acceptance_method == "Analytic": 
                 
-            lg = LineGenerator(env, z)
-            test_lines = lg.generateEvenGrid(lines)
-            
-            for i in range(len(test_lines)): 
-                for patch in cover.patches:
-                    if patch.contains(test_lines[i]):
-                        percentage_accepted += 1 
-                        break
+                list_of_intersections = []
+                for patch in cover.patches: 
+                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
+                    overlap_of_superpoints = intersection(patch.env, list_of_segs) 
+                    list_of_intersections.append(overlap_of_superpoints)
+                
+                total_measure = unionOfLineSegments(list_of_intersections)
+                
+                percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
 
+                
+            elif acceptance_method == "MonteCarlo": 
+                percentage_accepted = 0 
+                
+                lg = LineGenerator(env, z)
+                test_lines = lg.generateEvenGrid(lines)
+                
+                for i in range(len(test_lines)): 
+                    for patch in cover.patches:
+                        if patch.contains(test_lines[i]):
+                            percentage_accepted += 1 
+                            break
+
+                
+                percentage_accepted = percentage_accepted/lines
             
-            percentage_accepted = percentage_accepted/lines
             mean_list[ik, iz] = mean_list[ik, iz] + percentage_accepted
     
     mean_num = format(np.mean(num_covers), ".1f")

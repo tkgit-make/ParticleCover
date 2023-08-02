@@ -30,6 +30,10 @@ class Environment:
         self.num_layers = num_layers 
         self.radii = sorted(radii)
         
+        # parallelogram slopes represent dz0/dz5 in z0-z5 space
+        self.parallelogramSlopes = [-Rj/(self.radii[-1] - Rj) for Rj in self.radii[:-1]]
+        self.radii_leverArm = [1 - pSlope for pSlope in self.parallelogramSlopes]
+        
 
 class DataSet(): 
     

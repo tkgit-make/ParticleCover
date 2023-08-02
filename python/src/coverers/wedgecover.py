@@ -6,6 +6,8 @@ import math
 import cv2 
 import os 
 import glob
+from time import time 
+from src.coverers.parallelogram import *
 
         
 class wedgeSuperPoint(): 
@@ -46,6 +48,8 @@ class wedgePatch():
         self.superpoints = superpoints
         # first superpoint in array should be the 1st layer 
         
+        self.getParallelograms()
+        
     def contains(self, line:Line): 
         
         for i in range(len(self.superpoints)): 
@@ -71,7 +75,32 @@ class wedgePatch():
                 return False 
             
         return True 
+    
+    def straightLineProjector(self, z_top, z_j, j): 
+        radii_leverArm = self.env.radii_leverArm[j-1]
+        return z_top - (z_top - z_j) * radii_leverArm 
+
+    def getParallelograms(self): 
         
+        parallelograms = [] 
+        
+        # min and max of the top superpoint of a patch
+        top_layer_zmin = max(self.superpoints[-1].min, -self.env.top_layer_lim)
+        top_layer_zmax = min(self.superpoints[-1].max, self.env.top_layer_lim)
+
+        for j, superpoint in enumerate(self.superpoints[:-1], start=1): 
+            z_j_min = superpoint.min 
+            z_j_max = superpoint.max 
+            
+            a = self.straightLineProjector(top_layer_zmax, z_j_min, j)
+            b = self.straightLineProjector(top_layer_zmax, z_j_max, j)
+            
+            pSlope = self.env.parallelogramSlopes[j-1]
+            
+            Parallelogram = parallelogram(j, top_layer_zmin, top_layer_zmax, a, b, pSlope)
+            parallelograms.append(Parallelogram)
+            
+        self.parallelograms = parallelograms
     
     def plot(self, color='g'): 
         heights = self.env.radii
