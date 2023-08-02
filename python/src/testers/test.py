@@ -5,7 +5,7 @@ from src.coverers.wedgecover import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", savefig=False):
+def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -74,6 +74,14 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
                     overlap_of_superpoints = intersection(patch.env, list_of_segs) 
                     list_of_intersections.append(overlap_of_superpoints)
                 
+                if show_acceptance_of_cover: 
+                    plt.xlabel("z_0")
+                    plt.ylabel("z_top")
+                    plt.title("acceptance of cover")
+                    
+                    for line in list_of_intersections: 
+                        plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c="b", linewidth=3)
+                
                 total_measure = unionOfLineSegments(list_of_intersections)
                 
                 percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
@@ -95,6 +103,10 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
                 percentage_accepted = percentage_accepted/lines
             
             mean_list[ik, iz] = mean_list[ik, iz] + percentage_accepted
+            
+        if show_acceptance_of_cover: 
+            plt.show()
+            plt.close()
     
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")

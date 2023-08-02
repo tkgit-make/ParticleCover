@@ -88,4 +88,4 @@ cov.solve('makePatches_Projective_center', leftRight=False, apexZ0 = [-10, 0, 10
 #pointRepetitionFactor()
 # pointRepetitionFactorLayer(wedges=128, z_5=50)
 # wedge_test(apexZ0=0)
-# wedge_test(apexZ0 = [-10, 0, 10], wedges = [56, 57])
+wedge_test(apexZ0 = [-10, 0, 10], z0 = np.arange(-15, 15.5, 0.2), wedges = [56, 57], show_acceptance_of_cover=True)
