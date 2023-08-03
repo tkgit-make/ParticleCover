@@ -6,7 +6,7 @@ from src.debug import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -130,7 +130,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
     mask = np.abs(z0) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_5$: "+ f"{z0_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_5$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
