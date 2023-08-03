@@ -1,5 +1,6 @@
 import numpy as np 
 import matplotlib.pyplot as plt
+from src.debug import * 
 
 class Point:
     # represents a point 

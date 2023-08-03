@@ -3,6 +3,7 @@ from src.coverers.data_structs import *
 from src.coverers.line import * 
 from src.coverers.wedgecover import *
 from src.testers.test import *
+from src.debug import * 
 import matplotlib.pyplot as plt 
 import time 
 import ast
@@ -92,3 +93,5 @@ cov.solve('makePatches_Projective_center', leftRight=False, apexZ0 = [-10, 0, 10
 # pointRepetitionFactorLayer(wedges=128, z_5=50)
 # wedge_test(apexZ0=0)
 # wedge_test(apexZ0 = [-10, 0, 10], wedges = [56, 57])
+
+wedge_test(lining= "makePatches_Projective_center", apexZ0 = 0, wedges = [56, 57], top_layer_cutoff = 100, show_acceptance_of_cover=True)

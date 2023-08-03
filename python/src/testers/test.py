@@ -2,10 +2,11 @@ from src.coverers.data_structs import *
 from src.coverers.line import * 
 from src.readers.reader import *
 from src.coverers.wedgecover import *
+from src.debug import * 
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", savefig=False):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -20,7 +21,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
         v (str, optional): version of data, ensure data file is in directory as "wedgeData_{v}_128.txt"
         acceptance_method : choose between 'Analytic' or 'MonteCarlo'
     """
-
+    
     #create list for z values we're testing the acceptance of, number of covers, and PRF
     mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
@@ -36,7 +37,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         #convert to existing data format
         env, points = all_data[k] 
-        env = Environment(top_layer_lim = z0_cutoff, beam_axis_lim=z0_luminousRegion)
+        env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
         data = DataSet(env)
         if uniform_N_points == False:
             data.importData(points)
@@ -74,6 +75,14 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
                     overlap_of_superpoints = intersection(patch.env, list_of_segs) 
                     list_of_intersections.append(overlap_of_superpoints)
                 
+                if show_acceptance_of_cover: 
+                    plt.xlabel("z_0")
+                    plt.ylabel("z_top")
+                    plt.title("acceptance of cover")
+                    
+                    for line in list_of_intersections: 
+                        plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c="b", linewidth=3)
+                
                 total_measure = unionOfLineSegments(list_of_intersections)
                 
                 percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
@@ -95,6 +104,10 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
                 percentage_accepted = percentage_accepted/lines
             
             mean_list[ik, iz] = mean_list[ik, iz] + percentage_accepted
+            
+        if show_acceptance_of_cover: 
+            plt.show()
+            plt.close()
     
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")
@@ -124,15 +137,15 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
             at = len(apexZ0)
         except:
             at = 0
-        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z_5{z0_cutoff})")
+        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z0{top_layer_cutoff})")
     plt.show()
 
-def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', z0_cutoff = 100., uniform_points = False):
+def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', top_layer_cutoff = 100., uniform_points = False): 
     filepath = f"data/wedgeData_{v}_128.txt"
     f = open(f'data/{v}_patches.txt')
     filedata = readFile(filepath, stop=128, performance=False)
     env, points = filedata[wedge_number]
-    env = Environment(top_layer_lim = z0_cutoff)
+    env = Environment(top_layer_lim = top_layer_cutoff)
     ds = DataSet(env)
     datastring = f"Wedge {wedge_number} Event {v}"
 
@@ -201,7 +214,7 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
         plt.plot([0],color = 'r', label = f'Lines Not Accepted from {line_origin}')
     
     plt.legend(loc = 'lower left', fontsize = 12)
-    plt.xlim(-z0_cutoff, z0_cutoff)
+    plt.xlim(-top_layer_cutoff, top_layer_cutoff)
     ds.plot(True, False)
 
     plt.title(datastring, fontsize = 20)
@@ -232,7 +245,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
         mean_list = np.zeros((len(z0), wedges))
         num_covers = []
         PRF = []
-        file = f'data/wedgeData_{v}_128.txt'
+        file = f'python/data/wedgeData_{v}_128.txt'
         all_data = readFile(file, wedges)
 
         for k in range(wedges):
@@ -286,28 +299,27 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
             if left_stop == False:
                 current_tries_left.append(left_middle)
             left_ceiling = left_middle
-            print('yes:', z0[left_middle])
+            debug("Michelle", f"yes: {z0[left_middle]}")
         else:
             left_floor = left_middle
         if np.all(z0_means[int(len(z0)/2)+1:right_middle+1] >= accept):
             if right_stop == False:
                 current_tries_right.append(right_middle)
             right_floor = right_middle
-            print('yes:', z0[right_middle])
+            debug("Michelle", f"yes: {z0[right_middle]}")
         else:
             right_ceiling = right_middle
         
         if left_ceiling - left_floor <= 1:
             if left_stop == False:
                 real_solve = np.append(real_solve, z0[min(current_tries_left)])
-                print("New left: ", z0[min(current_tries_left)])
+            debug("Michelle", f"New left: {z0[min(current_tries_left)]}")
             current_tries_left = []
             left_floor = -1
             left_ceiling = left_middle
         if right_ceiling - right_floor <= 1:
-            if right_stop == False:
-                real_solve = np.append(real_solve, z0[max(current_tries_right)])
-                print("New right: ", z0[max(current_tries_right)])
+            real_solve = np.append(real_solve, z0[max(current_tries_right)])
+            debug("Michelle", f"New right: {z0[max(current_tries_right)]}")
             current_tries_right = []
             right_floor = right_middle
             right_ceiling = int(len(z0)+1)
@@ -321,8 +333,9 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
         if right_stop == False:
             apexZ0 = np.append(apexZ0, z0[right_middle])
         apexZ0 = np.unique(apexZ0)
-        print('real: ', real_solve)
-        print('next try:', apexZ0)
+        
+        debug("Michelle", f"real: {real_solve}")
+        debug("Michelle", f"next try: {apexZ0}")
     ymin = accept
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")

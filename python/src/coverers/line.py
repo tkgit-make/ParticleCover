@@ -4,7 +4,7 @@ from cv2 import imread, imshow, waitKey, destroyAllWindows
 import numpy as np 
 import matplotlib.pyplot as plt 
 import math, os, glob
-
+from src.debug import * 
 class Line: 
     
     def __init__(self, env:Environment, start:float, slope:float): 
