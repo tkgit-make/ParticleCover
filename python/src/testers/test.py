@@ -117,14 +117,14 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
     mask = np.abs(z0) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_5$: "+ f"{z0_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
             at = len(apexZ0)
         except:
             at = 0
-        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z0{z0_cutoff})")
+        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z_5{z0_cutoff})")
     plt.show()
 
 def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', z0_cutoff = 100., uniform_points = False):
@@ -226,6 +226,8 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
     left_middle = left_floor
     right_middle = right_ceiling
     data_string = f"{v} events"
+    left_stop = False
+    right_stop = False
     while reached == False:
         mean_list = np.zeros((len(z0), wedges))
         num_covers = []
@@ -274,31 +276,38 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
                 mean_list[iz, k] = mean_list[iz, k] + percentage_accepted
 
         z0_means = np.mean(mean_list, axis = 1)
+        if np.all(z0_means[:int(len(z0)/2+1)] >= accept):
+            left_stop = True
+        if np.all(z0_means[int(len(z0)/2+1):]>= accept):
+            right_stop = True
         if np.all(z0_means > accept):
-            break
+            reached == True
         if np.all(z0_means[left_middle:int(len(z0)/2)+1] >= accept):
-            current_tries_left.append(left_middle)
+            if left_stop == False:
+                current_tries_left.append(left_middle)
             left_ceiling = left_middle
             print('yes:', z0[left_middle])
         else:
             left_floor = left_middle
         if np.all(z0_means[int(len(z0)/2)+1:right_middle+1] >= accept):
-            current_tries_right.append(right_middle)
+            if right_stop == False:
+                current_tries_right.append(right_middle)
             right_floor = right_middle
             print('yes:', z0[right_middle])
         else:
             right_ceiling = right_middle
         
         if left_ceiling - left_floor <= 1:
-            if not np.all(z0_means[:int(len(z0)/2)] >= accept):
+            if left_stop == False:
                 real_solve = np.append(real_solve, z0[min(current_tries_left)])
-            print("New left: ", z0[min(current_tries_left)])
+                print("New left: ", z0[min(current_tries_left)])
             current_tries_left = []
             left_floor = -1
             left_ceiling = left_middle
         if right_ceiling - right_floor <= 1:
-            real_solve = np.append(real_solve, z0[max(current_tries_right)])
-            print("New right: ", z0[max(current_tries_right)])
+            if right_stop == False:
+                real_solve = np.append(real_solve, z0[max(current_tries_right)])
+                print("New right: ", z0[max(current_tries_right)])
             current_tries_right = []
             right_floor = right_middle
             right_ceiling = int(len(z0)+1)
@@ -307,8 +316,10 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
         left_middle = int(np.round((left_floor+left_ceiling)/2))
         right_middle = int(np.round((right_floor+right_ceiling)/2))
         apexZ0 = np.copy(real_solve)
-        apexZ0 = np.append(apexZ0, z0[left_middle])
-        apexZ0 = np.append(apexZ0, z0[right_middle])
+        if left_stop == False:
+            apexZ0 = np.append(apexZ0, z0[left_middle])
+        if right_stop == False:
+            apexZ0 = np.append(apexZ0, z0[right_middle])
         apexZ0 = np.unique(apexZ0)
         print('real: ', real_solve)
         print('next try:', apexZ0)
@@ -324,8 +335,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    #plt.legend(f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%",
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}"+ r'$\pm$' + f"{PRFs}\n"+ r'$apexZ_0$' + f" = {apexZ0}"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_5$ = " +f"{z_5}\n" r'$apexZ_0$' + f" = {apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         plt.savefig(f"Figures/min_cover_binary_{start}_({lining}_{data_string}_ppl{16})")
