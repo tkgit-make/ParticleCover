@@ -2,10 +2,11 @@ from src.coverers.data_structs import *
 from src.coverers.line import * 
 from src.readers.reader import *
 from src.coverers.wedgecover import *
+from src.debug import * 
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', z0_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 100., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -20,7 +21,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
         v (str, optional): version of data, ensure data file is in directory as "wedgeData_{v}_128.txt"
         acceptance_method : choose between 'Analytic' or 'MonteCarlo'
     """
-
+    
     #create list for z values we're testing the acceptance of, number of covers, and PRF
     mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
@@ -36,7 +37,7 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         #convert to existing data format
         env, points = all_data[k] 
-        env = Environment(top_layer_lim = z0_cutoff, beam_axis_lim=z0_luminousRegion)
+        env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
         data = DataSet(env)
         if uniform_N_points == False:
             data.importData(points)
@@ -136,15 +137,15 @@ def wedge_test(lining:str = "makePatches_Projective", apexZ0 = 0, z0 = np.arange
             at = len(apexZ0)
         except:
             at = 0
-        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl})")
+        plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z0{top_layer_cutoff})")
     plt.show()
 
-def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', z0_cutoff = 100., uniform_points = False):
+def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', top_layer_cutoff = 100., uniform_points = False): 
     filepath = f"data/wedgeData_{v}_128.txt"
     f = open(f'data/{v}_patches.txt')
     filedata = readFile(filepath, stop=128, performance=False)
     env, points = filedata[wedge_number]
-    env = Environment(top_layer_lim = z0_cutoff)
+    env = Environment(top_layer_lim = top_layer_cutoff)
     ds = DataSet(env)
     datastring = f"Wedge {wedge_number} Event {v}"
 
@@ -213,13 +214,13 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
         plt.plot([0],color = 'r', label = f'Lines Not Accepted from {line_origin}')
     
     plt.legend(loc = 'lower left', fontsize = 12)
-    plt.xlim(-z0_cutoff, z0_cutoff)
+    plt.xlim(-top_layer_cutoff, top_layer_cutoff)
     ds.plot(True, False)
 
     plt.title(datastring, fontsize = 20)
     plt.show()
 
-def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, v = 'v3', savefig = False):
+def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_5 = 100., v = 'v3', savefig = False):
     if start == 'odd':
         apexZ0 = [0]
         real_solve = [0]
@@ -229,21 +230,25 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
     reached = False
     z0 = np.arange(-15, 15.5, 0.5)
     lines = 1000
-    left_index = 0
-    right_index = int(len(z0)-1)
-    last_left = int(len(z0)/2)
-    last_right = int(len(z0)/2 + 1)
+    left_floor = 0
+    left_ceiling = int(len(z0)/2)
+    right_floor = int(len(z0)/2 + 1)
+    right_ceiling = int(len(z0))
+    current_tries_left = []
+    current_tries_right = []
+    left_middle = left_floor
+    right_middle = right_ceiling
     data_string = f"{v} events"
-
     while reached == False:
         mean_list = np.zeros((len(z0), wedges))
         num_covers = []
         PRF = []
-        file = f'data/wedgeData_{v}_128.txt'
+        file = f'python/data/wedgeData_{v}_128.txt'
         all_data = readFile(file, wedges)
 
-        for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
+        for k in range(wedges):
             env, points = all_data[k] 
+            env = Environment(top_layer_lim=z_5)
             data = DataSet(env)
             data.importData(points)
             #add the 0.1 cm points
@@ -253,7 +258,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
             cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
             num_covers.append(cover.n_patches)
             out = [] 
-
+            x_edges = np.array(env.radii)*(env.top_layer_lim-env.beam_axis_lim)/(env.radii[-1]) + env.beam_axis_lim
             for layer in range(env.num_layers): 
                 for point in data.array[layer]: 
                     
@@ -261,8 +266,8 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
                     for patch in cover.patches: 
                         if patch.contains_p(point, layer): 
                             num_in += 1
-                            
-                    out.append(num_in)
+                    if (np.abs(point.z) <= x_edges[layer]) & (num_in != 0):                       
+                        out.append(num_in)
             PRF.append(out)
 
             for iz, z in enumerate(np.array(z0)):
@@ -279,32 +284,48 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
 
                 
                 percentage_accepted = percentage_accepted/lines
-                mean_list[iz, ik] = mean_list[iz, ik] + percentage_accepted
+                mean_list[iz, k] = mean_list[iz, k] + percentage_accepted
+
         z0_means = np.mean(mean_list, axis = 1)
         if np.all(z0_means > accept):
             break
-        if np.all(z0_means[left_index:last_left] > accept):
-            real_solve = np.append(real_solve, [z0[left_index]])
-            print('new left', z0[left_index])
-            last_left = left_index
-            left_index = -1
-        if np.all(z0_means[last_right:right_index] > accept):
-            real_solve = np.append(real_solve, [z0[right_index]])
-            print('new right', z0[right_index])
-            last_right = right_index
-            right_index = len(z0)
-        left_index +=1
-        right_index -=1
+        if np.all(z0_means[left_middle:int(len(z0)/2)+1] >= accept):
+            current_tries_left.append(left_middle)
+            left_ceiling = left_middle
+            debug("Michelle", f"yes: {z0[left_middle]}")
+        else:
+            left_floor = left_middle
+        if np.all(z0_means[int(len(z0)/2)+1:right_middle+1] >= accept):
+            current_tries_right.append(right_middle)
+            right_floor = right_middle
+            debug("Michelle", f"yes: {z0[right_middle]}")
+        else:
+            right_ceiling = right_middle
+        
+        if left_ceiling - left_floor <= 1:
+            if not np.all(z0_means[:int(len(z0)/2)] >= accept):
+                real_solve = np.append(real_solve, z0[min(current_tries_left)])
+            debug("Michelle", f"New left: {z0[min(current_tries_left)]}")
+            current_tries_left = []
+            left_floor = -1
+            left_ceiling = left_middle
+        if right_ceiling - right_floor <= 1:
+            real_solve = np.append(real_solve, z0[max(current_tries_right)])
+            debug("Michelle", f"New right: {z0[max(current_tries_right)]}")
+            current_tries_right = []
+            right_floor = right_middle
+            right_ceiling = int(len(z0)+1)
+
         real_solve = np.unique(real_solve)
+        left_middle = int(np.round((left_floor+left_ceiling)/2))
+        right_middle = int(np.round((right_floor+right_ceiling)/2))
         apexZ0 = np.copy(real_solve)
-
-        apexZ0 = np.append(apexZ0, z0[left_index])
-        apexZ0 = np.append(apexZ0,z0[right_index])
+        apexZ0 = np.append(apexZ0, z0[left_middle])
+        apexZ0 = np.append(apexZ0, z0[right_middle])
         apexZ0 = np.unique(apexZ0)
-        print(left_index)
-        print(right_index)
-        print(np.sort(real_solve))
-
+        
+        debug("Michelle", f"real: {real_solve}")
+        debug("Michelle", f"next try: {apexZ0}")
     ymin = accept
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")
@@ -317,7 +338,8 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
+    #plt.legend(f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%",
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}"+ r'$\pm$' + f"{PRFs}\n"+ r'$apexZ_0$' + f" = {apexZ0}"],
         loc = 8, fontsize = 12)
     if savefig == True:
         plt.savefig(f"Figures/min_cover_binary_{start}_({lining}_{data_string}_ppl{16})")

@@ -1,5 +1,6 @@
 from src.coverers.data_structs import Environment, Point
 import time
+from src.debug import * 
 
 
 def readFile(filepath, stop:int = 128, performance:bool=False): 
