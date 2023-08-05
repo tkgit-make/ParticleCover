@@ -220,7 +220,7 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
     plt.title(datastring, fontsize = 20)
     plt.show()
 
-def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_5 = 100., v = 'v3', savefig = False):
+def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_5 = 100., v = 'v3', savefig = False):
     if start == 'odd':
         apexZ0 = [0]
         real_solve = [0]
@@ -268,11 +268,12 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
                     for patch in cover.patches: 
                         if patch.contains_p(point, layer): 
                             num_in += 1
-                    if (np.abs(point.z) <= x_edges[layer]) & (num_in != 0):                       
+                    if (np.abs(point.z) <= x_edges[layer]+0.1) & (num_in != 0):                       
                         out.append(num_in)
             PRF.append(out)
 
             for iz, z in enumerate(np.array(z0)):
+                '''
                 percentage_accepted = 0 
                     
                 lg = LineGenerator(env, z)
@@ -286,15 +287,26 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
 
                 
                 percentage_accepted = percentage_accepted/lines
+                '''
+                list_of_intersections = []
+                for patch in cover.patches: 
+                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
+                    overlap_of_superpoints = intersection(patch.env, list_of_segs) 
+                    list_of_intersections.append(overlap_of_superpoints)
+                
+                total_measure = unionOfLineSegments(list_of_intersections)
+                
+                percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
                 mean_list[iz, k] = mean_list[iz, k] + percentage_accepted
 
         z0_means = np.mean(mean_list, axis = 1)
+        last_apexZ0 = apexZ0
         if np.all(z0_means[:int(len(z0)/2+1)] >= accept):
             left_stop = True
         if np.all(z0_means[int(len(z0)/2+1):]>= accept):
             right_stop = True
-        if np.all(z0_means > accept):
-            reached == True
+        if (left_stop == True) & (right_stop == True):
+            reached = True
         if np.all(z0_means[left_middle:int(len(z0)/2)+1] >= accept):
             if left_stop == False:
                 current_tries_left.append(left_middle)
@@ -313,25 +325,24 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
         if left_ceiling - left_floor <= 1:
             if left_stop == False:
                 real_solve = np.append(real_solve, z0[min(current_tries_left)])
-            debug("Michelle", f"New left: {z0[min(current_tries_left)]}")
-            current_tries_left = []
-            left_floor = -1
-            left_ceiling = left_middle
+                debug("Michelle", f"New left: {z0[min(current_tries_left)]}")
+                current_tries_left = []
+                left_floor = -1
+                left_ceiling = left_middle
         if right_ceiling - right_floor <= 1:
-            real_solve = np.append(real_solve, z0[max(current_tries_right)])
-            debug("Michelle", f"New right: {z0[max(current_tries_right)]}")
-            current_tries_right = []
-            right_floor = right_middle
-            right_ceiling = int(len(z0)+1)
+            if right_stop == False:
+                real_solve = np.append(real_solve, z0[max(current_tries_right)])
+                debug("Michelle", f"New right: {z0[max(current_tries_right)]}")
+                current_tries_right = []
+                right_floor = right_middle
+                right_ceiling = int(len(z0))
 
         real_solve = np.unique(real_solve)
         left_middle = int(np.round((left_floor+left_ceiling)/2))
         right_middle = int(np.round((right_floor+right_ceiling)/2))
         apexZ0 = np.copy(real_solve)
-        if left_stop == False:
-            apexZ0 = np.append(apexZ0, z0[left_middle])
-        if right_stop == False:
-            apexZ0 = np.append(apexZ0, z0[right_middle])
+        apexZ0 = np.append(apexZ0, z0[left_middle])
+        apexZ0 = np.append(apexZ0, z0[right_middle])
         apexZ0 = np.unique(apexZ0)
         
         debug("Michelle", f"real: {real_solve}")
@@ -348,7 +359,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective", accept = 
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_5$ = " +f"{z_5}\n" r'$apexZ_0$' + f" = {apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_5$ = " +f"{z_5}\n" r'$apexZ_0$' + f" = {last_apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         plt.savefig(f"Figures/min_cover_binary_{start}_({lining}_{data_string}_ppl{16})")
@@ -378,9 +389,8 @@ def patch_ending_layer(lining = 'makePatches_Projective_center', apexZ0 = [-10, 
     plt.legend(loc = 'upper left', fontsize = 12)
     plt.show()
 
-def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', ppl = 16, wedges = [0, 128], v = 'v3', savefig = False):
-    #PUT IN BINARY SEARCH INSTEAD
-    #Binary search should take 4 steps, whole thing should take 10 steps
+def minimal_cover_linear_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = [0, 128], v = 'v3', z_5=100., savefig = False):
+
     if start == 'odd':
         apexZ0 = [0]
         real_solve = [0]
@@ -402,11 +412,12 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', p
         mean_list = np.zeros((len(z0), wedges[1]-wedges[0]))
         num_covers = []
         PRF = []
-        file = f'data/wedgeData_{v}_128.txt'
+        file = f'python/data/wedgeData_{v}_128.txt'
         all_data = readFile(file, wedges[1])
 
         for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
             env, points = all_data[k] 
+            env = Environment(top_layer_lim=z_5)
             data = DataSet(env)
             data.importData(points)
             #add the 0.1 cm points
@@ -416,7 +427,7 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', p
             cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
             num_covers.append(cover.n_patches)
             out = [] 
-
+            x_edges = np.array(env.radii)*(env.top_layer_lim-env.beam_axis_lim)/(env.radii[-1]) + env.beam_axis_lim
             for layer in range(env.num_layers): 
                 for point in data.array[layer]: 
                     
@@ -424,11 +435,12 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', p
                     for patch in cover.patches: 
                         if patch.contains_p(point, layer): 
                             num_in += 1
-                            
-                    out.append(num_in)
+                    if (np.abs(point.z) <= x_edges[layer]+0.1) & (num_in != 0):
+                        out.append(num_in)
             PRF.append(out)
 
             for iz, z in enumerate(np.array(z0)):
+                '''
                 percentage_accepted = 0 
                     
                 lg = LineGenerator(env, z)
@@ -438,11 +450,23 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', p
                     for patch in cover.patches:
                         if patch.contains(test_lines[i]): 
                             percentage_accepted += 1 
-                            break 
+                            break
+                percentage_accepted = percentage_accepted/lines
+                '''
+                list_of_intersections = []
+                for patch in cover.patches: 
+                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
+                    overlap_of_superpoints = intersection(patch.env, list_of_segs) 
+                    list_of_intersections.append(overlap_of_superpoints)
+                
+                total_measure = unionOfLineSegments(list_of_intersections)
+                
+                percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
 
                 
-                percentage_accepted = percentage_accepted/lines
+                
                 mean_list[iz, ik] = mean_list[iz, ik] + percentage_accepted
+        last_apexZ0 = apexZ0
         z0_means = np.mean(mean_list, axis = 1)
         if np.all(z0_means > accept):
             break
@@ -480,7 +504,7 @@ def z099(lining:str = "makePatches_Projective", accept = 0.999, start = 'odd', p
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {last_apexZ0}, ppl = {ppl}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
