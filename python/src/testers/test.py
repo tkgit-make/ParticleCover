@@ -47,7 +47,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
         data.add()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, leftRight=False, show = False)
+        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
         #append number of covers in the patch
         num_covers.append(cover.n_patches)
         out = [] 

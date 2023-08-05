@@ -140,7 +140,7 @@ class wedgeCover():
                     self.n_patches += 1 
                     break
 
-    def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, show = True, leftRight = True):
+    def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, show = True):
         if show == True:
             fitting_lines = []
             if (type(apexZ0) == int) or (type(apexZ0) == float):
@@ -155,9 +155,9 @@ class wedgeCover():
         if lining == 'makePatches_Projective':
             try:
                 for s in apexZ0:
-                    self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = leftRight)
+                    self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = True)
             except:
-                self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = leftRight)
+                self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = True)
             return
         
         elif (lining == 'makePatches_Projective_center') or (lining == 'c'):

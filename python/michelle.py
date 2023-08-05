@@ -10,7 +10,7 @@ import ast
 
 # filepath = "python/data/wedgeData_v3_128.txt"
 # f = open("python/data/wedgeData_v3_128.txt")
-unaccepted_lines(apexZ0=[ 0], line_origin=[15], wedge_number=56, z0_cutoff=100.)
+#unaccepted_lines(apexZ0=[ 0], line_origin=[15], wedge_number=56, z0_cutoff=100.)
 #filedata = readFile(filepath, stop=1280, performance=False)
 #minimal_cover_binary_search(wedges=1)
 #z099(wedges=[0,1])
@@ -94,4 +94,4 @@ cov.solve('makePatches_Projective_center', leftRight=False, apexZ0 = [-10, 0, 10
 # wedge_test(apexZ0=0)
 # wedge_test(apexZ0 = [-10, 0, 10], wedges = [56, 57])
 
-wedge_test(lining= "makePatches_Projective_center", apexZ0 = 0, wedges = [56, 57], top_layer_cutoff = 100, show_acceptance_of_cover=True)
+wedge_test(lining= "makePatches_Projective_Rightleft", apexZ0 = 10, wedges = [0,128], top_layer_cutoff = 50, show_acceptance_of_cover=False, ppl = 16)
