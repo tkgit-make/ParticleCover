@@ -110,6 +110,6 @@ class parallelogram():
         elif self.shadow_topR_jL < z0 < self.shadow_topL_jL: 
             segment_min = self.top_layer_zmax + (z0 - self.shadow_topR_jL)/self.pSlope
         
-        #debug('Michelle', f"{segment_min}, {segment_max}")
+        debug('Michelle', f"crossSection {segment_min}, {segment_max}")
         return lineSegment(segment_min, segment_max)
     
