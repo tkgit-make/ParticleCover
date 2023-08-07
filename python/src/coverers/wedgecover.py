@@ -87,6 +87,10 @@ class wedgePatch():
         # min and max of the top superpoint of a patch
         top_layer_zmin = max(self.superpoints[-1].min, -self.env.top_layer_lim)
         top_layer_zmax = min(self.superpoints[-1].max, self.env.top_layer_lim)
+        
+        if top_layer_zmin > top_layer_zmax: 
+            top_layer_zmin = self.env.top_layer_lim + 1
+            top_layer_zmax = top_layer_zmin
 
         for j, superpoint in enumerate(self.superpoints[:-1], start=1): 
             z_j_min = superpoint.min 

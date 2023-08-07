@@ -9,6 +9,7 @@ class lineSegment():
         
         if min_z5_accepted > max_z5_accepted: 
             debug(name = 'Michelle', error_message = f'min: {min_z5_accepted}, max: {max_z5_accepted}')
+            debug(name = 'Muchang', error_message = f'min: {min_z5_accepted}, max: {max_z5_accepted}')
             raise Exception("The minimum z5 accepted is greater than the maximum z5 accepted.")
         
         self.min_z5_accepted = min_z5_accepted
@@ -91,12 +92,11 @@ class parallelogram():
             print(self.top_layer_zmin, self.top_layer_zmax)
         
         
-        
     def crossSection(self, z0:float): 
         # vertical cross section of the parallelogram at particular z0
         # returns a line interval 
         
-        if z0 < self.shadow_topR_jL or z0 > self.shadow_topL_jR: 
+        if z0 <= self.shadow_topR_jL or z0 >= self.shadow_topL_jR: 
             # left of a or right of d
             return lineSegment(0.0, 0.0)
         
@@ -111,5 +111,7 @@ class parallelogram():
             segment_min = self.top_layer_zmax + (z0 - self.shadow_topR_jL)/self.pSlope
         
         debug('Michelle', f"crossSection {segment_min}, {segment_max}")
+        # debug("Muchang", f"{z0} : a {self.shadow_topR_jL}, b {self.shadow_topR_jR}, c {self.shadow_topL_jL}, d {self.shadow_topL_jR}")
+        #debug('Michelle', f"{segment_min}, {segment_max}")
         return lineSegment(segment_min, segment_max)
     

@@ -347,6 +347,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
         
         debug("Michelle", f"real: {real_solve}")
         debug("Michelle", f"next try: {apexZ0}")
+        debug("Muchang", f"{real_solve}")
     ymin = accept
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")
