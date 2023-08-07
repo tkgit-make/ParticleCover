@@ -220,7 +220,7 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
     plt.title(datastring, fontsize = 20)
     plt.show()
 
-def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_5 = 100., v = 'v3', savefig = False):
+def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_5 = 100., z0_spacing = 0.5, v = 'v3', savefig = False):
     if start == 'odd':
         apexZ0 = [0]
         real_solve = [0]
@@ -228,7 +228,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
         apexZ0 = []
         real_solve = []     
     reached = False
-    z0 = np.arange(-15, 15.5, 0.5)
+    z0 = np.arange(-15, 15+z0_spacing, z0_spacing)
     lines = 1000
     left_floor = 0
     left_ceiling = int(len(z0)/2)

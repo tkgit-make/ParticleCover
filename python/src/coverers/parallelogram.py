@@ -8,8 +8,7 @@ class lineSegment():
         # the min and max z5 values that are accepted by 1 parallelogram
         
         if min_z5_accepted > max_z5_accepted: 
-            if debug == "Muchang": 
-                print("")
+            debug(name = 'Michelle', error_message = f'min: {min_z5_accepted}, max: {max_z5_accepted}')
             raise Exception("The minimum z5 accepted is greater than the maximum z5 accepted.")
         
         self.min_z5_accepted = min_z5_accepted
@@ -111,5 +110,6 @@ class parallelogram():
         elif self.shadow_topR_jL < z0 < self.shadow_topL_jL: 
             segment_min = self.top_layer_zmax + (z0 - self.shadow_topR_jL)/self.pSlope
         
+        #debug('Michelle', f"{segment_min}, {segment_max}")
         return lineSegment(segment_min, segment_max)
     
