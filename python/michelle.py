@@ -12,7 +12,7 @@ import ast
 # f = open("python/data/wedgeData_v3_128.txt")
 #unaccepted_lines(apexZ0=[ 0], line_origin=[15], wedge_number=56, z0_cutoff=100.)
 #filedata = readFile(filepath, stop=1280, performance=False)
-minimal_cover_binary_search(lining = 'c', z0_spacing=0.5, z_5=50, wedges=1000, accept=0.999)
+minimal_cover_binary_search(lining = 'makePatches_Projective_Leftright', z0_spacing=0.5, ppl =16, z_5=50, wedges=6400, accept=0.999)
 #minimal_cover_linear_search(lining = 'c',wedges=[0,128], accept=0.999)
 # filedata = readFile(filepath, stop=1280, performance=False)
 #wedge_test(lining = 'c',apexZ0=[-15,-10, 0,10, 15], top_layer_cutoff=50, wedges=[0,1], show_acceptance_of_cover=True)

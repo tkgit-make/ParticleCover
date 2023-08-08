@@ -156,7 +156,7 @@ class wedgeCover():
                     fitting_lines = fitting_lines + lGen.generateEvenGrid(nlines)
             self.fitting_lines = fitting_lines
         
-        if lining == 'makePatches_Projective':
+        if lining == 'makePatches_Projective_Leftright':
             try:
                 for s in apexZ0:
                     self.makePatches_Projective(apexZ0=s, ppl = ppl, leftRight = True)
