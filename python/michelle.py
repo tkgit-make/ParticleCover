@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import time 
 import ast
 
-'''
+
 filepath = "python/data/wedgeData_v3_128.txt"
 filedata = readFile(filepath, stop=128, performance=False)
 env, points = filedata[0] 
@@ -17,10 +17,11 @@ ds = DataSet(env)
 ds.importData(points)
 ds.addBoundaryPoint()
 cov = wedgeCover(env, ds)
-cov.makePatches_ShadowQuilt(leftRight=True)
+#cov.makePatches_ShadowQuilt()
 #cov.plot()
-'''
-minimal_cover_binary_search(lining = 'makePatches_Projective_center', start='even', z0_spacing=0.5, ppl =16, z_5=100, wedges=6400, accept=0.999)
+wedge_test(lining = 'makePatches_ShadowQuilt',apexZ0=0, top_layer_cutoff=50, wedges=[0, 5], z0_spacing=0.2, leftRightAlign=False, show_acceptance_of_cover=True, accept_cutoff=15)
+
+#minimal_cover_binary_search(lining = 'makePatches_Projective_center', start='even', z0_spacing=0.5, ppl =16, z_5=100, wedges=6400, accept=0.999)
 
 # filepath = "python/data/wedgeData_v3_128.txt"
 # f = open("python/data/wedgeData_v3_128.txt")

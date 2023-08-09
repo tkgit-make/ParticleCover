@@ -49,6 +49,7 @@ class wedgePatch():
         # first superpoint in array should be the 1st layer 
         
         self.getParallelograms()
+        self.get_acceptanceCorners()
         
     def contains(self, line:Line): 
         
@@ -105,6 +106,18 @@ class wedgePatch():
             parallelograms.append(Parallelogram)
             
         self.parallelograms = parallelograms
+
+    def get_acceptanceCorners(self):
+        a_corner_list = [pgram.shadow_topR_jL for pgram in self.parallelograms]
+        b_corner_list = [pgram.shadow_topR_jR for pgram in self.parallelograms]
+        c_corner_list = [pgram.shadow_topL_jL for pgram in self.parallelograms]
+        d_corner_list = [pgram.shadow_topL_jR for pgram in self.parallelograms]
+
+        self.a_corner = max(a_corner_list)
+        self.b_corner = min(b_corner_list)
+        self.c_corner = max(c_corner_list)
+        self.d_corner = min(d_corner_list)
+        
     
     def plot(self, color='g'): 
         heights = self.env.radii
@@ -216,6 +229,7 @@ class wedgeCover():
             leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
         """
 
+        '''
         #First, make list of contiguous superpoints from the outermost layer
         z_top_superpoint_edge_index = []
         top_layer_points = self.data.array[self.env.num_layers-1]
@@ -240,29 +254,42 @@ class wedgeCover():
             else:
                 z_top_superpoint_edge_index.append((top_end_index,top_end_index+(ppl-1)))
 
-        '''
+        
         print("total points in top layer: ", len(top_row_list))
         print("index list: ", z_top_superpoint_edge_index)
         print("start: ", top_start_index, "value: ", top_row_list[top_start_index])
         print("end: ", top_end_index, "value: ",  top_row_list[top_end_index])
         '''
-        debug("Michelle", f"{(z_top_superpoint_edge_index)}")
+        #self.makePatches_Projective(leftRight=False)
+
+        initial_apexZ0 = self.env.beam_axis_lim
+        apexZ0 = initial_apexZ0
         
-        apexZ0 = 0 
-        leftRight = not leftRight
-        for _ in range(2): 
-            self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = top_row_list[z_top_superpoint_edge_index[0][1]], leftRight=leftRight)
-            parallelograms = self.patches[-1].parallelograms
-            a_values = [pgram.shadow_topR_jL for pgram in parallelograms]
-            max_a_value = max(a_values)
-            debug("Muchang", f"{a_values} \n MAX: {max_a_value}")
-            
-            apexZ0 = max_a_value 
-            leftRight = not leftRight 
-            
-        # self.makePatch_alignedToLine(apexZ0 = -6, z_top = top_row_list[z_top_superpoint_edge_index[0][1]], leftRight=leftRight)
-        # self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][1]], leftRight=leftRight)
-        # self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][0]], leftRight=leftRight)        
+        first_row_count = 0
+        c_corner = 0
+
+        while apexZ0 >= -self.env.beam_axis_lim:
+            #make first row using last ppl points
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, leftRight=False)
+            #pick a value as next apexZ0 value
+            apexZ0 = self.patches[-1].a_corner
+            c_corner = self.patches[-1].c_corner
+            first_row_count += 1
+        
+        #add top row rightmost patch again in order to make patches going down
+        self.add_patch(self.patches[0])
+        #make patches going down
+        self.makePatches_Projective_Loop(leftRight=False, apexZ0 = self.patches[0].b_corner, stop = -1)
+        #delete original first patch
+        del self.patches[first_row_count]
+        self.n_patches -= 1
+
+        #go through each row and make rest of patches based on y value of rightmost column
+        for column in range(first_row_count+1):
+            apexZ0 = self.patches[first_row_count+column].a_corner
+            while apexZ0 >= -self.env.beam_axis_lim: 
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.patches[first_row_count+column].superpoints[self.env.num_layers-1].max, leftRight=False)
+                apexZ0 = self.patches[-1].a_corner       
         
 
     def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True):

@@ -6,7 +6,7 @@ from src.debug import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -23,6 +23,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
     """
     
     #create list for z values we're testing the acceptance of, number of covers, and PRF
+    z0 = np.arange(-z0_luminousRegion, z0_luminousRegion+z0_spacing, z0_spacing)
     mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
     PRF = []
@@ -35,6 +36,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
     all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
+        plt.figure(figsize = (z0_luminousRegion/3, top_layer_cutoff/3))
         #convert to existing data format
         env, points = all_data[k] 
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
@@ -63,7 +65,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
                         
                 out.append(num_in)
         PRF.append(out)
-
+        
         #these loops calculate line acceptance
         for iz, z in enumerate(np.array(z0)):
             
@@ -75,12 +77,13 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
                     overlap_of_superpoints = intersection(patch.env, list_of_segs) 
                     list_of_intersections.append(overlap_of_superpoints)
                 
-                if show_acceptance_of_cover: 
-                    plt.xlabel("z_0")
-                    plt.ylabel("z_top")
-                    plt.title("acceptance of cover")
+                if show_acceptance_of_cover:
                     
-                    colors = ["b", "r", "g", "c", "m", "y", "k"]
+                    plt.xlabel(r"$z_0$ (cm)", fontsize = 18)
+                    plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
+                    plt.title("acceptance of cover", fontsize = 18)
+                    
+                    colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "pink", "tomato","olive", "deeppink"]
                     
                     col = 0
                     for line in list_of_intersections: 
