@@ -144,7 +144,7 @@ class wedgeCover():
                     self.n_patches += 1 
                     break
 
-    def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, show = True):
+    def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, leftRight:bool =True, show = True):
         if show == True:
             fitting_lines = []
             if (type(apexZ0) == int) or (type(apexZ0) == float):
@@ -167,9 +167,9 @@ class wedgeCover():
         if lining == 'makePatches_ShadowQuilt':
             try:
                 for s in apexZ0:
-                    self.makePatches_ShadowQuilt(apexZ0=s, ppl = ppl, leftRight = True)
+                    self.makePatches_ShadowQuilt(apexZ0=s, ppl = ppl, leftRight = leftRight)
             except:
-                self.makePatches_ShadowQuilt(apexZ0=apexZ0, ppl = ppl, leftRight = True)
+                self.makePatches_ShadowQuilt(apexZ0=apexZ0, ppl = ppl, leftRight = leftRight)
             return
         elif (lining == 'makePatches_Projective_center') or (lining == 'c'):
             try:
@@ -246,11 +246,23 @@ class wedgeCover():
         print("start: ", top_start_index, "value: ", top_row_list[top_start_index])
         print("end: ", top_end_index, "value: ",  top_row_list[top_end_index])
         '''
-        print(z_top_superpoint_edge_index)
-        self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[0][0]])
-        self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][0]])
-        self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][1]])
-        #self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][0]])        
+        debug("Michelle", f"{(z_top_superpoint_edge_index)}")
+        
+        apexZ0 = 0 
+        leftRight = not leftRight
+        for _ in range(2): 
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = top_row_list[z_top_superpoint_edge_index[0][1]], leftRight=leftRight)
+            parallelograms = self.patches[-1].parallelograms
+            a_values = [pgram.shadow_topR_jL for pgram in parallelograms]
+            max_a_value = max(a_values)
+            debug("Muchang", f"{a_values} \n MAX: {max_a_value}")
+            
+            apexZ0 = max_a_value 
+            leftRight = not leftRight 
+            
+        # self.makePatch_alignedToLine(apexZ0 = -6, z_top = top_row_list[z_top_superpoint_edge_index[0][1]], leftRight=leftRight)
+        # self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][1]], leftRight=leftRight)
+        # self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][0]], leftRight=leftRight)        
         
 
     def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True):

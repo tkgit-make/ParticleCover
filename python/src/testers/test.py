@@ -6,7 +6,7 @@ from src.debug import *
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np.arange(-15, 15.5, 0.5), ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -47,7 +47,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
         data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
-        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
+        cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, leftRight=leftRightAlign, show = False)
         #append number of covers in the patch
         num_covers.append(cover.n_patches)
         out = [] 
@@ -80,10 +80,14 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
                     plt.ylabel("z_top")
                     plt.title("acceptance of cover")
                     
+                    colors = ["b", "r", "g", "c", "m", "y", "k"]
+                    
+                    col = 0
                     for line in list_of_intersections: 
                         plt.xlim(-z0_luminousRegion,z0_luminousRegion)
                         plt.ylim(-top_layer_cutoff, top_layer_cutoff)
-                        plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c="b", linewidth=3)
+                        plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
+                        col += 1
                 
                 total_measure = unionOfLineSegments(list_of_intersections)
                 
