@@ -8,11 +8,25 @@ import matplotlib.pyplot as plt
 import time 
 import ast
 
+'''
+filepath = "python/data/wedgeData_v3_128.txt"
+filedata = readFile(filepath, stop=128, performance=False)
+env, points = filedata[0] 
+env = Environment(50)
+ds = DataSet(env)
+ds.importData(points)
+ds.addBoundaryPoint()
+cov = wedgeCover(env, ds)
+cov.makePatches_ShadowQuilt(leftRight=True)
+#cov.plot()
+'''
+minimal_cover_binary_search(lining = 'makePatches_Projective_center', start='even', z0_spacing=0.5, ppl =16, z_5=100, wedges=6400, accept=0.999)
+
 # filepath = "python/data/wedgeData_v3_128.txt"
 # f = open("python/data/wedgeData_v3_128.txt")
 #unaccepted_lines(apexZ0=[ 0], line_origin=[15], wedge_number=56, z0_cutoff=100.)
 #filedata = readFile(filepath, stop=1280, performance=False)
-minimal_cover_binary_search(lining = 'makePatches_Projective_Leftright', z0_spacing=0.5, ppl =16, z_5=50, wedges=6400, accept=0.999)
+#minimal_cover_binary_search(lining = 'makePatches_Projective_Leftright', z0_spacing=0.5, ppl =16, z_5=50, wedges=6400, accept=0.999)
 #minimal_cover_linear_search(lining = 'c',wedges=[0,128], accept=0.999)
 # filedata = readFile(filepath, stop=1280, performance=False)
 #wedge_test(lining = 'c',apexZ0=[-15,-10, 0,10, 15], top_layer_cutoff=50, wedges=[0,1], show_acceptance_of_cover=True)

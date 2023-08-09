@@ -163,7 +163,14 @@ class wedgeCover():
             except:
                 self.makePatches_Projective(apexZ0=apexZ0, ppl = ppl, leftRight = True)
             return
-        
+
+        if lining == 'makePatches_ShadowQuilt':
+            try:
+                for s in apexZ0:
+                    self.makePatches_ShadowQuilt(apexZ0=s, ppl = ppl, leftRight = True)
+            except:
+                self.makePatches_ShadowQuilt(apexZ0=apexZ0, ppl = ppl, leftRight = True)
+            return
         elif (lining == 'makePatches_Projective_center') or (lining == 'c'):
             try:
                 for s in apexZ0:
@@ -197,6 +204,95 @@ class wedgeCover():
             return
         else:
             raise("Please choose valid solving method")
+
+    def makePatches_ShadowQuilt(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
+        """This method uses the geometry of shadows to generate patches based on superpoints
+            the outer layer and the z0 of the collision point. 
+
+        Args:
+            apexZ0 (num, optional): Collision point on the z axis for the first patches Defaults to 0.
+            stop (num, optional): Where to stop, normalized to 1. Defaults to 1.
+            ppl (int, optional): Points per patch per layer. Defaults to 16.
+            leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
+        """
+
+        #First, make list of contiguous superpoints from the outermost layer
+        z_top_superpoint_edge_index = []
+        top_layer_points = self.data.array[self.env.num_layers-1]
+        top_row_list = np.array([top_layer_points[x].z for x in range(len(top_layer_points))])
+        top_start_index = np.argmin(np.abs(top_row_list + self.env.top_layer_lim+self.env.boundaryPoint_offset))
+        top_end_index = np.argmin(np.abs(top_row_list - (self.env.top_layer_lim+self.env.boundaryPoint_offset)))
+        if leftRight == False:
+            temp = top_start_index
+            top_start_index = top_end_index
+            top_end_index = temp
+
+        num_points_z_top = abs(top_start_index-top_end_index)
+
+        for sp in range(int(num_points_z_top/(ppl-1))):
+            if leftRight == True:
+                z_top_superpoint_edge_index.append((top_start_index+((ppl-1)*sp), top_start_index+((ppl-1)*sp)+(ppl-1)))
+            else:
+                z_top_superpoint_edge_index.append((top_start_index-((ppl-1)*sp)-(ppl-1), top_start_index-((ppl-1)*sp)))
+        if num_points_z_top%(ppl-1) !=0:
+            if leftRight == True:
+                z_top_superpoint_edge_index.append((top_end_index-(ppl-1),top_end_index))
+            else:
+                z_top_superpoint_edge_index.append((top_end_index,top_end_index+(ppl-1)))
+
+        '''
+        print("total points in top layer: ", len(top_row_list))
+        print("index list: ", z_top_superpoint_edge_index)
+        print("start: ", top_start_index, "value: ", top_row_list[top_start_index])
+        print("end: ", top_end_index, "value: ",  top_row_list[top_end_index])
+        '''
+        print(z_top_superpoint_edge_index)
+        self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[0][0]])
+        self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][0]])
+        self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][1]])
+        #self.makePatch_alignedToLine(z_top = top_row_list[z_top_superpoint_edge_index[1][0]])        
+        
+
+    def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True):
+
+        init_patch = []
+
+        #row_data[layer] contains spacepoints for each layer
+        row_data = self.data.array
+        #loops through each layer and picks n points closest to (z0, 0) and (-100, 25)
+        for row in range(self.env.num_layers):
+            y = self.env.radii[row]
+            #create compatible arrays from data structure
+            row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
+            #picks picks n points closest to line from (z0, 0) to (-100, 25) (top left point)
+            r_max = self.env.radii[-1]
+            start_index = np.argmin(np.abs((row_list - ((z_top-apexZ0)*y/r_max + apexZ0))))
+            left_bound = np.argmin(np.abs((row_list + self.env.trapezoid_edges[row])))
+            right_bound = np.argmin(np.abs((row_list - self.env.trapezoid_edges[row])))
+
+            if leftRight == True:
+                #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
+                if start_index != 0:
+                    start_index -= 1
+                #add superpoint to patch
+                if start_index +ppl > right_bound + 1:
+                    init_patch.append(wedgeSuperPoint(row_data[row][right_bound+1-ppl:right_bound+1]))
+                else:
+                    init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+ppl]))
+
+            else:
+                #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
+                if start_index != len(row_list)-1:
+                    start_index += 1
+                if start_index - ppl + 1 < left_bound:
+                    init_patch.append(wedgeSuperPoint(row_data[row][left_bound:left_bound+ppl]))
+                #add superpoint
+                else:
+                    init_patch.append(wedgeSuperPoint(row_data[row][start_index-ppl+1:start_index+1]))
+
+        #add patch to cover
+        self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
+
 
     def makePatches_Projective_Loop(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
             """Loop for creating patches left to right or right to left depending on argument leftRight
@@ -320,56 +416,60 @@ class wedgeCover():
                 return self.makePatches_Projective_Loop(apexZ0, stop, ppl = ppl, leftRight = leftRight)
             
     def makePatches_Projective(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
-            """Creates patches left to right or right to left depending on argument leftRight
+        """Creates patches left to right or right to left depending on argument leftRight
 
-            Args:
-                apexZ0 (num, optional): Places to generate patch. Defaults to 0.
-                stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
-                n (int, optional): points per patch per layer. Defaults to 16.
-                leftRight(Bool): If set to true, make patches from left to right, if false, then make from right to left
+        Args:
+            apexZ0 (num, optional): Places to generate patch. Defaults to 0.
+            stop (num, optional): stopping location, normalized to 1m. Defaults to 1.
+            n (int, optional): points per patch per layer. Defaults to 16.
+            leftRight(Bool): If set to true, make patches from left to right, if false, then make from right to left
 
-            Returns:
-                function: runs loop to make patches
-            """
-            #create list for inital patch
-            if (leftRight == False) & (stop == 1):
-                stop = -1
-            init_patch = []
+        Returns:
+            function: runs loop to make patches
+        """
+        #create list for inital patch
+        if (leftRight == False) & (stop == 1):
+            stop = -1
+        '''
+        init_patch = []
+        
+        #row_data[layer] contains spacepoints for each layer
+        row_data = self.data.array
+        #loops through each layer and picks n points closest to (z0, 0) and (-100, 25)
+        for row in range(self.env.num_layers):
+            y = self.env.radii[row]
+            #create compatible arrays from data structure
+            row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
+            #picks picks n points closest to line from (z0, 0) to (-100, 25) (top left point)
+            r_max = self.env.radii[-1]
+        
+            if leftRight == True:
+                start_index = np.argmin(np.abs(row_list - (((-apexZ0-z_max)*y)/r_max+apexZ0)))
+                #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
+                if start_index != 0:
+                    start_index -= 1
+                #add superpoint to patch
+                init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+ppl]))
+            else:
+                start_index = np.argmin(np.abs((row_list - ((z_max-apexZ0)*y/r_max + apexZ0))))
+                #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
+                if start_index != len(row_list)-1:
+                    start_index += 1
+                #add superpoint
+                init_patch.append(wedgeSuperPoint(row_data[row][start_index-ppl+1:start_index+1]))
+            
+            
 
-            #row_data[layer] contains spacepoints for each layer
-            row_data = self.data.array
-            #loops through each layer and picks n points closest to (z0, 0) and (-100, 25)
-            for row in range(self.env.num_layers):
-                y = self.env.radii[row]
-                #create compatible arrays from data structure
-                row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
-                #picks picks n points closest to line from (z0, 0) to (-100, 25) (top left point)
-                r_max = self.env.radii[-1]
-                z_max = self.env.top_layer_lim
-
-                if leftRight == True:
-                    start_index = np.argmin(np.abs(row_list - (((-apexZ0-z_max)*y)/r_max+apexZ0)))
-                    #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
-                    if start_index != 0:
-                        start_index -= 1
-                    #add superpoint to patch
-                    init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+ppl]))
-                else:
-                    start_index = np.argmin(np.abs((row_list - ((z_max-apexZ0)*y/r_max + apexZ0))))
-                    #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
-                    if start_index != len(row_list)-1:
-                        start_index += 1
-                    #add superpoint
-                    init_patch.append(wedgeSuperPoint(row_data[row][start_index-ppl+1:start_index+1]))
-
-                
-
-            #add patch to cover
-            self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
-
-            #run main algorithm
-            self.makePatches_Projective_Loop(apexZ0=apexZ0, stop=stop, ppl = ppl, leftRight = leftRight)
-            return
+        #add patch to cover
+        self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
+        '''
+        if leftRight == True:
+            self.makePatch_alignedToLine(apexZ0=apexZ0, z_top=-self.env.top_layer_lim, ppl = ppl, leftRight=True)
+        else:
+            self.makePatch_alignedToLine(apexZ0=apexZ0, z_top=self.env.top_layer_lim, ppl = ppl, leftRight=False)
+        #run main algorithm
+        self.makePatches_Projective_Loop(apexZ0=apexZ0, stop=stop, ppl = ppl, leftRight = leftRight)
+        return
 
     def makePatches_Projective_center(self, center = 0, apexZ0 = 0, stop = 'none', ppl = 16):
         """generate patches starting from center or specified value
@@ -392,13 +492,15 @@ class wedgeCover():
             #picks n/2 points left and right of point closest to line from (0, 0) to (center, 25)
             center_index = np.argmin(np.abs(row_list - ((y*(center-apexZ0)/r_max)+apexZ0)))
             #conditionals make sure no negative indices indices past length of array
+
             if (center_index-int(ppl/2)) < 0:
                 center_index = int(ppl/2)
                 #init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(n/2):center_index+int(n/2)])) #DONT COMMENT IN BUT IS AN ALTERNATIVE
             elif (center_index+int(ppl/2)) > len(self.data.array[row]):
                 center_index = len(self.data.array[row]) - int(ppl/2)
+
                 #init_patch.append(wedgeSuperPoint(row_data[row][len(self.data.array-16:len(self.data.array)])) #DONT COMMENT IN BUT IS AN ALTERNATIVE
-            if self.data.array[row][center_index].z >= 0:
+            if (self.data.array[row][center_index].z >= 0) or (center_index+16 == len(row_list)):
                 init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(ppl/2):center_index+int(ppl/2)]))
             else:
                 init_patch.append(wedgeSuperPoint(row_data[row][center_index-int(ppl/2)+1:center_index+int(ppl/2)+1]))            
@@ -491,7 +593,7 @@ class wedgeCover():
                 name = 0
                 for patch in self.patches: 
                     patch.plot("b")
-                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
+                    plt.savefig(f"python/temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -500,7 +602,7 @@ class wedgeCover():
                 for patch in self.patches: 
                     self.data.plot(show = False) 
                     patch.plot("b")
-                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
+                    plt.savefig(f"python/temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -512,7 +614,7 @@ class wedgeCover():
                             line.plot("r")
                     patch.plot("b")
                 
-                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
+                    plt.savefig(f"python/temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
                     
@@ -524,13 +626,13 @@ class wedgeCover():
                         if patch.contains(line): 
                             line.plot("r")
                     patch.plot("b")
-                    plt.savefig(f"temp_image_dir/{str(name).zfill(2)}.png")
+                    plt.savefig(f"python/temp_image_dir/{str(name).zfill(2)}.png")
                     plt.clf() 
                     name += 1 
    
                 
                         
-            image_files = glob.glob("temp_image_dir/*.png")
+            image_files = glob.glob("python/temp_image_dir/*.png")
             
             image_files.sort()
 

@@ -34,6 +34,9 @@ class Environment:
         # parallelogram slopes represent dz0/dz5 in z0-z5 space
         self.parallelogramSlopes = [-Rj/(self.radii[-1] - Rj) for Rj in self.radii[:-1]]
         self.radii_leverArm = [1 - pSlope for pSlope in self.parallelogramSlopes]
+
+        self.boundaryPoint_offset = 0
+        self.trapezoid_edges = np.array(self.radii)*(self.top_layer_lim-self.beam_axis_lim)/(self.radii[-1]) + self.beam_axis_lim
         
 
 class DataSet(): 
@@ -125,15 +128,16 @@ class DataSet():
         if show == True:
             plt.show()
         
-    def add(self, offset = 0.1):
+    def addBoundaryPoint(self, offset = 0.1):
         """Adds one point on each side of the trapezoid for better acceptance
 
         Args:
             offset (float, optional): How much is the offset in cms. Defaults to 0.1.
         """
-        x_edges = np.array(self.env.radii)*(self.env.top_layer_lim-self.env.beam_axis_lim)/(self.env.radii[-1]) + self.env.beam_axis_lim
+        self.boundaryPoint_offset = offset
+
         #print(x_edges)
-        for i, value in enumerate(x_edges):
+        for i, value in enumerate(self.env.trapezoid_edges):
             phi0 = self.array[i][0].phi
             self.array[i].insert(0,Point(int(i+1), int((i+1)*5), phi0, -1*value-offset))
             self.array[i].append(Point(int(i+1), int((i+1)*5), phi0, value+offset))
@@ -146,4 +150,5 @@ class DataSet():
             layer.sort(key=lambda point: point.z) 
             self.n_points[ln] = len(layer)
             ln += 1
+        self.env.trapezoid_edges = [x + offset for x in self.env.trapezoid_edges]
        

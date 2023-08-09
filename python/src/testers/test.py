@@ -44,7 +44,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
         else:
             data.generateUniform([uniform_N_points, uniform_N_points, uniform_N_points, uniform_N_points, uniform_N_points])
         #add the 0.1 cm points
-        data.add()
+        data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
         cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
@@ -81,6 +81,8 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0 = np
                     plt.title("acceptance of cover")
                     
                     for line in list_of_intersections: 
+                        plt.xlim(-z0_luminousRegion,z0_luminousRegion)
+                        plt.ylim(-top_layer_cutoff, top_layer_cutoff)
                         plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c="b", linewidth=3)
                 
                 total_measure = unionOfLineSegments(list_of_intersections)
@@ -225,9 +227,10 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
         apexZ0 = [0]
         real_solve = [0]
     else:
-        apexZ0 = []
+        apexZ0 = [0.5, 0.5]
         real_solve = []     
     reached = False
+    plt.figure(figsize=(10,7))
     z0 = np.arange(-15, 15+z0_spacing, z0_spacing)
     lines = 1000
     left_floor = 0
@@ -254,7 +257,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
             data = DataSet(env)
             data.importData(points)
             #add the 0.1 cm points
-            data.add()
+            data.addBoundaryPoint()
             #solve for cover
             cover = wedgeCover(env, data)
             cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
@@ -422,7 +425,7 @@ def minimal_cover_linear_search(lining:str = "makePatches_Projective_center", ac
             data = DataSet(env)
             data.importData(points)
             #add the 0.1 cm points
-            data.add()
+            data.addBoundaryPoint()
             #solve for cover
             cover = wedgeCover(env, data)
             cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
@@ -534,7 +537,7 @@ def numCovers(lining:str = "makePatches_Projective", events=1000, apexZ0 = 0, pp
         data = DataSet(env)
         data.importData(points)
         #add the 0.1 cm points
-        data.add()
+        data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
         cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, show = False)
@@ -583,7 +586,7 @@ def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=100
         data = DataSet(env)
         data.importData(points)
         #add the 0.1 cm points
-        data.add()
+        data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
         cover.solve(lining=lining, apexZ0 = apexZ0, ppl = ppl, show = False)
@@ -649,7 +652,7 @@ def pointRepetitionFactor(lining:str = "makePatches_Projective", events=128, ape
         data = DataSet(env)
         data.importData(points)
         #add the 0.1 cm points
-        data.add()
+        data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
         cover.solve(lining=lining, apexZ0 = apexZ0, ppl = ppl, show = False)
@@ -721,7 +724,7 @@ def pointRepetitionFactorLayer(lining:str = "makePatches_Projective_center", wed
         data = DataSet(env)
         data.importData(points)
         #add the 0.1 cm points
-        data.add()
+        data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
         cover.solve(lining=lining, apexZ0 = apexZ0, ppl = ppl, show = False)
