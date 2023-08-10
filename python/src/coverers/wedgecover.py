@@ -40,6 +40,8 @@ class wedgePatch():
     def __init__(self, env:Environment, superpoints:tuple, apexZ0): 
         self.env = env 
         self.end_layer = -1
+        self.left_end_layer = -1
+        self.right_end_layer = -1
         self.apexZ0 = apexZ0
         
         if len(superpoints) != env.num_layers: 
@@ -50,6 +52,7 @@ class wedgePatch():
         
         self.getParallelograms()
         self.get_acceptanceCorners()
+        self.get_end_layer()
         
     def contains(self, line:Line): 
         
@@ -131,6 +134,15 @@ class wedgePatch():
         plt.xticks(np.arange(-self.env.top_layer_lim, self.env.top_layer_lim, 10))
         plt.yticks(np.arange(0, max_height + 1, self.env.num_layers))
         # plt.show()
+    
+    def get_end_layer(self):
+        lambdaZ_left_list = []
+        lambdaZ_right_list = []
+        for layer in range(self.env.num_layers):
+            lambdaZ_left_list.append((self.superpoints[layer].min-self.apexZ0)/self.env.radii[layer])
+            lambdaZ_right_list((self.superpoints[layer].max-self.apexZ0)/self.env.radii[layer])
+        self.left_end_layer = max(lambdaZ_left_list)
+        self.right_end_layer = min(lambdaZ_right_list)
 
 class wedgeCover(): 
     
@@ -267,30 +279,86 @@ class wedgeCover():
         
         first_row_count = 0
         c_corner = 0
-
+        
         while apexZ0 >= -self.env.beam_axis_lim:
             #make first row using last ppl points
-            self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, leftRight=False)
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, leftRight=False)
             #pick a value as next apexZ0 value
             apexZ0 = self.patches[-1].a_corner
-            c_corner = self.patches[-1].c_corner
+            #c_corner = self.patches[-1].c_corner
             first_row_count += 1
-        
+        """
         #add top row rightmost patch again in order to make patches going down
         self.add_patch(self.patches[0])
         #make patches going down
-        self.makePatches_Projective_Loop(leftRight=False, apexZ0 = self.patches[0].b_corner, stop = -1)
+        self.makePatches_Projective_Loop(leftRight=False, ppl=ppl, apexZ0 = self.patches[0].b_corner, stop = -1)
         #delete original first patch
         del self.patches[first_row_count]
         self.n_patches -= 1
-
+        
         #go through each row and make rest of patches based on y value of rightmost column
         for column in range(first_row_count+1):
             apexZ0 = self.patches[first_row_count+column].a_corner
             while apexZ0 >= -self.env.beam_axis_lim: 
-                self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.patches[first_row_count+column].superpoints[self.env.num_layers-1].max, leftRight=False)
-                apexZ0 = self.patches[-1].a_corner       
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.patches[first_row_count+column].superpoints[self.env.num_layers-1].max, leftRight=False, ppl = ppl)
+                apexZ0 = self.patches[-1].a_corner   
+    
+        """
+        initial_apexZ0 = -self.env.beam_axis_lim
+        apexZ0 = initial_apexZ0
+        last_row_count = 0
+
+
+        while apexZ0 <= self.env.beam_axis_lim:
+            #make first row using last ppl points
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset, leftRight=True)
+            #pick a value as next apexZ0 value
+            apexZ0 = self.patches[-1].d_corner
+            #b_corner = self.patches[-1].b_corner
+            last_row_count += 1
+
+        #np.arange(first_row_count, first_row_count + last_row_count) gives index of bottom row patches
+        #for p in np.arange(first_row_count, first_row_count + last_row_count):
+        #    patch = self.patches[p]
+        #   get end layer of patch
+        #   get apexZ0 of patch
+        #   compute the limiting lambda based on end layer
+        #   use limiting lambda and apexZ0 to compute effective z_top
+        #   store effective z_top in list
+
+        #get min(z_top list)
+        #pass z_top_min to self.makePatch_alignedToLine below
+
+
+        initial_apexZ0 = -self.env.beam_axis_lim
+        apexZ0 = initial_apexZ0
+
+        while apexZ0 <= self.env.beam_axis_lim:
+            #make first row using last ppl points
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = 0, leftRight=True)
+            #pick a value as next apexZ0 value
+            apexZ0 = self.patches[-1].d_corner
+            #b_corner = self.patches[-1].b_corner
+            #first_row_count += 1
+
+        '''
+        #add top row rightmost patch again in order to make patches going down
+        self.add_patch(self.patches[0])
+        #make patches going down
+        self.makePatches_Projective_Loop(leftRight=True, ppl=ppl, apexZ0 = self.patches[0].c_corner, stop = 1)
+        #delete original first patch
+        del self.patches[first_row_count]
+        self.n_patches -= 1
         
+
+        
+        #go through each row and make rest of patches based on y value of rightmost column
+        for column in range(first_row_count+1):
+            apexZ0 = self.patches[first_row_count+column].a_corner
+            while apexZ0 >= -self.env.beam_axis_lim: 
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.patches[first_row_count+column].superpoints[self.env.num_layers-1].max, leftRight=True, ppl = ppl)
+                apexZ0 = self.patches[-1].a_corner       
+        '''
 
     def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True):
 
