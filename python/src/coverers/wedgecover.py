@@ -42,6 +42,8 @@ class wedgePatch():
         self.end_layer = -1
         self.left_end_layer = -1
         self.right_end_layer = -1
+        self.left_end_lambdaZ = None
+        self.right_end_lambdaZ = None
         self.apexZ0 = apexZ0
         
         if len(superpoints) != env.num_layers: 
@@ -140,9 +142,11 @@ class wedgePatch():
         lambdaZ_right_list = []
         for layer in range(self.env.num_layers):
             lambdaZ_left_list.append((self.superpoints[layer].min-self.apexZ0)/self.env.radii[layer])
-            lambdaZ_right_list((self.superpoints[layer].max-self.apexZ0)/self.env.radii[layer])
-        self.left_end_layer = max(lambdaZ_left_list)
-        self.right_end_layer = min(lambdaZ_right_list)
+            lambdaZ_right_list.append((self.superpoints[layer].max-self.apexZ0)/self.env.radii[layer])
+        self.left_end_layer = np.argmax(lambdaZ_left_list)
+        self.right_end_layer = np.argmin(lambdaZ_right_list)
+        self.left_end_lambdaZ = max(lambdaZ_left_list)
+        self.right_end_lambdaZ = min(lambdaZ_right_list)
 
 class wedgeCover(): 
     
@@ -317,25 +321,25 @@ class wedgeCover():
             #b_corner = self.patches[-1].b_corner
             last_row_count += 1
 
-        #np.arange(first_row_count, first_row_count + last_row_count) gives index of bottom row patches
-        #for p in np.arange(first_row_count, first_row_count + last_row_count):
-        #    patch = self.patches[p]
-        #   get end layer of patch
-        #   get apexZ0 of patch
-        #   compute the limiting lambda based on end layer
-        #   use limiting lambda and apexZ0 to compute effective z_top
-        #   store effective z_top in list
+        z_top_eff_list = []
+        for p in np.arange(first_row_count, first_row_count + last_row_count):
+            #gets right end lambdas since we're going from bottom row and apexz0 value of each patch
+            patch_end_lmabdaZ = self.patches[p].right_end_lambdaZ
+            patch_apexZ0 = self.patches[p].apexZ0
 
-        #get min(z_top list)
-        #pass z_top_min to self.makePatch_alignedToLine below
+            #use limiting lambda and apexZ0 to compute effective z_top
+            z_top_eff = self.env.radii[-1]*patch_end_lmabdaZ + patch_apexZ0
+            z_top_eff_list.append(z_top_eff)
 
+        #pass z_top_min as next z_top value
+        z_top_min =  min(z_top_eff_list)
 
         initial_apexZ0 = -self.env.beam_axis_lim
         apexZ0 = initial_apexZ0
-
+        
         while apexZ0 <= self.env.beam_axis_lim:
             #make first row using last ppl points
-            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = 0, leftRight=True)
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
             #pick a value as next apexZ0 value
             apexZ0 = self.patches[-1].d_corner
             #b_corner = self.patches[-1].b_corner
