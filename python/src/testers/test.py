@@ -140,7 +140,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     mask = np.abs(z0) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_5$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
@@ -230,7 +230,7 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
     plt.title(datastring, fontsize = 20)
     plt.show()
 
-def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_5 = 100., z0_spacing = 0.5, v = 'v3', savefig = False):
+def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_top = 50., z0_spacing = 0.5, z0_luminousRegion = 15., v = 'v3', savefig = False):
     if start == 'odd':
         apexZ0 = [0]
         real_solve = [0]
@@ -261,7 +261,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
 
         for k in range(wedges):
             env, points = all_data[k] 
-            env = Environment(top_layer_lim=z_5)
+            env = Environment(top_layer_lim=z_top, beam_axis_lim=z0_luminousRegion)
             data = DataSet(env)
             data.importData(points)
             #add the 0.1 cm points
@@ -371,10 +371,10 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_5$ = " +f"{z_5}\n" r'$apexZ_0$' + f" = {last_apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_{top}$ = " +f"{z_top}\n" r'$apexZ_0$' + f" = {last_apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
-        plt.savefig(f"Figures/min_cover_binary_{start}_({lining}_{data_string}_ppl{16})")
+        plt.savefig(f"python/Figures/binary_search_{start}_({lining}_{data_string}_ztop_{z_top}_ppl{16}_wedges{wedges}_z_lum{z0_luminousRegion})")
     plt.show()
 
 def patch_ending_layer(lining = 'makePatches_Projective_center', apexZ0 = [-10, 0, 10], wedges = 1280, z_5 = 50., v = 'v3'):

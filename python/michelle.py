@@ -17,11 +17,12 @@ ds = DataSet(env)
 ds.importData(points)
 ds.addBoundaryPoint()
 cov = wedgeCover(env, ds)
-#cov.makePatches_ShadowQuilt()
+#cov.makePatches_ShadowQuilt() 
 #cov.plot()
-wedge_test(lining = 'makePatches_ShadowQuilt',apexZ0=0,top_layer_cutoff=50, wedges=[0, 5], z0_spacing=0.5, leftRightAlign=False, show_acceptance_of_cover=True, accept_cutoff=15)
+#wedge_test(lining = 'makePatches_ShadowQuilt',apexZ0=0,top_layer_cutoff=50, wedges=[0, 5], z0_spacing=0.5, leftRightAlign=False, show_acceptance_of_cover=True, accept_cutoff=15)
 
-#minimal_cover_binary_search(lining = 'makePatches_Projective_center', start='even', z0_spacing=0.5, ppl =16, z_5=100, wedges=6400, accept=0.999)
+minimal_cover_binary_search(lining = 'makePatches_Projective_center', start='even', z0_spacing=0.5, ppl =16, z_top=50, z0_luminousRegion= 15, wedges=6400, accept=0.99, v = 'v3', savefig=False)
+
 
 # filepath = "python/data/wedgeData_v3_128.txt"
 # f = open("python/data/wedgeData_v3_128.txt")
