@@ -84,7 +84,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                     plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
                     plt.title("acceptance of cover", fontsize = 18)
                     
-                    colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "pink", "tomato","olive", "deeppink"]
+                    colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "rosybrown", "tomato","olive", "deeppink"]
                     
                     col = 0
                     for line in list_of_intersections: 
