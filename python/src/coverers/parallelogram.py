@@ -110,3 +110,12 @@ class parallelogram():
         
         return lineSegment(segment_min, segment_max)
     
+def calc_line_intersection(line1_point:tuple, line1_slope, line2_point:tuple, line2_slope):
+
+    if line1_slope == line2_slope:
+        raise Exception("The slope is the same, so it is either the same line or lines do not intersect")
+    
+    z_top = (line2_point[1]-line1_point[1] - (line2_slope*line2_point[0]) + (line1_slope*line1_point[0]))/(line1_slope-line2_slope)
+    z_0 = line1_slope*(z_top-line1_point[0]) + line1_point[1]
+    #z_top is the indepedent variable and z_0 is the dependent variable
+    return tuple((z_top, z_0))

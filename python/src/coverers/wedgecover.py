@@ -85,9 +85,10 @@ class wedgePatch():
     def straightLineProjector(self, z_top, z_j, j): 
         radii_leverArm = self.env.radii_leverArm[j-1]
         return z_top - (z_top - z_j) * radii_leverArm 
+    
 
     def getParallelograms(self): 
-        
+
         parallelograms = [] 
         
         # min and max of the top superpoint of a patch
@@ -109,10 +110,11 @@ class wedgePatch():
             
             Parallelogram = parallelogram(j, top_layer_zmin, top_layer_zmax, a, b, pSlope)
             parallelograms.append(Parallelogram)
-            
+        
         self.parallelograms = parallelograms
 
     def get_acceptanceCorners(self):
+
         a_corner_list = [pgram.shadow_topR_jL for pgram in self.parallelograms]
         b_corner_list = [pgram.shadow_topR_jR for pgram in self.parallelograms]
         c_corner_list = [pgram.shadow_topL_jL for pgram in self.parallelograms]
@@ -123,7 +125,25 @@ class wedgePatch():
         self.c_corner = max(c_corner_list)
         self.d_corner = min(d_corner_list)
         
-    
+        if self.b_corner <= self.a_corner:
+            #intersecting b line of layer 4 with a line of layer 1
+            self.a_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmax, self.parallelograms[self.env.num_layers - 2].shadow_topR_jR),
+                                   self.parallelograms[self.env.num_layers - 2].pSlope,
+                                   (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jL),
+                                   self.parallelograms[0].pSlope)[1]
+            
+            #intersecting b line of layer 4 with b line of layer 1
+            
+        if self.c_corner >= self.d_corner:
+            #intersecting c line of layer 4 with d line of layer 1
+            self.d_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmin, self.parallelograms[self.env.num_layers - 2].shadow_topL_jL),
+                                   self.parallelograms[self.env.num_layers - 2].pSlope,
+                                   (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jR),
+                                   self.parallelograms[0].pSlope)[1]
+            
+            #intersecting c line of layer 4 with c line of layer 1
+        
+
     def plot(self, color='g'): 
         heights = self.env.radii
         for i in range(self.env.num_layers): 
@@ -461,15 +481,16 @@ class wedgeCover():
             for _ in range(1):
                 #make first row using last ppl points
                 self.makePatch_alignedToLine(apexZ0 = patch.a_corner, ppl = ppl, z_top = patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, leftRight=False)
-                #if first_row_count == 0:
-                #    #plt.axvline(patch.a_corner, color = 'k')
-                #    #plt.axhline(patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
+                if first_row_count == 0:
+                    #plt.axvline(patch.a_corner, color = 'k')
+                    #plt.axhline(patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
+                    pass
                 self.makePatch_alignedToLine(apexZ0 = patch.d_corner, ppl = ppl, z_top = patch.
                 left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, leftRight=True)
-                if first_row_count == 1:
+                if first_row_count == 2:    
+                    plt.axvline(patch.d_corner, color = 'k')
+                    plt.axhline(patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
                     pass
-                    #plt.axvline(patch.d_corner, color = 'k')
-                    #plt.axhline(patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
                 #pick a value as next apexZ0 value
                 #apexZ0 = self.patches[-1].a_corner
                 first_row_count += 1

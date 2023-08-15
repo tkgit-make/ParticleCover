@@ -124,9 +124,9 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
 
     #sets minimum for plot
     if type(apexZ0) == float:
-        ymin = 0
+        ymin = 0.8
     elif type(apexZ0) == int:
-        ymin = 0
+        ymin = 0.8
     else:
         ymin = 0.9
 
