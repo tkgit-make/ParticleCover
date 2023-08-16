@@ -120,29 +120,36 @@ class wedgePatch():
         c_corner_list = [pgram.shadow_topL_jL for pgram in self.parallelograms]
         d_corner_list = [pgram.shadow_topL_jR for pgram in self.parallelograms]
 
-        self.a_corner = max(a_corner_list)
-        self.b_corner = min(b_corner_list)
-        self.c_corner = max(c_corner_list)
-        self.d_corner = min(d_corner_list)
+        self.a_corner = (self.parallelograms[-1].top_layer_zmax, max(a_corner_list))
+        self.b_corner = (self.parallelograms[-1].top_layer_zmax, min(b_corner_list))
+        self.c_corner = (self.parallelograms[-1].top_layer_zmin, max(c_corner_list))
+        self.d_corner = (self.parallelograms[-1].top_layer_zmin, min(d_corner_list))
         
-        if self.b_corner <= self.a_corner:
+        if self.b_corner[1] <= self.a_corner[1]:
             #intersecting b line of layer 4 with a line of layer 1
             self.a_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmax, self.parallelograms[self.env.num_layers - 2].shadow_topR_jR),
                                    self.parallelograms[self.env.num_layers - 2].pSlope,
                                    (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jL),
-                                   self.parallelograms[0].pSlope)[1]
+                                   self.parallelograms[0].pSlope)
             
             #intersecting b line of layer 4 with b line of layer 1
+            self.b_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmax, self.parallelograms[self.env.num_layers - 2].shadow_topR_jR),
+                                   self.parallelograms[self.env.num_layers - 2].pSlope,
+                                   (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jR),
+                                   self.parallelograms[0].pSlope)
             
-        if self.c_corner >= self.d_corner:
+        if self.c_corner[1] >= self.d_corner[1]:
             #intersecting c line of layer 4 with d line of layer 1
             self.d_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmin, self.parallelograms[self.env.num_layers - 2].shadow_topL_jL),
                                    self.parallelograms[self.env.num_layers - 2].pSlope,
                                    (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jR),
-                                   self.parallelograms[0].pSlope)[1]
+                                   self.parallelograms[0].pSlope)
             
             #intersecting c line of layer 4 with c line of layer 1
-        
+            self.c_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmin, self.parallelograms[self.env.num_layers - 2].shadow_topL_jL),
+                                self.parallelograms[self.env.num_layers - 2].pSlope,
+                                (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jL),
+                                self.parallelograms[0].pSlope)
 
     def plot(self, color='g'): 
         heights = self.env.radii
@@ -309,15 +316,19 @@ class wedgeCover():
         apexZ0 = initial_apexZ0
         
         first_row_count = 0
-        c_corner = 0
-        
-        while apexZ0 >= -self.env.beam_axis_lim:
-            #make first row using last ppl points
+        c_corner = np.inf
+        bottom_layer_min = 0
+        while (c_corner >= -self.env.beam_axis_lim) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+            #make top row in acceptance space by going to lower z0 from previous patch
+            #patch is pushed up against right side trapezoid boundary in real space
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, leftRight=False)
             #pick a value as next apexZ0 value
-            apexZ0 = self.patches[-1].a_corner
-            #c_corner = self.patches[-1].c_corner
+            apexZ0 = self.patches[-1].a_corner[1]
+            c_corner = self.patches[-1].c_corner[1]
             first_row_count += 1
+            bottom_layer_min = self.patches[-1].superpoints[0].min
+            #print("top row c_corner: ", c_corner)
+
         """
         #add top row rightmost patch again in order to make patches going down
         self.add_patch(self.patches[0])
@@ -335,17 +346,22 @@ class wedgeCover():
                 apexZ0 = self.patches[-1].a_corner   
     
         """
+
         initial_apexZ0 = -self.env.beam_axis_lim
         apexZ0 = initial_apexZ0
         last_row_count = 0
-
-        while apexZ0 <= self.env.beam_axis_lim:
-            #make first row using last ppl points
+        b_corner = -np.inf
+        bottom_layer_max = 0
+        while (b_corner <= self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]): 
+            #make bottom row in acceptance space by going to higher z0 from previous patch
+            #patch is pushed up against left side trapezoid boundary in real space
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset, leftRight=True)
             #pick a value as next apexZ0 value
-            apexZ0 = self.patches[-1].d_corner
-            #b_corner = self.patches[-1].b_corner
+            apexZ0 = self.patches[-1].d_corner[1]
+            b_corner = self.patches[-1].b_corner[1]
             last_row_count += 1
+            bottom_layer_max = self.patches[-1].superpoints[0].max
+            #print("bottom row b_corner: ", b_corner)
 
         total_num_rows = 2
         z_top_eff_list = []
@@ -380,14 +396,29 @@ class wedgeCover():
             apexZ0 = initial_apexZ0
             
             previous_row_z_top =[]
-            while apexZ0 <= self.env.beam_axis_lim:
-                #make first row using last ppl points
+            b_corner = -np.inf
+            bottom_layer_max = 0
+            while (b_corner <= self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
+                #building on top of the bottom row in acceptance space
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
                 patch_end_lambdaZ = self.patches[-1].right_end_lambdaZ
                 previous_row_z_top.append(self.env.radii[-1]*patch_end_lambdaZ + apexZ0)
                 #pick a value as next apexZ0 value
-                apexZ0 = self.patches[-1].d_corner
-                #b_corner = self.patches[-1].b_corner
+                apexZ0 = self.patches[-1].d_corner[1]
+                last_b_corner = b_corner
+                b_corner = self.patches[-1].b_corner[1]
+                bottom_layer_max = self.patches[-1].superpoints[0].max
+                '''
+                print("row b_corner: ", self.patches[-1].a_corner[1], b_corner, self.patches[-1].c_corner[1], apexZ0)
+                print("z_top_min: ",z_top_min)
+                if last_b_corner == b_corner:
+                    for p in range(3):
+                        for i in range(self.env.num_layers):
+                            print(f"layer {i+1}: ", self.patches[-(p+1)].superpoints[i].min, self.patches[-(p+1)].superpoints[i].max)
+                    #del self.patches[-1]
+                    break
+                '''
+                
                 #first_row_count += 1
             total_num_rows += 1
             z_top_min =  min(previous_row_z_top)
@@ -396,20 +427,22 @@ class wedgeCover():
                 #print(total_num_rows)
                 break
 
-
             initial_apexZ0 = self.env.beam_axis_lim
             apexZ0 = initial_apexZ0
-
+            c_corner = np.inf
+            bottom_layer_min = 0
             previous_row_z_top =[]
-            while apexZ0 >= -self.env.beam_axis_lim:
+            while (c_corner >= -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
                 #make first row using last ppl points
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
                 patch_end_lambdaZ = self.patches[-1].left_end_lambdaZ
                 previous_row_z_top.append(self.env.radii[-1]*patch_end_lambdaZ + apexZ0)
                 #pick a value as next apexZ0 value
-                apexZ0 = self.patches[-1].a_corner
-                #b_corner = self.patches[-1].b_corner
+                apexZ0 = self.patches[-1].a_corner[1]
+                c_corner = self.patches[-1].c_corner[1]
                 #first_row_count += 1
+                #print("row c_corner: ", c_corner)
+                bottom_layer_min = self.patches[-1].superpoints[0].min
             z_top_max =  max(previous_row_z_top)
             total_num_rows += 1
             #print(total_num_rows)
@@ -480,19 +513,19 @@ class wedgeCover():
             #while apexZ0 >= -self.env.beam_axis_lim:
             for _ in range(1):
                 #make first row using last ppl points
-                self.makePatch_alignedToLine(apexZ0 = patch.a_corner, ppl = ppl, z_top = patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, leftRight=False)
+                self.makePatch_alignedToLine(apexZ0 = patch.a_corner[1], ppl = ppl, z_top = patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, leftRight=False)
                 if first_row_count == 0:
                     #plt.axvline(patch.a_corner, color = 'k')
                     #plt.axhline(patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
                     pass
-                self.makePatch_alignedToLine(apexZ0 = patch.d_corner, ppl = ppl, z_top = patch.
+                self.makePatch_alignedToLine(apexZ0 = patch.d_corner[1], ppl = ppl, z_top = patch.
                 left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, leftRight=True)
                 if first_row_count == 2:    
-                    plt.axvline(patch.d_corner, color = 'k')
+                    plt.axvline(patch.d_corner[1], color = 'k')
                     plt.axhline(patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
                     pass
                 #pick a value as next apexZ0 value
-                #apexZ0 = self.patches[-1].a_corner
+                #apexZ0 = self.patches[-1].a_corner[1]
                 first_row_count += 1
         #print(self.n_patches)
 
@@ -864,7 +897,7 @@ class wedgeCover():
             elif lines == True and data == True: 
                 name = 0
                 for patch in self.patches: 
-                    self.data.plot(show = False) 
+                    self.data.plot(show = False, show_lines=True) 
                     for line in self.fitting_lines: 
                         if patch.contains(line): 
                             line.plot("r")

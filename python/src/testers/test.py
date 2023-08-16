@@ -36,6 +36,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
+        print(k)
         if show_acceptance_of_cover:
             plt.figure(figsize = (z0_luminousRegion/3, top_layer_cutoff/3))
         #convert to existing data format
@@ -118,6 +119,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         if show_acceptance_of_cover: 
             plt.show()
             plt.close()
+        
     
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")
@@ -149,6 +151,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
             at = 0
         plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z0{top_layer_cutoff})")
     plt.show()
+    #cover.plot()
 
 def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', top_layer_cutoff = 100., uniform_points = False): 
     filepath = f"data/wedgeData_{v}_128.txt"
