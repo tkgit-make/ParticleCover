@@ -23,6 +23,8 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     """
     
     #create list for z values we're testing the acceptance of, number of covers, and PRF
+    if (wedges[1]-wedges[0]) > 50:
+        show_acceptance_of_cover = False
     z0 = np.arange(-z0_luminousRegion, z0_luminousRegion+z0_spacing, z0_spacing)
     mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
@@ -126,11 +128,11 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
 
     #sets minimum for plot
     if type(apexZ0) == float:
-        ymin = 0.8
+        ymin = 0.95
     elif type(apexZ0) == int:
-        ymin = 0.8
+        ymin = 0.95
     else:
-        ymin = 0.9
+        ymin = 0.95
 
     #creates plots and saves them
     plt.scatter(z0, np.mean(mean_list, axis = 0), color = 'r', s = 10)
