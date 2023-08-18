@@ -124,32 +124,60 @@ class wedgePatch():
         self.b_corner = (self.parallelograms[-1].top_layer_zmax, min(b_corner_list))
         self.c_corner = (self.parallelograms[-1].top_layer_zmin, max(c_corner_list))
         self.d_corner = (self.parallelograms[-1].top_layer_zmin, min(d_corner_list))
+
+        if self.b_corner <= self.a_corner:
         
-        if self.b_corner[1] <= self.a_corner[1]:
-            #intersecting b line of layer 4 with a line of layer 1
-            self.a_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmax, self.parallelograms[self.env.num_layers - 2].shadow_topR_jR),
-                                   self.parallelograms[self.env.num_layers - 2].pSlope,
-                                   (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jL),
-                                   self.parallelograms[0].pSlope)
+            a_corner_list = []
+            b_corner_list = []
+
+            for layer in np.arange(self.env.num_layers-2)+1:
+                #compute a_corners by intersecting b_line of layer 2, 3, 4 with a_line of layer 1
+                a_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmax, 
+                    self.parallelograms[layer].shadow_topR_jR),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jL),
+                    self.parallelograms[0].pSlope))
+
+                #compute b_corners by intersecting b_line of layer 2, 3, 4 with b_line of layer 1
+                b_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmax, 
+                    self.parallelograms[layer].shadow_topR_jR),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jR),
+                    self.parallelograms[0].pSlope))
             
-            #intersecting b line of layer 4 with b line of layer 1
-            self.b_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmax, self.parallelograms[self.env.num_layers - 2].shadow_topR_jR),
-                                   self.parallelograms[self.env.num_layers - 2].pSlope,
-                                   (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jR),
-                                   self.parallelograms[0].pSlope)
+            #take most restrictive a_corner and b_corner to be the one with the lowest z_top value
+            self.a_corner = a_corner_list[np.argmin([intersect[0] for intersect in a_corner_list])]
+            self.b_corner = b_corner_list[np.argmin([intersect[0] for intersect in b_corner_list])]
+
+            #print(self.a_corner)
             
         if self.c_corner[1] >= self.d_corner[1]:
-            #intersecting c line of layer 4 with d line of layer 1
-            self.d_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmin, self.parallelograms[self.env.num_layers - 2].shadow_topL_jL),
-                                   self.parallelograms[self.env.num_layers - 2].pSlope,
-                                   (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jR),
-                                   self.parallelograms[0].pSlope)
+                
+            c_corner_list = []
+            d_corner_list = []
             
-            #intersecting c line of layer 4 with c line of layer 1
-            self.c_corner = calc_line_intersection((self.parallelograms[self.env.num_layers-2].top_layer_zmin, self.parallelograms[self.env.num_layers - 2].shadow_topL_jL),
-                                self.parallelograms[self.env.num_layers - 2].pSlope,
-                                (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jL),
-                                self.parallelograms[0].pSlope)
+            for layer in np.arange(self.env.num_layers-2)+1:
+                #compute d_corners by intersecting c_line of layer 2, 3, 4 with d_line of layer 1
+                d_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmin, 
+                    self.parallelograms[layer].shadow_topL_jL),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jR),
+                    self.parallelograms[0].pSlope))
+                
+                #compute c_corners by intersecting c_line of layer 2, 3, 4 with c_line of layer 1
+                c_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmin, 
+                    self.parallelograms[layer].shadow_topL_jL),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jL),
+                    self.parallelograms[0].pSlope))
+            
+            #take most restrictive d_corner and c_corner to be the one with the highest z_top value
+            self.d_corner = d_corner_list[np.argmax([intersect[0] for intersect in d_corner_list])]
+            self.c_corner = c_corner_list[np.argmax([intersect[0] for intersect in c_corner_list])]
 
     def plot(self, color='g'): 
         heights = self.env.radii
@@ -484,23 +512,28 @@ class wedgeCover():
         #print(self.n_patches)
         
         for patch in first_row_center:
-
+            #plt.axvline(patch.a_corner[1], color = 'k')
+            #plt.axhline(min(patch.a_corner[0], self.env.top_layer_lim), color = 'r')
+            #print(patch.a_corner[0])
             c_corner = patch.c_corner[1]
             bottom_layer_min = 0
             apexZ0 = patch.a_corner[1]
             while (c_corner >= -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
                 row_z_top = min(patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, self.env.top_layer_lim)
-                row_z_top = patch.a_corner[0]
+                row_z_top = min(patch.a_corner[0], self.env.top_layer_lim)
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
                                              z_top = row_z_top, leftRight=False)
                 c_corner = self.patches[-1].c_corner[1]
                 bottom_layer_min = self.patches[-1].superpoints[0].min
                 apexZ0 = self.patches[-1].a_corner[1]
                 #print("going left: ", self.patches[-1].a_corner[1], self.patches[-1].b_corner[1], self.patches[-1].c_corner[1], self.patches[-1].d_corner[1])
-                #print("z_top: ", patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0)
+                #print("z_top: ", row_z_top)
+                for i in range(5):
+                    #print(self.patches[-1].superpoints[i].min)
+                    pass
                 if first_row_count == 0:
-                    #plt.axvline(patch.a_corner, color = 'k')
-                    #plt.axhline(patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
+                    #plt.axvline(patch.a_corner[1], color = 'k')
+                    #plt.axhline(patch.a_corner[0], color = 'r')
                     pass
             
             b_corner = patch.b_corner[1]
@@ -508,23 +541,24 @@ class wedgeCover():
             bottom_layer_max = 0            
             while (b_corner <= self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
                 row_z_top = max(patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, -self.env.top_layer_lim)
-                row_z_top = patch.d_corner[0]
+                row_z_top = max(patch.d_corner[0], -self.env.top_layer_lim)
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
                                              z_top = row_z_top, leftRight=True)
                 b_corner = self.patches[-1].b_corner[1]
                 bottom_layer_max = self.patches[-1].superpoints[0].max
                 apexZ0 = self.patches[-1].d_corner[-1]
                 #print("going right: ", self.patches[-1].a_corner[1], self.patches[-1].b_corner[1], self.patches[-1].c_corner[1], self.patches[-1].d_corner[1])
-                #print("z_top: ", patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0)
-                #for i in range(5):
-                #    print(self.patches[-1].superpoints[i].max)
+                #print("z_top: ", row_z_top)
+                for i in range(5):
+                    #print(self.patches[-1].superpoints[i].max)
+                    pass
                 if first_row_count == 1:    
-                    plt.axvline(patch.d_corner[1], color = 'k')
-                    plt.axhline(patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
+                    #plt.axvline(patch.d_corner[1], color = 'k')
+                    #plt.axhline(patch.left_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, color = 'r')
                     pass
                 #pick a value as next apexZ0 value
                 #apexZ0 = self.patches[-1].a_corner[1]
-                first_row_count += 1
+            first_row_count += 1
         #print(self.n_patches)
         
     def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True):

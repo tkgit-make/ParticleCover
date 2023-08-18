@@ -5,6 +5,7 @@ from src.coverers.wedgecover import *
 from src.debug import * 
 import numpy as np 
 import matplotlib.pyplot as plt 
+import time
 
 def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
     """Creates acceptance vs z0 plot
@@ -25,6 +26,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     #create list for z values we're testing the acceptance of, number of covers, and PRF
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
+        z0_spacing = 0.5
     z0 = np.arange(-z0_luminousRegion, z0_luminousRegion+z0_spacing, z0_spacing)
     mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
@@ -69,6 +71,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         
                 out.append(num_in)
         PRF.append(out)
+        sleep_time_between_patches = 5
         
         #these loops calculate line acceptance
         for iz, z in enumerate(np.array(z0)):
@@ -77,6 +80,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 
                 list_of_intersections = []
                 for patch in cover.patches: 
+                    #time.sleep(sleep_time_between_patches)
                     list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
                     overlap_of_superpoints = intersection(patch.env, list_of_segs) 
                     list_of_intersections.append(overlap_of_superpoints)
@@ -94,8 +98,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         plt.xlim(-z0_luminousRegion,z0_luminousRegion)
                         plt.ylim(-top_layer_cutoff, top_layer_cutoff)
                         plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
-                        col += 1
-                
+                        col += 1     
                 total_measure = unionOfLineSegments(list_of_intersections)
                 
                 percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
@@ -137,7 +140,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     #creates plots and saves them
     plt.scatter(z0, np.mean(mean_list, axis = 0), color = 'r', s = 10)
     plt.plot(z0, np.mean(mean_list, axis = 0), color = 'k')
-    plt.xlabel('z0 offset [cm]', fontsize = 16)
+    plt.xlabel(r'$z_0$ [cm]', fontsize = 16)
     plt.ylabel('Acceptance',  fontsize = 16)
     plt.ylim(ymin, 1.0)
     plt.title(f'{lining}', fontsize = 16)
