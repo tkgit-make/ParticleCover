@@ -150,9 +150,15 @@ class wedgePatch():
             #take most restrictive a_corner and b_corner to be the one with the lowest z_top value
             self.a_corner = a_corner_list[np.argmin([intersect[0] for intersect in a_corner_list])]
             self.b_corner = b_corner_list[np.argmin([intersect[0] for intersect in b_corner_list])]
+            
+            #fixes for triangles
+            if self.b_corner[0] < self.d_corner[0]:
+                self.b_corner = self.d_corner
+            if self.b_corner[1] > self.env.beam_axis_lim:
+                self.b_corner = ( self.a_corner[0], self.env.beam_axis_lim)
 
             #print(self.a_corner)
-            
+
         if self.c_corner[1] >= self.d_corner[1]:
                 
             c_corner_list = []
@@ -178,6 +184,10 @@ class wedgePatch():
             #take most restrictive d_corner and c_corner to be the one with the highest z_top value
             self.d_corner = d_corner_list[np.argmax([intersect[0] for intersect in d_corner_list])]
             self.c_corner = c_corner_list[np.argmax([intersect[0] for intersect in c_corner_list])]
+
+            #fixes for triangles
+            if self.c_corner[0] > self.a_corner[0]:
+                self.c_corner = self.a_corner
 
     def plot(self, color='g'): 
         heights = self.env.radii
@@ -346,14 +356,18 @@ class wedgeCover():
         first_row_count = 0
         c_corner = np.inf
         bottom_layer_min = 0
-        while (c_corner >= -self.env.beam_axis_lim) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+        highest_c_corner = -self.env.top_layer_lim
+        while (c_corner > -self.env.beam_axis_lim) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
             #make top row in acceptance space by going to lower z0 from previous patch
             #patch is pushed up against right side trapezoid boundary in real space
-            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, leftRight=False)
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
+                                         z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, 
+                                         leftRight=False)
             #pick a value as next apexZ0 value
             apexZ0 = self.patches[-1].a_corner[1]
             c_corner = self.patches[-1].c_corner[1]
             first_row_count += 1
+            highest_c_corner = max(highest_c_corner, self.patches[-1].c_corner[0])
             bottom_layer_min = self.patches[-1].superpoints[0].min
             #print("top row c_corner: ", c_corner)
 
@@ -380,15 +394,19 @@ class wedgeCover():
         last_row_count = 0
         b_corner = -np.inf
         bottom_layer_max = 0
-        while (b_corner <= self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]): 
+        lowest_b_corner = self.env.top_layer_lim
+        while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]): 
             #make bottom row in acceptance space by going to higher z0 from previous patch
             #patch is pushed up against left side trapezoid boundary in real space
-            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset, leftRight=True)
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
+                                         z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset, 
+                                         leftRight=True)
             #pick a value as next apexZ0 value
             apexZ0 = self.patches[-1].d_corner[1]
             b_corner = self.patches[-1].b_corner[1]
             last_row_count += 1
             bottom_layer_max = self.patches[-1].superpoints[0].max
+            lowest_b_corner = min(lowest_b_corner, self.patches[-1].b_corner[0])
             #print("bottom row b_corner: ", b_corner)
 
         total_num_rows = 2
@@ -404,6 +422,7 @@ class wedgeCover():
 
         #pass z_top_min as next z_top value
         z_top_min =  min(z_top_eff_list)
+        z_top_min_for_row = z_top_min 
 
         z_top_eff_list = []
         for p in np.arange(first_row_count):
@@ -417,25 +436,39 @@ class wedgeCover():
 
         #pass z_top_min as next z_top value
         z_top_max =  max(z_top_eff_list)
-        while z_top_min < z_top_max:
+        z_top_max_for_row = z_top_max
+
+        #while z_top_min_for_row < z_top_max_for_row:
+        z_top_min = lowest_b_corner
+        z_top_max = highest_c_corner
+        for _ in range(1):
 
 
             initial_apexZ0 = -self.env.beam_axis_lim
             apexZ0 = initial_apexZ0
-            
             previous_row_z_top =[]
             b_corner = -np.inf
             bottom_layer_max = 0
-            while (b_corner <= self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
+            while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
                 #building on top of the bottom row in acceptance space
-                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
+                                             z_top = z_top_min, leftRight=True)
                 patch_end_lambdaZ = self.patches[-1].right_end_lambdaZ
                 previous_row_z_top.append(self.env.radii[-1]*patch_end_lambdaZ + apexZ0)
                 #pick a value as next apexZ0 value
+                plt.axhline(z_top_min, color = 'r')
                 apexZ0 = self.patches[-1].d_corner[1]
+                plt.axvline(apexZ0, color = 'k')
+                plt.axvline(self.patches[-1].c_corner[1], color = 'b')
+                plt.axhline(self.patches[-1].c_corner[0], color = 'b')
+
+                
                 last_b_corner = b_corner
                 b_corner = self.patches[-1].b_corner[1]
-                bottom_layer_max = self.patches[-1].superpoints[0].max
+                #bottom_layer_max = self.patches[-1].superpoints[0].max
+                print(self.patches[-1].b_corner)
+                z_top_min = self.patches[-1].d_corner[0]
+                
                 '''
                 print("row b_corner: ", self.patches[-1].a_corner[1], b_corner, self.patches[-1].c_corner[1], apexZ0)
                 print("z_top_min: ",z_top_min)
@@ -449,20 +482,23 @@ class wedgeCover():
                 
                 #first_row_count += 1
             total_num_rows += 1
-            z_top_min =  min(previous_row_z_top)
+            z_top_min_for_row =  min(previous_row_z_top)
+            z_top_min = z_top_min_for_row
 
-            if z_top_min > z_top_max:
-                #print(total_num_rows)
-                break
+            #if z_top_min_for_row > z_top_max_for_row:
+            #    #print(total_num_rows)
+            #    break
 
             initial_apexZ0 = self.env.beam_axis_lim
             apexZ0 = initial_apexZ0
             c_corner = np.inf
             bottom_layer_min = 0
             previous_row_z_top =[]
-            while (c_corner >= -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+            print(lowest_b_corner)
+            while (c_corner > -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
                 #make first row using last ppl points
-                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
+                                             z_top = z_top_max, leftRight=False)
                 patch_end_lambdaZ = self.patches[-1].left_end_lambdaZ
                 previous_row_z_top.append(self.env.radii[-1]*patch_end_lambdaZ + apexZ0)
                 #pick a value as next apexZ0 value
@@ -470,8 +506,11 @@ class wedgeCover():
                 c_corner = self.patches[-1].c_corner[1]
                 #first_row_count += 1
                 #print("row c_corner: ", c_corner)
-                bottom_layer_min = self.patches[-1].superpoints[0].min
-            z_top_max =  max(previous_row_z_top)
+                #bottom_layer_min = self.patches[-1].superpoints[0].min
+                z_top_max = self.patches[-1].a_corner[0]
+
+            z_top_max_for_row =  max(previous_row_z_top)
+            z_top_max = z_top_max_for_row
             total_num_rows += 1
             #print(total_num_rows)
 
@@ -575,15 +614,19 @@ class wedgeCover():
             #picks picks n points closest to line from (z0, 0) to (-100, 25) (top left point)
             r_max = self.env.radii[-1]
             start_index = np.argmin(np.abs((row_list - ((z_top-apexZ0)*y/r_max + apexZ0))))
-            left_bound = np.argmin(np.abs((row_list + self.env.trapezoid_edges[row])))
-            right_bound = np.argmin(np.abs((row_list - self.env.trapezoid_edges[row])))
+            start_value = row_list[start_index] - ((z_top-apexZ0)*y/r_max + apexZ0)
+
+            left_bound = np.argmin(np.abs((row_list + self.env.trapezoid_edges[row] + self.env.boundaryPoint_offset)))
+            right_bound = np.argmin(np.abs((row_list - self.env.trapezoid_edges[row] - self.env.boundaryPoint_offset)))
 
             if leftRight == True:
                 #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
                 if start_index != 0:
-                    start_index -= 1
+                    if start_value > 0:
+                        start_index -= 1
+                    pass
                 #add superpoint to patch
-                if start_index +ppl > right_bound + 1:
+                if start_index + ppl > right_bound + 1:
                     init_patch.append(wedgeSuperPoint(row_data[row][right_bound+1-ppl:right_bound+1]))
                 else:
                     init_patch.append(wedgeSuperPoint(row_data[row][start_index:start_index+ppl]))
@@ -591,7 +634,8 @@ class wedgeCover():
             else:
                 #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
                 if start_index != len(row_list)-1:
-                    start_index += 1
+                    if start_value < 0:
+                        start_index += 1
                 if start_index - ppl + 1 < left_bound:
                     init_patch.append(wedgeSuperPoint(row_data[row][left_bound:left_bound+ppl]))
                 #add superpoint
