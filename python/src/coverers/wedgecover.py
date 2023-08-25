@@ -115,6 +115,8 @@ class wedgePatch():
 
     def get_acceptanceCorners(self):
 
+        self.squareAcceptance = True # Ashutosh
+        
         a_corner_list = [pgram.shadow_topR_jL for pgram in self.parallelograms]
         b_corner_list = [pgram.shadow_topR_jR for pgram in self.parallelograms]
         c_corner_list = [pgram.shadow_topL_jL for pgram in self.parallelograms]
@@ -125,8 +127,18 @@ class wedgePatch():
         self.c_corner = (self.parallelograms[-1].top_layer_zmin, max(c_corner_list))
         self.d_corner = (self.parallelograms[-1].top_layer_zmin, min(d_corner_list))
 
+        # is layer1 the most restrictive acceptance? 
+        if np.argmax(a_corner_list) != 0:
+            self.squareAcceptance = False
+        if np.argmin(b_corner_list) != 0:
+            self.squareAcceptance = False
+        if np.argmax(c_corner_list) != 0:
+            self.squareAcceptance = False
+        if np.argmin(d_corner_list) != 0:
+            self.squareAcceptance = False
+
         if self.b_corner <= self.a_corner:
-        
+
             a_corner_list = []
             b_corner_list = []
 
@@ -160,7 +172,7 @@ class wedgePatch():
             #print(self.a_corner)
 
         if self.c_corner[1] >= self.d_corner[1]:
-                
+            
             c_corner_list = []
             d_corner_list = []
             
@@ -306,7 +318,7 @@ class wedgeCover():
         else:
             raise("Please choose valid solving method")
 
-    def makePatches_ShadowQuilt_fromEdges(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
+    def makePatches_ShadowQuilt_fromEdges_v0(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
 
@@ -532,7 +544,209 @@ class wedgeCover():
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.patches[first_row_count+column].superpoints[self.env.num_layers-1].max, leftRight=True, ppl = ppl)
                 apexZ0 = self.patches[-1].a_corner       
         '''
-    def makePatches_ShadowQuilt_fromCenter(self, apexZ0 = 0, stop = 1, z_top = 0, ppl = 16, leftRight = True):
+    def makePatches_ShadowQuilt_fromEdges(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
+        """This method uses the geometry of shadows to generate patches based on superpoints
+            the outer layer and the z0 of the collision point. 
+
+        Args:
+            apexZ0 (num, optional): Collision point on the z axis for the first patches Defaults to 0.
+            stop (num, optional): Where to stop, normalized to 1. Defaults to 1.
+            ppl (int, optional): Points per patch per layer. Defaults to 16.
+            leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
+        """
+
+        '''
+        #First, make list of contiguous superpoints from the outermost layer
+        z_top_superpoint_edge_index = []
+        top_layer_points = self.data.array[self.env.num_layers-1]
+        top_row_list = np.array([top_layer_points[x].z for x in range(len(top_layer_points))])
+        top_start_index = np.argmin(np.abs(top_row_list + self.env.top_layer_lim+self.env.boundaryPoint_offset))
+        top_end_index = np.argmin(np.abs(top_row_list - (self.env.top_layer_lim+self.env.boundaryPoint_offset)))
+        if leftRight == False:
+            temp = top_start_index
+            top_start_index = top_end_index
+            top_end_index = temp
+
+        num_points_z_top = abs(top_start_index-top_end_index)
+
+        for sp in range(int(num_points_z_top/(ppl-1))):
+            if leftRight == True:
+                z_top_superpoint_edge_index.append((top_start_index+((ppl-1)*sp), top_start_index+((ppl-1)*sp)+(ppl-1)))
+            else:
+                z_top_superpoint_edge_index.append((top_start_index-((ppl-1)*sp)-(ppl-1), top_start_index-((ppl-1)*sp)))
+        if num_points_z_top%(ppl-1) !=0:
+            if leftRight == True:
+                z_top_superpoint_edge_index.append((top_end_index-(ppl-1),top_end_index))
+            else:
+                z_top_superpoint_edge_index.append((top_end_index,top_end_index+(ppl-1)))
+
+        
+        print("total points in top layer: ", len(top_row_list))
+        print("index list: ", z_top_superpoint_edge_index)
+        print("start: ", top_start_index, "value: ", top_row_list[top_start_index])
+        print("end: ", top_end_index, "value: ",  top_row_list[top_end_index])
+        '''
+        #self.makePatches_Projective(leftRight=False)
+
+        initial_apexZ0 = self.env.beam_axis_lim
+        apexZ0 = initial_apexZ0
+        
+        z_top_min = 0
+        first_row_count = 0
+        c_corner = np.inf
+        bottom_layer_min = 0
+        while (c_corner > -self.env.beam_axis_lim) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+            #make top row in acceptance space by going to lower z0 from previous patch
+            #patch is pushed up against right side trapezoid boundary in real space
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
+                                         z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, 
+                                         leftRight=False)
+            #pick a value as next apexZ0 value
+            apexZ0 = self.patches[-1].a_corner[1]
+            c_corner = self.patches[-1].c_corner[1]
+            first_row_count += 1
+            bottom_layer_min = self.patches[-1].superpoints[0].min
+            z_top_min = self.patches[-1].parallelograms[0].top_layer_zmin
+            if self.patches[-1].squareAcceptance == False:
+                self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topL_jL, ppl = ppl, z_top = z_top_min, leftRight=True)
+                c_corner = self.patches[-1].c_corner[1]
+                pass
+
+        initial_apexZ0 = -self.env.beam_axis_lim
+        apexZ0 = initial_apexZ0
+        last_row_count = 0
+        b_corner = -np.inf
+        bottom_layer_max = 0
+        z_top_max = 0
+        while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]): 
+            #make bottom row in acceptance space by going to higher z0 from previous patch
+            #patch is pushed up against left side trapezoid boundary in real space
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
+                                         z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset, 
+                                         leftRight=True)
+            #pick a value as next apexZ0 value
+            apexZ0 = self.patches[-1].d_corner[1]
+            b_corner = self.patches[-1].b_corner[1]
+            last_row_count += 1
+            bottom_layer_max = self.patches[-1].superpoints[0].max
+            z_top_max = self.patches[-1].parallelograms[0].top_layer_zmax    
+            if self.patches[-1].squareAcceptance == False:
+                self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topR_jR, ppl = ppl, z_top = z_top_max, leftRight=False)
+                b_corner = self.patches[-1].b_corner[1]
+                pass
+
+        '''    
+        #startCommentAshutosh    
+        total_num_rows = 2
+        z_top_eff_list = []
+        for p in np.arange(first_row_count, first_row_count + last_row_count):
+            #gets right end lambdas since we're going from bottom row and apexz0 value of each patch
+            patch_end_lambdaZ = self.patches[p].right_end_lambdaZ
+            patch_apexZ0 = self.patches[p].apexZ0
+
+            #use limiting lambda and apexZ0 to compute effective z_top
+            z_top_eff = self.env.radii[-1]*patch_end_lambdaZ + patch_apexZ0
+            z_top_eff_list.append(z_top_eff)
+
+        #pass z_top_min as next z_top value
+        z_top_min =  min(z_top_eff_list)
+        z_top_min_for_row = z_top_min 
+
+        z_top_eff_list = []
+        for p in np.arange(first_row_count):
+            #gets right end lambdas since we're going from bottom row and apexz0 value of each patch
+            patch_end_lambdaZ = self.patches[p].left_end_lambdaZ
+            patch_apexZ0 = self.patches[p].apexZ0
+
+            #use limiting lambda and apexZ0 to compute effective z_top
+            z_top_eff = self.env.radii[-1]*patch_end_lambdaZ + patch_apexZ0
+            z_top_eff_list.append(z_top_eff)
+
+        #pass z_top_min as next z_top value
+        z_top_max =  max(z_top_eff_list)
+        z_top_max_for_row = z_top_max
+
+        #while z_top_min_for_row < z_top_max_for_row:
+        z_top_min = lowest_b_corner
+        z_top_max = highest_c_corner
+        
+        #endCommentAshutosh 
+        '''                               
+#        for _ in range(1):
+        while (z_top_max < z_top_min):
+            initial_apexZ0 = -self.env.beam_axis_lim
+            apexZ0 = initial_apexZ0
+            #previous_row_z_top =[]
+            b_corner = -np.inf
+            bottom_layer_max = 0
+            while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
+                #building on top of the bottom row in acceptance space
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=True)
+#                patch_end_lambdaZ = self.patches[-1].right_end_lambdaZ
+#                previous_row_z_top.append(self.env.radii[-1]*patch_end_lambdaZ + apexZ0)
+                #pick a value as next apexZ0 value
+#                plt.axhline(z_top_min, color = 'r')
+                apexZ0 = self.patches[-1].d_corner[1]
+#                plt.axvline(apexZ0, color = 'k')
+#                plt.axvline(self.patches[-1].c_corner[1], color = 'b')
+#                plt.axhline(self.patches[-1].c_corner[0], color = 'b')               
+                last_b_corner = b_corner
+                b_corner = self.patches[-1].b_corner[1]
+                bottom_layer_max = self.patches[-1].superpoints[0].max
+                z_top_max_upperFloor = self.patches[-1].parallelograms[0].top_layer_zmax
+                if self.patches[-1].squareAcceptance == False:
+                    self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topR_jR, ppl = ppl, z_top = z_top_max_upperFloor, leftRight=False)
+                    b_corner = self.patches[-1].b_corner[1]
+                    pass
+            z_top_max = z_top_max_upperFloor
+
+            '''
+                print("row b_corner: ", self.patches[-1].a_corner[1], b_corner, self.patches[-1].c_corner[1], apexZ0)
+                print("z_top_min: ",z_top_min)
+                if last_b_corner == b_corner:
+                    for p in range(3):
+                        for i in range(self.env.num_layers):
+                            print(f"layer {i+1}: ", self.patches[-(p+1)].superpoints[i].min, self.patches[-(p+1)].superpoints[i].max)
+                    #del self.patches[-1]
+                    break
+                
+                #first_row_count += 1
+            total_num_rows += 1
+            z_top_min_for_row =  min(previous_row_z_top)
+            z_top_min = z_top_min_for_row
+
+            '''
+            if (z_top_max < z_top_min):
+                initial_apexZ0 = self.env.beam_axis_lim
+                apexZ0 = initial_apexZ0
+                c_corner = np.inf
+                bottom_layer_min = 0
+                previous_row_z_top =[]
+                while (c_corner > -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+                    #make first row using last ppl points
+                    self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_min, leftRight=False)
+                    #patch_end_lambdaZ = self.patches[-1].left_end_lambdaZ
+                    #previous_row_z_top.append(self.env.radii[-1]*patch_end_lambdaZ + apexZ0)
+                    #pick a value as next apexZ0 value
+                    apexZ0 = self.patches[-1].a_corner[1]
+                    c_corner = self.patches[-1].c_corner[1]
+                    #first_row_count += 1
+                    bottom_layer_min = self.patches[-1].superpoints[0].min
+                    z_top_min_roof = self.patches[-1].parallelograms[0].top_layer_zmin
+                    if self.patches[-1].squareAcceptance == False:
+                        self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topL_jL, ppl = ppl, z_top = z_top_min_roof, leftRight=True)
+                        c_corner = self.patches[-1].c_corner[1]
+                        pass
+                    
+                z_top_min = z_top_min_roof
+            #z_top_max_for_row =  max(previous_row_z_top)
+            #z_top_max = z_top_max_for_row
+            #total_num_rows += 1
+            #print(total_num_rows)
+         
+#        print(z_top_min,z_top_max)
+        
+    def makePatches_ShadowQuilt_fromCenter_v1(self, apexZ0 = 0, stop = 1, z_top = 0, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
 
@@ -560,20 +774,23 @@ class wedgeCover():
             while (c_corner >= -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
                 row_z_top = min(patch.right_end_lambdaZ*self.env.radii[-1] + patch.apexZ0, self.env.top_layer_lim)
                 row_z_top = min(patch.a_corner[0], self.env.top_layer_lim)
-                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
-                                             z_top = row_z_top, leftRight=False)
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = row_z_top, leftRight=False)
                 c_corner = self.patches[-1].c_corner[1]
                 bottom_layer_min = self.patches[-1].superpoints[0].min
                 apexZ0 = self.patches[-1].a_corner[1]
-                #print("going left: ", self.patches[-1].a_corner[1], self.patches[-1].b_corner[1], self.patches[-1].c_corner[1], self.patches[-1].d_corner[1])
+            #print("going left: ", self.patches[-1].a_corner[1], self.patches[-1].b_corner[1], self.patches[-1].c_corner[1], self.patches[-1].d_corner[1])
+            #print("z_top: ", patch.parallelograms[0].top_layer_zmax, " z0: ", patch.parallelograms[0].shadow_topR_jL)
+            #self.makePatch_alignedToLine(apexZ0 = patch.parallelograms[0].shadow_topR_jL, ppl = ppl,z_top = patch.parallelograms[0].top_layer_zmax, leftRight=False)
+                self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topL_jL, ppl = ppl,z_top = self.patches[-1].parallelograms[0].top_layer_zmin, leftRight=True)
+                
                 #print("z_top: ", row_z_top)
-                for i in range(5):
+            #    for i in range(5):
                     #print(self.patches[-1].superpoints[i].min)
-                    pass
-                if first_row_count == 0:
+            #        pass
+            #    if first_row_count == 0:
                     #plt.axvline(patch.a_corner[1], color = 'k')
                     #plt.axhline(patch.a_corner[0], color = 'r')
-                    pass
+            #        pass
             
             b_corner = patch.b_corner[1]
             apexZ0 = patch.d_corner[1]
@@ -588,6 +805,7 @@ class wedgeCover():
                 apexZ0 = self.patches[-1].d_corner[-1]
                 #print("going right: ", self.patches[-1].a_corner[1], self.patches[-1].b_corner[1], self.patches[-1].c_corner[1], self.patches[-1].d_corner[1])
                 #print("z_top: ", row_z_top)
+                self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topR_jR, ppl = ppl,z_top = self.patches[-1].parallelograms[0].top_layer_zmax, leftRight=False)
                 for i in range(5):
                     #print(self.patches[-1].superpoints[i].max)
                     pass
