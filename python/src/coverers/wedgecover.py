@@ -893,7 +893,7 @@ class wedgeCover():
             first_row_count += 1
         #print(self.n_patches)
         
-    def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True, double_middleLayers_ppl = True):
+    def makePatch_alignedToLine(self, apexZ0 = 0, z_top = -50, ppl = 16, leftRight = True, double_middleLayers_ppl = False):
 
         init_patch = []
         original_ppl = ppl
