@@ -42,7 +42,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         print(k)
         if show_acceptance_of_cover:
-            plt.figure(figsize = (z0_luminousRegion/3, top_layer_cutoff/3))
+            plt.figure(figsize = (z0_luminousRegion/6, top_layer_cutoff/6))
         #convert to existing data format
         env, points = all_data[k] 
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
