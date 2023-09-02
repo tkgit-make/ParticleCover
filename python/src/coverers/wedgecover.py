@@ -623,26 +623,21 @@ class wedgeCover():
             bottom_layer_min = self.patches[-1].superpoints[0].min
             z_top_min = max(z_top_min, self.patches[-1].parallelograms[0].top_layer_zmin)
             #z_top_min = self.patches[-1].parallelograms[0].top_layer_zmin
-            print("before squareAcceptance, z_top_min: ", z_top_min)
+            print("before squareAcceptance check, z_top_min: ", z_top_min)
             if self.patches[-1].squareAcceptance == False:
                 complementary_apexZ0 = self.patches[-1].parallelograms[0].shadow_topL_jL
                 print("complementary_apexZ0 ", complementary_apexZ0)
                 # check that outermost superpoint is not too long
-                for layer in range(self.env.num_layers):
-                    print("layer ", layer+1," superpoint min: ", self.patches[-1].superpoints[layer].min, " max: ", self.patches[-1].superpoints[layer].max)
                 self.makePatch_alignedToLine(apexZ0 = seed_apexZ0, ppl = ppl,
                                              z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset,
                                              leftRight=False, double_middleLayers_ppl = True)
-                for layer in range(self.env.num_layers):
-                    print("layer ", layer+1," superpoint min: ", self.patches[-1].superpoints[layer].min, " max: ", self.patches[-1].superpoints[layer].max)
-                print("after creating checkPatch, N_patches: ", len(self.patches))    
                 if self.patches[-1].squareAcceptance == False:
                     # outermost superpoint is too long, cut it short
                     check_c_list = []
                     for j, superpoint in enumerate(self.patches[-1].superpoints[1:-1], start=2):
                         check_c_list.append(self.patches[-1].straightLineProjectorFromLayer1(self.patches[-1].superpoints[0].min, superpoint.min, j))
-                        print("layer ", j, " self.patches[-1].superpoints[0].min, superpoint.min ", self.patches[-1].superpoints[0].min, superpoint.min)
-                    print("check_c_list ", check_c_list)
+                        #print("layer ", j, " self.patches[-1].superpoints[0].min, superpoint.min ", self.patches[-1].superpoints[0].min, superpoint.min)
+                    #print("check_c_list ", check_c_list)
                     # smallest c value corresponds to shortest middleLayer
                     shortestSP = np.argmin(check_c_list) + 1
                     print("shortestSP layer ", shortestSP+1)
@@ -650,13 +645,11 @@ class wedgeCover():
                     z_top_min = max(z_top_min, self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,
                                                                                      self.patches[-1].superpoints[shortestSP].min,
                                                                                      1, shortestSP+1, self.env.num_layers))
-                    #z_top_min = self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min, self.patches[-1].superpoints[shortestSP].min, 1, shortestSP+1, self.env.num_layers)
                     complementary_apexZ0 = self.patches[-1].straightLineProjector(z_top_min, self.patches[-1].superpoints[0].min, 1)
-                    print("updated complementary_apexZ0 ", complementary_apexZ0, " updated z_top_min ", z_top_min)
+                    print("shortened, complementary_apexZ0 ", complementary_apexZ0, " updated z_top_min ", z_top_min)
                 # delete the check patch
                 del self.patches[-1]
                 self.n_patches -= 1
-                print("after deleting checkPatch, N_patches: ", len(self.patches))
                 # now make actual complementary patch 
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
                 c_corner = self.patches[-1].c_corner[1]
@@ -719,7 +712,7 @@ class wedgeCover():
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
                 b_corner = self.patches[-1].b_corner[1]
                 pass
-        #print("after groundFloor, N_patches: ", len(self.patches))
+        print("after groundFloor, N_patches: ", len(self.patches))
         '''    
         #startCommentAshutosh    
         total_num_rows = 2
@@ -758,7 +751,7 @@ class wedgeCover():
         #endCommentAshutosh 
         '''                               
 #        for _ in range(1):
-        #print ("after top and bottom floor, z_top_max: " , z_top_max, " z_top_min: ", z_top_min)
+        print ("after top and bottom floor, z_top_max: " , z_top_max, " z_top_min: ", z_top_min, "N_patches: ", len(self.patches))
         while (z_top_max < z_top_min):
             initial_apexZ0 = -self.env.beam_axis_lim
             apexZ0 = initial_apexZ0
@@ -768,7 +761,7 @@ class wedgeCover():
             while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
                 #building on top of the bottom row in acceptance space
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=True)
-                print (z_top_max,apexZ0,len(self.patches))
+                print ("z_top_max: ", z_top_max, "apexZ0: ", apexZ0, "N_patches: ", len(self.patches))
                 #for layer in range(self.env.num_layers):
                     #print("layer ", layer+1," superpoint min: ", self.patches[-1].superpoints[layer].min, " max: ", self.patches[-1].superpoints[layer].max)
 #                patch_end_lambdaZ = self.patches[-1].right_end_lambdaZ
@@ -784,9 +777,9 @@ class wedgeCover():
                 bottom_layer_max = self.patches[-1].superpoints[0].max
                 z_top_max_upperFloor = self.patches[-1].parallelograms[0].top_layer_zmax
                 if (self.patches[-1].squareAcceptance == False) and (self.patches[-1].b_corner[0] < z_top_min):
-                    #print ("noSqAc: ", z_top_max_upperFloor,self.patches[-1].parallelograms[0].shadow_topR_jR,len(self.patches))
+                    print ("noSqAc, z_top_max_upperFloor: ", z_top_max_upperFloor, "b corner: ", self.patches[-1].parallelograms[0].shadow_topR_jR,len(self.patches))
                     self.makePatch_alignedToLine(apexZ0 = self.patches[-1].parallelograms[0].shadow_topR_jR, ppl = ppl, z_top = z_top_max_upperFloor, leftRight=False)
-                    #print ("noSqAc b_corner: ", self.patches[-1].b_corner, len(self.patches))
+                    print ("noSqAc b_corner: ", self.patches[-1].b_corner, len(self.patches))
                     b_corner = self.patches[-1].b_corner[1]
                     pass
             z_top_max = z_top_max_upperFloor
@@ -983,6 +976,7 @@ class wedgeCover():
 
         init_patch = []
         original_ppl = ppl
+        alignmentAccuracy = 0.00001 # 0.1 micron
 
         #row_data[layer] contains spacepoints for each layer
         row_data = self.data.array
@@ -1007,7 +1001,7 @@ class wedgeCover():
             if leftRight == True:
                 #subtract one from stop index in case it is right of the line from (z0, 0) to (-100, 25)
                 if start_index != 0:
-                    if start_value > 0:
+                    if start_value > alignmentAccuracy:
                         start_index -= 1
                     pass
                 #add superpoint to patch
@@ -1020,7 +1014,7 @@ class wedgeCover():
             else:
                 #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
                 if start_index != len(row_list)-1:
-                    if start_value < 0:
+                    if start_value < -alignmentAccuracy:
                         start_index += 1
                 if start_index - ppl + 1 < left_bound:
                     init_patch.append(wedgeSuperPoint(row_data[row][left_bound:left_bound+ppl]))

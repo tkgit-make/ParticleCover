@@ -128,11 +128,11 @@ class DataSet():
         if show == True:
             plt.show()
         
-    def addBoundaryPoint(self, offset = 0.1):
+    def addBoundaryPoint(self, offset = 0.0001):
         """Adds one point on each side of the trapezoid for better acceptance
 
         Args:
-            offset (float, optional): How much is the offset in cms. Defaults to 0.1.
+            offset (float, optional): How much is the offset in cm? Defaults to 1 micron
         """
         self.boundaryPoint_offset = offset
 

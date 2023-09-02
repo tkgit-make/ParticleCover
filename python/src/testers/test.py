@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import time
 
-def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False, figSizeScale=6):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -42,7 +42,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         print(k)
         if show_acceptance_of_cover:
-            plt.figure(figsize = (z0_luminousRegion/6, top_layer_cutoff/6))
+            plt.figure(figsize = (z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
         #convert to existing data format
         env, points = all_data[k] 
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
@@ -51,7 +51,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
             data.importData(points)
         else:
             data.generateUniform([uniform_N_points, uniform_N_points, uniform_N_points, uniform_N_points, uniform_N_points])
-        #add the 0.1 cm points
+        #add the 1 micron boundary points
         data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
@@ -272,7 +272,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
             env = Environment(top_layer_lim=z_top, beam_axis_lim=z0_luminousRegion)
             data = DataSet(env)
             data.importData(points)
-            #add the 0.1 cm points
+            #add the 1 micron points
             data.addBoundaryPoint()
             #solve for cover
             cover = wedgeCover(env, data)
@@ -440,7 +440,7 @@ def minimal_cover_linear_search(lining:str = "makePatches_Projective_center", ac
             env = Environment(top_layer_lim=z_5)
             data = DataSet(env)
             data.importData(points)
-            #add the 0.1 cm points
+            #add the 1 micron points
             data.addBoundaryPoint()
             #solve for cover
             cover = wedgeCover(env, data)
@@ -552,7 +552,7 @@ def numCovers(lining:str = "makePatches_Projective", events=1000, apexZ0 = 0, pp
         env, points = all_data[k] 
         data = DataSet(env)
         data.importData(points)
-        #add the 0.1 cm points
+        #add the 1 micron points
         data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
@@ -601,7 +601,7 @@ def acceptSlopePlot(lining:str = "makePatches_Projective", events=128, lines=100
         env, points = all_data[k] 
         data = DataSet(env)
         data.importData(points)
-        #add the 0.1 cm points
+        #add the 1 micron points
         data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
@@ -667,7 +667,7 @@ def pointRepetitionFactor(lining:str = "makePatches_Projective", events=128, ape
         env, points = all_data[k] 
         data = DataSet(env)
         data.importData(points)
-        #add the 0.1 cm points
+        #add the 1 micron points
         data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
@@ -739,7 +739,7 @@ def pointRepetitionFactorLayer(lining:str = "makePatches_Projective_center", wed
         env = Environment(z_5)
         data = DataSet(env)
         data.importData(points)
-        #add the 0.1 cm points
+        #add the 1 micron points
         data.addBoundaryPoint()
         #solve for cover
         cover = wedgeCover(env, data)
