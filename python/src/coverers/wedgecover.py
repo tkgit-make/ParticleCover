@@ -601,10 +601,12 @@ class wedgeCover():
         print("end: ", top_end_index, "value: ",  top_row_list[top_end_index])
         '''
         #self.makePatches_Projective(leftRight=False)
+        #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
+        z_top_max = self.env.beam_axis_lim
+        z_top_min = -self.env.top_layer_lim
 
         initial_apexZ0 = self.env.beam_axis_lim
         apexZ0 = initial_apexZ0        
-        z_top_min = -self.env.top_layer_lim
         first_row_count = 0
         c_corner = np.inf
         bottom_layer_min = 0
@@ -656,39 +658,39 @@ class wedgeCover():
                 #print("complementary's c corner: ",self.patches[-1].c_corner, " d corner: ", self.patches[-1].d_corner)
                 pass
             #print("maybe after complementaryPatch, N_patches: ", len(self.patches))
-        #print("after topFloor, N_patches: ", len(self.patches))
+        print("after topFloor, N_patches: ", len(self.patches))
         
         initial_apexZ0 = -self.env.beam_axis_lim
         apexZ0 = initial_apexZ0
-        last_row_count = 0
+        #last_row_count = 0
         b_corner = -np.inf
         bottom_layer_max = 0
-        z_top_max = self.env.beam_axis_lim
         while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]): 
             #make bottom row in acceptance space by going to higher z0 from previous patch
             #patch is pushed up against left side trapezoid boundary in real space
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
                                          z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset, 
                                          leftRight=True)
+            print("after creating seedPatch, N_patches: ", len(self.patches))
             seed_apexZ0 = apexZ0
             z_top_max = min(z_top_max, self.patches[-1].parallelograms[0].top_layer_zmax)    
            #pick a value as next apexZ0 value
             apexZ0 = self.patches[-1].d_corner[1]
             b_corner = self.patches[-1].b_corner[1]
-            last_row_count += 1
+            #last_row_count += 1
             bottom_layer_max = self.patches[-1].superpoints[0].max
             if self.patches[-1].squareAcceptance == False:
                 complementary_apexZ0 = self.patches[-1].parallelograms[0].shadow_topR_jR
-                #print("complementary_apexZ0 ", complementary_apexZ0)                                                             
+                print("complementary_apexZ0: ", complementary_apexZ0, "z_top_max: ", z_top_max)                               
                 # check that outermost superpoint is not too long                                                                                        
-                #for layer in range(self.env.num_layers):                                                                                                
-                    #print("layer ", layer+1," superpoint min: ", self.patches[-1].superpoints[layer].min, " max: ", self.patches[-1].superpoints[layer].max)                                                                                                             
+                for layer in range(self.env.num_layers):                                                                                                
+                    print("layer ", layer+1," superpoint min: ", self.patches[-1].superpoints[layer].min, " max: ", self.patches[-1].superpoints[layer].max)                                                                                                             
                 self.makePatch_alignedToLine(apexZ0 = seed_apexZ0, ppl = ppl,
                                              z_top = -self.env.top_layer_lim - self.env.boundaryPoint_offset,
                                              leftRight=True, double_middleLayers_ppl = True)
                 #for layer in range(self.env.num_layers):   
                     #print("layer ", layer+1," superpoint min: ", self.patches[-1].superpoints[layer].min, " max: ", self.patches[-1].superpoints[layer].max)                                                                                                         
-                #print("after creating checkPatch, N_patches: ", len(self.patches))    
+                print("after creating checkPatch, N_patches: ", len(self.patches))    
                 if self.patches[-1].squareAcceptance == False:
                     # outermost superpoint is too long, cut it short                                                                                     
                     check_b_list = []
@@ -704,15 +706,16 @@ class wedgeCover():
                                                                                      self.patches[-1].superpoints[shortestSP].max,
                                                                                      1, shortestSP+1, self.env.num_layers))
                     complementary_apexZ0 = self.patches[-1].straightLineProjector(z_top_max, self.patches[-1].superpoints[0].max, 1)
-                    #print("updated complementary_apexZ0 ", complementary_apexZ0, " updated z_top_max ", z_top_max)  
+                    print("shortened: updated complementary_apexZ0 ", complementary_apexZ0, " updated z_top_max ", z_top_max, len(self.patches))  
                 # delete the check patch                               
                 del self.patches[-1]
                 self.n_patches -= 1
+                print("after deleting checkPatch, N_patches: ", len(self.patches))
                 # now make actual complementary patch  
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
                 b_corner = self.patches[-1].b_corner[1]
-                pass
-        #print("after groundFloor, N_patches: ", len(self.patches))
+                print("after creating complementary Patch, N_patches: ", len(self.patches), "b_corner: ", self.patches[-1].b_corner)
+        print("after groundFloor, N_patches: ", len(self.patches))
         '''    
         #startCommentAshutosh    
         total_num_rows = 2
