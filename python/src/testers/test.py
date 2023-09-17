@@ -27,8 +27,6 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
         z0_spacing = 0.5
-    z0 = np.arange(-z0_luminousRegion, z0_luminousRegion+z0_spacing, z0_spacing)
-    mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
     num_covers = []
     PRF = []
     data_string = f'{v} events'
@@ -36,17 +34,20 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         data_string = f'Uniform {uniform_N_points} points'
         wedges = [0, 1]
 
+    z0 = np.arange(-22, 22+z0_spacing, z0_spacing)
+    mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
+
     #read wedgeData file and create environment
     all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         print(k)
-        if show_acceptance_of_cover:
-            plt.figure(figsize = (z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
         #convert to existing data format
         env, points = all_data[k] 
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
         data = DataSet(env)
+        if show_acceptance_of_cover:
+            plt.figure(figsize = (z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
         if uniform_N_points == False:
             data.importData(points)
         else:
@@ -87,7 +88,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 
                 if show_acceptance_of_cover:
                     
-                    plt.xlabel(r"$z_0$ (cm)", fontsize = 18)
+                    plt.xlabel(r"$z_1$ (cm)", fontsize = 18)
                     plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
                     plt.title("acceptance of cover", fontsize = 18)
                     
@@ -95,7 +96,8 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                     
                     col = 0
                     for line in list_of_intersections: 
-                        plt.xlim(-z0_luminousRegion,z0_luminousRegion)
+                        #plt.xlim(-z0_luminousRegion,z0_luminousRegion)
+                        plt.xlim(-env.trapezoid_edges[0],env.trapezoid_edges[0])
                         plt.ylim(-top_layer_cutoff, top_layer_cutoff)
                         plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
                         col += 1     

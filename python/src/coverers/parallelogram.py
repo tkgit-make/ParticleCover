@@ -89,7 +89,7 @@ class parallelogram():
         if self.top_layer_zmax > 100 or self.top_layer_zmin < -100: 
             print(self.top_layer_zmin, self.top_layer_zmax)
         
-        
+        #print (layer_num, shadow_topR_jL, shadow_topR_jR, self.shadow_topL_jL, self.shadow_topL_jR)
     def crossSection(self, z0:float): 
         # vertical cross section of the parallelogram at particular z0
         # returns a line interval 

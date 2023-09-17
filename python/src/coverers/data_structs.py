@@ -32,7 +32,9 @@ class Environment:
         self.radii = sorted(radii)
         
         # parallelogram slopes represent dz0/dz5 in z0-z5 space
-        self.parallelogramSlopes = [-Rj/(self.radii[-1] - Rj) for Rj in self.radii[:-1]]
+        # self.parallelogramSlopes = [-Rj/(self.radii[-1] - Rj) for Rj in self.radii[:-1]]
+        # parallelogram slopes represent dz1/dz5 in z1-z5 space
+        self.parallelogramSlopes = [(self.radii[0]-Rj)/(self.radii[-1] - Rj) for Rj in self.radii[:-1]]
         self.radii_leverArm = [1 - pSlope for pSlope in self.parallelogramSlopes]
 
         self.boundaryPoint_offset = 0

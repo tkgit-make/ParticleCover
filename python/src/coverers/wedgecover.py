@@ -121,7 +121,6 @@ class wedgePatch():
             b = self.straightLineProjector(top_layer_zmax, z_j_max, j)
             
             pSlope = self.env.parallelogramSlopes[j-1]
-            
             Parallelogram = parallelogram(j, top_layer_zmin, top_layer_zmax, a, b, pSlope)
             parallelograms.append(Parallelogram)
         
@@ -135,7 +134,11 @@ class wedgePatch():
         b_corner_list = [pgram.shadow_topR_jR for pgram in self.parallelograms]
         c_corner_list = [pgram.shadow_topL_jL for pgram in self.parallelograms]
         d_corner_list = [pgram.shadow_topL_jR for pgram in self.parallelograms]
-
+        #print ("a_corner_list: ", a_corner_list)
+        #print ("b_corner_list: ", b_corner_list)
+        #print ("c_corner_list: ", c_corner_list)
+        #print ("d_corner_list: ", d_corner_list)
+        
         self.a_corner = (self.parallelograms[-1].top_layer_zmax, max(a_corner_list))
         self.b_corner = (self.parallelograms[-1].top_layer_zmax, min(b_corner_list))
         self.c_corner = (self.parallelograms[-1].top_layer_zmin, max(c_corner_list))
@@ -606,21 +609,24 @@ class wedgeCover():
         z_top_min = -self.env.top_layer_lim
 
         initial_apexZ0 = self.env.beam_axis_lim
+        initial_apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
+        print ("initial_apexZ0: ", initial_apexZ0)
         apexZ0 = initial_apexZ0        
         first_row_count = 0
         c_corner = np.inf
         bottom_layer_min = 0
-        while (c_corner > -self.env.beam_axis_lim) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
-            #make top row in acceptance space by going to lower z0 from previous patch
+        while (c_corner > -self.env.trapezoid_edges[0]) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+            #make top row in acceptance space by going to lower z1 from previous patch
             #patch is pushed up against right side trapezoid boundary in real space
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
                                          z_top = self.env.top_layer_lim + self.env.boundaryPoint_offset, 
                                          leftRight=False)
-            #print("after seedPatch, N_patches: ", len(self.patches))
+            print("after seedPatch, N_patches: ", len(self.patches))
             seed_apexZ0 = apexZ0
             #pick "a" value as next apexZ0 value
             apexZ0 = self.patches[-1].a_corner[1]
             c_corner = self.patches[-1].c_corner[1]
+            print ("a: ", self.patches[-1].a_corner, "b: ", self.patches[-1].b_corner, "c: ", self.patches[-1].c_corner, "d: ", self.patches[-1].d_corner)
             first_row_count += 1
             bottom_layer_min = self.patches[-1].superpoints[0].min
             z_top_min = max(z_top_min, self.patches[-1].parallelograms[0].top_layer_zmin)
@@ -661,11 +667,12 @@ class wedgeCover():
         print("after topFloor, N_patches: ", len(self.patches))
         
         initial_apexZ0 = -self.env.beam_axis_lim
+        initial_apexZ0 = -self.env.trapezoid_edges[0] # switched from z0 to z1    
         apexZ0 = initial_apexZ0
         #last_row_count = 0
         b_corner = -np.inf
         bottom_layer_max = 0
-        while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]): 
+        while ((b_corner < self.env.trapezoid_edges[0]) & (bottom_layer_max < self.env.trapezoid_edges[0])): 
             #make bottom row in acceptance space by going to higher z0 from previous patch
             #patch is pushed up against left side trapezoid boundary in real space
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, 
@@ -756,12 +763,12 @@ class wedgeCover():
 #        for _ in range(1):
         #print ("after top and bottom floor, z_top_max: " , z_top_max, " z_top_min: ", z_top_min, "N_patches: ", len(self.patches))
         while (z_top_max < z_top_min):
-            initial_apexZ0 = -self.env.beam_axis_lim
+            initial_apexZ0 = -self.env.trapezoid_edges[0]
             apexZ0 = initial_apexZ0
             #previous_row_z_top =[]
             b_corner = -np.inf
             bottom_layer_max = 0
-            while (b_corner < self.env.beam_axis_lim) & (bottom_layer_max < self.env.trapezoid_edges[0]):
+            while (b_corner < self.env.trapezoid_edges[0]) & (bottom_layer_max < self.env.trapezoid_edges[0]):
                 #building on top of the bottom row in acceptance space
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=True)
                 #print ("z_top_max: ", z_top_max, "apexZ0: ", apexZ0, "N_patches: ", len(self.patches))
@@ -806,12 +813,12 @@ class wedgeCover():
 
             '''
             if (z_top_max < z_top_min):
-                initial_apexZ0 = self.env.beam_axis_lim
+                initial_apexZ0 = self.env.trapezoid_edges[0]
                 apexZ0 = initial_apexZ0
                 c_corner = np.inf
                 bottom_layer_min = 0
                 previous_row_z_top =[]
-                while (c_corner > -self.env.beam_axis_lim)  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+                while (c_corner > -self.env.trapezoid_edges[0])  & (bottom_layer_min > -self.env.trapezoid_edges[0]):
                     #make first row using last ppl points
                     self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_min, leftRight=False)
                     #patch_end_lambdaZ = self.patches[-1].left_end_lambdaZ
@@ -991,8 +998,11 @@ class wedgeCover():
             row_list = np.array([row_data[row][x].z for x in range(len(row_data[row]))])
             #picks picks n points closest to line from (z0, 0) to (-100, 25) (top left point)
             r_max = self.env.radii[-1]
-            start_index = np.argmin(np.abs((row_list - ((z_top-apexZ0)*y/r_max + apexZ0))))
-            start_value = row_list[start_index] - ((z_top-apexZ0)*y/r_max + apexZ0)
+            #start_index = np.argmin(np.abs((row_list - ((z_top-apexZ0)*y/r_max + apexZ0))))
+            #start_value = row_list[start_index] - ((z_top-apexZ0)*y/r_max + apexZ0)
+            projectionToRow = (z_top-apexZ0)*(y-self.env.radii[0])/(r_max-self.env.radii[0]) + apexZ0 # apexZ0 is actually defined at layer1
+            start_index = np.argmin(np.abs((row_list - projectionToRow)))
+            start_value = row_list[start_index] - projectionToRow
 
             left_bound = np.argmin(np.abs((row_list + self.env.trapezoid_edges[row] + self.env.boundaryPoint_offset)))
             right_bound = np.argmin(np.abs((row_list - self.env.trapezoid_edges[row] - self.env.boundaryPoint_offset)))
