@@ -64,7 +64,7 @@ def unionOfLineSegments(lineSegments:list):
     return total_measure 
             
 
-class parallelogram(): 
+class parallelogram_v1(): 
     
     def __init__(self, layer_num, top_layer_zmin, top_layer_zmax, shadow_topR_jL, shadow_topR_jR, pSlope): 
         
@@ -119,3 +119,49 @@ def calc_line_intersection(line1_point:tuple, line1_slope, line2_point:tuple, li
     z_0 = line1_slope*(z_top-line1_point[0]) + line1_point[1]
     #z_top is the indepedent variable and z_0 is the dependent variable
     return tuple((z_top, z_0))
+
+class parallelogram(): 
+    
+    def __init__(self, layer_num, z1_min, z1_max, shadow_bottomL_jR, shadow_bottomR_jR, shadow_bottomL_jL, shadow_bottomR_jL, pSlope): 
+        
+        self.layer_num = layer_num
+        self.pSlope = pSlope
+
+        self.shadow_bottomL_jR = shadow_bottomL_jR    # a
+        self.shadow_bottomR_jR = shadow_bottomR_jR    # b
+               
+        self.shadow_bottomL_jL = shadow_bottomL_jL # c
+        self.shadow_bottomR_jL = shadow_bottomR_jL # d
+        
+        self.z1_min = z1_min
+        self.z1_max = z1_max
+        
+        if self.z1_min > 22. or self.z1_max < -22.: 
+            print(self.top_layer_zmin, self.top_layer_zmax)
+
+    def crossSection(self, z1:float): 
+        # vertical cross section of the parallelogram at particular z1
+        # returns a line interval 
+        
+        if z1 < self.z1_min or z1 > self.z1_max: 
+            # left of a or right of d
+            return lineSegment(0.0, 0.0)
+        
+        #if a
+        elif z1 == self.z1_min:
+            return lineSegment(self.shadow_bottomL_jL, self.shadow_bottomL_jR)
+        
+        #if d
+        elif z1 == self.z1_max: 
+            
+            return lineSegment(self.shadow_bottomR_jL, self.shadow_bottomR_jR)
+        
+        if self.layer_num == 5:
+
+            return lineSegment(self.shadow_bottomL_jL, self.shadow_bottomL_jR)
+
+        segment_max = self.shadow_bottomR_jR + (z1 - self.z1_max)/self.pSlope
+
+        segment_min = self.shadow_bottomR_jL + (z1 - self.z1_max)/self.pSlope
+        
+        return lineSegment(segment_min, segment_max)

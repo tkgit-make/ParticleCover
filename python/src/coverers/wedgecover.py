@@ -106,6 +106,35 @@ class wedgePatch():
         parallelograms = [] 
         
         # min and max of the top superpoint of a patch
+        z1_min = max(self.superpoints[0].min, -self.env.trapezoid_edges[0])
+        z1_max = min(self.superpoints[0].max, self.env.trapezoid_edges[0])
+        
+        if z1_min > z1_max: 
+            z1_min = self.env.trapezoid_edges[0] + 1
+            z1_max = z1_min
+
+        for j, superpoint in enumerate(self.superpoints[1:], start=2): 
+            z_j_min = superpoint.min 
+            z_j_max = superpoint.max 
+            
+            a = self.straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, self.env.num_layers)
+            b = self.straightLineProjectorFromLayerIJtoK(z1_max, z_j_max, 1, j, self.env.num_layers)
+            c = self.straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, self.env.num_layers)
+            d = self.straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, self.env.num_layers)
+            if j != self.env.num_layers:
+                pSlope = self.env.parallelogramSlopes[j-1]
+            else:
+                pSlope = np.Inf
+            Parallelogram = parallelogram(j, z1_min, z1_max, a, b, c, d, pSlope)
+            parallelograms.append(Parallelogram)
+        
+        self.parallelograms = parallelograms
+    
+    def getParallelograms_v1(self): 
+
+        parallelograms = [] 
+        
+        # min and max of the top superpoint of a patch
         top_layer_zmin = max(self.superpoints[-1].min, -self.env.top_layer_lim)
         top_layer_zmax = min(self.superpoints[-1].max, self.env.top_layer_lim)
         
@@ -127,6 +156,124 @@ class wedgePatch():
         self.parallelograms = parallelograms
 
     def get_acceptanceCorners(self):
+
+        self.squareAcceptance = True # Ashutosh
+
+        #corner list in z_top
+        a_corner_list = [pgram.shadow_bottomL_jR for pgram in self.parallelograms]
+        b_corner_list = [pgram.shadow_bottomR_jR for pgram in self.parallelograms]
+        c_corner_list = [pgram.shadow_bottomL_jL for pgram in self.parallelograms]
+        d_corner_list = [pgram.shadow_bottomR_jL for pgram in self.parallelograms]
+
+        self.a_corner = (self.parallelograms[0].z1_min, min(a_corner_list))
+        self.b_corner = (self.parallelograms[0].z1_max, min(b_corner_list))
+        self.c_corner = (self.parallelograms[0].z1_min, max(c_corner_list))
+        self.d_corner = (self.parallelograms[0].z1_max, max(d_corner_list))
+
+        # is layer5 the most restrictive acceptance? 
+        if min(a_corner_list) != a_corner_list[self.env.num_layers-2]:
+            self.squareAcceptance = False
+        if min(b_corner_list) != b_corner_list[self.env.num_layers-2]:
+            self.squareAcceptance = False
+        if max(c_corner_list) != c_corner_list[self.env.num_layers-2]:
+            self.squareAcceptance = False
+        if max(d_corner_list) != d_corner_list[self.env.num_layers-2]:
+            self.squareAcceptance = False
+        
+
+    def get_acceptanceCorners_v0(self):
+
+        self.squareAcceptance = True # Ashutosh
+        
+        a_corner_list = [pgram.shadow_topR_jL for pgram in self.parallelograms]
+        b_corner_list = [pgram.shadow_topR_jR for pgram in self.parallelograms]
+        c_corner_list = [pgram.shadow_topL_jL for pgram in self.parallelograms]
+        d_corner_list = [pgram.shadow_topL_jR for pgram in self.parallelograms]
+        #print ("a_corner_list: ", a_corner_list)
+        #print ("b_corner_list: ", b_corner_list)
+        #print ("c_corner_list: ", c_corner_list)
+        #print ("d_corner_list: ", d_corner_list)
+        
+        self.a_corner = (self.parallelograms[-1].top_layer_zmax, max(a_corner_list))
+        self.b_corner = (self.parallelograms[-1].top_layer_zmax, min(b_corner_list))
+        self.c_corner = (self.parallelograms[-1].top_layer_zmin, max(c_corner_list))
+        self.d_corner = (self.parallelograms[-1].top_layer_zmin, min(d_corner_list))
+
+        # is layer1 the most restrictive acceptance? 
+        if np.argmax(a_corner_list) != 0:
+            self.squareAcceptance = False
+        if np.argmin(b_corner_list) != 0:
+            self.squareAcceptance = False
+        if np.argmax(c_corner_list) != 0:
+            self.squareAcceptance = False
+        if np.argmin(d_corner_list) != 0:
+            self.squareAcceptance = False
+
+        if self.b_corner <= self.a_corner:
+
+            a_corner_list = []
+            b_corner_list = []
+
+            for layer in np.arange(self.env.num_layers-2)+1:
+                #compute a_corners by intersecting b_line of layer 2, 3, 4 with a_line of layer 1
+                a_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmax, 
+                    self.parallelograms[layer].shadow_topR_jR),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jL),
+                    self.parallelograms[0].pSlope))
+
+                #compute b_corners by intersecting b_line of layer 2, 3, 4 with b_line of layer 1
+                b_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmax, 
+                    self.parallelograms[layer].shadow_topR_jR),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmax, self.parallelograms[0].shadow_topR_jR),
+                    self.parallelograms[0].pSlope))
+            
+            #take most restrictive a_corner and b_corner to be the one with the lowest z_top value
+            self.a_corner = a_corner_list[np.argmin([intersect[0] for intersect in a_corner_list])]
+            self.b_corner = b_corner_list[np.argmin([intersect[0] for intersect in b_corner_list])]
+            
+            #fixes for triangles
+            if self.b_corner[0] < self.d_corner[0]:
+                self.b_corner = self.d_corner
+            if self.b_corner[1] > self.env.beam_axis_lim:
+                self.b_corner = ( self.a_corner[0], self.env.beam_axis_lim)
+
+            #print(self.a_corner)
+
+        if self.c_corner[1] >= self.d_corner[1]:
+            
+            c_corner_list = []
+            d_corner_list = []
+            
+            for layer in np.arange(self.env.num_layers-2)+1:
+                #compute d_corners by intersecting c_line of layer 2, 3, 4 with d_line of layer 1
+                d_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmin, 
+                    self.parallelograms[layer].shadow_topL_jL),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jR),
+                    self.parallelograms[0].pSlope))
+                
+                #compute c_corners by intersecting c_line of layer 2, 3, 4 with c_line of layer 1
+                c_corner_list.append(calc_line_intersection(
+                    (self.parallelograms[layer].top_layer_zmin, 
+                    self.parallelograms[layer].shadow_topL_jL),
+                    self.parallelograms[layer].pSlope,
+                    (self.parallelograms[0].top_layer_zmin, self.parallelograms[0].shadow_topL_jL),
+                    self.parallelograms[0].pSlope))
+            
+            #take most restrictive d_corner and c_corner to be the one with the highest z_top value
+            self.d_corner = d_corner_list[np.argmax([intersect[0] for intersect in d_corner_list])]
+            self.c_corner = c_corner_list[np.argmax([intersect[0] for intersect in c_corner_list])]
+
+            #fixes for triangles
+            if self.c_corner[0] > self.a_corner[0]:
+                self.c_corner = self.a_corner
+    
+    def get_acceptanceCorners_v0(self):
 
         self.squareAcceptance = True # Ashutosh
         
@@ -561,7 +708,7 @@ class wedgeCover():
                 self.makePatch_alignedToLine(apexZ0 = apexZ0, z_top = self.patches[first_row_count+column].superpoints[self.env.num_layers-1].max, leftRight=True, ppl = ppl)
                 apexZ0 = self.patches[-1].a_corner       
         '''
-    def makePatches_ShadowQuilt_fromEdges(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
+    def makePatches_ShadowQuilt_fromEdges_v1(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
 
@@ -841,6 +988,70 @@ class wedgeCover():
             #print(total_num_rows)
          
 #        print(z_top_min,z_top_max)
+    def makePatches_ShadowQuilt_fromEdges(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
+        """This method uses the geometry of shadows to generate patches based on superpoints
+            the outer layer and the z0 of the collision point. 
+
+        Args:
+            apexZ0 (num, optional): Collision point on the z axis for the first patches Defaults to 0.
+            stop (num, optional): Where to stop, normalized to 1. Defaults to 1.
+            ppl (int, optional): Points per patch per layer. Defaults to 16.
+            leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
+        """
+        #self.makePatches_Projective(leftRight=False)
+        #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
+
+        z_top_min = -self.env.top_layer_lim
+
+        initial_apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
+        print ("initial_apexZ0: ", initial_apexZ0)
+        apexZ0 = initial_apexZ0        
+        first_row_count = 0
+        c_corner = np.inf
+        z_top_max = self.env.top_layer_lim + self.env.boundaryPoint_offset
+        bottom_layer_min = 0
+        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) & (bottom_layer_min > -self.env.trapezoid_edges[0]):
+
+            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
+            print(self.patches[-1].a_corner)
+            print(self.patches[-1].b_corner)
+            print(self.patches[-1].c_corner)
+            print(self.patches[-1].d_corner)
+            original_c = self.patches[-1].c_corner[1]
+            original_d = self.patches[-1].d_corner[1]
+            c_corner = original_c
+            seed_apexZ0 = apexZ0
+            print(self.patches[-1].squareAcceptance)
+            if self.patches[-1].squareAcceptance == False:
+                complementary_apexZ0 = self.patches[-1].superpoints[0].min
+                z_top_min = max(z_top_min, self.patches[-1].superpoints[self.env.num_layers-1].min)
+                self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
+                complementary_a = self.patches[-1].a_corner[1]
+                complementary_b = self.patches[-1].b_corner[1]
+                white_space_height = max(original_c - complementary_a, original_d - complementary_b)
+                counter = 0
+                z_top_min += white_space_height
+                while ((white_space_height > 0) or (abs(white_space_height) > 10)) and (counter < 20):
+
+                    print()
+                    print(original_c, original_d)
+                    print(complementary_a, complementary_b)
+                    print(counter, white_space_height)
+                    z_top_min += white_space_height
+                    del self.patches[-1]
+                    self.n_patches -= 1
+                    self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
+                    counter +=1
+                    complementary_a = self.patches[-1].a_corner[1]
+                    complementary_b = self.patches[-1].b_corner[1]
+                    white_space_height = max(original_c - complementary_a, original_d - complementary_b)
+                c_corner = self.patches[-1].c_corner[1]
+            z_top_max = c_corner
+            print('c_corner: ', c_corner)
+                
+
+                                 
+
 
     def makePatches_ShadowQuilt_fromCenter(self, apexZ0 = 0, stop = 1, z_top = 0, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
