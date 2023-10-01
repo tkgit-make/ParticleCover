@@ -482,6 +482,24 @@ class wedgeCover():
         else:
             raise("Please choose valid solving method")
 
+    def get_index_from_z(self, layer, z_value, alignment = 'closest'):
+        layer_data = np.array([self.data.array[layer][x].z for x in range(len(self.data.array[layer]))])
+        index = np.argmin(np.abs((layer_data - z_value)))
+        if alignment == 'closest':
+            return index
+        
+        if alignment == 'above':
+            if layer_data[index] > z_value:
+                return index
+            else:
+                return index + 1
+            
+        if alignment == 'below':
+            if layer_data[index] < z_value:
+                return index
+            else:
+                return index - 1
+
     def makePatches_ShadowQuilt_fromEdges_v0(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
@@ -1017,8 +1035,8 @@ class wedgeCover():
             print(self.patches[-1].b_corner)
             print(self.patches[-1].c_corner)
             print(self.patches[-1].d_corner)
-            original_c = self.patches[-1].c_corner[1]
-            original_d = self.patches[-1].d_corner[1]
+            original_c = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].c_corner[1], 'below')
+            original_d = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].d_corner[1], 'below')
             c_corner = original_c
             seed_apexZ0 = apexZ0
             print(self.patches[-1].squareAcceptance)
@@ -1026,26 +1044,36 @@ class wedgeCover():
                 complementary_apexZ0 = self.patches[-1].superpoints[0].min
                 z_top_min = max(z_top_min, self.patches[-1].superpoints[self.env.num_layers-1].min)
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
-                complementary_a = self.patches[-1].a_corner[1]
-                complementary_b = self.patches[-1].b_corner[1]
+                complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
+                complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
                 white_space_height = max(original_c - complementary_a, original_d - complementary_b)
                 counter = 0
-                z_top_min += white_space_height
-                while ((white_space_height > 0) or (abs(white_space_height) > 10)) and (counter < 20):
+                current_z_top_index = self.get_index_from_z(self.env.num_layers-1, z_top_min)
+                current_z_top_index += white_space_height
+                z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                #while ((white_space_height > 0) or (abs(white_space_height) > 10)) and (counter < 5):
+                while (white_space_height != -1) and (counter < 5):
 
                     print()
-                    print(original_c, original_d)
-                    print(complementary_a, complementary_b)
-                    print(counter, white_space_height)
-                    z_top_min += white_space_height
+                    print('original c:', original_c,'|| original d:', original_d)
+                    print('complementary_a:', complementary_a, '|| complementary_b:', complementary_b)
+                    current_z_top_index = self.get_index_from_z(self.env.num_layers-1, z_top_min)
+                    print('current white_space_height: ', white_space_height)
+                    print('counter: ',counter)
+                    print('og ztop: ', current_z_top_index)
+                    current_z_top_index += white_space_height
+                    print('new ztop: ', current_z_top_index)
+                    z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
                     del self.patches[-1]
                     self.n_patches -= 1
                     self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
                     counter +=1
-                    complementary_a = self.patches[-1].a_corner[1]
-                    complementary_b = self.patches[-1].b_corner[1]
+                    complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
+                    complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
                     white_space_height = max(original_c - complementary_a, original_d - complementary_b)
-                c_corner = self.patches[-1].c_corner[1]
+                    print('new white_space_height: ', white_space_height)
+                original_c = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].c_corner[1], 'below')
+            c_corner = self.patches[-1].c_corner[1]
             z_top_max = c_corner
             print('c_corner: ', c_corner)
                 
