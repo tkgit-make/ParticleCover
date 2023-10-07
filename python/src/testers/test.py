@@ -72,7 +72,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         
                 out.append(num_in)
         PRF.append(out)
-        sleep_time_between_patches = 5
+        sleep_time_between_patches = 0.0
         
         #these loops calculate line acceptance
         for iz, z in enumerate(np.array(z0)):
@@ -81,7 +81,6 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 
                 list_of_intersections = []
                 for patch in cover.patches: 
-                    #time.sleep(sleep_time_between_patches)
                     list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
                     overlap_of_superpoints = intersection(patch.env, list_of_segs) 
                     list_of_intersections.append(overlap_of_superpoints)
@@ -100,7 +99,9 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         plt.xlim(-env.trapezoid_edges[0],env.trapezoid_edges[0])
                         plt.ylim(-top_layer_cutoff, top_layer_cutoff)
                         plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
-                        col += 1     
+                        col += 1
+                        time.sleep(sleep_time_between_patches)
+
                 total_measure = unionOfLineSegments(list_of_intersections)
                 
                 percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
