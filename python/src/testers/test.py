@@ -41,7 +41,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
-        print(k)
+        print('wedge: ', k)
         #convert to existing data format
         env, points = all_data[k] 
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
@@ -90,6 +90,9 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                     plt.xlabel(r"$z_1$ (cm)", fontsize = 18)
                     plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
                     plt.title("acceptance of cover", fontsize = 18)
+                    z1Lim = cover.patches[-1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,z0_luminousRegion,env.num_layers,0,1)
+                    plt.axline((z1Lim, -top_layer_cutoff), (env.trapezoid_edges[0], top_layer_cutoff),linewidth=1, color='black')
+                    plt.axline((-z1Lim, top_layer_cutoff), (-env.trapezoid_edges[0], -top_layer_cutoff),linewidth=1, color='black')
                     
                     colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "rosybrown", "tomato","olive", "deeppink"]
                     

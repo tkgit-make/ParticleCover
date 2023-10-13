@@ -1,0 +1,470 @@
+wedge:  49
+top layer from  50.0001  to  10.8657
+(7.90212, 50.0001)
+(22.0001, 50.0001)
+(7.90212, 40.454679999999996)
+(22.0001, 26.3567)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -0.23602000000000345
+complementary:  (7.90212, 33.684079999999994)  for z_top_min: 10.8657
+complementary:  (22.0001, 19.5861)
+complementary:  (7.90212, 10.8657)
+complementary:  (22.0001, 10.8657)
+
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+current white_space_height:  6.770600000000002
+counter:  0
+orig ztop:  59
+new ztop:  60  arrayLength:  103
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+new white_space_height:  6.770600000000002
+
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+current white_space_height:  6.770600000000002
+counter:  0
+orig ztop:  60
+new ztop:  61  arrayLength:  103
+complementary_a: 38.964879999999994   38.964879999999994  || complementary_b: 24.866899999999998   24.866899999999998
+new white_space_height:  1.4898000000000025
+
+complementary_a: 38.964879999999994   38.964879999999994  || complementary_b: 24.866899999999998   24.866899999999998
+current white_space_height:  1.4898000000000025
+counter:  0
+orig ztop:  61
+new ztop:  62  arrayLength:  103
+complementary_a: 40.78308   40.78308  || complementary_b: 26.685100000000002   26.685100000000002
+new white_space_height:  -0.328400000000002
+c_corner:  17.99008
+top layer from  19.2085  to  -21.9859
+(7.90212, 19.2085)
+(22.0001, 18.403299999999998)
+(7.90212, 8.6356)
+(22.0001, -9.627566666666663)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  7.71875
+complementary:  (7.90212, 40.78308)  for z_top_min: 19.2085
+complementary:  (22.0001, 26.685100000000002)
+complementary:  (7.90212, 17.99008)
+complementary:  (22.0001, 10.8657)
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 40.78308   40.78308  || complementary_b: 26.685100000000002   26.685100000000002
+current white_space_height:  -32.14748
+counter:  0
+orig ztop:  62
+new ztop:  61  arrayLength:  103
+complementary_a: 38.964879999999994   38.964879999999994  || complementary_b: 24.866899999999998   24.866899999999998
+new white_space_height:  -30.329279999999994
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 38.964879999999994   38.964879999999994  || complementary_b: 24.866899999999998   24.866899999999998
+current white_space_height:  -30.329279999999994
+counter:  1
+orig ztop:  61
+new ztop:  60  arrayLength:  103
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+new white_space_height:  -25.048479999999994
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+current white_space_height:  -25.048479999999994
+counter:  2
+orig ztop:  60
+new ztop:  59  arrayLength:  103
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+new white_space_height:  -25.048479999999994
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 33.684079999999994   33.684079999999994  || complementary_b: 19.5861   19.5861
+current white_space_height:  -25.048479999999994
+counter:  3
+orig ztop:  59
+new ztop:  58  arrayLength:  103
+complementary_a: 31.946679999999997   31.946679999999997  || complementary_b: 13.685700000000008   13.685700000000008
+new white_space_height:  -23.311079999999997
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 31.946679999999997   31.946679999999997  || complementary_b: 13.685700000000008   13.685700000000008
+current white_space_height:  -23.311079999999997
+counter:  4
+orig ztop:  58
+new ztop:  57  arrayLength:  103
+complementary_a: 31.946679999999997   31.946679999999997  || complementary_b: 13.685700000000008   13.685700000000008
+new white_space_height:  -23.311079999999997
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 31.946679999999997   31.946679999999997  || complementary_b: 13.685700000000008   13.685700000000008
+current white_space_height:  -23.311079999999997
+counter:  5
+orig ztop:  57
+new ztop:  56  arrayLength:  103
+complementary_a: 27.666680000000003   27.666680000000003  || complementary_b: 8.911300000000008   8.911300000000008
+new white_space_height:  -18.53886666666667
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 27.666680000000003   27.666680000000003  || complementary_b: 8.911300000000008   8.911300000000008
+current white_space_height:  -18.53886666666667
+counter:  6
+orig ztop:  56
+new ztop:  55  arrayLength:  103
+complementary_a: 19.200360000000003   19.200360000000003  || complementary_b: 8.8281   8.8281
+new white_space_height:  -10.564760000000003
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 19.200360000000003   19.200360000000003  || complementary_b: 8.8281   8.8281
+current white_space_height:  -10.564760000000003
+counter:  7
+orig ztop:  55
+new ztop:  54  arrayLength:  103
+complementary_a: 19.200360000000003   19.200360000000003  || complementary_b: 8.8281   8.8281
+new white_space_height:  -10.564760000000003
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 19.200360000000003   19.200360000000003  || complementary_b: 8.8281   8.8281
+current white_space_height:  -10.564760000000003
+counter:  8
+orig ztop:  54
+new ztop:  53  arrayLength:  103
+complementary_a: 15.361026666666666   15.361026666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  1.8491333333333344
+
+original c: 8.6356   8.6356 || original d: -9.627566666666663   -9.627566666666663
+complementary_a: 15.361026666666666   15.361026666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  1.8491333333333344
+counter:  9
+orig ztop:  53
+new ztop:  54  arrayLength:  103
+complementary_a: 19.200360000000003   19.200360000000003  || complementary_b: 8.8281   8.8281
+new white_space_height:  -10.564760000000003
+c_corner:  -7.183309999999999
+top layer from  -7.18331  to  -28.5421
+(7.90212, -7.183309999999999)
+(22.0001, -7.183309999999999)
+(7.90212, -11.297639999999998)
+(22.0001, -28.5421)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  12.70206
+complementary:  (7.90212, 19.200360000000003)  for z_top_min: -7.18331
+complementary:  (22.0001, 8.8281)
+complementary:  (7.90212, -7.183309999999999)
+complementary:  (22.0001, -7.183309999999999)
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 19.200360000000003   19.200360000000003  || complementary_b: 8.8281   8.8281
+current white_space_height:  -30.498
+counter:  0
+orig ztop:  54
+new ztop:  53  arrayLength:  103
+complementary_a: 15.361026666666666   15.361026666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 15.361026666666666   15.361026666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  1
+orig ztop:  53
+new ztop:  52  arrayLength:  103
+complementary_a: 15.361026666666666   15.361026666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 15.361026666666666   15.361026666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  2
+orig ztop:  52
+new ztop:  51  arrayLength:  103
+complementary_a: 11.071826666666666   11.071826666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 11.071826666666666   11.071826666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  3
+orig ztop:  51
+new ztop:  50  arrayLength:  103
+complementary_a: 11.071826666666666   11.071826666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 11.071826666666666   11.071826666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  4
+orig ztop:  50
+new ztop:  49  arrayLength:  103
+complementary_a: 11.071826666666666   11.071826666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 11.071826666666666   11.071826666666666  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  5
+orig ztop:  49
+new ztop:  48  arrayLength:  103
+complementary_a: 7.5469066666666675   7.5469066666666675  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 7.5469066666666675   7.5469066666666675  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  6
+orig ztop:  48
+new ztop:  47  arrayLength:  103
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  7
+orig ztop:  47
+new ztop:  46  arrayLength:  103
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  8
+orig ztop:  46
+new ztop:  45  arrayLength:  103
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  9
+orig ztop:  45
+new ztop:  44  arrayLength:  103
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+new white_space_height:  -17.065400000000004
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: 7.225786666666667   7.225786666666667  || complementary_b: -11.476699999999997   -11.476699999999997
+current white_space_height:  -17.065400000000004
+counter:  10
+orig ztop:  44
+new ztop:  43  arrayLength:  103
+complementary_a: -2.096966666666667   -2.096966666666667  || complementary_b: -12.369499999999999   -12.369499999999999
+new white_space_height:  -9.20067333333333
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: -2.096966666666667   -2.096966666666667  || complementary_b: -12.369499999999999   -12.369499999999999
+current white_space_height:  -9.20067333333333
+counter:  11
+orig ztop:  43
+new ztop:  42  arrayLength:  103
+complementary_a: -2.096966666666667   -2.096966666666667  || complementary_b: -12.369499999999999   -12.369499999999999
+new white_space_height:  -9.20067333333333
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: -2.096966666666667   -2.096966666666667  || complementary_b: -12.369499999999999   -12.369499999999999
+current white_space_height:  -9.20067333333333
+counter:  12
+orig ztop:  42
+new ztop:  41  arrayLength:  103
+complementary_a: -3.2741299999999995   -3.2741299999999995  || complementary_b: -12.369499999999999   -12.369499999999999
+new white_space_height:  -8.023509999999998
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: -3.2741299999999995   -3.2741299999999995  || complementary_b: -12.369499999999999   -12.369499999999999
+current white_space_height:  -8.023509999999998
+counter:  13
+orig ztop:  41
+new ztop:  40  arrayLength:  103
+complementary_a: -7.17586   -7.17586  || complementary_b: -12.369499999999999   -12.369499999999999
+new white_space_height:  -4.121779999999998
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: -7.17586   -7.17586  || complementary_b: -12.369499999999999   -12.369499999999999
+current white_space_height:  -4.121779999999998
+counter:  14
+orig ztop:  40
+new ztop:  39  arrayLength:  103
+complementary_a: -7.183309999999999   -7.183309999999999  || complementary_b: -14.431099999999997   -14.431099999999997
+new white_space_height:  -4.114329999999999
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: -7.183309999999999   -7.183309999999999  || complementary_b: -14.431099999999997   -14.431099999999997
+current white_space_height:  -4.114329999999999
+counter:  15
+orig ztop:  39
+new ztop:  38  arrayLength:  103
+complementary_a: -11.6706   -11.6706  || complementary_b: -16.800700000000003   -16.800700000000003
+new white_space_height:  0.3729600000000026
+
+original c: -11.297639999999998   -11.297639999999998 || original d: -28.5421   -28.5421
+complementary_a: -11.6706   -11.6706  || complementary_b: -16.800700000000003   -16.800700000000003
+current white_space_height:  0.3729600000000026
+counter:  16
+orig ztop:  38
+new ztop:  39  arrayLength:  103
+complementary_a: -7.183309999999999   -7.183309999999999  || complementary_b: -14.431099999999997   -14.431099999999997
+new white_space_height:  -4.114329999999999
+c_corner:  -28.5421
+wedge:  50
+top layer from  50.0001  to  17.6132
+(5.92103, 50.0001)
+(22.0001, 50.0001)
+(5.92103, 54.56811)
+(22.0001, 17.6132)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -6.240739999999995
+complementary:  (5.92103, 50.0001)  for z_top_min: 17.6132
+complementary:  (22.0001, 10.162500000000005)
+complementary:  (5.92103, 17.6132)
+complementary:  (22.0001, 17.6132)
+c_corner:  17.6132
+top layer from  17.6132  to  -23.2053
+(5.92103, 17.6132)
+(22.0001, 17.6132)
+(5.92103, 21.306910000000002)
+(22.0001, -8.625915999999997)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  2.074559999999998
+complementary:  (5.92103, 16.021389999999997)  for z_top_min: -8.625915999999997
+complementary:  (22.0001, 7.216100000000001)
+complementary:  (5.92103, -10.21213)
+complementary:  (22.0001, -14.068699999999996)
+c_corner:  -10.21213
+top layer from  -4.3762  to  -41.8743
+(5.92103, -4.376199999999999)
+(22.0001, -9.664719999999999)
+(5.92103, -19.290010000000002)
+(22.0001, -30.91869999999999)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  12.223790000000001
+complementary:  (5.92103, 16.021389999999997)  for z_top_min: -8.625915999999997
+complementary:  (22.0001, 7.216100000000001)
+complementary:  (5.92103, -10.21213)
+complementary:  (22.0001, -14.068699999999996)
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 16.021389999999997   16.021389999999997  || complementary_b: 7.216100000000001   7.216100000000001
+current white_space_height:  -35.3114
+counter:  0
+orig ztop:  48
+new ztop:  47  arrayLength:  87
+complementary_a: 13.003523333333334   13.003523333333334  || complementary_b: 0.2859000000000016   0.2859000000000016
+new white_space_height:  -31.204599999999992
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 13.003523333333334   13.003523333333334  || complementary_b: 0.2859000000000016   0.2859000000000016
+current white_space_height:  -31.204599999999992
+counter:  1
+orig ztop:  47
+new ztop:  46  arrayLength:  87
+complementary_a: 6.414350000000001   6.414350000000001  || complementary_b: -9.664719999999999   -9.664719999999999
+new white_space_height:  -21.25397999999999
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 6.414350000000001   6.414350000000001  || complementary_b: -9.664719999999999   -9.664719999999999
+current white_space_height:  -21.25397999999999
+counter:  2
+orig ztop:  46
+new ztop:  45  arrayLength:  87
+complementary_a: 6.414350000000001   6.414350000000001  || complementary_b: -9.664719999999999   -9.664719999999999
+new white_space_height:  -21.25397999999999
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 6.414350000000001   6.414350000000001  || complementary_b: -9.664719999999999   -9.664719999999999
+current white_space_height:  -21.25397999999999
+counter:  3
+orig ztop:  45
+new ztop:  44  arrayLength:  87
+complementary_a: 6.414350000000001   6.414350000000001  || complementary_b: -9.664719999999999   -9.664719999999999
+new white_space_height:  -21.25397999999999
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 6.414350000000001   6.414350000000001  || complementary_b: -9.664719999999999   -9.664719999999999
+current white_space_height:  -21.25397999999999
+counter:  4
+orig ztop:  44
+new ztop:  43  arrayLength:  87
+complementary_a: 4.498530000000001   4.498530000000001  || complementary_b: -11.580540000000003   -11.580540000000003
+new white_space_height:  -19.338159999999988
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 4.498530000000001   4.498530000000001  || complementary_b: -11.580540000000003   -11.580540000000003
+current white_space_height:  -19.338159999999988
+counter:  5
+orig ztop:  43
+new ztop:  42  arrayLength:  87
+complementary_a: 0.6584700000000003   0.6584700000000003  || complementary_b: -14.1202   -14.1202
+new white_space_height:  -16.79849999999999
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 0.6584700000000003   0.6584700000000003  || complementary_b: -14.1202   -14.1202
+current white_space_height:  -16.79849999999999
+counter:  6
+orig ztop:  42
+new ztop:  41  arrayLength:  87
+complementary_a: 0.6584700000000003   0.6584700000000003  || complementary_b: -14.1202   -14.1202
+new white_space_height:  -16.79849999999999
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 0.6584700000000003   0.6584700000000003  || complementary_b: -14.1202   -14.1202
+current white_space_height:  -16.79849999999999
+counter:  7
+orig ztop:  41
+new ztop:  40  arrayLength:  87
+complementary_a: 0.6584700000000003   0.6584700000000003  || complementary_b: -14.1202   -14.1202
+new white_space_height:  -16.79849999999999
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: 0.6584700000000003   0.6584700000000003  || complementary_b: -14.1202   -14.1202
+current white_space_height:  -16.79849999999999
+counter:  8
+orig ztop:  40
+new ztop:  39  arrayLength:  87
+complementary_a: -6.319836666666665   -6.319836666666665  || complementary_b: -14.1202   -14.1202
+new white_space_height:  -12.970173333333337
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: -6.319836666666665   -6.319836666666665  || complementary_b: -14.1202   -14.1202
+current white_space_height:  -12.970173333333337
+counter:  9
+orig ztop:  39
+new ztop:  38  arrayLength:  87
+complementary_a: -12.55498333333333   -12.55498333333333  || complementary_b: -17.91467333333333   -17.91467333333333
+new white_space_height:  -6.735026666666672
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: -12.55498333333333   -12.55498333333333  || complementary_b: -17.91467333333333   -17.91467333333333
+current white_space_height:  -6.735026666666672
+counter:  10
+orig ztop:  38
+new ztop:  37  arrayLength:  87
+complementary_a: -12.55498333333333   -12.55498333333333  || complementary_b: -17.91467333333333   -17.91467333333333
+new white_space_height:  -6.735026666666672
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: -12.55498333333333   -12.55498333333333  || complementary_b: -17.91467333333333   -17.91467333333333
+current white_space_height:  -6.735026666666672
+counter:  11
+orig ztop:  37
+new ztop:  36  arrayLength:  87
+complementary_a: -14.28109   -14.28109  || complementary_b: -19.640779999999996   -19.640779999999996
+new white_space_height:  -5.008920000000002
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: -14.28109   -14.28109  || complementary_b: -19.640779999999996   -19.640779999999996
+current white_space_height:  -5.008920000000002
+counter:  12
+orig ztop:  36
+new ztop:  35  arrayLength:  87
+complementary_a: -18.72341   -18.72341  || complementary_b: -24.08309999999999   -24.08309999999999
+new white_space_height:  -0.5666000000000011
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: -18.72341   -18.72341  || complementary_b: -24.08309999999999   -24.08309999999999
+current white_space_height:  -0.5666000000000011
+counter:  13
+orig ztop:  35
+new ztop:  34  arrayLength:  87
+complementary_a: -20.50714333333333   -20.50714333333333  || complementary_b: -25.86683333333333   -25.86683333333333
+new white_space_height:  1.2171333333333294
+
+original c: -19.290010000000002   -19.290010000000002 || original d: -30.91869999999999   -30.91869999999999
+complementary_a: -20.50714333333333   -20.50714333333333  || complementary_b: -25.86683333333333   -25.86683333333333
+current white_space_height:  1.2171333333333294
+counter:  14
+orig ztop:  34
+new ztop:  35  arrayLength:  87
+complementary_a: -18.72341   -18.72341  || complementary_b: -24.08309999999999   -24.08309999999999
+new white_space_height:  -0.5666000000000011
+c_corner:  -39.155

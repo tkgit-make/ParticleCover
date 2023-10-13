@@ -93,11 +93,23 @@ class wedgePatch():
         return z_j - (z_j - z_1) * radii_leverArm
     
     def straightLineProjectorFromLayerIJtoK(self, z_i, z_j, i, j, k):
-        # k = 0 implies beam axis
-        radius_k = self.env.radii[k-1]
+        # i,j,k = 0 implies beam axis
+        radius_i = 0
+        radius_j = 0
+        radius_k = 0
+        if (i == 0):
+            radius_i = 0
+        else:
+            radius_i = self.env.radii[i-1]
+        if (j == 0):
+            radius_j = 0
+        else:
+            radius_j = self.env.radii[j-1]            
         if (k == 0):
             radius_k = 0
-        radii_leverArm = (radius_k - self.env.radii[i-1]) / (self.env.radii[j-1] - self.env.radii[i-1])
+        else:
+            radius_k = self.env.radii[k-1]            
+        radii_leverArm = (radius_k - radius_i) / (radius_j - radius_i)
         #return z_k projected by z_j and z_i
         return z_i + (z_j - z_i) * radii_leverArm
     
@@ -158,6 +170,7 @@ class wedgePatch():
     def get_acceptanceCorners(self):
 
         self.squareAcceptance = True # Ashutosh
+        self.triangleAcceptance = False # Ashutosh
 
         #corner list in z_top
         a_corner_list = [pgram.shadow_bottomL_jR for pgram in self.parallelograms]
@@ -180,6 +193,15 @@ class wedgePatch():
         if max(d_corner_list) != d_corner_list[self.env.num_layers-2]:
             self.squareAcceptance = False
         
+        # is the acceptance a triangle shape?
+        if (self.c_corner[1] > self.a_corner[1]):
+            self.triangleAcceptance = True
+            self.c_corner = (self.c_corner[0],self.b_corner[1])
+            self.a_corner = (self.a_corner[0],self.b_corner[1])
+        if (self.b_corner[1] < self.d_corner[1]):
+            self.triangleAcceptance = True
+            self.b_corner = (self.b_corner[0],self.c_corner[1])
+            self.d_corner = (self.d_corner[0],self.c_corner[1])
 
     def get_acceptanceCorners_v0(self):
 
@@ -1007,7 +1029,7 @@ class wedgeCover():
          
 #        print(z_top_min,z_top_max)
     def makePatches_ShadowQuilt_fromEdges(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
-      """This method uses the geometry of shadows to generate patches based on superpoints
+        """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
 
         Args:
@@ -1015,22 +1037,24 @@ class wedgeCover():
             stop (num, optional): Where to stop, normalized to 1. Defaults to 1.
             ppl (int, optional): Points per patch per layer. Defaults to 16.
             leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
-      """
-      #self.makePatches_Projective(leftRight=False)
-      #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
+        """
+        #self.makePatches_Projective(leftRight=False)
+        #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
 
-      apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
-      while (apexZ0 > -self.env.trapezoid_edges[0]):
+        apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
+#      while (apexZ0 > -self.env.trapezoid_edges[0]):
         z_top_min = -self.env.top_layer_lim
+        complementary_apexZ0 = 0
         first_row_count = 0
         c_corner = np.inf
         z_top_max = self.env.top_layer_lim + self.env.boundaryPoint_offset
         bottom_layer_min = 0
         nPatchesInColumn = 0
-        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) & (bottom_layer_min > -self.env.trapezoid_edges[0]) & (nPatchesInColumn<20):
+        projectionOfCcornerToBeam = 0
+        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (bottom_layer_min > -self.env.trapezoid_edges[0]) and (nPatchesInColumn<10) and (abs(projectionOfCcornerToBeam) < self.env.beam_axis_lim):
             nPatchesInColumn += 1
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
-            print ('top layer from ', self.patches[-1].superpoints[self.env.num_layers-1].max, ' to ', self.patches[-1].superpoints[self.env.num_layers-1].min)
+            print ('top layer from ', self.patches[-1].superpoints[self.env.num_layers-1].max, ' to ', self.patches[-1].superpoints[self.env.num_layers-1].min, ' z_top_max: ', z_top_max)
             print(self.patches[-1].a_corner)
             print(self.patches[-1].b_corner)
             print(self.patches[-1].c_corner)
@@ -1040,25 +1064,36 @@ class wedgeCover():
             original_c = self.patches[-1].c_corner[1]
             original_d = self.patches[-1].d_corner[1]
             c_corner = original_c
+            #if (self.patches[-1].triangleAcceptance == True):
+                #original_c = self.patches[-1].b_corner[1]
             seed_apexZ0 = apexZ0
-            print(self.patches[-1].squareAcceptance)
-            if (self.patches[-1].squareAcceptance == False) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
+            projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].c_corner[1],self.patches[-1].c_corner[0],self.env.num_layers,1,0)
+            print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam)
+            if (self.patches[-1].squareAcceptance == False) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (abs(projectionOfCcornerToBeam) < self.env.beam_axis_lim):
                 complementary_apexZ0 = self.patches[-1].superpoints[0].min
-                z_top_min = max(z_top_min, self.patches[-1].superpoints[self.env.num_layers-1].min)
+                if (self.patches[-1].triangleAcceptance == True):
+                    z_top_min = self.patches[-1].d_corner[1]
+                else:     
+                    z_top_min = max(z_top_min, self.patches[-1].superpoints[self.env.num_layers-1].min)
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
-                print(self.patches[-1].a_corner)
-                print(self.patches[-1].b_corner)
-                print(self.patches[-1].c_corner)
-                print(self.patches[-1].d_corner)
+                print('complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
+                print('complementary: ', self.patches[-1].b_corner)
+                print('complementary: ', self.patches[-1].c_corner)
+                print('complementary: ', self.patches[-1].d_corner)
                 #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
                 #complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
                 complementary_a = self.patches[-1].a_corner[1]
                 complementary_b = self.patches[-1].b_corner[1]
                 white_space_height = max(original_c - complementary_a, original_d - complementary_b)
+                previous_white_space_height = -1
                 counter = 0
                 counterUpshift = 0
+                current_z_top_index = -1
                 #while ((white_space_height > 0) or (abs(white_space_height) > 10)) and (counter < 5):
-                while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
+                #while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
+                
+                #while not((white_space_height < 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and (self.patches[-2].triangleAcceptance == False) :
+                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) :
                     print()
                     if (len(self.patches) > 2):
                         print('original c:', original_c, ' ', self.patches[-2].c_corner[1], '|| original d:', original_d, ' ', self.patches[-2].d_corner[1])
@@ -1083,18 +1118,25 @@ class wedgeCover():
                     #complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
                     complementary_a = self.patches[-1].a_corner[1]
                     complementary_b = self.patches[-1].b_corner[1]
+                    previous_white_space_height = white_space_height
                     white_space_height = max(original_c - complementary_a, original_d - complementary_b)
                     print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1])
                     print('new white_space_height: ', white_space_height)
             c_corner = self.patches[-1].c_corner[1]
             z_top_max = c_corner
             print('c_corner: ', c_corner)
-        apexZ0 = self.patches[-1].c_corner[0]
-        print('z1_Align: ', apexZ0)
-    
-#        del self.patches[-1]                                                                                                  
-#        del self.patches[-1]
+            projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(c_corner,self.patches[-1].c_corner[0],self.env.num_layers,1,0)
 
+        #apexZ0 = self.patches[-1].c_corner[0]
+        #print('z1_Align: ', apexZ0)
+    
+        #for i in range(4):
+            #del self.patches[-1]                                                                                                  
+        #for i in range(34):
+            #del self.patches[-1]                                                                                                  
+        #for i in range(8):
+            #del self.patches[-4]                                                                                                  
+        
     def makePatches_ShadowQuilt_fromCenter(self, apexZ0 = 0, stop = 1, z_top = 0, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
