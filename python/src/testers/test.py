@@ -47,7 +47,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
         data = DataSet(env)
         if show_acceptance_of_cover:
-            plt.figure(figsize = (z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
+            plt.figure(figsize = (1.7*z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
         if uniform_N_points == False:
             data.importData(points)
         else:

@@ -1041,6 +1041,7 @@ class wedgeCover():
       #self.makePatches_Projective(leftRight=False)
       #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
 
+      fix42 = True
       apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
       while (apexZ0 > -self.env.trapezoid_edges[0]):
         z_top_min = -self.env.top_layer_lim
@@ -1067,6 +1068,7 @@ class wedgeCover():
             original_c = self.patches[-1].c_corner[1]
             original_d = self.patches[-1].d_corner[1]
             c_corner = original_c
+            repeat_patch = False
             #if (self.patches[-1].triangleAcceptance == True):
                 #original_c = self.patches[-1].b_corner[1]
             seed_apexZ0 = apexZ0
@@ -1097,7 +1099,7 @@ class wedgeCover():
                 #while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
                 
                 #while not((white_space_height < 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and (self.patches[-2].triangleAcceptance == False) :
-                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) :
+                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch):
                     print()
                     if (len(self.patches) > 2):
                         print('original c:', original_c, ' ', self.patches[-2].c_corner[1], '|| original d:', original_d, ' ', self.patches[-2].d_corner[1])
@@ -1128,7 +1130,16 @@ class wedgeCover():
                     previous_white_space_height = white_space_height
                     white_space_height = max(original_c - complementary_a, original_d - complementary_b)
                     print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1], ' new z_top_min: ', z_top_min)
-                    print('new white_space_height: ', white_space_height)
+                    print('new white_space_height: ', white_space_height)    
+                if (self.n_patches > 3) and fix42:
+                    if (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]):
+                        repeat_patch = True
+                        print (self.patches[-1].superpoints[self.env.num_layers-1].min, self.patches[-1].superpoints[self.env.num_layers-1].max, ' repeat_patch: ', repeat_patch)
+                        del self.patches[-1]
+                        self.n_patches -= 1
+                        current_z_top_index -= 1
+                        z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                        self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
             c_corner = self.patches[-1].c_corner[1]
             z_top_max = c_corner
             print('c_corner: ', c_corner)
@@ -1137,7 +1148,7 @@ class wedgeCover():
         apexZ0 = self.patches[-1].c_corner[0]
         print('z1_Align: ', apexZ0)
     
-      #for i in range(4):
+      #for i in range(1):
         #del self.patches[-1]                                                                                                  
       #for i in range(34):
         #del self.patches[-1]                                                                                                  
