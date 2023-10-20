@@ -19,7 +19,7 @@ ds.addBoundaryPoint()
 cov = wedgeCover(env, ds)
 #cov.makePatches_ShadowQuilt() 
 #cov.plot()
-wedge_test(lining = 'makePatches_ShadowQuilt_fromEdges',apexZ0=0,top_layer_cutoff=50, wedges=[106,108], z0_spacing=0.1, leftRightAlign=False, show_acceptance_of_cover=True, accept_cutoff=15)
+wedge_test(lining = 'makePatches_ShadowQuilt_fromEdges',apexZ0=0,top_layer_cutoff=50, wedges=[84,85], z0_spacing=0.1, leftRightAlign=False, show_acceptance_of_cover=True, accept_cutoff=15)
 #wedge_test(lining = 'makePatches_ShadowQuilt_fromCenter',apexZ0=0,top_layer_cutoff=50, wedges=[0, 10], ppl = 16, z0_spacing=0.1, leftRightAlign=False, show_acceptance_of_cover=True, accept_cutoff=15)
 
 #minimal_cover_binary_search(lining = 'makePatches_Projective_center', start='even', z0_spacing=0.5, ppl =16, z_top=50, z0_luminousRegion= 15, wedges=6400, accept=0.99, v = 'v3', savefig=False)

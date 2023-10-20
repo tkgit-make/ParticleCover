@@ -25,6 +25,9 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
 
     accept_cutoff = z0_luminousRegion    
     #create list for z values we're testing the acceptance of, number of covers, and PRF
+    showZimperfect = False
+    if (wedges[1]-wedges[0]) == 1:
+        showZimperfect = True
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
         z0_spacing = 0.01
@@ -35,9 +38,9 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         data_string = f'Uniform {uniform_N_points} points'
         wedges = [0, 1]
 
-    z0 = np.arange(-22, 22+z0_spacing, z0_spacing)
-    mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
-
+    zInnerLayer = np.arange(-22, 22+z0_spacing, z0_spacing)
+    mean_list = np.zeros(( wedges[1]-wedges[0], len(zInnerLayer)))
+    z0Imperfect = []
     #read wedgeData file and create environment
     all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
@@ -76,21 +79,21 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         sleep_time_between_patches = 0.0
         
         #these loops calculate line acceptance
-        for iz, z in enumerate(np.array(z0)):
+        for iz, zIn in enumerate(np.array(zInnerLayer)):
             
             if acceptance_method == "Analytic": 
                 
                 list_of_intersections = []
                 list_of_z0intersections = []
                 for patch in cover.patches: 
-                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
+                    list_of_segs = [pgram.crossSection(zIn) for pgram in patch.parallelograms]
                     overlap_of_superpoints = intersection(patch.env, list_of_segs, True) 
                     list_of_intersections.append(overlap_of_superpoints)
                     # convert to a z0 scan when parameter space is (z1,z5), cast shadow from z0 to layer5 of each superpoint 
                     list_of_segs_z0Scan = [
                         lineSegment(
-                            patch.straightLineProjectorFromLayerIJtoK(z,SuPoint.min,0,spLayer+1,patch.env.num_layers),
-                            patch.straightLineProjectorFromLayerIJtoK(z,SuPoint.max,0,spLayer+1,patch.env.num_layers),
+                            patch.straightLineProjectorFromLayerIJtoK(zIn,SuPoint.min,0,spLayer+1,patch.env.num_layers),
+                            patch.straightLineProjectorFromLayerIJtoK(zIn,SuPoint.max,0,spLayer+1,patch.env.num_layers),
                         ) for spLayer, SuPoint in enumerate(patch.superpoints)]
                     overlap_of_superpoints_z0Scan = intersection(patch.env, list_of_segs_z0Scan, False) 
                     list_of_z0intersections.append(overlap_of_superpoints_z0Scan)
@@ -103,7 +106,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                     z1Lim = cover.patches[-1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,z0_luminousRegion,env.num_layers,0,1)
                     plt.axline((z1Lim, -top_layer_cutoff), (env.trapezoid_edges[0], top_layer_cutoff),linewidth=1, color='black')
                     plt.axline((-z1Lim, top_layer_cutoff), (-env.trapezoid_edges[0], -top_layer_cutoff),linewidth=1, color='black')
-                    
+
                     colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "rosybrown", "tomato","olive", "deeppink"]
                     
                     col = 0
@@ -111,15 +114,24 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         #plt.xlim(-z0_luminousRegion,z0_luminousRegion)
                         plt.xlim(-env.trapezoid_edges[0],env.trapezoid_edges[0])
                         plt.ylim(-top_layer_cutoff, top_layer_cutoff)
-                        plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
+                        plt.plot([zIn, zIn], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
                         col += 1
                         time.sleep(sleep_time_between_patches)
 
                 total_measure = unionOfLineSegments(list_of_z0intersections)
                 percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
-                if (percentage_accepted < 1.0) and (abs(z) < z0_luminousRegion):
+                if (percentage_accepted < 1.0) and (abs(zIn) < z0_luminousRegion):
                     print('wedge: ', k, ' percentage_accepted: ', percentage_accepted, ' z0:', z)
-                
+                    z0Imperfect.append(z)
+
+                if showZimperfect and show_acceptance_of_cover:
+                    for zImperfect in z0Imperfect:
+                        z1Left = cover.patches[-1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,zImperfect,env.num_layers,0,1)
+                        z1Right = cover.patches[-1].straightLineProjectorFromLayerIJtoK(top_layer_cutoff,zImperfect,env.num_layers,0,1)
+                        z1Val = [z1Left,z1Right]
+                        zTopVal = [-top_layer_cutoff,top_layer_cutoff]
+                        plt.plot(z1Val, zTopVal, linewidth=0.01, color='lightgrey', alpha=0.3)
+                    
             elif acceptance_method == "MonteCarlo": 
                 percentage_accepted = 0 
                 
@@ -149,7 +161,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     if type(apexZ0) == float:
         ymin = 0.95
     elif type(apexZ0) == int:
-        ymin = 0.97
+        ymin = 0.99
     else:
         ymin = 0.95
 

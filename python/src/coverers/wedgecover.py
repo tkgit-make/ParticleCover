@@ -1107,19 +1107,36 @@ class wedgeCover():
                     current_z_top_index = self.get_index_from_z(self.env.num_layers-1, z_top_min)
                     print('current white_space_height: ', white_space_height)
                     print('counter: ',counter, ' counterUpshift: ', counterUpshift)
-                    print('orig ztop: ', current_z_top_index, 'orig z_top_min: ', z_top_min)
+                    print('orig_ztop: ', current_z_top_index, 'orig_z_top_min: ', z_top_min)
+                    current_z_i_index = tuple(self.get_index_from_z(
+                        layer,
+                        self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min,1,self.env.num_layers,layer+1)
+                        ) for layer in range(self.env.num_layers))
                     if (z_top_min == previous_z_top_min):
                         current_z_top_index += 1
+                        new_z_i_index = tuple(oldIndex+1 for oldIndex in current_z_i_index)
                     previous_z_top_min = z_top_min
                     if (white_space_height < 0):
                         counter +=1
                         current_z_top_index -= 1
+                        new_z_i_index = tuple(oldIndex-1 for oldIndex in current_z_i_index)
                     else:
                         counterUpshift += 1
                         current_z_top_index += 1
-                    print('new ztop: ', current_z_top_index, ' arrayLength: ', len(self.data.array[self.env.num_layers-1]))
+                        new_z_i_index = tuple(oldIndex+1 for oldIndex in current_z_i_index)
                     current_z_top_index = min(current_z_top_index,len(self.data.array[self.env.num_layers-1])-1)
+                    new_z_i_index = tuple(min(z_i_index,len(self.data.array[layer])-1) for layer, z_i_index in enumerate(new_z_i_index)) 
+                    new_z_i_index = tuple(max(z_i_index,0) for layer, z_i_index in enumerate(new_z_i_index))
+                    new_z_i = tuple(self.data.array[layer][new_z_i_index[layer]].z for layer in range(self.env.num_layers))
+                    new_z_i_atTop = tuple(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,new_z_i[layer],1,layer+1,self.env.num_layers) for layer in range(1,self.env.num_layers))
+                    layerWithSmallestShift = 1 + np.argmin(np.abs(np.array(new_z_i_atTop)-previous_z_top_min))
+                    for layer in range(self.env.num_layers-1):
+                        print (layer+1, ' new_z_i_atTop: ', new_z_i_atTop[layer], ' shift ztop: ', new_z_i_atTop[layer]-previous_z_top_min,
+                               ' layerWithSmallestShift: ', layerWithSmallestShift)
                     z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                    z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift
+                    print('new_def_z_top_min_diff:',z_top_min-self.data.array[self.env.num_layers-1][current_z_top_index].z)
+                    print('new ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min)
                     del self.patches[-1]
                     self.n_patches -= 1
                     self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
@@ -1139,6 +1156,7 @@ class wedgeCover():
                         self.n_patches -= 1
                         current_z_top_index -= 1
                         z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                        z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift    
                         self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
             c_corner = self.patches[-1].c_corner[1]
             z_top_max = c_corner
