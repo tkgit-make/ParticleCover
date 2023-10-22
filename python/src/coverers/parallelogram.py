@@ -7,7 +7,8 @@ class lineSegment():
         
         # the min and max z5 values that are accepted by 1 parallelogram
         
-        if min_z5_accepted > max_z5_accepted: 
+        if min_z5_accepted > max_z5_accepted:
+            print('min_z5_accepted:', min_z5_accepted, 'max_z5_accepted:',max_z5_accepted)
             raise Exception("The minimum z5 accepted is greater than the maximum z5 accepted.")
         
         self.min_z5_accepted = min_z5_accepted

@@ -30,7 +30,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         showZimperfect = True
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
-        z0_spacing = 0.01
+        z0_spacing = 0.02
     num_covers = []
     PRF = []
     data_string = f'{v} events'
@@ -115,24 +115,33 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
             if acceptance_method == "Analytic": 
                 
                 list_of_z0intersections = []
+                list_of_z0intersectionsCopy = []
                 for patch in cover.patches: 
                     # convert to a z0 scan when parameter space is (z1,z5), cast shadow from z0 to layer5 of each superpoint 
                     list_of_segs_z0Scan = [
                         lineSegment(
-                            patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.min,0,spLayer+1,patch.env.num_layers),
-                            patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.max,0,spLayer+1,patch.env.num_layers),
+                            min(patch.env.top_layer_lim,max(-patch.env.top_layer_lim,
+                                patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.min,0,spLayer+1,patch.env.num_layers))),
+                            max(-patch.env.top_layer_lim,min(patch.env.top_layer_lim,
+                                patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.max,0,spLayer+1,patch.env.num_layers))),
                         ) for spLayer, SuPoint in enumerate(patch.superpoints)]
                     overlap_of_superpoints_z0Scan = intersection(patch.env, list_of_segs_z0Scan, False) 
                     list_of_z0intersections.append(overlap_of_superpoints_z0Scan)
-                
+
+                list_of_z0intersectionsCopy = list_of_z0intersections
                 total_measure = unionOfLineSegments(list_of_z0intersections)
                 #print('total_measure:',total_measure)
                 percentage_accepted = 100.0*total_measure/(2.0 * patch.env.top_layer_lim)
                 if (percentage_accepted < 100.0) and (abs(z0) < z0_luminousRegion):
-                    #print('wedge: ', k, ' underEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
+                    print('wedge: ', k, ' underEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
                     z0Imperfect.append(z0)
-                if (percentage_accepted > 100.0003) and (abs(z0) < z0_luminousRegion):
-                    #print('wedge: ', k, ' overEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
+                    for seg in list_of_z0intersectionsCopy:
+                        print('segment:',seg.min_z5_accepted, seg.max_z5_accepted)
+                    for patch in cover.patches:
+                        if (overlap_of_superpoints_z0Scan.min_z5_accepted < overlap_of_superpoints_z0Scan.max_z5_accepted):
+                            print('overlap_of_superpoints_z0Scan:',overlap_of_superpoints_z0Scan.min_z5_accepted,overlap_of_superpoints_z0Scan.max_z5_accepted)
+                if (percentage_accepted > 100.0001) and (abs(z0) < z0_luminousRegion):
+                    print('wedge: ', k, ' overEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
                     z0OverEfficiency.append(z0)
 
                 if showZimperfect and show_acceptance_of_cover:

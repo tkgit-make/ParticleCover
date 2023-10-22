@@ -1135,6 +1135,8 @@ class wedgeCover():
                                ' layerWithSmallestShift: ', layerWithSmallestShift)
                     z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
                     z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift
+                    if (z_top_min-previous_z_top_min) == 0:
+                        z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
                     print('new_def_z_top_min_diff:',z_top_min-self.data.array[self.env.num_layers-1][current_z_top_index].z)
                     print('new ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min)
                     del self.patches[-1]
