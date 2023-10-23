@@ -30,7 +30,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         showZimperfect = True
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
-        z0_spacing = 0.05
+        z0_spacing = 0.1
     num_covers = []
     PRF = []
     data_string = f'{v} events'
@@ -132,7 +132,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 total_measure = unionOfLineSegments(list_of_z0intersections)
                 #print('total_measure:',total_measure)
                 percentage_accepted = 100.0*total_measure/(2.0 * patch.env.top_layer_lim)
-                if (percentage_accepted < 100.0) and (abs(z0) < z0_luminousRegion):
+                if (percentage_accepted < 90.0) and (abs(z0) < z0_luminousRegion):
                     print('wedge: ', k, ' underEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
                     z0Imperfect.append(z0)
                     for seg in list_of_z0intersectionsCopy:
@@ -200,7 +200,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     mask = np.abs(z0Array) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage non-Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(100.0-np.mean(mean_list[:, mask]), 3)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage non-Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round((100.0-np.mean(mean_list[:, mask]))*10000, 0)} ppm"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:

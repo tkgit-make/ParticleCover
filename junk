@@ -1,888 +1,1826 @@
-wedge:  3789
-top layer from  50.0001  to  8.78134  z_top_max:  50
-(11.9394, 50.0001)
+wedge:  2895
+top layer from  50.0001  to  18.1088  z_top_max:  50
+(10.6196, 50.0001)
 (22.0001, 50.0001)
-(11.9394, 17.836866666666666)
-(22.0001, 14.483300000000002)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  10.465033333333333
-z_top_min before: -50 superpoints[self.env.num_layers-1].min: 8.78134
-complementary:  (11.9394, 45.93673333333333)  for z_top_min: 8.78134
-complementary:  (22.0001, 42.583166666666656)
-complementary:  (11.9394, 8.78134)
-complementary:  (22.0001, 8.78134)
+(10.6196, 36.990399999999994)
+(22.0001, 24.966366666666666)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  4.026899999999998
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: 18.1088
+complementary:  (10.6196, 43.33893333333334)  for z_top_min: 18.1088
+complementary:  (22.0001, 38.47970000000001)
+complementary:  (10.6196, 18.1088)
+complementary:  (22.0001, 18.1088)
 
-complementary_a: 45.93673333333333   45.93673333333333  || complementary_b: 42.583166666666656   42.583166666666656
-current white_space_height:  -28.099866666666657
+complementary_a: 43.33893333333334   43.33893333333334  || complementary_b: 38.47970000000001   38.47970000000001
+current white_space_height:  -6.348533333333343
 counter:  0  counterUpshift:  0
-orig_ztop:  51 orig_z_top_min:  8.78134
-1  new_z_i_atTop:  -10.390759999999997  shift ztop:  -19.172099999999997  layerWithSmallestShift:  3
-2  new_z_i_atTop:  1.2416600000000013  shift ztop:  -7.539679999999999  layerWithSmallestShift:  3
-3  new_z_i_atTop:  7.287213333333334  shift ztop:  -1.4941266666666664  layerWithSmallestShift:  3
-4  new_z_i_atTop:  6.216  shift ztop:  -2.56534  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 1.0712133333333336
-new ztop_index:  50  new_z_i_index:  (48, 47, 39, 48, 50)  new_z_top_min:  7.287213333333334
-complementary_a: 44.772600000000004   44.772600000000004  || complementary_b: 41.41903333333333   41.41903333333333  new z_top_min:  7.287213333333334
-new white_space_height:  -26.93573333333333
+orig_ztop:  54 orig_z_top_min:  18.1088
+1  new_z_i_atTop:  5.665279999999997  shift_i_ztop:  -12.443520000000001  layerWithSmallestShift:  2
+2  new_z_i_atTop:  16.867199999999997  shift_i_ztop:  -1.2416000000000018  layerWithSmallestShift:  2
+3  new_z_i_atTop:  11.159333333333333  shift_i_ztop:  -6.949466666666666  layerWithSmallestShift:  2
+4  new_z_i_atTop:  15.9415  shift_i_ztop:  -2.167299999999999  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.9256999999999973
+new_ztop_index:  53  new_z_i_index:  (53, 49, 49, 54, 53)  new_z_top_min:  16.867199999999997  shift_ztop: -1.2416000000000018
+complementary_a: 43.33893333333334   43.33893333333334  || complementary_b: 38.47970000000001   38.47970000000001  new z_top_min:  16.867199999999997
+new white_space_height:  -6.348533333333343
 
-complementary_a: 44.772600000000004   44.772600000000004  || complementary_b: 41.41903333333333   41.41903333333333
-current white_space_height:  -26.93573333333333
+complementary_a: 43.33893333333334   43.33893333333334  || complementary_b: 38.47970000000001   38.47970000000001
+current white_space_height:  -6.348533333333343
 counter:  1  counterUpshift:  0
-orig_ztop:  50 orig_z_top_min:  7.287213333333334
-1  new_z_i_atTop:  -10.390759999999997  shift ztop:  -17.67797333333333  layerWithSmallestShift:  4
-2  new_z_i_atTop:  1.2416600000000013  shift ztop:  -6.0455533333333324  layerWithSmallestShift:  4
-3  new_z_i_atTop:  4.492493333333334  shift ztop:  -2.79472  layerWithSmallestShift:  4
-4  new_z_i_atTop:  5.61818  shift ztop:  -1.669033333333334  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  49  new_z_i_index:  (48, 47, 39, 47, 49)  new_z_top_min:  5.61818
-complementary_a: 42.74353333333333   42.74353333333333  || complementary_b: 39.389966666666666   39.389966666666666  new z_top_min:  5.61818
-new white_space_height:  -24.906666666666666
+orig_ztop:  53 orig_z_top_min:  16.867199999999997
+1  new_z_i_atTop:  5.665279999999997  shift_i_ztop:  -11.20192  layerWithSmallestShift:  2
+2  new_z_i_atTop:  14.8334  shift_i_ztop:  -2.0337999999999976  layerWithSmallestShift:  2
+3  new_z_i_atTop:  11.159333333333333  shift_i_ztop:  -5.707866666666664  layerWithSmallestShift:  2
+4  new_z_i_atTop:  13.1372  shift_i_ztop:  -3.729999999999997  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 1.6961999999999993
+new_ztop_index:  52  new_z_i_index:  (53, 49, 48, 54, 52)  new_z_top_min:  14.8334  shift_ztop: -2.0337999999999976
+complementary_a: 42.29013333333334   42.29013333333334  || complementary_b: 38.47970000000001   38.47970000000001  new z_top_min:  14.8334
+new white_space_height:  -5.299733333333343
 
-complementary_a: 42.74353333333333   42.74353333333333  || complementary_b: 39.389966666666666   39.389966666666666
-current white_space_height:  -24.906666666666666
+complementary_a: 42.29013333333334   42.29013333333334  || complementary_b: 38.47970000000001   38.47970000000001
+current white_space_height:  -5.299733333333343
 counter:  2  counterUpshift:  0
-orig_ztop:  49 orig_z_top_min:  5.61818
-1  new_z_i_atTop:  -10.390759999999997  shift ztop:  -16.008939999999996  layerWithSmallestShift:  2
-2  new_z_i_atTop:  1.2416600000000013  shift ztop:  -4.376519999999998  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -3.842150666666665  shift ztop:  -9.460330666666664  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -2.4440299999999997  shift ztop:  -8.06221  layerWithSmallestShift:  2
-new_def_z_top_min_diff: 3.6856900000000015
-new ztop_index:  48  new_z_i_index:  (48, 47, 39, 46, 48)  new_z_top_min:  1.2416600000000013
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846  new z_top_min:  1.2416600000000013
-new white_space_height:  -18.00913333333333
+orig_ztop:  53 orig_z_top_min:  14.8334
+1  new_z_i_atTop:  5.665279999999997  shift_i_ztop:  -9.168120000000002  layerWithSmallestShift:  4
+2  new_z_i_atTop:  12.0176  shift_i_ztop:  -2.8157999999999994  layerWithSmallestShift:  4
+3  new_z_i_atTop:  11.159333333333333  shift_i_ztop:  -3.6740666666666666  layerWithSmallestShift:  4
+4  new_z_i_atTop:  13.1372  shift_i_ztop:  -1.6961999999999993  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  52  new_z_i_index:  (53, 49, 47, 54, 52)  new_z_top_min:  13.1372  shift_ztop: -1.6961999999999993
+complementary_a: 42.29013333333334   42.29013333333334  || complementary_b: 38.47970000000001   38.47970000000001  new z_top_min:  13.1372
+new white_space_height:  -5.299733333333343
 
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846
-current white_space_height:  -18.00913333333333
+complementary_a: 42.29013333333334   42.29013333333334  || complementary_b: 38.47970000000001   38.47970000000001
+current white_space_height:  -5.299733333333343
 counter:  3  counterUpshift:  0
-orig_ztop:  48 orig_z_top_min:  1.2416600000000013
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -14.491259999999999  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -7.456219999999998  shift ztop:  -8.69788  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -3.842150666666665  shift ztop:  -5.0838106666666665  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -3.6826299999999996  shift ztop:  -4.924290000000001  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 4.440892098500626e-16
-new ztop_index:  47  new_z_i_index:  (48, 46, 38, 46, 47)  new_z_top_min:  -3.6826299999999996
-complementary_a: 34.5535   34.5535  || complementary_b: 34.5535   34.5535  new z_top_min:  -3.6826299999999996
-new white_space_height:  -16.716633333333334
+orig_ztop:  52 orig_z_top_min:  13.1372
+1  new_z_i_atTop:  3.616360000000002  shift_i_ztop:  -9.520839999999998  layerWithSmallestShift:  4
+2  new_z_i_atTop:  8.75936  shift_i_ztop:  -4.377840000000001  layerWithSmallestShift:  4
+3  new_z_i_atTop:  9.363906666666667  shift_i_ztop:  -3.773293333333333  layerWithSmallestShift:  4
+4  new_z_i_atTop:  10.264  shift_i_ztop:  -2.8732000000000006  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  51  new_z_i_index:  (53, 48, 46, 53, 51)  new_z_top_min:  10.264  shift_ztop: -2.8732000000000006
+complementary_a: 40.74173333333333   40.74173333333333  || complementary_b: 36.948233333333334   36.948233333333334  new z_top_min:  10.264
+new white_space_height:  -3.751333333333335
 
-complementary_a: 34.5535   34.5535  || complementary_b: 34.5535   34.5535
-current white_space_height:  -16.716633333333334
+complementary_a: 40.74173333333333   40.74173333333333  || complementary_b: 36.948233333333334   36.948233333333334
+current white_space_height:  -3.751333333333335
 counter:  4  counterUpshift:  0
-orig_ztop:  47 orig_z_top_min:  -3.6826299999999996
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -9.566969999999998  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -17.439829999999997  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -4.580478666666664  shift ztop:  -0.8978486666666647  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -6.015969999999999  shift ztop:  -2.3333399999999997  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 1.435491333333336
-new ztop_index:  46  new_z_i_index:  (48, 46, 37, 45, 46)  new_z_top_min:  -4.580478666666664
-complementary_a: 33.6174   33.6174  || complementary_b: 33.1013   33.1013  new z_top_min:  -4.580478666666664
-new white_space_height:  -15.780533333333338
+orig_ztop:  51 orig_z_top_min:  10.264
+1  new_z_i_atTop:  3.616360000000002  shift_i_ztop:  -6.647639999999997  layerWithSmallestShift:  3
+2  new_z_i_atTop:  3.6440800000000007  shift_i_ztop:  -6.619919999999999  layerWithSmallestShift:  3
+3  new_z_i_atTop:  9.363906666666667  shift_i_ztop:  -0.9000933333333325  layerWithSmallestShift:  3
+4  new_z_i_atTop:  7.19303  shift_i_ztop:  -3.070969999999999  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.1708766666666666
+new_ztop_index:  50  new_z_i_index:  (53, 48, 45, 53, 50)  new_z_top_min:  9.363906666666667  shift_ztop: -0.9000933333333325
+complementary_a: 37.3849   37.3849  || complementary_b: 36.948233333333334   36.948233333333334  new z_top_min:  9.363906666666667
+new white_space_height:  -0.39450000000000784
 
-complementary_a: 33.6174   33.6174  || complementary_b: 33.1013   33.1013
-current white_space_height:  -15.780533333333338
+complementary_a: 37.3849   37.3849  || complementary_b: 36.948233333333334   36.948233333333334
+current white_space_height:  -0.39450000000000784
 counter:  5  counterUpshift:  0
-orig_ztop:  47 orig_z_top_min:  -4.580478666666664
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -8.669121333333333  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -16.541981333333332  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -6.98704  shift ztop:  -2.406561333333336  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -6.015969999999999  shift ztop:  -1.435491333333335  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 8.881784197001252e-16
-new ztop_index:  46  new_z_i_index:  (48, 46, 37, 44, 46)  new_z_top_min:  -6.015969999999999
-complementary_a: 32.495400000000004   32.495400000000004  || complementary_b: 29.141833333333334   29.141833333333334  new z_top_min:  -6.015969999999999
-new white_space_height:  -14.658533333333333
+orig_ztop:  51 orig_z_top_min:  9.363906666666667
+1  new_z_i_atTop:  3.616360000000002  shift_i_ztop:  -5.747546666666665  layerWithSmallestShift:  4
+2  new_z_i_atTop:  3.6440800000000007  shift_i_ztop:  -5.719826666666666  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -1.2517733333333325  shift_i_ztop:  -10.61568  layerWithSmallestShift:  4
+4  new_z_i_atTop:  7.19303  shift_i_ztop:  -2.1708766666666666  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  50  new_z_i_index:  (53, 48, 45, 52, 50)  new_z_top_min:  7.19303  shift_ztop: -2.1708766666666666
+complementary_a: 37.3849   37.3849  || complementary_b: 36.867900000000006   36.867900000000006  new z_top_min:  7.19303
+new white_space_height:  -0.39450000000000784
 
-complementary_a: 32.495400000000004   32.495400000000004  || complementary_b: 29.141833333333334   29.141833333333334
-current white_space_height:  -14.658533333333333
+complementary_a: 37.3849   37.3849  || complementary_b: 36.867900000000006   36.867900000000006
+current white_space_height:  -0.39450000000000784
 counter:  6  counterUpshift:  0
-orig_ztop:  46 orig_z_top_min:  -6.015969999999999
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -7.233629999999998  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -15.106489999999997  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -9.270626666666665  shift ztop:  -3.2546566666666656  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -6.164180000000002  shift ztop:  -0.1482100000000024  layerWithSmallestShift:  4
-new_def_z_top_min_diff: -1.7763568394002505e-15
-new ztop_index:  45  new_z_i_index:  (48, 46, 37, 43, 45)  new_z_top_min:  -6.164180000000002
-complementary_a: 26.139   26.139  || complementary_b: 26.139   26.139  new z_top_min:  -6.164180000000002
-new white_space_height:  -8.302133333333334
+orig_ztop:  50 orig_z_top_min:  7.19303
+1  new_z_i_atTop:  3.616360000000002  shift_i_ztop:  -3.5766699999999982  layerWithSmallestShift:  4
+2  new_z_i_atTop:  3.6440800000000007  shift_i_ztop:  -3.5489499999999996  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -1.2517733333333325  shift_i_ztop:  -8.444803333333333  layerWithSmallestShift:  4
+4  new_z_i_atTop:  5.73504  shift_i_ztop:  -1.4579900000000006  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  49  new_z_i_index:  (53, 48, 45, 52, 49)  new_z_top_min:  5.73504  shift_ztop: -1.4579900000000006
+complementary_a: 36.3666   36.3666  || complementary_b: 36.3666   36.3666  new z_top_min:  5.73504
+new white_space_height:  0.6237999999999957
 
-complementary_a: 26.139   26.139  || complementary_b: 26.139   26.139
-current white_space_height:  -8.302133333333334
+complementary_a: 36.3666   36.3666  || complementary_b: 36.3666   36.3666
+current white_space_height:  0.6237999999999957
 counter:  7  counterUpshift:  0
-orig_ztop:  45 orig_z_top_min:  -6.164180000000002
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -7.085419999999996  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -14.958279999999995  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -9.270626666666665  shift ztop:  -3.1064466666666632  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -7.6634899999999995  shift ztop:  -1.4993099999999977  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 8.881784197001252e-16
-new ztop_index:  44  new_z_i_index:  (48, 46, 37, 43, 44)  new_z_top_min:  -7.6634899999999995
-complementary_a: 25.4242   25.4242  || complementary_b: 25.4242   25.4242  new z_top_min:  -7.6634899999999995
-new white_space_height:  -7.5873333333333335
-
-complementary_a: 25.4242   25.4242  || complementary_b: 25.4242   25.4242
-current white_space_height:  -7.5873333333333335
-counter:  8  counterUpshift:  0
-orig_ztop:  44 orig_z_top_min:  -7.6634899999999995
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -5.586109999999998  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -13.458969999999997  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -9.270626666666665  shift ztop:  -1.6071366666666655  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -11.1736  shift ztop:  -3.510110000000001  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 1.9029733333333354
-new ztop_index:  43  new_z_i_index:  (48, 46, 37, 43, 43)  new_z_top_min:  -9.270626666666665
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979  new z_top_min:  -9.270626666666665
-new white_space_height:  -6.061033333333334
-
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979
-current white_space_height:  -6.061033333333334
-counter:  9  counterUpshift:  0
-orig_ztop:  44 orig_z_top_min:  -9.270626666666665
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -3.9789733333333324  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -11.851833333333332  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -13.664706666666667  shift ztop:  -4.394080000000002  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -11.1736  shift ztop:  -1.9029733333333354  layerWithSmallestShift:  4
+orig_ztop:  49 orig_z_top_min:  5.73504
+1  new_z_i_atTop:  23.6288  shift_i_ztop:  17.89376  layerWithSmallestShift:  4
+2  new_z_i_atTop:  8.75936  shift_i_ztop:  3.0243199999999995  layerWithSmallestShift:  4
+3  new_z_i_atTop:  11.159333333333333  shift_i_ztop:  5.424293333333333  layerWithSmallestShift:  4
+4  new_z_i_atTop:  7.19303  shift_i_ztop:  1.4579900000000006  layerWithSmallestShift:  4
 new_def_z_top_min_diff: 0.0
-new ztop_index:  43  new_z_i_index:  (48, 46, 37, 42, 43)  new_z_top_min:  -11.1736
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979  new z_top_min:  -11.1736
-new white_space_height:  -6.061033333333334
+new_ztop_index:  50  new_z_i_index:  (55, 50, 46, 54, 50)  new_z_top_min:  7.19303  shift_ztop: 1.4579900000000006
+complementary_a: 37.3849   37.3849  || complementary_b: 36.867900000000006   36.867900000000006  new z_top_min:  7.19303
+new white_space_height:  -0.39450000000000784
+c_corner:  7.19303
+top layer from  7.19303  to  -27.7212  z_top_max:  7.19303
+(10.6196, 7.19303)
+(22.0001, 7.19303)
+(10.6196, -25.686)
+(22.0001, -27.7212)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  19.695999999999998
+c_corner:  -25.686
+z1_Align:  10.6196
+top layer from  50.0001  to  18.1088  z_top_max:  50
+(0.362737, 50.0001)
+(10.6196, 50.0001)
+(0.362737, 32.178821)
+(10.6196, 28.75986666666666)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -7.591284000000002
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: 18.1088
+complementary:  (0.362737, 45.70908766666667)  for z_top_min: 18.1088
+complementary:  (10.6196, 42.29013333333334)
+complementary:  (0.362737, 18.1088)
+complementary:  (10.6196, 18.1088)
 
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979
-current white_space_height:  -6.061033333333334
-counter:  10  counterUpshift:  0
-orig_ztop:  43 orig_z_top_min:  -11.1736
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  -2.075999999999997  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -9.948859999999996  layerWithSmallestShift:  1
-3  new_z_i_atTop:  -13.664706666666667  shift ztop:  -2.491106666666667  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -15.709499999999998  shift ztop:  -4.535899999999998  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 2.459900000000003
-new ztop_index:  42  new_z_i_index:  (48, 46, 37, 42, 42)  new_z_top_min:  -13.249599999999997
-complementary_a: 20.9763   20.9763  || complementary_b: 20.9763   20.9763  new z_top_min:  -13.249599999999997
-new white_space_height:  -3.139433333333333
-
-complementary_a: 20.9763   20.9763  || complementary_b: 20.9763   20.9763
-current white_space_height:  -3.139433333333333
-counter:  11  counterUpshift:  0
-orig_ztop:  43 orig_z_top_min:  -13.249599999999997
-1  new_z_i_atTop:  -18.383919999999996  shift ztop:  -5.134319999999999  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -21.122459999999997  shift ztop:  -7.872859999999999  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -19.524866666666664  shift ztop:  -6.275266666666667  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -15.709499999999998  shift ztop:  -2.459900000000001  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 1.7763568394002505e-15
-new ztop_index:  42  new_z_i_index:  (48, 45, 37, 41, 42)  new_z_top_min:  -15.709499999999998
-complementary_a: 20.0702   20.0702  || complementary_b: 16.716633333333334   16.716633333333334  new z_top_min:  -15.709499999999998
-new white_space_height:  -2.2333333333333325
-
-complementary_a: 20.0702   20.0702  || complementary_b: 16.716633333333334   16.716633333333334
-current white_space_height:  -2.2333333333333325
-counter:  12  counterUpshift:  0
-orig_ztop:  42 orig_z_top_min:  -15.709499999999998
-1  new_z_i_atTop:  -18.383919999999996  shift ztop:  -2.674419999999998  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -26.348979999999997  shift ztop:  -10.639479999999999  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -19.524866666666664  shift ztop:  -3.815366666666666  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -15.8309  shift ztop:  -0.12140000000000128  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  41  new_z_i_index:  (48, 45, 36, 41, 41)  new_z_top_min:  -15.8309
-complementary_a: 13.9647   13.9647  || complementary_b: 13.9647   13.9647  new z_top_min:  -15.8309
-new white_space_height:  3.872166666666665
-
-complementary_a: 13.9647   13.9647  || complementary_b: 13.9647   13.9647
-current white_space_height:  3.872166666666665
-counter:  13  counterUpshift:  0
-orig_ztop:  41 orig_z_top_min:  -15.8309
-1  new_z_i_atTop:  -13.249599999999997  shift ztop:  2.5813000000000024  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -7.456219999999998  shift ztop:  8.374680000000001  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -9.270626666666665  shift ztop:  6.560273333333335  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -15.709499999999998  shift ztop:  0.12140000000000128  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 1.7763568394002505e-15
-new ztop_index:  42  new_z_i_index:  (50, 46, 38, 43, 42)  new_z_top_min:  -15.709499999999998
-complementary_a: 20.0702   20.0702  || complementary_b: 16.716633333333334   16.716633333333334  new z_top_min:  -15.709499999999998
-new white_space_height:  -2.2333333333333325
-c_corner:  -15.709499999999998
-z1_Align:  11.9394
-top layer from  50.0001  to  8.78134  z_top_max:  50
-(-0.524461, 50.0001)
-(11.9394, 50.0001)
-(-0.524461, 20.415353666666668)
-(11.9394, 16.260733333333334)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -5.759414666666665
-z_top_min before: -50 superpoints[self.env.num_layers-1].min: 8.78134
-complementary:  (-0.524461, 46.89815366666666)  for z_top_min: 8.78134
-complementary:  (11.9394, 42.74353333333333)
-complementary:  (-0.524461, 8.78134)
-complementary:  (11.9394, 8.78134)
-
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 46.89815366666666   46.89815366666666  || complementary_b: 42.74353333333333   42.74353333333333
-current white_space_height:  -26.48279999999999
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 45.70908766666667   45.70908766666667  || complementary_b: 42.29013333333334   42.29013333333334
+current white_space_height:  -13.53026666666667
 counter:  0  counterUpshift:  0
-orig_ztop:  51 orig_z_top_min:  8.78134
-1  new_z_i_atTop:  4.744047  shift ztop:  -4.037293  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -8.658599  shift ztop:  -17.439939000000003  layerWithSmallestShift:  4
-3  new_z_i_atTop:  0.31246966666666665  shift ztop:  -8.468870333333333  layerWithSmallestShift:  4
-4  new_z_i_atTop:  6.216  shift ztop:  -2.56534  layerWithSmallestShift:  4
+orig_ztop:  54 orig_z_top_min:  18.1088
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -19.845771  layerWithSmallestShift:  4
+2  new_z_i_atTop:  13.900943  shift_i_ztop:  -4.207856999999999  layerWithSmallestShift:  4
+3  new_z_i_atTop:  14.578287666666666  shift_i_ztop:  -3.5305123333333324  layerWithSmallestShift:  4
+4  new_z_i_atTop:  15.9415  shift_i_ztop:  -2.167299999999999  layerWithSmallestShift:  4
 new_def_z_top_min_diff: 0.0
-new ztop_index:  50  new_z_i_index:  (33, 41, 37, 46, 50)  new_z_top_min:  6.216
-complementary_a: 44.66615366666666   44.66615366666666  || complementary_b: 40.51153333333333   40.51153333333333  new z_top_min:  6.216
-new white_space_height:  -24.25079999999999
+new_ztop_index:  53  new_z_i_index:  (38, 41, 45, 54, 53)  new_z_top_min:  15.9415  shift_ztop: -2.167299999999999
+complementary_a: 45.70908766666667   45.70908766666667  || complementary_b: 42.29013333333334   42.29013333333334  new z_top_min:  15.9415
+new white_space_height:  -13.53026666666667
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 44.66615366666666   44.66615366666666  || complementary_b: 40.51153333333333   40.51153333333333
-current white_space_height:  -24.25079999999999
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 45.70908766666667   45.70908766666667  || complementary_b: 42.29013333333334   42.29013333333334
+current white_space_height:  -13.53026666666667
 counter:  1  counterUpshift:  0
-orig_ztop:  50 orig_z_top_min:  6.216
-1  new_z_i_atTop:  4.744047  shift ztop:  -1.471953  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -8.658599  shift ztop:  -14.874599  layerWithSmallestShift:  4
-3  new_z_i_atTop:  0.31246966666666665  shift ztop:  -5.903530333333333  layerWithSmallestShift:  4
-4  new_z_i_atTop:  5.61818  shift ztop:  -0.5978200000000005  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  49  new_z_i_index:  (33, 41, 37, 46, 49)  new_z_top_min:  5.61818
-complementary_a: 44.66615366666666   44.66615366666666  || complementary_b: 40.51153333333333   40.51153333333333  new z_top_min:  5.61818
-new white_space_height:  -24.25079999999999
+orig_ztop:  53 orig_z_top_min:  15.9415
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -17.678471  layerWithSmallestShift:  2
+2  new_z_i_atTop:  13.670103  shift_i_ztop:  -2.2713970000000003  layerWithSmallestShift:  2
+3  new_z_i_atTop:  12.782861  shift_i_ztop:  -3.158638999999999  layerWithSmallestShift:  2
+4  new_z_i_atTop:  13.1372  shift_i_ztop:  -2.8042999999999996  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.5329029999999992
+new_ztop_index:  52  new_z_i_index:  (38, 41, 44, 53, 52)  new_z_top_min:  13.670103  shift_ztop: -2.2713970000000003
+complementary_a: 44.16068766666666   44.16068766666666  || complementary_b: 40.74173333333333   40.74173333333333  new z_top_min:  13.670103
+new white_space_height:  -11.981866666666662
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 44.66615366666666   44.66615366666666  || complementary_b: 40.51153333333333   40.51153333333333
-current white_space_height:  -24.25079999999999
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 44.16068766666666   44.16068766666666  || complementary_b: 40.74173333333333   40.74173333333333
+current white_space_height:  -11.981866666666662
 counter:  2  counterUpshift:  0
-orig_ztop:  49 orig_z_top_min:  5.61818
-1  new_z_i_atTop:  4.744047  shift ztop:  -0.8741329999999996  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -8.658599  shift ztop:  -14.276779000000001  layerWithSmallestShift:  1
-3  new_z_i_atTop:  0.31246966666666665  shift ztop:  -5.305710333333333  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -2.44403  shift ztop:  -8.06221  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 7.188077
-new ztop_index:  48  new_z_i_index:  (33, 41, 37, 46, 48)  new_z_top_min:  4.744047
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846  new z_top_min:  4.744047
-new white_space_height:  -15.430646333333328
+orig_ztop:  52 orig_z_top_min:  13.670103
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -15.407073999999998  layerWithSmallestShift:  4
+2  new_z_i_atTop:  6.131083  shift_i_ztop:  -7.539019999999999  layerWithSmallestShift:  4
+3  new_z_i_atTop:  2.1671810000000002  shift_i_ztop:  -11.502921999999998  layerWithSmallestShift:  4
+4  new_z_i_atTop:  10.264  shift_i_ztop:  -3.406103  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  51  new_z_i_index:  (38, 41, 43, 52, 51)  new_z_top_min:  10.264  shift_ztop: -3.406103
+complementary_a: 41.3843   41.3843  || complementary_b: 40.72573333333333   40.72573333333333  new z_top_min:  10.264
+new white_space_height:  -9.205479000000004
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846
-current white_space_height:  -15.430646333333328
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 41.3843   41.3843  || complementary_b: 40.72573333333333   40.72573333333333
+current white_space_height:  -9.205479000000004
 counter:  3  counterUpshift:  0
-orig_ztop:  49 orig_z_top_min:  4.744047
-1  new_z_i_atTop:  -6.052537  shift ztop:  -10.796584  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -8.658599  shift ztop:  -13.402646  layerWithSmallestShift:  3
-3  new_z_i_atTop:  0.31246966666666665  shift ztop:  -4.431577333333333  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -2.44403  shift ztop:  -7.188077  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 2.7564996666666666
-new ztop_index:  48  new_z_i_index:  (33, 40, 37, 46, 48)  new_z_top_min:  0.31246966666666665
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846  new z_top_min:  0.31246966666666665
-new white_space_height:  -15.430646333333328
+orig_ztop:  51 orig_z_top_min:  10.264
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -12.000971  layerWithSmallestShift:  4
+2  new_z_i_atTop:  6.131083  shift_i_ztop:  -4.132916999999999  layerWithSmallestShift:  4
+3  new_z_i_atTop:  2.1671810000000002  shift_i_ztop:  -8.096819  layerWithSmallestShift:  4
+4  new_z_i_atTop:  7.19303  shift_i_ztop:  -3.070969999999999  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  50  new_z_i_index:  (38, 41, 43, 52, 50)  new_z_top_min:  7.19303  shift_ztop: -3.070969999999999
+complementary_a: 37.3849   37.3849  || complementary_b: 37.3849   37.3849  new z_top_min:  7.19303
+new white_space_height:  -5.206079000000003
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846
-current white_space_height:  -15.430646333333328
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 37.3849   37.3849  || complementary_b: 37.3849   37.3849
+current white_space_height:  -5.206079000000003
 counter:  4  counterUpshift:  0
-orig_ztop:  48 orig_z_top_min:  0.31246966666666665
-1  new_z_i_atTop:  -6.052537  shift ztop:  -6.365006666666667  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -8.658599  shift ztop:  -8.971068666666667  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -0.42585833333333334  shift ztop:  -0.738328  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -3.68263  shift ztop:  -3.9950996666666665  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 3.256771666666667
-new ztop_index:  47  new_z_i_index:  (33, 40, 37, 45, 47)  new_z_top_min:  -0.42585833333333334
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846  new z_top_min:  -0.42585833333333334
-new white_space_height:  -15.430646333333328
+orig_ztop:  50 orig_z_top_min:  7.19303
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -8.930001  layerWithSmallestShift:  4
+2  new_z_i_atTop:  4.889543  shift_i_ztop:  -2.3034870000000005  layerWithSmallestShift:  4
+3  new_z_i_atTop:  1.8011676666666663  shift_i_ztop:  -5.391862333333334  layerWithSmallestShift:  4
+4  new_z_i_atTop:  5.73504  shift_i_ztop:  -1.4579900000000006  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  49  new_z_i_index:  (38, 41, 42, 51, 49)  new_z_top_min:  5.73504  shift_ztop: -1.4579900000000006
+complementary_a: 36.3666   36.3666  || complementary_b: 36.3666   36.3666  new z_top_min:  5.73504
+new white_space_height:  -4.187778999999999
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846
-current white_space_height:  -15.430646333333328
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 36.3666   36.3666  || complementary_b: 36.3666   36.3666
+current white_space_height:  -4.187778999999999
 counter:  5  counterUpshift:  0
-orig_ztop:  48 orig_z_top_min:  -0.42585833333333334
-1  new_z_i_atTop:  -6.052537  shift ztop:  -5.626678666666667  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -8.658599  shift ztop:  -8.232740666666666  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -2.8324196666666666  shift ztop:  -2.4065613333333333  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -3.68263  shift ztop:  -3.256771666666667  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 0.8502103333333335
-new ztop_index:  47  new_z_i_index:  (33, 40, 37, 44, 47)  new_z_top_min:  -2.8324196666666666
-complementary_a: 34.5535   34.5535  || complementary_b: 32.495400000000004   32.495400000000004  new z_top_min:  -2.8324196666666666
-new white_space_height:  -14.138146333333331
+orig_ztop:  49 orig_z_top_min:  5.73504
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -7.472010999999999  layerWithSmallestShift:  2
+2  new_z_i_atTop:  4.889543  shift_i_ztop:  -0.8454969999999999  layerWithSmallestShift:  2
+3  new_z_i_atTop:  1.8011676666666663  shift_i_ztop:  -3.9338723333333334  layerWithSmallestShift:  2
+4  new_z_i_atTop:  4.25228  shift_i_ztop:  -1.4827599999999999  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.6372629999999999
+new_ztop_index:  48  new_z_i_index:  (38, 41, 42, 51, 48)  new_z_top_min:  4.889543  shift_ztop: -0.8454969999999999
+complementary_a: 34.8552   34.8552  || complementary_b: 34.8552   34.8552  new z_top_min:  4.889543
+new white_space_height:  -2.6763790000000043
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 34.5535   34.5535  || complementary_b: 32.495400000000004   32.495400000000004
-current white_space_height:  -14.138146333333331
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 34.8552   34.8552  || complementary_b: 34.8552   34.8552
+current white_space_height:  -2.6763790000000043
 counter:  6  counterUpshift:  0
-orig_ztop:  48 orig_z_top_min:  -2.8324196666666666
-1  new_z_i_atTop:  -14.799577  shift ztop:  -11.967157333333333  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  -11.052699333333335  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -5.116006333333332  shift ztop:  -2.2835866666666655  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -3.68263  shift ztop:  -0.8502103333333335  layerWithSmallestShift:  4
+orig_ztop:  48 orig_z_top_min:  4.889543
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -6.626513999999999  layerWithSmallestShift:  4
+2  new_z_i_atTop:  3.751323  shift_i_ztop:  -1.1382199999999996  layerWithSmallestShift:  4
+3  new_z_i_atTop:  1.8011676666666663  shift_i_ztop:  -3.0883753333333335  layerWithSmallestShift:  4
+4  new_z_i_atTop:  4.18701  shift_i_ztop:  -0.7025329999999999  layerWithSmallestShift:  4
 new_def_z_top_min_diff: 0.0
-new ztop_index:  47  new_z_i_index:  (33, 39, 36, 43, 47)  new_z_top_min:  -3.68263
-complementary_a: 34.5535   34.5535  || complementary_b: 31.129133333333336   31.129133333333336  new z_top_min:  -3.68263
-new white_space_height:  -14.138146333333331
+new_ztop_index:  47  new_z_i_index:  (38, 41, 41, 51, 47)  new_z_top_min:  4.18701  shift_ztop: -0.7025329999999999
+complementary_a: 33.62   33.62  || complementary_b: 33.62   33.62  new z_top_min:  4.18701
+new white_space_height:  -1.4411789999999982
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 34.5535   34.5535  || complementary_b: 31.129133333333336   31.129133333333336
-current white_space_height:  -14.138146333333331
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 33.62   33.62  || complementary_b: 33.62   33.62
+current white_space_height:  -1.4411789999999982
 counter:  7  counterUpshift:  0
-orig_ztop:  47 orig_z_top_min:  -3.68263
-1  new_z_i_atTop:  -14.799577  shift ztop:  -11.116947  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  -10.202489000000002  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -5.116006333333332  shift ztop:  -1.433376333333332  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -6.01597  shift ztop:  -2.33334  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 0.8999636666666682
-new ztop_index:  46  new_z_i_index:  (33, 39, 36, 43, 46)  new_z_top_min:  -5.116006333333332
-complementary_a: 33.6174   33.6174  || complementary_b: 31.129133333333336   31.129133333333336  new z_top_min:  -5.116006333333332
-new white_space_height:  -13.202046333333335
+orig_ztop:  47 orig_z_top_min:  4.18701
+1  new_z_i_atTop:  -1.7369709999999996  shift_i_ztop:  -5.9239809999999995  layerWithSmallestShift:  2
+2  new_z_i_atTop:  2.368723  shift_i_ztop:  -1.8182869999999998  layerWithSmallestShift:  2
+3  new_z_i_atTop:  1.8011676666666663  shift_i_ztop:  -2.3858423333333336  layerWithSmallestShift:  2
+4  new_z_i_atTop:  1.95336  shift_i_ztop:  -2.23365  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.41536300000000015
+new_ztop_index:  46  new_z_i_index:  (38, 41, 40, 51, 46)  new_z_top_min:  2.368723  shift_ztop: -1.8182869999999998
+complementary_a: 32.5911   32.5911  || complementary_b: 32.5911   32.5911  new z_top_min:  2.368723
+new white_space_height:  -0.41227899999999806
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 33.6174   33.6174  || complementary_b: 31.129133333333336   31.129133333333336
-current white_space_height:  -13.202046333333335
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 32.5911   32.5911  || complementary_b: 32.5911   32.5911
+current white_space_height:  -0.41227899999999806
 counter:  8  counterUpshift:  0
-orig_ztop:  46 orig_z_top_min:  -5.116006333333332
-1  new_z_i_atTop:  -14.799577  shift ztop:  -9.683570666666668  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  -8.769112666666668  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -9.510086333333334  shift ztop:  -4.3940800000000015  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -6.16418  shift ztop:  -1.048173666666668  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  45  new_z_i_index:  (33, 39, 36, 42, 45)  new_z_top_min:  -6.16418
-complementary_a: 26.139   26.139  || complementary_b: 26.139   26.139  new z_top_min:  -6.16418
-new white_space_height:  -5.723646333333331
+orig_ztop:  46 orig_z_top_min:  2.368723
+1  new_z_i_atTop:  -4.575431  shift_i_ztop:  -6.944154  layerWithSmallestShift:  3
+2  new_z_i_atTop:  1.750683  shift_i_ztop:  -0.6180400000000001  layerWithSmallestShift:  3
+3  new_z_i_atTop:  1.8011676666666663  shift_i_ztop:  -0.5675553333333339  layerWithSmallestShift:  3
+4  new_z_i_atTop:  1.32333  shift_i_ztop:  -1.0453930000000002  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.4778376666666664
+new_ztop_index:  45  new_z_i_index:  (38, 40, 39, 51, 45)  new_z_top_min:  1.8011676666666663  shift_ztop: -0.5675553333333339
+complementary_a: 31.4402   31.4402  || complementary_b: 31.440199999999997   31.440199999999997  new z_top_min:  1.8011676666666663
+new white_space_height:  0.7386209999999984
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 26.139   26.139  || complementary_b: 26.139   26.139
-current white_space_height:  -5.723646333333331
+original c: 32.178821   32.178821 || original d: 28.75986666666666   28.75986666666666
+complementary_a: 31.4402   31.4402  || complementary_b: 31.440199999999997   31.440199999999997
+current white_space_height:  0.7386209999999984
 counter:  9  counterUpshift:  0
-orig_ztop:  45 orig_z_top_min:  -6.16418
-1  new_z_i_atTop:  -14.799577  shift ztop:  -8.635397  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  -7.720939000000001  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -9.510086333333334  shift ztop:  -3.3459063333333336  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -7.66349  shift ztop:  -1.4993100000000004  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  44  new_z_i_index:  (33, 39, 36, 42, 44)  new_z_top_min:  -7.66349
-complementary_a: 25.4242   25.4242  || complementary_b: 25.4242   25.4242  new z_top_min:  -7.66349
-new white_space_height:  -5.008846333333331
+orig_ztop:  46 orig_z_top_min:  1.8011676666666663
+1  new_z_i_atTop:  9.062069  shift_i_ztop:  7.260901333333333  layerWithSmallestShift:  3
+2  new_z_i_atTop:  2.368723  shift_i_ztop:  0.5675553333333339  layerWithSmallestShift:  3
+3  new_z_i_atTop:  2.1671810000000002  shift_i_ztop:  0.36601333333333397  layerWithSmallestShift:  3
+4  new_z_i_atTop:  4.18701  shift_i_ztop:  2.3858423333333336  layerWithSmallestShift:  3
+new_def_z_top_min_diff: -2.0198289999999997
+new_ztop_index:  47  new_z_i_index:  (40, 42, 40, 52, 47)  new_z_top_min:  2.1671810000000002  shift_ztop: 0.36601333333333397
+complementary_a: 32.5911   32.5911  || complementary_b: 32.139   32.139  new z_top_min:  2.1671810000000002
+new white_space_height:  -0.41227899999999806
+c_corner:  2.1671810000000002
+top layer from  4.18701  to  -28.4962  z_top_max:  2.1671810000000002
+(0.362737, 4.18701)
+(10.6196, 3.098160000000002)
+(0.362737, -28.4962)
+(10.6196, -28.4962)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  7.577471250000002
+z_top_min before: 2.1671810000000002 superpoints[self.env.num_layers-1].min: -28.4962
+complementary:  (0.362737, 4.18701)  for z_top_min: -28.4962
+complementary:  (10.6196, 3.098160000000002)
+complementary:  (0.362737, -28.4962)
+complementary:  (10.6196, -28.4962)
 
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 25.4242   25.4242  || complementary_b: 25.4242   25.4242
-current white_space_height:  -5.008846333333331
-counter:  10  counterUpshift:  0
-orig_ztop:  44 orig_z_top_min:  -7.66349
-1  new_z_i_atTop:  -14.799577  shift ztop:  -7.136086999999999  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  -6.221629000000001  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -15.370246333333332  shift ztop:  -7.706756333333332  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -11.1736  shift ztop:  -3.51011  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  43  new_z_i_index:  (33, 39, 36, 41, 43)  new_z_top_min:  -11.1736
-complementary_a: 23.8979   23.8979  || complementary_b: 20.0702   20.0702  new z_top_min:  -11.1736
-new white_space_height:  -3.4825463333333317
-
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 23.8979   23.8979  || complementary_b: 20.0702   20.0702
-current white_space_height:  -3.4825463333333317
-counter:  11  counterUpshift:  0
-orig_ztop:  43 orig_z_top_min:  -11.1736
-1  new_z_i_atTop:  -16.001137  shift ztop:  -4.8275369999999995  layerWithSmallestShift:  2
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  -2.711519000000001  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -15.370246333333332  shift ztop:  -4.196646333333332  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -15.7095  shift ztop:  -4.5359  layerWithSmallestShift:  2
-new_def_z_top_min_diff: 1.824380999999999
-new ztop_index:  42  new_z_i_index:  (33, 38, 36, 41, 42)  new_z_top_min:  -13.885119000000001
-complementary_a: 20.9763   20.9763  || complementary_b: 20.0702   20.0702  new z_top_min:  -13.885119000000001
-new white_space_height:  -0.5609463333333302
-
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 20.9763   20.9763  || complementary_b: 20.0702   20.0702
-current white_space_height:  -0.5609463333333302
-counter:  12  counterUpshift:  0
-orig_ztop:  42 orig_z_top_min:  -13.885119000000001
-1  new_z_i_atTop:  -16.001137  shift ztop:  -2.1160179999999986  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -17.719058999999998  shift ztop:  -3.8339399999999966  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -17.872912999999997  shift ztop:  -3.9877939999999956  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -15.8309  shift ztop:  -1.9457809999999984  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  41  new_z_i_index:  (33, 38, 35, 40, 41)  new_z_top_min:  -15.8309
-complementary_a: 13.9647   13.9647  || complementary_b: 13.9647   13.9647  new z_top_min:  -15.8309
-new white_space_height:  6.450653666666668
-
-original c: 20.415353666666668   20.415353666666668 || original d: 16.260733333333334   16.260733333333334
-complementary_a: 13.9647   13.9647  || complementary_b: 13.9647   13.9647
-current white_space_height:  6.450653666666668
-counter:  13  counterUpshift:  0
-orig_ztop:  41 orig_z_top_min:  -15.8309
-1  new_z_i_atTop:  -14.799577  shift ztop:  1.0313230000000004  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -13.885119000000001  shift ztop:  1.9457809999999984  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -9.510086333333334  shift ztop:  6.320813666666666  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -15.7095  shift ztop:  0.12139999999999951  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  42  new_z_i_index:  (35, 39, 36, 42, 42)  new_z_top_min:  -15.7095
-complementary_a: 20.9763   20.9763  || complementary_b: 19.251933333333334   19.251933333333334  new z_top_min:  -15.7095
-new white_space_height:  -0.5609463333333302
-c_corner:  -15.7095
-top layer from  -15.7095  to  -45.2748  z_top_max:  -15.7095
-(-0.524461, -15.7095)
-(11.9394, -15.709499999999998)
-(-0.524461, -43.705017)
-(11.9394, -45.2748)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  10.270677999999997
-z_top_min before: -15.7095 superpoints[self.env.num_layers-1].min: -45.2748
-complementary:  (-0.524461, -15.7095)  for z_top_min: -45.2748
-complementary:  (11.9394, -21.122459999999997)
-complementary:  (-0.524461, -45.2748)
-complementary:  (11.9394, -45.2748)
-
-original c: -43.705017   -43.705017 || original d: -45.2748   -45.2748
-complementary_a: -15.7095   -15.7095  || complementary_b: -21.122459999999997   -21.122459999999997
-current white_space_height:  -24.152340000000002
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: 4.18701   4.18701  || complementary_b: 3.098160000000002   3.098160000000002
+current white_space_height:  -31.59436
 counter:  0  counterUpshift:  0
-orig_ztop:  27 orig_z_top_min:  -45.2748
-1  new_z_i_atTop:  -49.351817  shift ztop:  -4.077016999999998  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -51.202139  shift ztop:  -5.9273390000000035  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -48.353713  shift ztop:  -3.078913  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -46.8847  shift ztop:  -1.6099000000000032  layerWithSmallestShift:  4
+orig_ztop:  32 orig_z_top_min:  -28.4962
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -17.05881099999999  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -8.792136999999997  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -29.919179  shift_i_ztop:  -1.422978999999998  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -28.881  shift_i_ztop:  -0.3847999999999985  layerWithSmallestShift:  4
 new_def_z_top_min_diff: 0.0
-new ztop_index:  26  new_z_i_index:  (33, 29, 22, 26, 26)  new_z_top_min:  -46.8847
-complementary_a: -15.8309   -15.8309  || complementary_b: -21.122459999999997   -21.122459999999997  new z_top_min:  -46.8847
-new white_space_height:  -24.152340000000002
+new_ztop_index:  31  new_z_i_index:  (38, 32, 28, 37, 31)  new_z_top_min:  -28.881  shift_ztop: -0.3847999999999985
+complementary_a: 1.95336   1.95336  || complementary_b: -1.2517733333333325   -1.2517733333333325  new z_top_min:  -28.881
+new white_space_height:  -27.24442666666667
 
-original c: -43.705017   -43.705017 || original d: -45.2748   -45.2748
-complementary_a: -15.8309   -15.8309  || complementary_b: -21.122459999999997   -21.122459999999997
-current white_space_height:  -24.152340000000002
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: 1.95336   1.95336  || complementary_b: -1.2517733333333325   -1.2517733333333325
+current white_space_height:  -27.24442666666667
 counter:  1  counterUpshift:  0
-orig_ztop:  26 orig_z_top_min:  -46.8847
-1  new_z_i_atTop:  -49.351817  shift ztop:  -2.4671169999999947  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -51.202139  shift ztop:  -4.317439  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -48.353713  shift ztop:  -1.4690129999999968  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -50.0001  shift ztop:  -3.115400000000001  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 1.6463870000000043
-new ztop_index:  25  new_z_i_index:  (33, 29, 22, 26, 25)  new_z_top_min:  -48.353713
-complementary_a: -19.0588   -19.0588  || complementary_b: -21.122459999999997   -21.122459999999997  new z_top_min:  -48.353713
-new white_space_height:  -24.152340000000002
+orig_ztop:  31 orig_z_top_min:  -28.881
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -16.674010999999993  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -8.407336999999998  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -29.919179  shift_i_ztop:  -1.0381789999999995  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -5.172400000000003  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 4.134221000000004
+new_ztop_index:  30  new_z_i_index:  (38, 32, 28, 37, 30)  new_z_top_min:  -29.919179  shift_ztop: -1.0381789999999995
+complementary_a: 1.32333   1.32333  || complementary_b: -1.2517733333333325   -1.2517733333333325  new z_top_min:  -29.919179
+new white_space_height:  -27.24442666666667
 
-original c: -43.705017   -43.705017 || original d: -45.2748   -45.2748
-complementary_a: -19.0588   -19.0588  || complementary_b: -21.122459999999997   -21.122459999999997
-current white_space_height:  -24.152340000000002
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: 1.32333   1.32333  || complementary_b: -1.2517733333333325   -1.2517733333333325
+current white_space_height:  -27.24442666666667
 counter:  2  counterUpshift:  0
-orig_ztop:  26 orig_z_top_min:  -48.353713
-1  new_z_i_atTop:  -49.507017  shift ztop:  -1.1533039999999986  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -58.542139000000006  shift ztop:  -10.188426000000007  layerWithSmallestShift:  1
-3  new_z_i_atTop:  -50.56157966666667  shift ztop:  -2.2078666666666678  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -50.0001  shift ztop:  -1.6463870000000043  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 0.4930830000000057
-new ztop_index:  25  new_z_i_index:  (33, 28, 21, 25, 25)  new_z_top_min:  -49.507017
-complementary_a: -19.0588   -19.0588  || complementary_b: -24.060519999999997   -24.060519999999997  new z_top_min:  -49.507017
-new white_space_height:  -21.214280000000002
+orig_ztop:  31 orig_z_top_min:  -29.919179
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -15.635831999999994  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -7.369157999999999  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -32.65997899999999  shift_i_ztop:  -2.740799999999993  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -4.134221000000004  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.3934210000000107
+new_ztop_index:  30  new_z_i_index:  (38, 32, 28, 36, 30)  new_z_top_min:  -32.65997899999999  shift_ztop: -2.740799999999993
+complementary_a: 1.32333   1.32333  || complementary_b: -4.125780000000001   -4.125780000000001  new z_top_min:  -32.65997899999999
+new white_space_height:  -24.370420000000003
 
-original c: -43.705017   -43.705017 || original d: -45.2748   -45.2748
-complementary_a: -19.0588   -19.0588  || complementary_b: -24.060519999999997   -24.060519999999997
-current white_space_height:  -21.214280000000002
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: 1.32333   1.32333  || complementary_b: -4.125780000000001   -4.125780000000001
+current white_space_height:  -24.370420000000003
 counter:  3  counterUpshift:  0
-orig_ztop:  25 orig_z_top_min:  -49.507017
-1  new_z_i_atTop:  -50.533417  shift ztop:  -1.0264000000000024  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -58.542139000000006  shift ztop:  -9.035122000000008  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -51.27477966666667  shift ztop:  -1.7677626666666697  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -50.2632  shift ztop:  -0.756183  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  24  new_z_i_index:  (33, 27, 21, 24, 24)  new_z_top_min:  -50.2632
-complementary_a: -23.0778   -23.0778  || complementary_b: -31.6558   -31.6558  new z_top_min:  -50.2632
-new white_space_height:  -13.619
-c_corner:  -50.2632
-z1_Align:  -0.524461
-top layer from  50.0001  to  8.78134  z_top_max:  50
-(-9.42903, 50.0001)
-(-0.524461, 50.0001)
-(-9.42903, 15.80642333333333)
-(-0.524461, 12.838233666666666)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -15.73789333333333
-z_top_min before: -50 superpoints[self.env.num_layers-1].min: 8.78134
-complementary:  (-9.42903, 47.63434333333333)  for z_top_min: 8.78134
-complementary:  (-0.524461, 44.66615366666666)
-complementary:  (-9.42903, 8.781339999999998)
-complementary:  (-0.524461, 8.78134)
+orig_ztop:  30 orig_z_top_min:  -32.65997899999999
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -12.895032  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -4.628358000000006  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -33.45664566666666  shift_i_ztop:  -0.7966666666666669  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -3.2518210000000067  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.45515433333334
+new_ztop_index:  29  new_z_i_index:  (38, 32, 28, 35, 29)  new_z_top_min:  -33.45664566666666  shift_ztop: -0.7966666666666669
+complementary_a: -1.9499656666666665   -1.9499656666666665  || complementary_b: -5.368920000000001   -5.368920000000001  new z_top_min:  -33.45664566666666
+new white_space_height:  -23.12728
 
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 47.63434333333333   47.63434333333333  || complementary_b: 44.66615366666666   44.66615366666666
-current white_space_height:  -31.82791999999999
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -1.9499656666666665   -1.9499656666666665  || complementary_b: -5.368920000000001   -5.368920000000001
+current white_space_height:  -23.12728
+counter:  4  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -33.45664566666666
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -12.098365333333334  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -3.831691333333339  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -34.12037899999999  shift_i_ztop:  -0.6637333333333331  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -2.45515433333334  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.7914210000000068
+new_ztop_index:  29  new_z_i_index:  (38, 32, 28, 34, 29)  new_z_top_min:  -34.12037899999999  shift_ztop: -0.6637333333333331
+complementary_a: -6.8097   -6.8097  || complementary_b: -6.809700000000001   -6.809700000000001  new z_top_min:  -34.12037899999999
+new white_space_height:  -21.686500000000002
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -6.8097   -6.8097  || complementary_b: -6.809700000000001   -6.809700000000001
+current white_space_height:  -21.686500000000002
+counter:  5  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -34.12037899999999
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -11.434632  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -3.167958000000006  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -34.482378999999995  shift_i_ztop:  -0.3620000000000019  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -1.7914210000000068  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.429421000000005
+new_ztop_index:  29  new_z_i_index:  (38, 32, 28, 33, 29)  new_z_top_min:  -34.482378999999995  shift_ztop: -0.3620000000000019
+complementary_a: -8.147365666666667   -8.147365666666667  || complementary_b: -11.56632   -11.56632  new z_top_min:  -34.482378999999995
+new white_space_height:  -16.929880000000004
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -8.147365666666667   -8.147365666666667  || complementary_b: -11.56632   -11.56632
+current white_space_height:  -16.929880000000004
+counter:  6  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -34.482378999999995
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -11.072631999999999  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.288337  shift_i_ztop:  -2.805958000000004  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -35.73024566666666  shift_i_ztop:  -1.247866666666667  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -1.429421000000005  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.18155433333333804
+new_ztop_index:  29  new_z_i_index:  (38, 32, 28, 32, 29)  new_z_top_min:  -35.73024566666666  shift_ztop: -1.247866666666667
+complementary_a: -9.638125666666667   -9.638125666666667  || complementary_b: -13.057079999999997   -13.057079999999997  new z_top_min:  -35.73024566666666
+new white_space_height:  -15.439120000000004
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -9.638125666666667   -9.638125666666667  || complementary_b: -13.057079999999997   -13.057079999999997
+current white_space_height:  -15.439120000000004
+counter:  7  counterUpshift:  0
+orig_ztop:  29 orig_z_top_min:  -35.73024566666666
+1  new_z_i_atTop:  -45.55501099999999  shift_i_ztop:  -9.824765333333332  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -40.529337  shift_i_ztop:  -4.799091333333337  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -36.16931233333333  shift_i_ztop:  -0.43906666666666894  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -40.6102  shift_i_ztop:  -4.8799543333333375  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 4.440887666666669
+new_ztop_index:  28  new_z_i_index:  (38, 32, 27, 31, 28)  new_z_top_min:  -36.16931233333333  shift_ztop: -0.43906666666666894
+complementary_a: -10.146352333333333   -10.146352333333333  || complementary_b: -13.565306666666666   -13.565306666666666  new z_top_min:  -36.16931233333333
+new white_space_height:  -14.930893333333335
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -10.146352333333333   -10.146352333333333  || complementary_b: -13.565306666666666   -13.565306666666666
+current white_space_height:  -14.930893333333335
+counter:  8  counterUpshift:  0
+orig_ztop:  29 orig_z_top_min:  -36.16931233333333
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -13.928898666666662  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -40.529337  shift_i_ztop:  -4.360024666666668  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -37.856379  shift_i_ztop:  -1.6870666666666665  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -40.6102  shift_i_ztop:  -4.440887666666669  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.753821000000002
+new_ztop_index:  28  new_z_i_index:  (38, 31, 27, 30, 28)  new_z_top_min:  -37.856379  shift_ztop: -1.6870666666666665
+complementary_a: -13.131632333333332   -13.131632333333332  || complementary_b: -16.550586666666668   -16.550586666666668  new z_top_min:  -37.856379
+new white_space_height:  -11.945613333333334
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -13.131632333333332   -13.131632333333332  || complementary_b: -16.550586666666668   -16.550586666666668
+current white_space_height:  -11.945613333333334
+counter:  9  counterUpshift:  0
+orig_ztop:  29 orig_z_top_min:  -37.856379
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -12.241831999999995  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -40.529337  shift_i_ztop:  -2.6729580000000013  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -40.18477899999999  shift_i_ztop:  -2.328399999999995  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -40.6102  shift_i_ztop:  -2.753821000000002  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.42542100000000715
+new_ztop_index:  28  new_z_i_index:  (38, 31, 27, 29, 28)  new_z_top_min:  -40.18477899999999  shift_ztop: -2.328399999999995
+complementary_a: -13.346112333333334   -13.346112333333334  || complementary_b: -16.765066666666662   -16.765066666666662  new z_top_min:  -40.18477899999999
+new white_space_height:  -11.73113333333334
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -13.346112333333334   -13.346112333333334  || complementary_b: -16.765066666666662   -16.765066666666662
+current white_space_height:  -11.73113333333334
+counter:  10  counterUpshift:  0
+orig_ztop:  28 orig_z_top_min:  -40.18477899999999
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -9.913432  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -43.889137  shift_i_ztop:  -3.7043580000000063  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -43.463979  shift_i_ztop:  -3.27920000000001  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -41.3285  shift_i_ztop:  -1.1437210000000064  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  27  new_z_i_index:  (38, 31, 26, 28, 27)  new_z_top_min:  -41.3285  shift_ztop: -1.1437210000000064
+complementary_a: -14.254779   -14.254779  || complementary_b: -17.67373333333333   -17.67373333333333  new z_top_min:  -41.3285
+new white_space_height:  -10.82246666666667
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -14.254779   -14.254779  || complementary_b: -17.67373333333333   -17.67373333333333
+current white_space_height:  -10.82246666666667
+counter:  11  counterUpshift:  0
+orig_ztop:  27 orig_z_top_min:  -41.3285
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -8.769710999999994  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -43.889137  shift_i_ztop:  -2.560637  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -43.463979  shift_i_ztop:  -2.1354790000000037  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -43.6735  shift_i_ztop:  -2.344999999999999  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.20952099999999518
+new_ztop_index:  26  new_z_i_index:  (38, 31, 26, 28, 26)  new_z_top_min:  -43.463979  shift_ztop: -2.1354790000000037
+complementary_a: -14.254779   -14.254779  || complementary_b: -17.67373333333333   -17.67373333333333  new z_top_min:  -43.463979
+new white_space_height:  -10.82246666666667
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -14.254779   -14.254779  || complementary_b: -17.67373333333333   -17.67373333333333
+current white_space_height:  -10.82246666666667
+counter:  12  counterUpshift:  0
+orig_ztop:  26 orig_z_top_min:  -43.463979
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -6.63423199999999  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -45.433536999999994  shift_i_ztop:  -1.9695579999999921  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -44.000645666666664  shift_i_ztop:  -0.5366666666666617  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -45.0955  shift_i_ztop:  -1.6315209999999993  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.0948543333333376
+new_ztop_index:  25  new_z_i_index:  (38, 31, 25, 27, 25)  new_z_top_min:  -44.000645666666664  shift_ztop: -0.5366666666666617
+complementary_a: -21.180912333333335   -21.180912333333335  || complementary_b: -24.599866666666664   -24.599866666666664  new z_top_min:  -44.000645666666664
+new white_space_height:  -3.896333333333338
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -21.180912333333335   -21.180912333333335  || complementary_b: -24.599866666666664   -24.599866666666664
+current white_space_height:  -3.896333333333338
+counter:  13  counterUpshift:  0
+orig_ztop:  26 orig_z_top_min:  -44.000645666666664
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -6.097565333333328  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -45.433536999999994  shift_i_ztop:  -1.4328913333333304  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -46.49451233333333  shift_i_ztop:  -2.493866666666669  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -45.0955  shift_i_ztop:  -1.0948543333333376  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  25  new_z_i_index:  (38, 31, 25, 26, 25)  new_z_top_min:  -45.0955  shift_ztop: -1.0948543333333376
+complementary_a: -22.762779   -22.762779  || complementary_b: -26.181733333333334   -26.181733333333334  new z_top_min:  -45.0955
+new white_space_height:  -2.314466666666668
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -22.762779   -22.762779  || complementary_b: -26.181733333333334   -26.181733333333334
+current white_space_height:  -2.314466666666668
+counter:  14  counterUpshift:  0
+orig_ztop:  25 orig_z_top_min:  -45.0955
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -5.002710999999991  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -52.020936999999996  shift_i_ztop:  -6.925436999999995  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -46.49451233333333  shift_i_ztop:  -1.3990123333333315  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -46.4711  shift_i_ztop:  -1.3755999999999986  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  24  new_z_i_index:  (38, 31, 24, 26, 24)  new_z_top_min:  -46.4711  shift_ztop: -1.3755999999999986
+complementary_a: -22.762779   -22.762779  || complementary_b: -26.181733333333334   -26.181733333333334  new z_top_min:  -46.4711
+new white_space_height:  -2.314466666666668
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -22.762779   -22.762779  || complementary_b: -26.181733333333334   -26.181733333333334
+current white_space_height:  -2.314466666666668
+counter:  15  counterUpshift:  0
+orig_ztop:  24 orig_z_top_min:  -46.4711
+1  new_z_i_atTop:  -50.09821099999999  shift_i_ztop:  -3.627110999999992  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -52.020936999999996  shift_i_ztop:  -5.549836999999997  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -46.509979  shift_i_ztop:  -0.03887900000000144  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -50.0001  shift_i_ztop:  -3.5290000000000035  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 3.490121000000002
+new_ztop_index:  23  new_z_i_index:  (38, 31, 24, 25, 23)  new_z_top_min:  -46.509979  shift_ztop: -0.03887900000000144
+complementary_a: -25.237445666666662   -25.237445666666662  || complementary_b: -28.656399999999998   -28.656399999999998  new z_top_min:  -46.509979
+new white_space_height:  0.16019999999999612
+
+original c: -28.4962   2.1671810000000002 || original d: -28.4962   1.95336
+complementary_a: -25.237445666666662   -25.237445666666662  || complementary_b: -28.656399999999998   -28.656399999999998
+current white_space_height:  0.16019999999999612
+counter:  16  counterUpshift:  0
+orig_ztop:  24 orig_z_top_min:  -46.509979
+1  new_z_i_atTop:  -25.984251  shift_i_ztop:  20.525728  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -43.889137  shift_i_ztop:  2.6208420000000032  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -46.49451233333333  shift_i_ztop:  0.015466666666668516  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -45.0955  shift_i_ztop:  1.414479  layerWithSmallestShift:  3
+new_def_z_top_min_diff: -1.3990123333333315
+new_ztop_index:  25  new_z_i_index:  (40, 33, 26, 26, 25)  new_z_top_min:  -46.49451233333333  shift_ztop: 0.015466666666668516
+complementary_a: -23.2966   -23.2966  || complementary_b: -26.181733333333334   -26.181733333333334  new z_top_min:  -46.49451233333333
+new white_space_height:  -2.314466666666668
+c_corner:  -46.49451233333333
+top layer from  -23.2966  to  -50.0001  z_top_max:  -46.49451233333333
+(0.362737, -31.749737)
+(10.6196, -44.84068)
+(0.362737, -50.0001)
+(10.6196, -50.0001)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  12.953446250000006
+c_corner:  -50.0001
+z1_Align:  0.362737
+top layer from  50.0001  to  18.1088  z_top_max:  50
+(-7.6057, 50.0001)
+(0.362737, 50.0001)
+(-7.6057, 34.83496666666666)
+(0.362737, 32.178821)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -18.215866666666663
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: 18.1088
+complementary:  (-7.6057, 48.365233333333336)  for z_top_min: 18.1088
+complementary:  (0.362737, 45.70908766666667)
+complementary:  (-7.6057, 18.1088)
+complementary:  (0.362737, 18.1088)
+
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 48.365233333333336   48.365233333333336  || complementary_b: 45.70908766666667   45.70908766666667
+current white_space_height:  -13.53026666666667
 counter:  0  counterUpshift:  0
-orig_ztop:  51 orig_z_top_min:  8.78134
-1  new_z_i_atTop:  -0.41515000000000235  shift ztop:  -9.196490000000002  layerWithSmallestShift:  4
-2  new_z_i_atTop:  0.2459699999999998  shift ztop:  -8.53537  layerWithSmallestShift:  4
-3  new_z_i_atTop:  3.2806593333333325  shift ztop:  -5.500680666666668  layerWithSmallestShift:  4
-4  new_z_i_atTop:  6.215999999999999  shift ztop:  -2.565340000000001  layerWithSmallestShift:  4
+orig_ztop:  54 orig_z_top_min:  18.1088
+1  new_z_i_atTop:  15.12866  shift_i_ztop:  -2.9801399999999987  layerWithSmallestShift:  4
+2  new_z_i_atTop:  14.099520000000002  shift_i_ztop:  -4.009279999999997  layerWithSmallestShift:  4
+3  new_z_i_atTop:  15.439006666666664  shift_i_ztop:  -2.6697933333333346  layerWithSmallestShift:  4
+4  new_z_i_atTop:  15.941500000000001  shift_i_ztop:  -2.1672999999999973  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 1.7763568394002505e-15
+new_ztop_index:  53  new_z_i_index:  (23, 39, 43, 53, 53)  new_z_top_min:  15.941500000000001  shift_ztop: -2.1672999999999973
+complementary_a: 46.0491   46.0491  || complementary_b: 44.16068766666666   44.16068766666666  new z_top_min:  15.941500000000001
+new white_space_height:  -11.214133333333344
+
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 46.0491   46.0491  || complementary_b: 44.16068766666666   44.16068766666666
+current white_space_height:  -11.214133333333344
+counter:  1  counterUpshift:  0
+orig_ztop:  53 orig_z_top_min:  15.941500000000001
+1  new_z_i_atTop:  12.740580000000001  shift_i_ztop:  -3.20092  layerWithSmallestShift:  4
+2  new_z_i_atTop:  12.857980000000001  shift_i_ztop:  -3.08352  layerWithSmallestShift:  4
+3  new_z_i_atTop:  4.823326666666666  shift_i_ztop:  -11.118173333333335  layerWithSmallestShift:  4
+4  new_z_i_atTop:  13.1372  shift_i_ztop:  -2.8043000000000013  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  52  new_z_i_index:  (23, 38, 42, 52, 52)  new_z_top_min:  13.1372  shift_ztop: -2.8043000000000013
+complementary_a: 45.6613   45.6613  || complementary_b: 44.14468766666666   44.14468766666666  new z_top_min:  13.1372
+new white_space_height:  -10.826333333333338
+
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 45.6613   45.6613  || complementary_b: 44.14468766666666   44.14468766666666
+current white_space_height:  -10.826333333333338
+counter:  2  counterUpshift:  0
+orig_ztop:  52 orig_z_top_min:  13.1372
+1  new_z_i_atTop:  9.83522  shift_i_ztop:  -3.3019800000000004  layerWithSmallestShift:  2
+2  new_z_i_atTop:  11.71976  shift_i_ztop:  -1.4174399999999991  layerWithSmallestShift:  2
+3  new_z_i_atTop:  4.823326666666666  shift_i_ztop:  -8.313873333333333  layerWithSmallestShift:  2
+4  new_z_i_atTop:  10.264  shift_i_ztop:  -2.8732000000000006  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 1.4557600000000015
+new_ztop_index:  51  new_z_i_index:  (23, 37, 41, 52, 51)  new_z_top_min:  11.71976  shift_ztop: -1.4174399999999991
+complementary_a: 41.3843   41.3843  || complementary_b: 41.3843   41.3843  new z_top_min:  11.71976
+new white_space_height:  -6.549333333333344
+
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 41.3843   41.3843  || complementary_b: 41.3843   41.3843
+current white_space_height:  -6.549333333333344
+counter:  3  counterUpshift:  0
+orig_ztop:  52 orig_z_top_min:  11.71976
+1  new_z_i_atTop:  9.83522  shift_i_ztop:  -1.8845400000000012  layerWithSmallestShift:  2
+2  new_z_i_atTop:  10.33716  shift_i_ztop:  -1.3826  layerWithSmallestShift:  2
+3  new_z_i_atTop:  4.823326666666666  shift_i_ztop:  -6.896433333333335  layerWithSmallestShift:  2
+4  new_z_i_atTop:  10.264  shift_i_ztop:  -1.4557600000000015  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.07316000000000145
+new_ztop_index:  51  new_z_i_index:  (23, 37, 40, 52, 51)  new_z_top_min:  10.33716  shift_ztop: -1.3826
+complementary_a: 41.3843   41.3843  || complementary_b: 41.3843   41.3843  new z_top_min:  10.33716
+new white_space_height:  -6.549333333333344
+
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 41.3843   41.3843  || complementary_b: 41.3843   41.3843
+current white_space_height:  -6.549333333333344
+counter:  4  counterUpshift:  0
+orig_ztop:  51 orig_z_top_min:  10.33716
+1  new_z_i_atTop:  5.349979999999998  shift_i_ztop:  -4.987180000000003  layerWithSmallestShift:  2
+2  new_z_i_atTop:  9.71912  shift_i_ztop:  -0.6180400000000006  layerWithSmallestShift:  2
+3  new_z_i_atTop:  4.823326666666666  shift_i_ztop:  -5.513833333333335  layerWithSmallestShift:  2
+4  new_z_i_atTop:  7.193029999999999  shift_i_ztop:  -3.1441300000000014  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 2.52609
+new_ztop_index:  50  new_z_i_index:  (23, 36, 39, 52, 50)  new_z_top_min:  9.71912  shift_ztop: -0.6180400000000006
+complementary_a: 37.3849   37.3849  || complementary_b: 37.3849   37.3849  new z_top_min:  9.71912
+new white_space_height:  -2.5499333333333425
+
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 37.3849   37.3849  || complementary_b: 37.3849   37.3849
+current white_space_height:  -2.5499333333333425
+counter:  5  counterUpshift:  0
+orig_ztop:  51 orig_z_top_min:  9.71912
+1  new_z_i_atTop:  5.349979999999998  shift_i_ztop:  -4.3691400000000025  layerWithSmallestShift:  4
+2  new_z_i_atTop:  0.08095999999999925  shift_i_ztop:  -9.638160000000001  layerWithSmallestShift:  4
+3  new_z_i_atTop:  4.457313333333333  shift_i_ztop:  -5.261806666666668  layerWithSmallestShift:  4
+4  new_z_i_atTop:  7.193029999999999  shift_i_ztop:  -2.526090000000001  layerWithSmallestShift:  4
 new_def_z_top_min_diff: -8.881784197001252e-16
-new ztop_index:  50  new_z_i_index:  (18, 37, 37, 46, 50)  new_z_top_min:  6.215999999999999
-complementary_a: 47.63434333333333   47.63434333333333  || complementary_b: 44.66615366666666   44.66615366666666  new z_top_min:  6.215999999999999
-new white_space_height:  -31.82791999999999
+new_ztop_index:  50  new_z_i_index:  (23, 36, 38, 51, 50)  new_z_top_min:  7.193029999999999  shift_ztop: -2.526090000000001
+complementary_a: 37.3849   37.3849  || complementary_b: 37.3849   37.3849  new z_top_min:  7.193029999999999
+new white_space_height:  -2.5499333333333425
 
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 47.63434333333333   47.63434333333333  || complementary_b: 44.66615366666666   44.66615366666666
-current white_space_height:  -31.82791999999999
-counter:  1  counterUpshift:  0
-orig_ztop:  50 orig_z_top_min:  6.215999999999999
-1  new_z_i_atTop:  -0.41515000000000235  shift ztop:  -6.631150000000002  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -4.980550000000001  shift ztop:  -11.19655  layerWithSmallestShift:  4
-3  new_z_i_atTop:  2.5423313333333315  shift ztop:  -3.673668666666668  layerWithSmallestShift:  4
-4  new_z_i_atTop:  5.618180000000001  shift ztop:  -0.5978199999999987  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 8.881784197001252e-16
-new ztop_index:  49  new_z_i_index:  (18, 37, 36, 45, 49)  new_z_top_min:  5.618180000000001
-complementary_a: 45.3537   45.3537  || complementary_b: 44.66615366666666   44.66615366666666  new z_top_min:  5.618180000000001
-new white_space_height:  -29.547276666666676
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 45.3537   45.3537  || complementary_b: 44.66615366666666   44.66615366666666
-current white_space_height:  -29.547276666666676
-counter:  2  counterUpshift:  0
-orig_ztop:  49 orig_z_top_min:  5.618180000000001
-1  new_z_i_atTop:  -0.41515000000000235  shift ztop:  -6.033330000000003  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -4.980550000000001  shift ztop:  -10.598730000000002  layerWithSmallestShift:  3
-3  new_z_i_atTop:  2.5423313333333315  shift ztop:  -3.075848666666669  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -2.4440299999999997  shift ztop:  -8.06221  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 4.986361333333331
-new ztop_index:  48  new_z_i_index:  (18, 37, 36, 45, 48)  new_z_top_min:  2.5423313333333315
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846  new z_top_min:  2.5423313333333315
-new white_space_height:  -20.03957666666667
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846
-current white_space_height:  -20.03957666666667
-counter:  3  counterUpshift:  0
-orig_ztop:  49 orig_z_top_min:  2.5423313333333315
-1  new_z_i_atTop:  -6.2393500000000035  shift ztop:  -8.781681333333335  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -4.980550000000001  shift ztop:  -7.522881333333332  layerWithSmallestShift:  3
-3  new_z_i_atTop:  0.13576999999999906  shift ztop:  -2.4065613333333324  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -2.4440299999999997  shift ztop:  -4.986361333333331  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 2.579799999999999
-new ztop_index:  48  new_z_i_index:  (18, 36, 36, 44, 48)  new_z_top_min:  0.13576999999999906
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846  new z_top_min:  0.13576999999999906
-new white_space_height:  -20.03957666666667
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 35.846   35.846  || complementary_b: 35.846   35.846
-current white_space_height:  -20.03957666666667
-counter:  4  counterUpshift:  0
-orig_ztop:  48 orig_z_top_min:  0.13576999999999906
-1  new_z_i_atTop:  -6.2393500000000035  shift ztop:  -6.375120000000003  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -4.980550000000001  shift ztop:  -5.11632  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -2.1478166666666674  shift ztop:  -2.2835866666666664  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -3.6826299999999996  shift ztop:  -3.8183999999999987  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 1.5348133333333327
-new ztop_index:  47  new_z_i_index:  (18, 36, 36, 43, 47)  new_z_top_min:  -2.1478166666666674
-complementary_a: 35.846   35.846  || complementary_b: 35.28375366666666   35.28375366666666  new z_top_min:  -2.1478166666666674
-new white_space_height:  -20.03957666666667
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 35.846   35.846  || complementary_b: 35.28375366666666   35.28375366666666
-current white_space_height:  -20.03957666666667
-counter:  5  counterUpshift:  0
-orig_ztop:  48 orig_z_top_min:  -2.1478166666666674
-1  new_z_i_atTop:  -6.2393500000000035  shift ztop:  -4.091533333333336  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -4.980550000000001  shift ztop:  -2.8327333333333335  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -6.541896666666667  shift ztop:  -4.39408  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -3.6826299999999996  shift ztop:  -1.5348133333333323  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 4.440892098500626e-16
-new ztop_index:  47  new_z_i_index:  (18, 36, 36, 42, 47)  new_z_top_min:  -3.6826299999999996
-complementary_a: 34.5535   34.5535  || complementary_b: 33.999486999999995   33.999486999999995  new z_top_min:  -3.6826299999999996
-new white_space_height:  -18.747076666666672
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 34.5535   34.5535  || complementary_b: 33.999486999999995   33.999486999999995
-current white_space_height:  -18.747076666666672
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 37.3849   37.3849  || complementary_b: 37.3849   37.3849
+current white_space_height:  -2.5499333333333425
 counter:  6  counterUpshift:  0
-orig_ztop:  47 orig_z_top_min:  -3.6826299999999996
-1  new_z_i_atTop:  -7.485030000000004  shift ztop:  -3.802400000000004  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -8.814490000000001  shift ztop:  -5.131860000000001  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -6.541896666666667  shift ztop:  -2.8592666666666675  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -6.01597  shift ztop:  -2.3333400000000006  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  46  new_z_i_index:  (18, 35, 35, 42, 46)  new_z_top_min:  -6.01597
-complementary_a: 33.6174   33.6174  || complementary_b: 33.6174   33.6174  new z_top_min:  -6.01597
-new white_space_height:  -17.810976666666676
+orig_ztop:  50 orig_z_top_min:  7.193029999999999
+1  new_z_i_atTop:  3.814779999999998  shift_i_ztop:  -3.3782500000000013  layerWithSmallestShift:  4
+2  new_z_i_atTop:  0.08095999999999925  shift_i_ztop:  -7.11207  layerWithSmallestShift:  4
+3  new_z_i_atTop:  4.457313333333333  shift_i_ztop:  -2.735716666666667  layerWithSmallestShift:  4
+4  new_z_i_atTop:  5.735040000000001  shift_i_ztop:  -1.4579899999999988  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 8.881784197001252e-16
+new_ztop_index:  49  new_z_i_index:  (23, 35, 38, 51, 49)  new_z_top_min:  5.735040000000001  shift_ztop: -1.4579899999999988
+complementary_a: 36.3666   36.3666  || complementary_b: 36.3666   36.3666  new z_top_min:  5.735040000000001
+new white_space_height:  -1.531633333333339
 
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 33.6174   33.6174  || complementary_b: 33.6174   33.6174
-current white_space_height:  -17.810976666666676
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 36.3666   36.3666  || complementary_b: 36.3666   36.3666
+current white_space_height:  -1.531633333333339
 counter:  7  counterUpshift:  0
-orig_ztop:  46 orig_z_top_min:  -6.01597
-1  new_z_i_atTop:  -7.485030000000004  shift ztop:  -1.4690600000000034  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -8.814490000000001  shift ztop:  -2.798520000000001  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -12.402056666666667  shift ztop:  -6.3860866666666665  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -6.16418  shift ztop:  -0.14820999999999973  layerWithSmallestShift:  4
-new_def_z_top_min_diff: 0.0
-new ztop_index:  45  new_z_i_index:  (18, 35, 35, 41, 45)  new_z_top_min:  -6.16418
-complementary_a: 26.139000000000003   26.139000000000003  || complementary_b: 26.139   26.139  new z_top_min:  -6.16418
-new white_space_height:  -10.332576666666673
+orig_ztop:  49 orig_z_top_min:  5.735040000000001
+1  new_z_i_atTop:  3.814779999999998  shift_i_ztop:  -1.9202600000000025  layerWithSmallestShift:  3
+2  new_z_i_atTop:  0.08095999999999925  shift_i_ztop:  -5.654080000000001  layerWithSmallestShift:  3
+3  new_z_i_atTop:  4.457313333333333  shift_i_ztop:  -1.277726666666668  layerWithSmallestShift:  3
+4  new_z_i_atTop:  4.25228  shift_i_ztop:  -1.4827600000000007  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.20503333333333273
+new_ztop_index:  48  new_z_i_index:  (23, 35, 38, 51, 48)  new_z_top_min:  4.457313333333333  shift_ztop: -1.277726666666668
+complementary_a: 34.8552   34.8552  || complementary_b: 34.8552   34.8552  new z_top_min:  4.457313333333333
+new white_space_height:  -0.020233333333344206
 
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 26.139000000000003   26.139000000000003  || complementary_b: 26.139   26.139
-current white_space_height:  -10.332576666666673
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 34.8552   34.8552  || complementary_b: 34.8552   34.8552
+current white_space_height:  -0.020233333333344206
 counter:  8  counterUpshift:  0
-orig_ztop:  45 orig_z_top_min:  -6.16418
-1  new_z_i_atTop:  -7.485030000000004  shift ztop:  -1.3208500000000036  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -8.814490000000001  shift ztop:  -2.650310000000001  layerWithSmallestShift:  1
-3  new_z_i_atTop:  -12.402056666666667  shift ztop:  -6.237876666666667  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -7.66349  shift ztop:  -1.4993100000000004  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 0.17845999999999673
-new ztop_index:  44  new_z_i_index:  (18, 35, 35, 41, 44)  new_z_top_min:  -7.485030000000004
-complementary_a: 25.4242   25.4242  || complementary_b: 24.224820333333334   24.224820333333334  new z_top_min:  -7.485030000000004
-new white_space_height:  -9.61777666666667
+orig_ztop:  48 orig_z_top_min:  4.457313333333333
+1  new_z_i_atTop:  1.8096999999999985  shift_i_ztop:  -2.647613333333334  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -7.054380000000001  shift_i_ztop:  -11.511693333333334  layerWithSmallestShift:  4
+3  new_z_i_atTop:  0.7061799999999989  shift_i_ztop:  -3.7511333333333337  layerWithSmallestShift:  4
+4  new_z_i_atTop:  4.18701  shift_i_ztop:  -0.2703033333333327  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  47  new_z_i_index:  (23, 34, 37, 50, 47)  new_z_top_min:  4.18701  shift_ztop: -0.2703033333333327
+complementary_a: 33.62   33.62  || complementary_b: 33.62   33.62  new z_top_min:  4.18701
+new white_space_height:  1.2149666666666619
 
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 25.4242   25.4242  || complementary_b: 24.224820333333334   24.224820333333334
-current white_space_height:  -9.61777666666667
+original c: 34.83496666666666   34.83496666666666 || original d: 32.178821   32.178821
+complementary_a: 33.62   33.62  || complementary_b: 33.62   33.62
+current white_space_height:  1.2149666666666619
 counter:  9  counterUpshift:  0
-orig_ztop:  44 orig_z_top_min:  -7.485030000000004
-1  new_z_i_atTop:  -8.392550000000002  shift ztop:  -0.9075199999999981  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -11.04237  shift ztop:  -3.5573399999999964  layerWithSmallestShift:  1
-3  new_z_i_atTop:  -12.402056666666667  shift ztop:  -4.917026666666663  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -11.1736  shift ztop:  -3.688569999999997  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 2.7810499999999987
-new ztop_index:  43  new_z_i_index:  (18, 34, 34, 41, 43)  new_z_top_min:  -8.392550000000002
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979  new z_top_min:  -8.392550000000002
-new white_space_height:  -8.09147666666667
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979
-current white_space_height:  -8.09147666666667
-counter:  10  counterUpshift:  0
-orig_ztop:  44 orig_z_top_min:  -8.392550000000002
-1  new_z_i_atTop:  -14.980910000000003  shift ztop:  -6.5883600000000015  layerWithSmallestShift:  2
-2  new_z_i_atTop:  -11.04237  shift ztop:  -2.6498199999999983  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -12.402056666666667  shift ztop:  -4.009506666666665  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -11.1736  shift ztop:  -2.7810499999999987  layerWithSmallestShift:  2
-new_def_z_top_min_diff: 0.1312300000000004
-new ztop_index:  43  new_z_i_index:  (18, 33, 34, 41, 43)  new_z_top_min:  -11.04237
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979  new z_top_min:  -11.04237
-new white_space_height:  -8.09147666666667
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 23.8979   23.8979  || complementary_b: 23.8979   23.8979
-current white_space_height:  -8.09147666666667
-counter:  11  counterUpshift:  0
-orig_ztop:  43 orig_z_top_min:  -11.04237
-1  new_z_i_atTop:  -14.980910000000003  shift ztop:  -3.9385400000000033  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -16.393369999999997  shift ztop:  -5.350999999999997  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -14.904723333333333  shift ztop:  -3.862353333333333  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -15.7095  shift ztop:  -4.66713  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 0.8047766666666671
-new ztop_index:  42  new_z_i_index:  (18, 33, 33, 40, 42)  new_z_top_min:  -14.904723333333333
-complementary_a: 20.976300000000002   20.976300000000002  || complementary_b: 20.9763   20.9763  new z_top_min:  -14.904723333333333
-new white_space_height:  -5.1698766666666724
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 20.976300000000002   20.976300000000002  || complementary_b: 20.9763   20.9763
-current white_space_height:  -5.1698766666666724
-counter:  12  counterUpshift:  0
-orig_ztop:  42 orig_z_top_min:  -14.904723333333333
-1  new_z_i_atTop:  -16.538110000000003  shift ztop:  -1.63338666666667  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -18.74217  shift ztop:  -3.8374466666666684  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -15.801256666666667  shift ztop:  -0.8965333333333341  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -15.8309  shift ztop:  -0.9261766666666666  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 0.029643333333332578
-new ztop_index:  41  new_z_i_index:  (18, 32, 32, 39, 41)  new_z_top_min:  -15.801256666666667
-complementary_a: 13.964699999999999   13.964699999999999  || complementary_b: 13.9647   13.9647  new z_top_min:  -15.801256666666667
-new white_space_height:  1.8417233333333307
-
-original c: 15.80642333333333   15.80642333333333 || original d: 12.838233666666666   12.838233666666666
-complementary_a: 13.964699999999999   13.964699999999999  || complementary_b: 13.9647   13.9647
-current white_space_height:  1.8417233333333307
-counter:  13  counterUpshift:  0
-orig_ztop:  41 orig_z_top_min:  -15.801256666666667
-1  new_z_i_atTop:  -14.980910000000003  shift ztop:  0.8203466666666639  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -11.04237  shift ztop:  4.758886666666667  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -14.904723333333333  shift ztop:  0.8965333333333341  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -15.7095  shift ztop:  0.09175666666666693  layerWithSmallestShift:  4
+orig_ztop:  47 orig_z_top_min:  4.18701
+1  new_z_i_atTop:  5.349979999999998  shift_i_ztop:  1.1629699999999978  layerWithSmallestShift:  4
+2  new_z_i_atTop:  9.71912  shift_i_ztop:  5.53211  layerWithSmallestShift:  4
+3  new_z_i_atTop:  4.823326666666666  shift_i_ztop:  0.6363166666666658  layerWithSmallestShift:  4
+4  new_z_i_atTop:  4.25228  shift_i_ztop:  0.06526999999999994  layerWithSmallestShift:  4
 new_def_z_top_min_diff: 0.0
-new ztop_index:  42  new_z_i_index:  (20, 33, 34, 40, 42)  new_z_top_min:  -15.7095
-complementary_a: 20.976300000000002   20.976300000000002  || complementary_b: 20.9763   20.9763  new z_top_min:  -15.7095
-new white_space_height:  -5.1698766666666724
-c_corner:  -15.7095
-top layer from  -15.7095  to  -45.2748  z_top_max:  -15.7095
-(-9.42903, -15.7095)
-(-0.524461, -15.7095)
-(-9.42903, -27.76451)
-(-0.524461, -45.2748)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -4.845159999999996
-z_top_min before: -15.7095 superpoints[self.env.num_layers-1].min: -45.2748
-complementary:  (-9.42903, -15.7095)  for z_top_min: -45.2748
-complementary:  (-0.524461, -34.198737)
-complementary:  (-9.42903, -45.2748)
-complementary:  (-0.524461, -45.2748)
+new_ztop_index:  48  new_z_i_index:  (25, 36, 39, 52, 48)  new_z_top_min:  4.25228  shift_ztop: 0.06526999999999994
+complementary_a: 34.8552   34.8552  || complementary_b: 34.8552   34.8552  new z_top_min:  4.25228
+new white_space_height:  -0.020233333333344206
+c_corner:  4.25228
+top layer from  4.25228  to  -28.2674  z_top_max:  4.25228
+(-7.6057, 4.25228)
+(0.362737, 4.25228)
+(-7.6057, -26.054499999999997)
+(0.362737, -28.2674)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -2.9934999999999974
+z_top_min before: 4.25228 superpoints[self.env.num_layers-1].min: -28.2674
+complementary:  (-7.6057, 4.25228)  for z_top_min: -28.2674
+complementary:  (0.362737, 1.8011676666666663)
+complementary:  (-7.6057, -28.2674)
+complementary:  (0.362737, -28.2674)
 
-original c: -27.76451   -27.76451 || original d: -45.2748   -45.2748
-complementary_a: -15.7095   -15.7095  || complementary_b: -34.198737   -34.198737
-current white_space_height:  -11.076062999999998
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: 4.25228   4.25228  || complementary_b: 1.8011676666666663   1.8011676666666663
+current white_space_height:  -30.068567666666667
 counter:  0  counterUpshift:  0
-orig_ztop:  27 orig_z_top_min:  -45.2748
-1  new_z_i_atTop:  -49.32971  shift ztop:  -4.05491  layerWithSmallestShift:  4
-2  new_z_i_atTop:  -49.63757  shift ztop:  -4.362769999999998  layerWithSmallestShift:  4
-3  new_z_i_atTop:  -47.59339  shift ztop:  -2.3185900000000004  layerWithSmallestShift:  4
-4  new_z_i_atTop:  -46.8847  shift ztop:  -1.6099000000000032  layerWithSmallestShift:  4
+orig_ztop:  33 orig_z_top_min:  -28.2674
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -18.342700000000004  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -32.560900000000004  shift_i_ztop:  -4.293500000000005  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -30.003833333333333  shift_i_ztop:  -1.7364333333333342  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -28.4962  shift_i_ztop:  -0.22880000000000322  layerWithSmallestShift:  4
 new_def_z_top_min_diff: 0.0
-new ztop_index:  26  new_z_i_index:  (18, 19, 21, 25, 26)  new_z_top_min:  -46.8847
-complementary_a: -15.8309   -15.8309  || complementary_b: -34.198737   -34.198737  new z_top_min:  -46.8847
-new white_space_height:  -11.076062999999998
+new_ztop_index:  32  new_z_i_index:  (23, 29, 27, 36, 32)  new_z_top_min:  -28.4962  shift_ztop: -0.22880000000000322
+complementary_a: 4.18701   4.18701  || complementary_b: 1.8011676666666663   1.8011676666666663  new z_top_min:  -28.4962
+new white_space_height:  -30.068567666666667
 
-original c: -27.76451   -27.76451 || original d: -45.2748   -45.2748
-complementary_a: -15.8309   -15.8309  || complementary_b: -34.198737   -34.198737
-current white_space_height:  -11.076062999999998
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: 4.18701   4.18701  || complementary_b: 1.8011676666666663   1.8011676666666663
+current white_space_height:  -30.068567666666667
 counter:  1  counterUpshift:  0
-orig_ztop:  26 orig_z_top_min:  -46.8847
-1  new_z_i_atTop:  -49.32971  shift ztop:  -2.4450099999999964  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -51.02297  shift ztop:  -4.138269999999999  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -48.30659  shift ztop:  -1.4218899999999977  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -50.0001  shift ztop:  -3.115400000000001  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 1.6935100000000034
-new ztop_index:  25  new_z_i_index:  (18, 19, 20, 24, 25)  new_z_top_min:  -48.30659
-complementary_a: -19.0588   -19.0588  || complementary_b: -34.198737   -34.198737  new z_top_min:  -48.30659
-new white_space_height:  -8.70571
+orig_ztop:  32 orig_z_top_min:  -28.4962
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -18.1139  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -32.560900000000004  shift_i_ztop:  -4.064700000000002  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -30.003833333333333  shift_i_ztop:  -1.507633333333331  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -28.881  shift_i_ztop:  -0.3847999999999985  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  31  new_z_i_index:  (23, 29, 27, 36, 31)  new_z_top_min:  -28.881  shift_ztop: -0.3847999999999985
+complementary_a: 1.953359999999999   1.953359999999999  || complementary_b: 1.8011676666666663   1.8011676666666663  new z_top_min:  -28.881
+new white_space_height:  -28.007859999999997
 
-original c: -27.76451   -27.76451 || original d: -45.2748   -45.2748
-complementary_a: -19.0588   -19.0588  || complementary_b: -34.198737   -34.198737
-current white_space_height:  -8.70571
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: 1.953359999999999   1.953359999999999  || complementary_b: 1.8011676666666663   1.8011676666666663
+current white_space_height:  -28.007859999999997
 counter:  2  counterUpshift:  0
-orig_ztop:  26 orig_z_top_min:  -48.30659
-1  new_z_i_atTop:  -49.32971  shift ztop:  -1.0231199999999987  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -51.02297  shift ztop:  -2.716380000000001  layerWithSmallestShift:  1
-3  new_z_i_atTop:  -49.384589999999996  shift ztop:  -1.0779999999999959  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -50.0001  shift ztop:  -1.6935100000000034  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 0.6703900000000047
-new ztop_index:  25  new_z_i_index:  (18, 19, 20, 23, 25)  new_z_top_min:  -49.32971
-complementary_a: -19.0588   -19.0588  || complementary_b: -35.106257   -35.106257  new z_top_min:  -49.32971
-new white_space_height:  -8.70571
+orig_ztop:  31 orig_z_top_min:  -28.881
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -17.729100000000003  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -32.560900000000004  shift_i_ztop:  -3.6799000000000035  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -30.8005  shift_i_ztop:  -1.9194999999999993  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -5.172400000000003  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 3.252900000000004
+new_ztop_index:  30  new_z_i_index:  (23, 29, 27, 35, 30)  new_z_top_min:  -30.8005  shift_ztop: -1.9194999999999993
+complementary_a: 0.7061799999999989   0.7061799999999989  || complementary_b: -1.9499656666666665   -1.9499656666666665  new z_top_min:  -30.8005
+new white_space_height:  -26.31743433333333
 
-original c: -27.76451   -27.76451 || original d: -45.2748   -45.2748
-complementary_a: -19.0588   -19.0588  || complementary_b: -35.106257   -35.106257
-current white_space_height:  -8.70571
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: 0.7061799999999989   0.7061799999999989  || complementary_b: -1.9499656666666665   -1.9499656666666665
+current white_space_height:  -26.31743433333333
 counter:  3  counterUpshift:  0
-orig_ztop:  25 orig_z_top_min:  -49.32971
-1  new_z_i_atTop:  -50.23891  shift ztop:  -0.9091999999999985  layerWithSmallestShift:  1
-2  new_z_i_atTop:  -51.02297  shift ztop:  -1.6932600000000022  layerWithSmallestShift:  1
-3  new_z_i_atTop:  -50.72539  shift ztop:  -1.3956799999999987  layerWithSmallestShift:  1
-4  new_z_i_atTop:  -50.2632  shift ztop:  -0.933489999999999  layerWithSmallestShift:  1
-new_def_z_top_min_diff: 0.02429000000000059
-new ztop_index:  24  new_z_i_index:  (18, 18, 20, 22, 24)  new_z_top_min:  -50.23891
-complementary_a: -23.0778   -23.0778  || complementary_b: -41.694617   -41.694617  new z_top_min:  -50.23891
-new white_space_height:  -3.580182999999998
-c_corner:  -50.23891
-z1_Align:  -9.42903
-top layer from  13.0512  to  -19.0588  z_top_max:  12.854850000000006
-(-22.0001, 13.051199999999998)
-(-9.42903, 13.0512)
-(-22.0001, 10.903899999999997)
-(-9.42903, -19.0588)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -30.2261
-z_top_min before: -50 superpoints[self.env.num_layers-1].min: -19.0588
-complementary:  (-22.0001, 13.051199999999998)  for z_top_min: -19.0588
-complementary:  (-9.42903, -16.99131)
-complementary:  (-22.0001, -19.0588)
-complementary:  (-9.42903, -19.0588)
+orig_ztop:  31 orig_z_top_min:  -30.8005
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -15.809600000000003  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -32.560900000000004  shift_i_ztop:  -1.7604000000000042  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -31.464233333333333  shift_i_ztop:  -0.6637333333333331  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -3.252900000000004  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.589166666666671
+new_ztop_index:  30  new_z_i_index:  (23, 29, 27, 34, 30)  new_z_top_min:  -31.464233333333333  shift_ztop: -0.6637333333333331
+complementary_a: -0.3630199999999997   -0.3630199999999997  || complementary_b: -3.019165666666667   -3.019165666666667  new z_top_min:  -31.464233333333333
+new white_space_height:  -25.248234333333333
 
-original c: 10.903899999999997   10.903899999999997 || original d: -19.0588   -19.0588
-complementary_a: 13.051199999999998   13.051199999999998  || complementary_b: -16.99131   -16.99131
-current white_space_height:  -2.067490000000003
-counter:  0  counterUpshift:  0
-orig_ztop:  40 orig_z_top_min:  -19.0588
-1  new_z_i_atTop:  -21.031299999999998  shift ztop:  -1.9724999999999966  layerWithSmallestShift:  3
-2  new_z_i_atTop:  -20.592900000000004  shift ztop:  -1.5341000000000022  layerWithSmallestShift:  3
-3  new_z_i_atTop:  -19.632766666666665  shift ztop:  -0.5739666666666636  layerWithSmallestShift:  3
-4  new_z_i_atTop:  -23.0778  shift ztop:  -4.018999999999998  layerWithSmallestShift:  3
-new_def_z_top_min_diff: 3.4450333333333347
-new ztop_index:  39  new_z_i_index:  (3, 16, 26, 34, 39)  new_z_top_min:  -19.632766666666665
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131  new z_top_min:  -19.632766666666665
-new white_space_height:  -0.11920000000000641
-
-original c: 10.903899999999997   10.903899999999997 || original d: -19.0588   -19.0588
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131
-current white_space_height:  -0.11920000000000641
-counter:  1  counterUpshift:  0
-orig_ztop:  40 orig_z_top_min:  -19.632766666666665
-1  new_z_i_atTop:  -22.430100000000007  shift ztop:  -2.7973333333333414  layerWithSmallestShift:  2
-2  new_z_i_atTop:  -20.592900000000004  shift ztop:  -0.9601333333333386  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -21.258366666666667  shift ztop:  -1.6256000000000022  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -23.0778  shift ztop:  -3.4450333333333347  layerWithSmallestShift:  2
-new_def_z_top_min_diff: 2.484899999999996
-new ztop_index:  39  new_z_i_index:  (3, 15, 26, 33, 39)  new_z_top_min:  -20.592900000000004
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131  new z_top_min:  -20.592900000000004
-new white_space_height:  -0.11920000000000641
-
-original c: 10.903899999999997   10.903899999999997 || original d: -19.0588   -19.0588
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131
-current white_space_height:  -0.11920000000000641
-counter:  2  counterUpshift:  0
-orig_ztop:  40 orig_z_top_min:  -20.592900000000004
-1  new_z_i_atTop:  -22.430100000000007  shift ztop:  -1.8372000000000028  layerWithSmallestShift:  2
-2  new_z_i_atTop:  -20.723499999999998  shift ztop:  -0.13059999999999405  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -23.32143333333333  shift ztop:  -2.7285333333333277  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -23.0778  shift ztop:  -2.484899999999996  layerWithSmallestShift:  2
-new_def_z_top_min_diff: 2.354300000000002
-new ztop_index:  39  new_z_i_index:  (3, 15, 25, 32, 39)  new_z_top_min:  -20.723499999999998
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131  new z_top_min:  -20.723499999999998
-new white_space_height:  -0.11920000000000641
-
-original c: 10.903899999999997   10.903899999999997 || original d: -19.0588   -19.0588
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131
-current white_space_height:  -0.11920000000000641
-counter:  3  counterUpshift:  0
-orig_ztop:  40 orig_z_top_min:  -20.723499999999998
-1  new_z_i_atTop:  -22.430100000000007  shift ztop:  -1.7066000000000088  layerWithSmallestShift:  2
-2  new_z_i_atTop:  -21.642300000000002  shift ztop:  -0.9188000000000045  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -23.32143333333333  shift ztop:  -2.5979333333333336  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -23.0778  shift ztop:  -2.354300000000002  layerWithSmallestShift:  2
-new_def_z_top_min_diff: 1.4354999999999976
-new ztop_index:  39  new_z_i_index:  (3, 15, 24, 32, 39)  new_z_top_min:  -21.642300000000002
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -19.903710000000004   -19.903710000000004  new z_top_min:  -21.642300000000002
-new white_space_height:  0.8449100000000023
-
-original c: 10.903899999999997   10.903899999999997 || original d: -19.0588   -19.0588
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -19.903710000000004   -19.903710000000004
-current white_space_height:  0.8449100000000023
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -0.3630199999999997   -0.3630199999999997  || complementary_b: -3.019165666666667   -3.019165666666667
+current white_space_height:  -25.248234333333333
 counter:  4  counterUpshift:  0
-orig_ztop:  39 orig_z_top_min:  -21.642300000000002
-1  new_z_i_atTop:  -17.8473  shift ztop:  3.7950000000000017  layerWithSmallestShift:  2
-2  new_z_i_atTop:  -20.723499999999998  shift ztop:  0.9188000000000045  layerWithSmallestShift:  2
-3  new_z_i_atTop:  -19.632766666666665  shift ztop:  2.009533333333337  layerWithSmallestShift:  2
-4  new_z_i_atTop:  -19.0588  shift ztop:  2.583500000000001  layerWithSmallestShift:  2
-new_def_z_top_min_diff: -1.6646999999999963
-new ztop_index:  40  new_z_i_index:  (5, 17, 25, 34, 40)  new_z_top_min:  -20.723499999999998
-complementary_a: 11.023100000000003   11.023100000000003  || complementary_b: -16.99131   -16.99131  new z_top_min:  -20.723499999999998
-new white_space_height:  -0.11920000000000641
-c_corner:  -20.723499999999998
-top layer from  -19.0588  to  -50.0001  z_top_max:  -20.723499999999998
-(-22.0001, -19.0588)
-(-9.42903, -19.923523333333335)
-(-22.0001, -22.430100000000007)
-(-9.42903, -50.0001)
-squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -21.892599999999998
-z_top_min before: -20.723499999999998 superpoints[self.env.num_layers-1].min: -50.0001
-complementary:  (-22.0001, -19.0588)  for z_top_min: -50
-complementary:  (-9.42903, -29.390770000000003)
-complementary:  (-22.0001, -50.0001)
-complementary:  (-9.42903, -50.0001)
+orig_ztop:  31 orig_z_top_min:  -31.464233333333333
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -15.14586666666667  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -35.920700000000004  shift_i_ztop:  -4.456466666666671  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -31.826233333333334  shift_i_ztop:  -0.3620000000000019  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -2.589166666666671  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.227166666666669
+new_ztop_index:  30  new_z_i_index:  (23, 29, 26, 33, 30)  new_z_top_min:  -31.826233333333334  shift_ztop: -0.3620000000000019
+complementary_a: -5.49122   -5.49122  || complementary_b: -8.147365666666667   -8.147365666666667  new z_top_min:  -31.826233333333334
+new white_space_height:  -20.12003433333333
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -5.49122   -5.49122  || complementary_b: -8.147365666666667   -8.147365666666667
+current white_space_height:  -20.12003433333333
+counter:  5  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -31.826233333333334
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -14.783866666666668  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -35.920700000000004  shift_i_ztop:  -4.094466666666669  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -33.0741  shift_i_ztop:  -1.247866666666667  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -4.085566666666665  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.837699999999998
+new_ztop_index:  29  new_z_i_index:  (23, 29, 26, 32, 29)  new_z_top_min:  -33.0741  shift_ztop: -1.247866666666667
+complementary_a: -6.98198   -6.98198  || complementary_b: -9.638125666666667   -9.638125666666667  new z_top_min:  -33.0741
+new white_space_height:  -18.62927433333333
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -6.98198   -6.98198  || complementary_b: -9.638125666666667   -9.638125666666667
+current white_space_height:  -18.62927433333333
+counter:  6  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -33.0741
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -13.536000000000001  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -35.920700000000004  shift_i_ztop:  -2.8466000000000022  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -33.51316666666667  shift_i_ztop:  -0.43906666666666894  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -2.837699999999998  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.398633333333329
+new_ztop_index:  29  new_z_i_index:  (23, 29, 26, 31, 29)  new_z_top_min:  -33.51316666666667  shift_ztop: -0.43906666666666894
+complementary_a: -7.4902066666666665   -7.4902066666666665  || complementary_b: -10.146352333333333   -10.146352333333333  new z_top_min:  -33.51316666666667
+new white_space_height:  -18.121047666666666
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -7.4902066666666665   -7.4902066666666665  || complementary_b: -10.146352333333333   -10.146352333333333
+current white_space_height:  -18.121047666666666
+counter:  7  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -33.51316666666667
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -13.096933333333332  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -35.920700000000004  shift_i_ztop:  -2.4075333333333333  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -35.20023333333334  shift_i_ztop:  -1.6870666666666665  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -35.9118  shift_i_ztop:  -2.398633333333329  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.7115666666666627
+new_ztop_index:  29  new_z_i_index:  (23, 29, 26, 30, 29)  new_z_top_min:  -35.20023333333334  shift_ztop: -1.6870666666666665
+complementary_a: -10.475486666666665   -10.475486666666665  || complementary_b: -13.131632333333332   -13.131632333333332  new z_top_min:  -35.20023333333334
+new white_space_height:  -15.135767666666666
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -10.475486666666665   -10.475486666666665  || complementary_b: -13.131632333333332   -13.131632333333332
+current white_space_height:  -15.135767666666666
+counter:  8  counterUpshift:  0
+orig_ztop:  29 orig_z_top_min:  -35.20023333333334
+1  new_z_i_atTop:  -46.6101  shift_i_ztop:  -11.409866666666666  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -37.4651  shift_i_ztop:  -2.264866666666663  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -37.52863333333333  shift_i_ztop:  -2.328399999999995  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -40.6102  shift_i_ztop:  -5.409966666666662  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 3.1450999999999993
+new_ztop_index:  28  new_z_i_index:  (23, 29, 25, 29, 28)  new_z_top_min:  -37.4651  shift_ztop: -2.264866666666663
+complementary_a: -10.689966666666667   -10.689966666666667  || complementary_b: -13.346112333333334   -13.346112333333334  new z_top_min:  -37.4651
+new white_space_height:  -14.921287666666665
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -10.689966666666667   -10.689966666666667  || complementary_b: -13.346112333333334   -13.346112333333334
+current white_space_height:  -14.921287666666665
+counter:  9  counterUpshift:  0
+orig_ztop:  29 orig_z_top_min:  -37.4651
+1  new_z_i_atTop:  -51.65690000000001  shift_i_ztop:  -14.191800000000008  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -44.0525  shift_i_ztop:  -6.587400000000002  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.807833333333335  shift_i_ztop:  -3.342733333333335  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -40.6102  shift_i_ztop:  -3.1450999999999993  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  28  new_z_i_index:  (23, 28, 24, 28, 28)  new_z_top_min:  -40.6102  shift_ztop: -3.1450999999999993
+complementary_a: -11.598633333333334   -11.598633333333334  || complementary_b: -14.254779   -14.254779  new z_top_min:  -40.6102
+new white_space_height:  -14.012621
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -11.598633333333334   -11.598633333333334  || complementary_b: -14.254779   -14.254779
+current white_space_height:  -14.012621
+counter:  10  counterUpshift:  0
+orig_ztop:  28 orig_z_top_min:  -40.6102
+1  new_z_i_atTop:  -51.65690000000001  shift_i_ztop:  -11.046700000000008  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -44.0525  shift_i_ztop:  -3.442300000000003  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -41.3445  shift_i_ztop:  -0.7342999999999975  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -41.3285  shift_i_ztop:  -0.7182999999999993  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  27  new_z_i_index:  (23, 28, 24, 27, 27)  new_z_top_min:  -41.3285  shift_ztop: -0.7182999999999993
+complementary_a: -18.524766666666665   -18.524766666666665  || complementary_b: -21.180912333333335   -21.180912333333335  new z_top_min:  -41.3285
+new white_space_height:  -7.086487666666663
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -18.524766666666665   -18.524766666666665  || complementary_b: -21.180912333333335   -21.180912333333335
+current white_space_height:  -7.086487666666663
+counter:  11  counterUpshift:  0
+orig_ztop:  27 orig_z_top_min:  -41.3285
+1  new_z_i_atTop:  -51.65690000000001  shift_i_ztop:  -10.32840000000001  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -46.0349  shift_i_ztop:  -4.706400000000002  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -43.838366666666666  shift_i_ztop:  -2.5098666666666674  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -43.6735  shift_i_ztop:  -2.344999999999999  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  26  new_z_i_index:  (23, 28, 23, 26, 26)  new_z_top_min:  -43.6735  shift_ztop: -2.344999999999999
+complementary_a: -20.106633333333335   -20.106633333333335  || complementary_b: -22.762779   -22.762779  new z_top_min:  -43.6735
+new white_space_height:  -5.504621
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -20.106633333333335   -20.106633333333335  || complementary_b: -22.762779   -22.762779
+current white_space_height:  -5.504621
+counter:  12  counterUpshift:  0
+orig_ztop:  26 orig_z_top_min:  -43.6735
+1  new_z_i_atTop:  -51.65690000000001  shift_i_ztop:  -7.98340000000001  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -46.0349  shift_i_ztop:  -2.3614000000000033  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -43.853833333333334  shift_i_ztop:  -0.180333333333337  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -45.0955  shift_i_ztop:  -1.4220000000000041  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.2416666666666671
+new_ztop_index:  25  new_z_i_index:  (23, 28, 23, 25, 25)  new_z_top_min:  -43.853833333333334  shift_ztop: -0.180333333333337
+complementary_a: -22.5813   -22.5813  || complementary_b: -25.237445666666662   -25.237445666666662  new z_top_min:  -43.853833333333334
+new white_space_height:  -3.029954333333336
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -22.5813   -22.5813  || complementary_b: -25.237445666666662   -25.237445666666662
+current white_space_height:  -3.029954333333336
+counter:  13  counterUpshift:  0
+orig_ztop:  26 orig_z_top_min:  -43.853833333333334
+1  new_z_i_atTop:  -51.65690000000001  shift_i_ztop:  -7.803066666666673  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -46.0349  shift_i_ztop:  -2.1810666666666663  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -43.8797  shift_i_ztop:  -0.025866666666665594  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -45.0955  shift_i_ztop:  -1.2416666666666671  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.2158000000000015
+new_ztop_index:  25  new_z_i_index:  (23, 28, 23, 24, 25)  new_z_top_min:  -43.8797  shift_ztop: -0.025866666666665594
+complementary_a: -22.98436666666667   -22.98436666666667  || complementary_b: -25.640512333333334   -25.640512333333334  new z_top_min:  -43.8797
+new white_space_height:  -2.626887666666665
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -22.98436666666667   -22.98436666666667  || complementary_b: -25.640512333333334   -25.640512333333334
+current white_space_height:  -2.626887666666665
+counter:  14  counterUpshift:  0
+orig_ztop:  26 orig_z_top_min:  -43.8797
+1  new_z_i_atTop:  -51.65690000000001  shift_i_ztop:  -7.777200000000008  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -46.0349  shift_i_ztop:  -2.1552000000000007  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -50.12343333333333  shift_i_ztop:  -6.243733333333331  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -45.0955  shift_i_ztop:  -1.2158000000000015  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  25  new_z_i_index:  (23, 28, 23, 23, 25)  new_z_top_min:  -45.0955  shift_ztop: -1.2158000000000015
+complementary_a: -26.054499999999997   -26.054499999999997  || complementary_b: -28.710645666666665   -28.710645666666665  new z_top_min:  -45.0955
+new white_space_height:  0.443245666666666
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -26.054499999999997   -26.054499999999997  || complementary_b: -28.710645666666665   -28.710645666666665
+current white_space_height:  0.443245666666666
+counter:  15  counterUpshift:  0
+orig_ztop:  25 orig_z_top_min:  -45.0955
+1  new_z_i_atTop:  -27.897699999999997  shift_i_ztop:  17.197800000000004  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -44.0525  shift_i_ztop:  1.0429999999999993  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -43.853833333333334  shift_i_ztop:  1.2416666666666671  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -43.6735  shift_i_ztop:  1.4220000000000041  layerWithSmallestShift:  2
+new_def_z_top_min_diff: -0.3790000000000049
+new_ztop_index:  26  new_z_i_index:  (25, 30, 24, 25, 26)  new_z_top_min:  -44.0525  shift_ztop: 1.0429999999999993
+complementary_a: -26.054499999999997   -26.054499999999997  || complementary_b: -28.710645666666665   -28.710645666666665  new z_top_min:  -44.0525
+new white_space_height:  0.443245666666666
+
+original c: -26.054499999999997   -26.054499999999997 || original d: -28.2674   -28.2674
+complementary_a: -26.054499999999997   -26.054499999999997  || complementary_b: -28.710645666666665   -28.710645666666665
+current white_space_height:  0.443245666666666
+counter:  15  counterUpshift:  1
+orig_ztop:  26 orig_z_top_min:  -44.0525
+1  new_z_i_atTop:  -27.897699999999997  shift_i_ztop:  16.154800000000005  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -37.4651  shift_i_ztop:  6.587400000000002  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -43.853833333333334  shift_i_ztop:  0.19866666666666788  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -41.3285  shift_i_ztop:  2.7240000000000038  layerWithSmallestShift:  3
+new_def_z_top_min_diff: -2.525333333333336
+new_ztop_index:  27  new_z_i_index:  (25, 30, 25, 25, 27)  new_z_top_min:  -43.853833333333334  shift_ztop: 0.19866666666666788
+complementary_a: -22.5813   -22.5813  || complementary_b: -25.237445666666662   -25.237445666666662  new z_top_min:  -43.853833333333334
+new white_space_height:  -3.029954333333336
+c_corner:  -43.853833333333334
+top layer from  -23.2966  to  -50.0001  z_top_max:  -43.853833333333334
+(-7.6057, -27.263033333333333)
+(0.362737, -31.749737)
+(-7.6057, -50.0001)
+(0.362737, -50.0001)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  2.992900000000006
+c_corner:  -50.0001
+z1_Align:  -7.6057
+top layer from  22.448  to  -12.2222  z_top_max:  21.9715
+(-18.5187, 22.448000000000004)
+(-7.6057, 22.16834)
+(-18.5187, -4.362500000000001)
+(-7.6057, -12.2222)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -22.05775
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: -12.2222
+complementary:  (-18.5187, 22.448000000000004)  for z_top_min: -12.2222
+complementary:  (-7.6057, 21.63854)
+complementary:  (-18.5187, -12.2222)
+complementary:  (-7.6057, -12.2222)
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 22.448000000000004   22.448000000000004  || complementary_b: 21.63854   21.63854
+current white_space_height:  -26.810500000000005
+counter:  0  counterUpshift:  0
+orig_ztop:  41 orig_z_top_min:  -12.2222
+1  new_z_i_atTop:  -18.917900000000007  shift_i_ztop:  -6.695700000000006  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -18.406900000000004  shift_i_ztop:  -6.184700000000003  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -16.468966666666667  shift_i_ztop:  -4.246766666666666  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -18.3962  shift_i_ztop:  -6.1739999999999995  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.9272333333333336
+new_ztop_index:  40  new_z_i_index:  (8, 28, 28, 41, 40)  new_z_top_min:  -16.468966666666667  shift_ztop: -4.246766666666666
+complementary_a: 19.7441   19.7441  || complementary_b: 14.099520000000002   14.099520000000002  new z_top_min:  -16.468966666666667
+new white_space_height:  -24.1066
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 19.7441   19.7441  || complementary_b: 14.099520000000002   14.099520000000002
+current white_space_height:  -24.1066
+counter:  1  counterUpshift:  0
+orig_ztop:  40 orig_z_top_min:  -16.468966666666667
+1  new_z_i_atTop:  -20.4567  shift_i_ztop:  -3.9877333333333347  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -21.647900000000003  shift_i_ztop:  -5.178933333333337  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -18.94363333333333  shift_i_ztop:  -2.474666666666664  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -21.1315  shift_i_ztop:  -4.662533333333332  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.187866666666668
+new_ztop_index:  39  new_z_i_index:  (8, 27, 27, 40, 39)  new_z_top_min:  -18.94363333333333  shift_ztop: -2.474666666666664
+complementary_a: 18.1088   18.1088  || complementary_b: 12.857980000000001   12.857980000000001  new z_top_min:  -18.94363333333333
+new white_space_height:  -22.4713
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 18.1088   18.1088  || complementary_b: 12.857980000000001   12.857980000000001
+current white_space_height:  -22.4713
+counter:  2  counterUpshift:  0
+orig_ztop:  40 orig_z_top_min:  -18.94363333333333
+1  new_z_i_atTop:  -20.4567  shift_i_ztop:  -1.5130666666666706  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -21.647900000000003  shift_i_ztop:  -2.7042666666666726  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -19.346700000000002  shift_i_ztop:  -0.4030666666666711  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -21.1315  shift_i_ztop:  -2.187866666666668  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.784799999999997
+new_ztop_index:  39  new_z_i_index:  (8, 27, 27, 39, 39)  new_z_top_min:  -19.346700000000002  shift_ztop: -0.4030666666666711
+complementary_a: 18.1088   18.1088  || complementary_b: 12.857980000000001   12.857980000000001  new z_top_min:  -19.346700000000002
+new white_space_height:  -22.4713
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 18.1088   18.1088  || complementary_b: 12.857980000000001   12.857980000000001
+current white_space_height:  -22.4713
+counter:  3  counterUpshift:  0
+orig_ztop:  40 orig_z_top_min:  -19.346700000000002
+1  new_z_i_atTop:  -20.4567  shift_i_ztop:  -1.1099999999999994  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -21.647900000000003  shift_i_ztop:  -2.3012000000000015  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -22.416833333333333  shift_i_ztop:  -3.070133333333331  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -21.1315  shift_i_ztop:  -1.784799999999997  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 0.6747999999999976
+new_ztop_index:  39  new_z_i_index:  (8, 27, 27, 38, 39)  new_z_top_min:  -20.4567  shift_ztop: -1.1099999999999994
+complementary_a: 18.1088   18.1088  || complementary_b: 12.857980000000001   12.857980000000001  new z_top_min:  -20.4567
+new white_space_height:  -22.4713
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 18.1088   18.1088  || complementary_b: 12.857980000000001   12.857980000000001
+current white_space_height:  -22.4713
+counter:  4  counterUpshift:  0
+orig_ztop:  39 orig_z_top_min:  -20.4567
+1  new_z_i_atTop:  -22.321100000000005  shift_i_ztop:  -1.8644000000000034  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -25.007700000000003  shift_i_ztop:  -4.551000000000002  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -22.416833333333333  shift_i_ztop:  -1.9601333333333315  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -23.2966  shift_i_ztop:  -2.8399  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 0.9754999999999967
+new_ztop_index:  38  new_z_i_index:  (8, 26, 26, 38, 38)  new_z_top_min:  -22.321100000000005  shift_ztop: -1.8644000000000034
+complementary_a: 15.941500000000001   15.941500000000001  || complementary_b: 11.71976   11.71976  new z_top_min:  -22.321100000000005
+new white_space_height:  -20.304000000000002
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 15.941500000000001   15.941500000000001  || complementary_b: 11.71976   11.71976
+current white_space_height:  -20.304000000000002
+counter:  5  counterUpshift:  0
+orig_ztop:  38 orig_z_top_min:  -22.321100000000005
+1  new_z_i_atTop:  -25.821900000000003  shift_i_ztop:  -3.500799999999998  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -25.007700000000003  shift_i_ztop:  -2.6865999999999985  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -23.625366666666668  shift_i_ztop:  -1.3042666666666634  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -24.703  shift_i_ztop:  -2.3818999999999946  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.0776333333333312
+new_ztop_index:  37  new_z_i_index:  (8, 25, 26, 37, 37)  new_z_top_min:  -23.625366666666668  shift_ztop: -1.3042666666666634
+complementary_a: 8.460993333333331   8.460993333333331  || complementary_b: 4.823326666666666   4.823326666666666  new z_top_min:  -23.625366666666668
+new white_space_height:  -12.823493333333332
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 8.460993333333331   8.460993333333331  || complementary_b: 4.823326666666666   4.823326666666666
+current white_space_height:  -12.823493333333332
+counter:  6  counterUpshift:  0
+orig_ztop:  38 orig_z_top_min:  -23.625366666666668
+1  new_z_i_atTop:  -25.821900000000003  shift_i_ztop:  -2.196533333333335  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -26.5521  shift_i_ztop:  -2.926733333333331  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -26.366166666666665  shift_i_ztop:  -2.7407999999999966  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -24.703  shift_i_ztop:  -1.0776333333333312  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  37  new_z_i_index:  (8, 25, 25, 36, 37)  new_z_top_min:  -24.703  shift_ztop: -1.0776333333333312
+complementary_a: 8.094979999999996   8.094979999999996  || complementary_b: 4.457313333333333   4.457313333333333  new z_top_min:  -24.703
+new white_space_height:  -12.457479999999997
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 8.094979999999996   8.094979999999996  || complementary_b: 4.457313333333333   4.457313333333333
+current white_space_height:  -12.457479999999997
+counter:  7  counterUpshift:  0
+orig_ztop:  37 orig_z_top_min:  -24.703
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -14.764100000000003  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -26.5521  shift_i_ztop:  -1.8491  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -26.366166666666665  shift_i_ztop:  -1.6631666666666653  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -25.5609  shift_i_ztop:  -0.8579000000000008  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  36  new_z_i_index:  (8, 24, 25, 36, 36)  new_z_top_min:  -25.5609  shift_ztop: -0.8579000000000008
+complementary_a: 8.094979999999996   8.094979999999996  || complementary_b: 4.457313333333333   4.457313333333333  new z_top_min:  -25.5609
+new white_space_height:  -12.457479999999997
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 8.094979999999996   8.094979999999996  || complementary_b: 4.457313333333333   4.457313333333333
+current white_space_height:  -12.457479999999997
+counter:  8  counterUpshift:  0
+orig_ztop:  36 orig_z_top_min:  -25.5609
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -13.906200000000002  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -26.5521  shift_i_ztop:  -0.9911999999999992  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -27.16283333333333  shift_i_ztop:  -1.6019333333333314  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -27.7212  shift_i_ztop:  -2.1602999999999994  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 1.1691000000000003
+new_ztop_index:  35  new_z_i_index:  (8, 24, 25, 35, 35)  new_z_top_min:  -26.5521  shift_ztop: -0.9911999999999992
+complementary_a: 4.343846666666664   4.343846666666664  || complementary_b: 0.7061799999999989   0.7061799999999989  new z_top_min:  -26.5521
+new white_space_height:  -8.706346666666665
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 4.343846666666664   4.343846666666664  || complementary_b: 0.7061799999999989   0.7061799999999989
+current white_space_height:  -8.706346666666665
+counter:  9  counterUpshift:  0
+orig_ztop:  36 orig_z_top_min:  -26.5521
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -12.915000000000003  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -6.587399999999999  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -27.16283333333333  shift_i_ztop:  -0.6107333333333322  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -27.7212  shift_i_ztop:  -1.1691000000000003  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.558366666666668
+new_ztop_index:  35  new_z_i_index:  (8, 24, 24, 35, 35)  new_z_top_min:  -27.16283333333333  shift_ztop: -0.6107333333333322
+complementary_a: 4.343846666666664   4.343846666666664  || complementary_b: 0.7061799999999989   0.7061799999999989  new z_top_min:  -27.16283333333333
+new white_space_height:  -8.706346666666665
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 4.343846666666664   4.343846666666664  || complementary_b: 0.7061799999999989   0.7061799999999989
+current white_space_height:  -8.706346666666665
+counter:  10  counterUpshift:  0
+orig_ztop:  35 orig_z_top_min:  -27.16283333333333
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -12.30426666666667  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -5.976666666666667  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -27.82656666666667  shift_i_ztop:  -0.6637333333333366  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -28.2298  shift_i_ztop:  -1.0669666666666693  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.40323333333333267
+new_ztop_index:  34  new_z_i_index:  (8, 24, 24, 34, 34)  new_z_top_min:  -27.82656666666667  shift_ztop: -0.6637333333333366
+complementary_a: 3.2746466666666656   3.2746466666666656  || complementary_b: -0.3630199999999997   -0.3630199999999997  new z_top_min:  -27.82656666666667
+new white_space_height:  -7.637146666666666
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: 3.2746466666666656   3.2746466666666656  || complementary_b: -0.3630199999999997   -0.3630199999999997
+current white_space_height:  -7.637146666666666
+counter:  11  counterUpshift:  0
+orig_ztop:  35 orig_z_top_min:  -27.82656666666667
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -11.640533333333334  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -5.31293333333333  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -28.188566666666667  shift_i_ztop:  -0.3619999999999983  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -28.2298  shift_i_ztop:  -0.40323333333333267  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.04123333333333434
+new_ztop_index:  34  new_z_i_index:  (8, 24, 24, 33, 34)  new_z_top_min:  -28.188566666666667  shift_ztop: -0.3619999999999983
+complementary_a: -1.853553333333334   -1.853553333333334  || complementary_b: -5.49122   -5.49122  new z_top_min:  -28.188566666666667
+new white_space_height:  -2.5089466666666667
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: -1.853553333333334   -1.853553333333334  || complementary_b: -5.49122   -5.49122
+current white_space_height:  -2.5089466666666667
+counter:  12  counterUpshift:  0
+orig_ztop:  34 orig_z_top_min:  -28.188566666666667
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -11.278533333333336  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -4.950933333333332  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -29.436433333333333  shift_i_ztop:  -1.247866666666667  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -28.2674  shift_i_ztop:  -0.07883333333333198  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  33  new_z_i_index:  (8, 24, 24, 32, 33)  new_z_top_min:  -28.2674  shift_ztop: -0.07883333333333198
+complementary_a: -3.344313333333334   -3.344313333333334  || complementary_b: -6.98198   -6.98198  new z_top_min:  -28.2674
+new white_space_height:  -1.0181866666666668
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: -3.344313333333334   -3.344313333333334  || complementary_b: -6.98198   -6.98198
+current white_space_height:  -1.0181866666666668
+counter:  13  counterUpshift:  0
+orig_ztop:  33 orig_z_top_min:  -28.2674
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -11.199700000000004  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -4.8721  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -29.436433333333333  shift_i_ztop:  -1.169033333333335  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -28.4962  shift_i_ztop:  -0.22880000000000322  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  32  new_z_i_index:  (8, 24, 24, 32, 32)  new_z_top_min:  -28.4962  shift_ztop: -0.22880000000000322
+complementary_a: -3.344313333333334   -3.344313333333334  || complementary_b: -6.98198   -6.98198  new z_top_min:  -28.4962
+new white_space_height:  -1.0181866666666668
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: -3.344313333333334   -3.344313333333334  || complementary_b: -6.98198   -6.98198
+current white_space_height:  -1.0181866666666668
+counter:  14  counterUpshift:  0
+orig_ztop:  32 orig_z_top_min:  -28.4962
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -10.9709  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -4.643299999999996  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -29.436433333333333  shift_i_ztop:  -0.9402333333333317  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -28.881  shift_i_ztop:  -0.3847999999999985  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  31  new_z_i_index:  (8, 24, 24, 32, 31)  new_z_top_min:  -28.881  shift_ztop: -0.3847999999999985
+complementary_a: -3.344313333333334   -3.344313333333334  || complementary_b: -6.98198   -6.98198  new z_top_min:  -28.881
+new white_space_height:  -1.0181866666666668
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: -3.344313333333334   -3.344313333333334  || complementary_b: -6.98198   -6.98198
+current white_space_height:  -1.0181866666666668
+counter:  15  counterUpshift:  0
+orig_ztop:  31 orig_z_top_min:  -28.881
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -10.586100000000002  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -33.1395  shift_i_ztop:  -4.258499999999998  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -29.875500000000002  shift_i_ztop:  -0.9945000000000022  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -5.172400000000003  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 4.177900000000001
+new_ztop_index:  30  new_z_i_index:  (8, 24, 24, 31, 30)  new_z_top_min:  -29.875500000000002  shift_ztop: -0.9945000000000022
+complementary_a: -3.8525399999999994   -3.8525399999999994  || complementary_b: -7.4902066666666665   -7.4902066666666665  new z_top_min:  -29.875500000000002
+new white_space_height:  -0.5099600000000013
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: -3.8525399999999994   -3.8525399999999994  || complementary_b: -7.4902066666666665   -7.4902066666666665
+current white_space_height:  -0.5099600000000013
+counter:  16  counterUpshift:  0
+orig_ztop:  31 orig_z_top_min:  -29.875500000000002
+1  new_z_i_atTop:  -39.4671  shift_i_ztop:  -9.5916  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -35.1219  shift_i_ztop:  -5.246399999999994  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -31.56256666666667  shift_i_ztop:  -1.6870666666666665  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -34.0534  shift_i_ztop:  -4.177900000000001  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 2.4908333333333346
+new_ztop_index:  30  new_z_i_index:  (8, 24, 23, 30, 30)  new_z_top_min:  -31.56256666666667  shift_ztop: -1.6870666666666665
+complementary_a: -6.837820000000001   -6.837820000000001  || complementary_b: -10.475486666666665   -10.475486666666665  new z_top_min:  -31.56256666666667
+new white_space_height:  2.47532
+
+original c: -4.362500000000001   -4.362500000000001 || original d: -12.2222   -12.2222
+complementary_a: -6.837820000000001   -6.837820000000001  || complementary_b: -10.475486666666665   -10.475486666666665
+current white_space_height:  2.47532
+counter:  17  counterUpshift:  0
+orig_ztop:  30 orig_z_top_min:  -31.56256666666667
+1  new_z_i_atTop:  -22.321100000000005  shift_i_ztop:  9.241466666666664  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -26.5521  shift_i_ztop:  5.0104666666666695  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -29.875500000000002  shift_i_ztop:  1.6870666666666665  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -28.881  shift_i_ztop:  2.6815666666666687  layerWithSmallestShift:  3
+new_def_z_top_min_diff: -0.9945000000000022
+new_ztop_index:  31  new_z_i_index:  (10, 26, 25, 31, 31)  new_z_top_min:  -29.875500000000002  shift_ztop: 1.6870666666666665
+complementary_a: -3.8525399999999994   -3.8525399999999994  || complementary_b: -7.4902066666666665   -7.4902066666666665  new z_top_min:  -29.875500000000002
+new white_space_height:  -0.5099600000000013
+c_corner:  -29.875500000000002
+top layer from  -23.2966  to  -50.0001  z_top_max:  -29.875500000000002
+(-18.5187, -23.625366666666668)
+(-7.6057, -27.263033333333333)
+(-18.5187, -50.0001)
+(-7.6057, -50.0001)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -10.64835
+c_corner:  -50.0001
+z1_Align:  -18.5187
+top layer from  -23.2966  to  -50.0001  z_top_max:  -32.59349999999999
+(-22.0001, -23.2966)
+(-11.053, -26.113933333333335)
+(-22.0001, -50.0001)
+(-11.053, -50.0001)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -15.000099999999996
 c_corner:  -50.0001
 z1_Align:  -22.0001
-[[100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.
-  100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100. 100.]]
+wedge:  2895  underEfficiency percentage_accepted:  89.860324999999  z0: 2.5000000000002487
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  89.660324999999  z0: 2.5500000000002494
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  89.46032499999899  z0: 2.60000000000025
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  89.260324999999  z0: 2.650000000000251
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  89.06032499999897  z0: 2.7000000000002515
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  88.860324999999  z0: 2.7500000000002522
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  88.66032499999898  z0: 2.800000000000253
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  88.46032499999899  z0: 2.8500000000002537
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  88.26032499999897  z0: 2.9000000000002544
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  88.06032499999897  z0: 2.950000000000255
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  87.86032499999895  z0: 3.000000000000256
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  87.66032499999898  z0: 3.0500000000002565
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  87.46032499999896  z0: 3.100000000000257
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  87.26032499999897  z0: 3.150000000000258
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  87.06032499999895  z0: 3.2000000000002586
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  86.86032499999895  z0: 3.2500000000002593
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  86.66032499999896  z0: 3.30000000000026
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  86.46032499999896  z0: 3.3500000000002608
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  86.26032499999894  z0: 3.4000000000002615
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  86.06032499999895  z0: 3.450000000000262
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  85.86032499999894  z0: 3.500000000000263
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  85.66032499999896  z0: 3.5500000000002636
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  85.46032499999893  z0: 3.6000000000002643
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  85.26032499999894  z0: 3.650000000000265
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  85.06032499999893  z0: 3.7000000000002657
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  84.86032499999894  z0: 3.7500000000002665
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  84.66032499999892  z0: 3.800000000000267
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  84.46032499999893  z0: 3.850000000000268
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  84.26032499999891  z0: 3.9000000000002686
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  84.06032499999893  z0: 3.9500000000002693
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  83.86032499999891  z0: 4.00000000000027
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  83.66032499999892  z0: 4.050000000000271
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  83.4603249999989  z0: 4.100000000000271
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  83.26032499999891  z0: 4.150000000000272
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  83.0603249999989  z0: 4.200000000000273
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  82.86032499999891  z0: 4.250000000000274
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  82.66032499999888  z0: 4.300000000000274
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  82.4603249999989  z0: 4.350000000000275
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  82.26032499999889  z0: 4.400000000000276
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  82.0603249999989  z0: 4.450000000000276
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  81.86032499999888  z0: 4.500000000000277
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  81.66032499999889  z0: 4.550000000000278
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  81.46032499999887  z0: 4.6000000000002785
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  81.26032499999889  z0: 4.650000000000279
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  81.06032499999887  z0: 4.70000000000028
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  80.86032499999888  z0: 4.750000000000281
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  80.66032499999886  z0: 4.800000000000281
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  80.46032499999887  z0: 4.850000000000282
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  80.26032499999886  z0: 4.900000000000283
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  80.06032499999887  z0: 4.9500000000002835
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  79.86032499999885  z0: 5.000000000000284
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  79.66032499999886  z0: 5.050000000000285
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  79.46032499999885  z0: 5.100000000000286
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  79.26032499999886  z0: 5.150000000000286
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  79.06032499999884  z0: 5.200000000000287
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  78.86032499999885  z0: 5.250000000000288
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  78.66032499999883  z0: 5.3000000000002885
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  78.46032499999885  z0: 5.350000000000289
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  78.26032499999883  z0: 5.40000000000029
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  78.06032499999884  z0: 5.450000000000291
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  77.86032499999882  z0: 5.500000000000291
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  77.66032499999883  z0: 5.550000000000292
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  77.46032499999882  z0: 5.600000000000293
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  77.26032499999883  z0: 5.6500000000002935
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  77.06032499999881  z0: 5.700000000000294
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  76.86032499999882  z0: 5.750000000000295
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  76.6603249999988  z0: 5.800000000000296
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  76.46032499999882  z0: 5.850000000000296
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  76.2603249999988  z0: 5.900000000000297
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  76.06032499999881  z0: 5.950000000000298
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  75.8603249999988  z0: 6.000000000000298
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  75.6603249999988  z0: 6.050000000000299
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  75.46032499999879  z0: 6.1000000000003
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  75.2603249999988  z0: 6.150000000000301
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  75.06032499999878  z0: 6.200000000000301
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.8603249999988  z0: 6.250000000000302
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.300000000000303
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.350000000000303
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.400000000000304
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.450000000000305
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.5000000000003055
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.550000000000306
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.600000000000307
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.650000000000308
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.700000000000308
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.750000000000309
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.80000000000031
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.8500000000003105
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.900000000000311
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 6.950000000000312
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.000000000000313
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.050000000000313
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.100000000000314
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.150000000000315
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.2000000000003155
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.250000000000316
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.300000000000317
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.350000000000318
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.400000000000318
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.450000000000319
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.50000000000032
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.5500000000003205
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.600000000000321
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.650000000000322
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.700000000000323
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.750000000000323
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.800000000000324
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.850000000000325
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.900000000000325
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 7.950000000000326
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 8.000000000000327
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 8.050000000000328
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 8.100000000000328
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 8.150000000000329
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 8.20000000000033
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.75004  z0: 8.25000000000033
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.74488999999991  z0: 8.300000000000331
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.73238999999991  z0: 8.350000000000332
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.7198899999999  z0: 8.400000000000333
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.70738999999992  z0: 8.450000000000333
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.69488999999992  z0: 8.500000000000334
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.68238999999991  z0: 8.550000000000335
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.66988999999991  z0: 8.600000000000335
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.6573899999999  z0: 8.650000000000336
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.64488999999992  z0: 8.700000000000337
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.63238999999992  z0: 8.750000000000338
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.61988999999991  z0: 8.800000000000338
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.60738999999991  z0: 8.850000000000339
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.5948899999999  z0: 8.90000000000034
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.5823899999999  z0: 8.95000000000034
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.5698899999999  z0: 9.000000000000341
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.55738999999991  z0: 9.050000000000342
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.54488999999991  z0: 9.100000000000342
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.5323899999999  z0: 9.150000000000343
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.51988999999992  z0: 9.200000000000344
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.50738999999992  z0: 9.250000000000345
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.49488999999991  z0: 9.300000000000345
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.48238999999991  z0: 9.350000000000346
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.4698899999999  z0: 9.400000000000347
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.4573899999999  z0: 9.450000000000347
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.4448899999999  z0: 9.500000000000348
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.43238999999991  z0: 9.550000000000349
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.41988999999991  z0: 9.60000000000035
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.4073899999999  z0: 9.65000000000035
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.39488999999992  z0: 9.700000000000351
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.3823899999999  z0: 9.750000000000352
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.36988999999991  z0: 9.800000000000352
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.35738999999991  z0: 9.850000000000353
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.3448899999999  z0: 9.900000000000354
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.3323899999999  z0: 9.950000000000355
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.3198899999999  z0: 10.000000000000355
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.30738999999991  z0: 10.050000000000356
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.2948899999999  z0: 10.100000000000357
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.2823899999999  z0: 10.150000000000357
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.2698899999999  z0: 10.200000000000358
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.2573899999999  z0: 10.250000000000359
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.24488999999991  z0: 10.30000000000036
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.23238999999991  z0: 10.35000000000036
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.2198899999999  z0: 10.400000000000361
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.2073899999999  z0: 10.450000000000362
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.1948899999999  z0: 10.500000000000362
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.1823899999999  z0: 10.550000000000363
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.1698899999999  z0: 10.600000000000364
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.1573899999999  z0: 10.650000000000365
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.1448899999999  z0: 10.700000000000365
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.1323899999999  z0: 10.750000000000366
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.11988999999991  z0: 10.800000000000367
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.10738999999991  z0: 10.850000000000367
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0948899999999  z0: 10.900000000000368
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0823899999999  z0: 10.950000000000369
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0698899999999  z0: 11.00000000000037
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0573899999999  z0: 11.05000000000037
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0448899999999  z0: 11.100000000000371
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0323899999999  z0: 11.150000000000372
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0198899999999  z0: 11.200000000000372
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  74.0073899999999  z0: 11.250000000000373
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.99488999999991  z0: 11.300000000000374
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9823899999999  z0: 11.350000000000374
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9698899999999  z0: 11.400000000000375
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9573899999999  z0: 11.450000000000376
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9448899999999  z0: 11.500000000000377
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9323899999999  z0: 11.550000000000377
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9198899999999  z0: 11.600000000000378
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.9073899999999  z0: 11.650000000000379
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.89488999999989  z0: 11.70000000000038
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8823899999999  z0: 11.75000000000038
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8698899999999  z0: 11.80000000000038
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8573899999999  z0: 11.850000000000382
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8448899999999  z0: 11.900000000000382
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8323899999999  z0: 11.950000000000383
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8198899999999  z0: 12.000000000000384
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.8073899999999  z0: 12.050000000000384
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.7948899999999  z0: 12.100000000000385
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.78238999999989  z0: 12.150000000000386
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.76988999999989  z0: 12.200000000000387
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.7573899999999  z0: 12.250000000000387
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.7448899999999  z0: 12.300000000000388
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.7323899999999  z0: 12.350000000000389
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.7198899999999  z0: 12.40000000000039
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.7073899999999  z0: 12.45000000000039
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.6948899999999  z0: 12.50000000000039
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.6823899999999  z0: 12.550000000000392
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.6698899999999  z0: 12.600000000000392
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.65738999999989  z0: 12.650000000000393
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.64488999999989  z0: 12.700000000000394
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.6323899999999  z0: 12.750000000000394
+segment: 1.95336 50
+wedge:  2895  underEfficiency percentage_accepted:  73.67525000000148  z0: 12.800000000000395
+segment: 1.8979999999984205 50
+wedge:  2895  underEfficiency percentage_accepted:  73.86275000000148  z0: 12.850000000000396
+segment: 1.6979999999984177 50
+wedge:  2895  underEfficiency percentage_accepted:  74.05025000000148  z0: 12.900000000000396
+segment: 1.4979999999984148 50
+wedge:  2895  underEfficiency percentage_accepted:  74.23775000000148  z0: 12.950000000000397
+segment: 1.297999999998412 50
+wedge:  2895  underEfficiency percentage_accepted:  74.42525000000148  z0: 13.000000000000398
+segment: 1.0979999999984091 50
+wedge:  2895  underEfficiency percentage_accepted:  74.6127500000015  z0: 13.050000000000399
+segment: 0.8979999999984063 50
+wedge:  2895  underEfficiency percentage_accepted:  74.8002500000015  z0: 13.1000000000004
+segment: 0.6979999999984035 50
+wedge:  2895  underEfficiency percentage_accepted:  74.9877500000015  z0: 13.1500000000004
+segment: 0.4979999999984006 50
+wedge:  2895  underEfficiency percentage_accepted:  75.17525000000151  z0: 13.2000000000004
+segment: 0.29799999999839777 50
+wedge:  2895  underEfficiency percentage_accepted:  75.36275000000151  z0: 13.250000000000401
+segment: 0.09799999999839493 50
+wedge:  2895  underEfficiency percentage_accepted:  75.55025000000151  z0: 13.300000000000402
+segment: -0.10200000000160792 50
+wedge:  2895  underEfficiency percentage_accepted:  75.73775000000151  z0: 13.350000000000403
+segment: -0.30200000000161076 50
+wedge:  2895  underEfficiency percentage_accepted:  75.92525000000151  z0: 13.400000000000404
+segment: -0.5020000000016136 50
+wedge:  2895  underEfficiency percentage_accepted:  76.11275000000151  z0: 13.450000000000404
+segment: -0.7020000000016164 50
+wedge:  2895  underEfficiency percentage_accepted:  76.30025000000151  z0: 13.500000000000405
+segment: -0.9020000000016193 50
+wedge:  2895  underEfficiency percentage_accepted:  76.48775000000153  z0: 13.550000000000406
+segment: -1.1020000000016221 50
+wedge:  2895  underEfficiency percentage_accepted:  76.67525000000153  z0: 13.600000000000406
+segment: -1.302000000001625 50
+wedge:  2895  underEfficiency percentage_accepted:  76.86275000000153  z0: 13.650000000000407
+segment: -1.5020000000016278 50
+wedge:  2895  underEfficiency percentage_accepted:  77.05025000000154  z0: 13.700000000000408
+segment: -1.7020000000016307 50
+wedge:  2895  underEfficiency percentage_accepted:  77.23775000000153  z0: 13.750000000000409
+segment: -1.9020000000016335 50
+wedge:  2895  underEfficiency percentage_accepted:  77.42525000000154  z0: 13.80000000000041
+segment: -2.1020000000016363 50
+wedge:  2895  underEfficiency percentage_accepted:  77.61275000000154  z0: 13.85000000000041
+segment: -2.3020000000016374 50
+wedge:  2895  underEfficiency percentage_accepted:  77.80025000000154  z0: 13.90000000000041
+segment: -2.502000000001644 50
+wedge:  2895  underEfficiency percentage_accepted:  77.98775000000154  z0: 13.950000000000411
+segment: -2.702000000001643 50
+wedge:  2895  underEfficiency percentage_accepted:  78.17525000000154  z0: 14.000000000000412
+segment: -2.9020000000016495 50
+wedge:  2895  underEfficiency percentage_accepted:  78.36275000000155  z0: 14.050000000000413
+segment: -3.1020000000016488 50
+wedge:  2895  underEfficiency percentage_accepted:  78.55025000000154  z0: 14.100000000000414
+segment: -3.302000000001655 50
+wedge:  2895  underEfficiency percentage_accepted:  78.73775000000155  z0: 14.150000000000414
+segment: -3.5020000000016545 50
+wedge:  2895  underEfficiency percentage_accepted:  78.92525000000155  z0: 14.200000000000415
+segment: -3.702000000001661 50
+wedge:  2895  underEfficiency percentage_accepted:  79.11275000000155  z0: 14.250000000000416
+segment: -3.90200000000166 50
+wedge:  2895  underEfficiency percentage_accepted:  79.30025000000157  z0: 14.300000000000416
+segment: -4.1020000000016665 50
+wedge:  2895  underEfficiency percentage_accepted:  79.48775000000157  z0: 14.350000000000417
+segment: -4.302000000001666 50
+wedge:  2895  underEfficiency percentage_accepted:  79.67525000000157  z0: 14.400000000000418
+segment: -4.502000000001672 50
+wedge:  2895  underEfficiency percentage_accepted:  79.86275000000157  z0: 14.450000000000419
+segment: -4.7020000000016715 50
+wedge:  2895  underEfficiency percentage_accepted:  80.05025000000157  z0: 14.50000000000042
+segment: -4.902000000001678 50
+wedge:  2895  underEfficiency percentage_accepted:  80.23775000000157  z0: 14.55000000000042
+segment: -5.102000000001677 50
+wedge:  2895  underEfficiency percentage_accepted:  80.42525000000157  z0: 14.60000000000042
+segment: -5.302000000001684 50
+wedge:  2895  underEfficiency percentage_accepted:  80.61275000000158  z0: 14.650000000000421
+segment: -5.502000000001683 50
+wedge:  2895  underEfficiency percentage_accepted:  80.80025000000158  z0: 14.700000000000422
+segment: -5.702000000001689 50
+wedge:  2895  underEfficiency percentage_accepted:  80.98775000000158  z0: 14.750000000000423
+segment: -5.902000000001689 50
+wedge:  2895  underEfficiency percentage_accepted:  81.1752500000016  z0: 14.800000000000423
+segment: -6.102000000001695 50
+wedge:  2895  underEfficiency percentage_accepted:  81.3627500000016  z0: 14.850000000000424
+segment: -6.302000000001694 50
+wedge:  2895  underEfficiency percentage_accepted:  81.5502500000016  z0: 14.900000000000425
+segment: -6.502000000001701 50
+wedge:  2895  underEfficiency percentage_accepted:  81.7377500000016  z0: 14.950000000000426
+segment: -6.7020000000017 50
+[[100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.        100.
+  100.        100.        100.        100.        100.         99.8560975
+   99.6685975  99.4810975  99.2935975  99.1060975  98.9185975  98.7310975
+   98.5435975  98.3560975  98.1685975  97.9810975  97.7935975  97.6060975
+   97.4185975  97.2310975  97.0435975  96.8560975  96.660325   96.460325
+   96.260325   96.060325   95.860325   95.660325   95.460325   95.260325
+   95.060325   94.860325   94.660325   94.460325   94.260325   94.060325
+   93.860325   93.660325   93.460325   93.260325   93.060325   92.860325
+   92.660325   92.460325   92.260325   92.060325   91.860325   91.660325
+   91.460325   91.260325   91.060325   90.860325   90.660325   90.460325
+   90.260325   90.060325   89.860325   89.660325   89.460325   89.260325
+   89.060325   88.860325   88.660325   88.460325   88.260325   88.060325
+   87.860325   87.660325   87.460325   87.260325   87.060325   86.860325
+   86.660325   86.460325   86.260325   86.060325   85.860325   85.660325
+   85.460325   85.260325   85.060325   84.860325   84.660325   84.460325
+   84.260325   84.060325   83.860325   83.660325   83.460325   83.260325
+   83.060325   82.860325   82.660325   82.460325   82.260325   82.060325
+   81.860325   81.660325   81.460325   81.260325   81.060325   80.860325
+   80.660325   80.460325   80.260325   80.060325   79.860325   79.660325
+   79.460325   79.260325   79.060325   78.860325   78.660325   78.460325
+   78.260325   78.060325   77.860325   77.660325   77.460325   77.260325
+   77.060325   76.860325   76.660325   76.460325   76.260325   76.060325
+   75.860325   75.660325   75.460325   75.260325   75.060325   74.860325
+   74.75004    74.75004    74.75004    74.75004    74.75004    74.75004
+   74.75004    74.75004    74.75004    74.75004    74.75004    74.75004
+   74.75004    74.75004    74.75004    74.75004    74.75004    74.75004
+   74.75004    74.75004    74.75004    74.75004    74.75004    74.75004
+   74.75004    74.75004    74.75004    74.75004    74.75004    74.75004
+   74.75004    74.75004    74.75004    74.75004    74.75004    74.75004
+   74.75004    74.75004    74.75004    74.75004    74.74489    74.73239
+   74.71989    74.70739    74.69489    74.68239    74.66989    74.65739
+   74.64489    74.63239    74.61989    74.60739    74.59489    74.58239
+   74.56989    74.55739    74.54489    74.53239    74.51989    74.50739
+   74.49489    74.48239    74.46989    74.45739    74.44489    74.43239
+   74.41989    74.40739    74.39489    74.38239    74.36989    74.35739
+   74.34489    74.33239    74.31989    74.30739    74.29489    74.28239
+   74.26989    74.25739    74.24489    74.23239    74.21989    74.20739
+   74.19489    74.18239    74.16989    74.15739    74.14489    74.13239
+   74.11989    74.10739    74.09489    74.08239    74.06989    74.05739
+   74.04489    74.03239    74.01989    74.00739    73.99489    73.98239
+   73.96989    73.95739    73.94489    73.93239    73.91989    73.90739
+   73.89489    73.88239    73.86989    73.85739    73.84489    73.83239
+   73.81989    73.80739    73.79489    73.78239    73.76989    73.75739
+   73.74489    73.73239    73.71989    73.70739    73.69489    73.68239
+   73.66989    73.65739    73.64489    73.63239    73.67525    73.86275
+   74.05025    74.23775    74.42525    74.61275    74.80025    74.98775
+   75.17525    75.36275    75.55025    75.73775    75.92525    76.11275
+   76.30025    76.48775    76.67525    76.86275    77.05025    77.23775
+   77.42525    77.61275    77.80025    77.98775    78.17525    78.36275
+   78.55025    78.73775    78.92525    79.11275    79.30025    79.48775
+   79.67525    79.86275    80.05025    80.23775    80.42525    80.61275
+   80.80025    80.98775    81.17525    81.36275    81.55025    81.73775
+   81.92525  ]]

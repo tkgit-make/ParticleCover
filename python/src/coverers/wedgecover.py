@@ -170,6 +170,8 @@ class wedgePatch():
     def get_acceptanceCorners(self):
 
         self.squareAcceptance = True # Ashutosh
+        self.flatTop = True # Ashutosh
+        self.flatBottom = True # Ashutosh
         self.triangleAcceptance = False # Ashutosh
 
         #corner list in z_top
@@ -186,13 +188,17 @@ class wedgePatch():
         # is layer5 the most restrictive acceptance? 
         if min(a_corner_list) != a_corner_list[self.env.num_layers-2]:
             self.squareAcceptance = False
+            self.flatTop = False
         if min(b_corner_list) != b_corner_list[self.env.num_layers-2]:
             self.squareAcceptance = False
+            self.flatTop = False
         if max(c_corner_list) != c_corner_list[self.env.num_layers-2]:
             self.squareAcceptance = False
+            self.flatBottom = False
         if max(d_corner_list) != d_corner_list[self.env.num_layers-2]:
             self.squareAcceptance = False
-        
+            self.flatBottom = False
+
         # is the acceptance a triangle shape?
         if (self.c_corner[1] > self.a_corner[1]):
             self.triangleAcceptance = True
@@ -1074,7 +1080,8 @@ class wedgeCover():
             seed_apexZ0 = apexZ0
             projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].c_corner[1],self.patches[-1].c_corner[0],self.env.num_layers,1,0)
             print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam)
-            if (self.patches[-1].squareAcceptance == False) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
+            notChoppedPatch = (self.patches[-1].squareAcceptance) or ((self.patches[-1].a_corner[1] > z_top_max) and (self.patches[-1].b_corner[1] > z_top_max) and self.patches[-1].flatBottom)
+            if (not notChoppedPatch) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
                 complementary_apexZ0 = self.patches[-1].superpoints[0].min
                 if (self.patches[-1].triangleAcceptance == True):
                     z_top_min = self.patches[-1].d_corner[1]
