@@ -30,7 +30,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         showZimperfect = True
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
-        z0_spacing = 0.02
+        z0_spacing = 0.05
     num_covers = []
     PRF = []
     data_string = f'{v} events'

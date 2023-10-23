@@ -1078,8 +1078,9 @@ class wedgeCover():
                 complementary_apexZ0 = self.patches[-1].superpoints[0].min
                 if (self.patches[-1].triangleAcceptance == True):
                     z_top_min = self.patches[-1].d_corner[1]
-                else:     
-                    z_top_min = max(z_top_min, self.patches[-1].superpoints[self.env.num_layers-1].min)
+                else:
+                    print('z_top_min before:', z_top_min, 'superpoints[self.env.num_layers-1].min:', self.patches[-1].superpoints[self.env.num_layers-1].min)
+                    z_top_min = max(-self.env.top_layer_lim, self.patches[-1].superpoints[self.env.num_layers-1].min)
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
                 print('complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
                 print('complementary: ', self.patches[-1].b_corner)
@@ -1099,7 +1100,7 @@ class wedgeCover():
                 #while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
                 
                 #while not((white_space_height < 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and (self.patches[-2].triangleAcceptance == False) :
-                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch):
+                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and (abs(white_space_height)>0.000001) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch):
                     print()
                     if (len(self.patches) > 2):
                         print('original c:', original_c, ' ', self.patches[-2].c_corner[1], '|| original d:', original_d, ' ', self.patches[-2].d_corner[1])
@@ -1131,14 +1132,20 @@ class wedgeCover():
                     new_z_i_atTop = tuple(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,new_z_i[layer],1,layer+1,self.env.num_layers) for layer in range(1,self.env.num_layers))
                     layerWithSmallestShift = 1 + np.argmin(np.abs(np.array(new_z_i_atTop)-previous_z_top_min))
                     for layer in range(self.env.num_layers-1):
-                        print (layer+1, ' new_z_i_atTop: ', new_z_i_atTop[layer], ' shift ztop: ', new_z_i_atTop[layer]-previous_z_top_min,
+                        print (layer+1, ' new_z_i_atTop: ', new_z_i_atTop[layer], ' shift_i_ztop: ', new_z_i_atTop[layer]-previous_z_top_min,
                                ' layerWithSmallestShift: ', layerWithSmallestShift)
                     z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
                     z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift
-                    if (z_top_min-previous_z_top_min) == 0:
+                    if abs(z_top_min-previous_z_top_min) < 0.000001:
                         z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                    if abs(z_top_min-previous_z_top_min) < 0.000001:
+                        z_top_min = self.data.array[self.env.num_layers-2][current_z_top_index].z
+                    if abs(z_top_min-previous_z_top_min) < 0.000001:
+                        z_top_min = self.data.array[self.env.num_layers-3][current_z_top_index].z
+                    if ((z_top_min-previous_z_top_min)*(white_space_height)) < 0:
+                        z_top_min = new_z_i_atTop[self.env.num_layers-2]
                     print('new_def_z_top_min_diff:',z_top_min-self.data.array[self.env.num_layers-1][current_z_top_index].z)
-                    print('new ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min)
+                    print('new_ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min, ' shift_ztop:', z_top_min-previous_z_top_min)
                     del self.patches[-1]
                     self.n_patches -= 1
                     self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
