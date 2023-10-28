@@ -469,6 +469,13 @@ class wedgeCover():
                     break
 
     def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, leftRight:bool =True, show = True):
+
+        # AVK remove identicalness of z-values of adjacent hits
+        for row in range(self.env.num_layers):
+            for x in range(len(self.data.array[row])-1):
+                if (self.data.array[row][x].z == self.data.array[row][x+1].z):
+                    self.data.array[row][x+1].z += 0.00001
+
         if show == True:
             fitting_lines = []
             if (type(apexZ0) == int) or (type(apexZ0) == float):
@@ -1065,7 +1072,7 @@ class wedgeCover():
             the outer layer and the z0 of the collision point. 
 
         Args:
-            apexZ0 (num, optional): Collision point on the z axis for the first patches Defaults to 0.
+            apexZ0 (num, optional): starting point on the z1 axis for the first patches Defaults to 0.
             stop (num, optional): Where to stop, normalized to 1. Defaults to 1.
             ppl (int, optional): Points per patch per layer. Defaults to 16.
             leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
@@ -1084,17 +1091,19 @@ class wedgeCover():
         if (len(self.patches) > 0):
             z_top_max = min(z_top_max,
                         self.patches[-1].straightLineProjectorFromLayerIJtoK(-self.env.beam_axis_lim,apexZ0,0,1,self.env.num_layers))
-        bottom_layer_min = 0
         nPatchesInColumn = 0
         projectionOfCcornerToBeam = 0
-        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (bottom_layer_min > -self.env.trapezoid_edges[0]) and (nPatchesInColumn<10) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
+        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (nPatchesInColumn<10) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
             nPatchesInColumn += 1
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
             print ('top layer from ', self.patches[-1].superpoints[self.env.num_layers-1].max, ' to ', self.patches[-1].superpoints[self.env.num_layers-1].min, ' z_top_max: ', z_top_max)
-            print(self.patches[-1].a_corner)
-            print(self.patches[-1].b_corner)
-            print(self.patches[-1].c_corner)
-            print(self.patches[-1].d_corner)
+            print('original:',self.patches[-1].a_corner, 'for patch',len(self.patches))
+            print('original:',self.patches[-1].b_corner)
+            print('original:',self.patches[-1].c_corner)
+            print('original:',self.patches[-1].d_corner)
+            #if len(self.patches) == 24:
+                #for j, sp in enumerate(self.patches[-1].superpoints[1:], start=2):
+                    #print (j,'superpoint:',sp.min,sp.max,'spMax from L1Max at topLayer:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.max,1,j,self.env.num_layers))
             #original_c = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].c_corner[1], 'below')
             #original_d = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].d_corner[1], 'below')
             original_c = self.patches[-1].c_corner[1]
@@ -1105,9 +1114,12 @@ class wedgeCover():
                 #original_c = self.patches[-1].b_corner[1]
             seed_apexZ0 = apexZ0
             projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].c_corner[1],self.patches[-1].c_corner[0],self.env.num_layers,1,0)
-            print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam)
-            notChoppedPatch = (self.patches[-1].squareAcceptance) or ((self.patches[-1].a_corner[1] > z_top_max) and (self.patches[-1].b_corner[1] > z_top_max) and self.patches[-1].flatBottom)
+            squarePatch_alternate1 = ((self.patches[-1].a_corner[1] > z_top_max) and (self.patches[-1].b_corner[1] > z_top_max) and self.patches[-1].flatBottom)
+            squarePatch_alternate2 = ((self.patches[-1].a_corner[1] > z_top_max) and self.patches[-1].flatBottom)
+            notChoppedPatch = (self.patches[-1].squareAcceptance) or squarePatch_alternate1 or squarePatch_alternate2
             madeComplementaryPatch = False
+            nPatchesAtOriginal = len(self.patches)
+            print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam,'notChoppedPatch',notChoppedPatch)
             if (not notChoppedPatch) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
                 complementary_apexZ0 = self.patches[-1].superpoints[0].min
                 if (self.patches[-1].triangleAcceptance == True):
@@ -1118,7 +1130,7 @@ class wedgeCover():
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
                 madeComplementaryPatch = True
                 print('complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
-                print('complementary: ', self.patches[-1].b_corner)
+                print('complementary: ', self.patches[-1].b_corner,'for patch',len(self.patches))
                 print('complementary: ', self.patches[-1].c_corner)
                 print('complementary: ', self.patches[-1].d_corner)
                 #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
@@ -1181,8 +1193,14 @@ class wedgeCover():
                         z_top_min = new_z_i_atTop[self.env.num_layers-2]
                     print('new_def_z_top_min_diff:',z_top_min-self.data.array[self.env.num_layers-1][current_z_top_index].z)
                     print('new_ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min, ' shift_ztop:', z_top_min-previous_z_top_min)
-                    del self.patches[-1]
-                    self.n_patches -= 1
+                    nPatchesAtComplementary = len(self.patches)
+                    if (nPatchesAtComplementary > nPatchesAtOriginal):
+                        print('deleted complementary: ', self.patches[-1].a_corner, 'for patch',len(self.patches))
+                        print('deleted complementary: ', self.patches[-1].b_corner)
+                        print('deleted complementary: ', self.patches[-1].c_corner)
+                        print('deleted complementary: ', self.patches[-1].d_corner)
+                        del self.patches[-1]
+                        self.n_patches -= 1
                     self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
                     #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
                     #complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
@@ -1191,9 +1209,13 @@ class wedgeCover():
                     previous_white_space_height = white_space_height
                     white_space_height = max(original_c - complementary_a, original_d - complementary_b)
                     print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1], ' new z_top_min: ', z_top_min)
-                    print('new white_space_height: ', white_space_height)    
+                    print('new white_space_height: ', white_space_height)
+                    print('adjusted complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
+                    print('adjusted complementary: ', self.patches[-1].b_corner, 'for patch',len(self.patches))
+                    print('adjusted complementary: ', self.patches[-1].c_corner)
+                    print('adjusted complementary: ', self.patches[-1].d_corner)
                 if (self.n_patches > 3) and fix42:
-                    if (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]):
+                    if (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]) and (self.patches[-1].superpoints[1] == self.patches[-3].superpoints[1]) and (self.patches[-1].superpoints[2] == self.patches[-3].superpoints[2]) and (self.patches[-1].superpoints[3] == self.patches[-3].superpoints[3]):
                         repeat_patch = True
                         print (self.patches[-1].superpoints[self.env.num_layers-1].min, self.patches[-1].superpoints[self.env.num_layers-1].max, ' repeat_patch: ', repeat_patch)
                         del self.patches[-1]
@@ -1216,36 +1238,62 @@ class wedgeCover():
                 #print('alignment:',self.patches[-1].a_corner[1]-self.patches[-2].b_corner[1], self.patches[-1].c_corner[1]-self.patches[-2].d_corner[1])
                 #print('z_top_min:', z_top_min, 'z_top_max:', z_top_max, 'shadow_fromTopToInnermost_topL_jL:', self.patches[-1].shadow_fromTopToInnermost_topL_jL, 'shadow_fromTopToInnermost_topL_jR:', self.patches[-1].shadow_fromTopToInnermost_topL_jR, 'shadow_fromTopToInnermost_topR_jL:', self.patches[-1].shadow_fromTopToInnermost_topR_jL, 'shadow_fromTopToInnermost_topR_jR:', self.patches[-1].shadow_fromTopToInnermost_topR_jR)
                 original_topR_jL = self.patches[-2].shadow_fromTopToInnermost_topR_jL
-                originalPartialTop = (original_topR_jL > complementary_apexZ0) and (original_topR_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topR_jL,z_top_max,1,self.env.num_layers,0))<2*self.env.beam_axis_lim)
+                originalPartialTop = (original_topR_jL > complementary_apexZ0) and (original_topR_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topR_jL,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
                 original_topL_jL = self.patches[-2].shadow_fromTopToInnermost_topL_jL
-                originalPartialBottom = (original_topL_jL > complementary_apexZ0) and (original_topL_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,self.env.num_layers,0))<2*self.env.beam_axis_lim)
+                originalPartialBottom = (original_topL_jL > complementary_apexZ0) and (original_topL_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
                 complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
-                complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) and (complementary_topR_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,self.env.num_layers,0))<2*self.env.beam_axis_lim)
+                complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) and (complementary_topR_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
                 complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
-                complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<2*self.env.beam_axis_lim) 
+                complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim) 
 
                 horizontalShiftTop = original_topR_jL - complementary_topR_jR
                 horizontalShiftBottom = original_topL_jL - complementary_topL_jR
                 makeHorizontallyShiftedPatch = False
-                shifted_bAlign = apexZ0
+                shifted_Align = apexZ0
                 doShiftedPatch = True
+                # decide whether to shift original patch or complementary patch
+                # compute z0 associated with b-corner of original patch and c-corner of complementary patch
+                z0_original_bCorner = self.patches[-2].straightLineProjectorFromLayerIJtoK(apexZ0,z_top_max,1,self.env.num_layers,0)
+                z0_complementary_cCorner = self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min,1,self.env.num_layers,0)
+                shiftOriginal = True
+                if (z0_original_bCorner < 0):
+                    shiftOriginal = False
+                    shifted_Align = complementary_apexZ0
+                if (z0_complementary_cCorner > 0):
+                    shiftOriginal = True
+                    shifted_Align = apexZ0
+
+                if (horizontalShiftTop > 0 and horizontalShiftBottom > 0):
+                    print('originalPartialTop:',originalPartialTop,'complementaryPartialTop:',complementaryPartialTop,'originalPartialBottom:',originalPartialBottom,'complementaryPartialBottom:',complementaryPartialBottom, original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR)
                 while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch:
-                    print('horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_bAlign:',shifted_bAlign)
-                    shifted_bAlign -= max(horizontalShiftTop,horizontalShiftBottom)
+                    print('horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
+                    newZtop = z_top_max
+                    if shiftOriginal:
+                        shifted_Align -= max(horizontalShiftTop,horizontalShiftBottom)
+                    else :
+                        shifted_Align += max(horizontalShiftTop,horizontalShiftBottom)
+                        newZtop = z_top_min
                     if (makeHorizontallyShiftedPatch):
                         del self.patches[-1]
                         self.n_patches -= 1
-                    self.makePatch_alignedToLine(apexZ0 = shifted_bAlign, ppl = ppl, z_top = z_top_max, leftRight=False)
+                    self.makePatch_alignedToLine(apexZ0 = shifted_Align, ppl = ppl, z_top = newZtop, leftRight = (not shiftOriginal))
                     self.patches[-1].getShadows(z_top_min,z_top_max)
-                    original_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
-                    original_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                    if shiftOriginal:
+                        original_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
+                        original_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                    else :
+                        complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
+                        complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
                     horizontalShiftTop = original_topR_jL - complementary_topR_jR
                     horizontalShiftBottom = original_topL_jL - complementary_topL_jR
                     makeHorizontallyShiftedPatch = True
                 if (makeHorizontallyShiftedPatch):
-                    if (self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_bAlign,z_top_max,1,self.env.num_layers,0) > self.env.beam_axis_lim):
+                    if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) > self.env.beam_axis_lim)) and shiftOriginal:
                         del self.patches[-3]
                         self.n_patches -= 1
+                    #if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) < -self.env.beam_axis_lim)) and (not shiftOriginal):
+                        #del self.patches[-2]
+                        #self.n_patches -= 1
                         
             z_top_max = c_corner
             print('c_corner: ', c_corner)
@@ -1254,7 +1302,7 @@ class wedgeCover():
         apexZ0 = saved_apexZ0
         print('z1_Align: ', apexZ0)
     
-      #for i in range(1):
+      #for i in range(15):
         #del self.patches[-1]                                                                                                  
       #for i in range(34):
         #del self.patches[-1]                                                                                                  
@@ -1551,8 +1599,11 @@ class wedgeCover():
             else:
                 #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
                 if start_index != len(row_list)-1:
+                    #print('row',row+1,'start_index',start_index,'start_value',start_value)
                     if start_value < -alignmentAccuracy:
                         start_index += 1
+                        #start_value = row_list[start_index] - projectionToRow
+                        #print('row',row+1,'start_index',start_index,'start_value',start_value)
                 if start_index - ppl + 1 < left_bound:
                     init_patch.append(wedgeSuperPoint(row_data[row][left_bound:left_bound+ppl]))
                 #add superpoint

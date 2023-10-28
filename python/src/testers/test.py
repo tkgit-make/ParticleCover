@@ -30,7 +30,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         showZimperfect = True
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
-        z0_spacing = 0.1
+        z0_spacing = 0.2
     num_covers = []
     PRF = []
     data_string = f'{v} events'
@@ -132,14 +132,14 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 total_measure = unionOfLineSegments(list_of_z0intersections)
                 #print('total_measure:',total_measure)
                 percentage_accepted = 100.0*total_measure/(2.0 * patch.env.top_layer_lim)
-                if (percentage_accepted < 90.0) and (abs(z0) < z0_luminousRegion):
+                if (percentage_accepted < 98.0) and (abs(z0) < z0_luminousRegion):
                     print('wedge: ', k, ' underEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
                     z0Imperfect.append(z0)
                     for seg in list_of_z0intersectionsCopy:
                         print('segment:',seg.min_z5_accepted, seg.max_z5_accepted)
-                    for patch in cover.patches:
-                        if (overlap_of_superpoints_z0Scan.min_z5_accepted < overlap_of_superpoints_z0Scan.max_z5_accepted):
-                            print('overlap_of_superpoints_z0Scan:',overlap_of_superpoints_z0Scan.min_z5_accepted,overlap_of_superpoints_z0Scan.max_z5_accepted)
+                    #for patch in cover.patches:
+                        #if (overlap_of_superpoints_z0Scan.min_z5_accepted < overlap_of_superpoints_z0Scan.max_z5_accepted):
+                            #print('overlap_of_superpoints_z0Scan:',overlap_of_superpoints_z0Scan.min_z5_accepted,overlap_of_superpoints_z0Scan.max_z5_accepted)
                 if (percentage_accepted > 100.0001) and (abs(z0) < z0_luminousRegion):
                     print('wedge: ', k, ' overEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
                     z0OverEfficiency.append(z0)
@@ -184,12 +184,11 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     if type(apexZ0) == float:
         ymin = 95
     elif type(apexZ0) == int:
-        ymin = 99.9
+        ymin = 99.99
     else:
         ymin = 95
 
     #creates plots and saves them
-    print (mean_list)
     plt.scatter(z0Array, np.mean(mean_list, axis = 0), color = 'r', s = 10)
     plt.plot(z0Array, np.mean(mean_list, axis = 0), color = 'k')
     plt.xlabel(r'$z_0$ [cm]', fontsize = 16)
