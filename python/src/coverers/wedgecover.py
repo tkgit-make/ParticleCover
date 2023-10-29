@@ -472,9 +472,17 @@ class wedgeCover():
 
         # AVK remove identicalness of z-values of adjacent hits
         for row in range(self.env.num_layers):
-            for x in range(len(self.data.array[row])-1):
-                if (self.data.array[row][x].z == self.data.array[row][x+1].z):
-                    self.data.array[row][x+1].z += 0.00001
+            foundIdentical = False
+            firstTime = True
+            while (foundIdentical or firstTime):
+                foundIdentical = False
+                for x in range(len(self.data.array[row])-1):
+                    if (self.data.array[row][x].z == self.data.array[row][x+1].z):
+                        self.data.array[row][x+1].z += 0.00001
+                        foundIdentical = True # search again to make sure there are no other identical ones 
+                firstTime = False
+                if foundIdentical:
+                    self.data.array[row].sort(key=lambda point: point.z)
 
         if show == True:
             fitting_lines = []
@@ -1093,7 +1101,7 @@ class wedgeCover():
                         self.patches[-1].straightLineProjectorFromLayerIJtoK(-self.env.beam_axis_lim,apexZ0,0,1,self.env.num_layers))
         nPatchesInColumn = 0
         projectionOfCcornerToBeam = 0
-        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (nPatchesInColumn<10) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
+        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (nPatchesInColumn<100000000) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
             nPatchesInColumn += 1
             self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
             print ('top layer from ', self.patches[-1].superpoints[self.env.num_layers-1].max, ' to ', self.patches[-1].superpoints[self.env.num_layers-1].min, ' z_top_max: ', z_top_max)
@@ -1101,15 +1109,17 @@ class wedgeCover():
             print('original:',self.patches[-1].b_corner)
             print('original:',self.patches[-1].c_corner)
             print('original:',self.patches[-1].d_corner)
-            #if len(self.patches) == 24:
-                #for j, sp in enumerate(self.patches[-1].superpoints[1:], start=2):
-                    #print (j,'superpoint:',sp.min,sp.max,'spMax from L1Max at topLayer:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.max,1,j,self.env.num_layers))
+            for j, sp in enumerate(self.patches[-1].superpoints[1:-1], start=2):
+                print (j,'superpoint:',sp.min,sp.max,'shadowTop from L1Max:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.min,1,j,self.env.num_layers),self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.max,1,j,self.env.num_layers),'from L1Min:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,sp.min,1,j,self.env.num_layers),self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,sp.max,1,j,self.env.num_layers))
             #original_c = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].c_corner[1], 'below')
             #original_d = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].d_corner[1], 'below')
             original_c = self.patches[-1].c_corner[1]
             original_d = self.patches[-1].d_corner[1]
             c_corner = original_c
             repeat_patch = False
+            repeat_original = False
+            if len(self.patches) > 2:
+                repeat_original = (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]) and (self.patches[-1].superpoints[1] == self.patches[-3].superpoints[1]) and (self.patches[-1].superpoints[2] == self.patches[-3].superpoints[2]) and (self.patches[-1].superpoints[3] == self.patches[-3].superpoints[3])
             #if (self.patches[-1].triangleAcceptance == True):
                 #original_c = self.patches[-1].b_corner[1]
             seed_apexZ0 = apexZ0
@@ -1122,7 +1132,7 @@ class wedgeCover():
             print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam,'notChoppedPatch',notChoppedPatch)
             if (not notChoppedPatch) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
                 complementary_apexZ0 = self.patches[-1].superpoints[0].min
-                if (self.patches[-1].triangleAcceptance == True):
+                if (self.patches[-1].triangleAcceptance == True) and not(repeat_original):
                     z_top_min = self.patches[-1].d_corner[1]
                 else:
                     print('z_top_min before:', z_top_min, 'superpoints[self.env.num_layers-1].min:', self.patches[-1].superpoints[self.env.num_layers-1].min)
@@ -1147,7 +1157,7 @@ class wedgeCover():
                 #while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
                 
                 #while not((white_space_height < 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and (self.patches[-2].triangleAcceptance == False) :
-                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and (abs(white_space_height)>0.000001) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch):
+                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and (abs(white_space_height)>0.000001) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch) and not(repeat_original):
                     print()
                     if (len(self.patches) > 2):
                         print('original c:', original_c, ' ', self.patches[-2].c_corner[1], '|| original d:', original_d, ' ', self.patches[-2].d_corner[1])
@@ -1244,10 +1254,21 @@ class wedgeCover():
                 complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
                 complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) and (complementary_topR_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
                 complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
-                complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim) 
+                complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
 
                 horizontalShiftTop = original_topR_jL - complementary_topR_jR
                 horizontalShiftBottom = original_topL_jL - complementary_topL_jR
+
+                complementary_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
+                complementary_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                original_topR_jR = self.patches[-2].shadow_fromTopToInnermost_topR_jR
+                original_topL_jR = self.patches[-2].shadow_fromTopToInnermost_topL_jR
+
+                horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
+                horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
+                horizontalOverlapTop = -1
+                horizontalOverlapBottom = -1
+
                 makeHorizontallyShiftedPatch = False
                 shifted_Align = apexZ0
                 doShiftedPatch = True
@@ -1264,8 +1285,8 @@ class wedgeCover():
                     shifted_Align = apexZ0
 
                 if (horizontalShiftTop > 0 and horizontalShiftBottom > 0):
-                    print('originalPartialTop:',originalPartialTop,'complementaryPartialTop:',complementaryPartialTop,'originalPartialBottom:',originalPartialBottom,'complementaryPartialBottom:',complementaryPartialBottom, original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR)
-                while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch:
+                    print('originalPartialTop:',originalPartialTop,'complementaryPartialTop:',complementaryPartialTop,'originalPartialBottom:',originalPartialBottom,'complementaryPartialBottom:',complementaryPartialBottom, original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR,'horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
+                while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch and (horizontalOverlapTop <= 0) and (horizontalOverlapBottom <= 0):
                     print('horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
                     newZtop = z_top_max
                     if shiftOriginal:
@@ -1273,24 +1294,43 @@ class wedgeCover():
                     else :
                         shifted_Align += max(horizontalShiftTop,horizontalShiftBottom)
                         newZtop = z_top_min
-                    if (makeHorizontallyShiftedPatch):
-                        del self.patches[-1]
-                        self.n_patches -= 1
+                    if (makeHorizontallyShiftedPatch):  
+                        del self.patches[-1]                                                                                             
+                        self.n_patches -= 1                        
                     self.makePatch_alignedToLine(apexZ0 = shifted_Align, ppl = ppl, z_top = newZtop, leftRight = (not shiftOriginal))
                     self.patches[-1].getShadows(z_top_min,z_top_max)
                     if shiftOriginal:
                         original_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
                         original_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                        original_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
+                        original_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
                     else :
                         complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
                         complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
+                        complementary_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
+                        complementary_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+
                     horizontalShiftTop = original_topR_jL - complementary_topR_jR
                     horizontalShiftBottom = original_topL_jL - complementary_topL_jR
+                    horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
+                    horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
+                    """
+                    if (makeHorizontallyShiftedPatch):
+                        if (horizontalOverlapTop > 0) or (horizontalOverlapBottom > 0):
+                            del self.patches[-1]
+                            self.n_patches -= 1        
+                        else:
+                            if (len(self.patches) > 1):
+                                del self.patches[-2]
+                                self.n_patches -= 1
+                    """
+                    print('original_topR_jL:',original_topR_jL,'complementary_topR_jR',complementary_topR_jR,'original_topL_jL',original_topL_jL,'complementary_topL_jR',complementary_topL_jR,'shiftOriginal',shiftOriginal)
                     makeHorizontallyShiftedPatch = True
                 if (makeHorizontallyShiftedPatch):
                     if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) > self.env.beam_axis_lim)) and shiftOriginal:
-                        del self.patches[-3]
-                        self.n_patches -= 1
+                        if (len(self.patches) > 2):
+                            del self.patches[-3]
+                            self.n_patches -= 1
                     #if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) < -self.env.beam_axis_lim)) and (not shiftOriginal):
                         #del self.patches[-2]
                         #self.n_patches -= 1
@@ -1302,7 +1342,7 @@ class wedgeCover():
         apexZ0 = saved_apexZ0
         print('z1_Align: ', apexZ0)
     
-      #for i in range(15):
+      #for i in range(3):
         #del self.patches[-1]                                                                                                  
       #for i in range(34):
         #del self.patches[-1]                                                                                                  
@@ -1563,6 +1603,7 @@ class wedgeCover():
         #row_data[layer] contains spacepoints for each layer
         row_data = self.data.array
         #loops through each layer and picks n points closest to (z0, 0) and (-100, 25)
+        #for row in range(self.env.num_layers-1,-1,-1):
         for row in range(self.env.num_layers):
             y = self.env.radii[row]
             #create compatible arrays from data structure
@@ -1590,7 +1631,6 @@ class wedgeCover():
                         start_index -= 1
                     pass
                 #add superpoint to patch
-
                 if start_index + ppl > right_bound + 1:
                     init_patch.append(wedgeSuperPoint(row_data[row][right_bound+1-ppl:right_bound+1]))
                 else:
@@ -1599,17 +1639,22 @@ class wedgeCover():
             else:
                 #add one to stop index in case it is left of the line from (z0, 0) to (100, 25)
                 if start_index != len(row_list)-1:
-                    #print('row',row+1,'start_index',start_index,'start_value',start_value)
+                    print('row',row+1,'start_index',start_index,'start_value',start_value,'z:',row_list[start_index])
                     if start_value < -alignmentAccuracy:
                         start_index += 1
-                        #start_value = row_list[start_index] - projectionToRow
-                        #print('row',row+1,'start_index',start_index,'start_value',start_value)
+                        start_value = row_list[start_index] - projectionToRow
+                        print('row',row+1,'updated start_index',start_index,'start_value',start_value,'z:',row_list[start_index])
+                #add superpoint to patch 
                 if start_index - ppl + 1 < left_bound:
                     init_patch.append(wedgeSuperPoint(row_data[row][left_bound:left_bound+ppl]))
-                #add superpoint
                 else:
                     init_patch.append(wedgeSuperPoint(row_data[row][start_index-ppl+1:start_index+1]))
-
+                    
+            #if (row == self.env.num_layers-1):
+                # update z_top to the nearest point's coordinate in outermost layer so that other layers' points are accurately aligned
+                #z_top = row_list[start_index]                
+                
+        #init_patch.reverse() # reverse the order of rows to make ascending order
         #add patch to cover
         self.add_patch(wedgePatch(self.env, tuple(init_patch), apexZ0=apexZ0))
 

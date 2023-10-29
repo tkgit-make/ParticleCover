@@ -1,17 +1,9 @@
 wedge:  2820
-row 1 start_index 57 start_value 0.0 z: 22.0001
-row 2 start_index 79 start_value 2.49999999972772e-05 z: 29.0001
-row 3 start_index 61 start_value 5.000000000165983e-05 z: 36.0001
-row 4 start_index 60 start_value 7.500000000959517e-05 z: 43.0001
-row 5 start_index 77 start_value 0.00010000000000331966 z: 50.0001
 top layer from  50.0001  to  6.81939  z_top_max:  50
 original: (11.1344, 50.0001) for patch 1
 original: (22.0001, 50.0001)
 original: (11.1344, 19.0386)
 original: (22.0001, 8.172899999999998)
-2 superpoint: 9.66948 29.0001 shadowTop from L1Max: -27.32238 50.0001 from L1Min: 5.274720000000002 82.5972
-3 superpoint: 15.0865 36.0001 shadowTop from L1Max: 8.172899999999998 50.0001 from L1Min: 19.0386 60.86580000000001
-4 superpoint: 11.4001 43.0001 shadowTop from L1Max: 7.866766666666667 50.0001 from L1Min: 11.488666666666667 53.622
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  9.158349999999999 notChoppedPatch False
 z_top_min before: -50 superpoints[self.env.num_layers-1].min: 6.81939
 complementary:  (11.1344, 45.1656)  for z_top_min: 6.81939
@@ -357,21 +349,11 @@ adjusted complementary:  (22.0001, -10.642100000000003)
 originalPartialTop: False complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False 11.1344 74.768386 -65.8832 22.0001 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
 c_corner:  -9.722662
 z1_Align:  11.1344
-row 1 start_index 42 start_value 0.0 z: 11.1344
-row 2 start_index 74 start_value -0.4537000000000013 z: 20.3971
-row 2 updated start_index 75 start_value 1.4102999999999994 z: 22.2611
-row 3 start_index 58 start_value -0.4131999999999998 z: 30.154
-row 3 updated start_index 59 start_value 0.8798999999999992 z: 31.4471
-row 4 start_index 57 start_value 0.7629000000000019 z: 41.0465
-row 5 start_index 77 start_value 0.00010000000000331966 z: 50.0001
 top layer from  50.0001  to  6.81939  z_top_max:  50
 original: (-1.79006, 50.0001) for patch 3
 original: (11.1344, 50.0001)
 original: (-1.79006, 28.889059999999997)
 original: (11.1344, 11.895)
-2 superpoint: 5.87972 22.2611 shadowTop from L1Max: -9.884319999999999 55.6412 from L1Min: 28.889059999999997 94.41458
-3 superpoint: 11.5147 31.4471 shadowTop from L1Max: 11.895 51.7598 from L1Min: 24.81946 64.68426
-4 superpoint: 4.25849 41.0465 shadowTop from L1Max: 1.966520000000001 51.0172 from L1Min: 6.274673333333332 55.32535333333333
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -9.459840000000003 notChoppedPatch False
 z_top_min before: -50 superpoints[self.env.num_layers-1].min: 6.81939
 complementary:  (-1.79006, 35.198060000000005)  for z_top_min: 6.81939
@@ -512,20 +494,11 @@ adjusted complementary:  (-1.79006, 3.2017979999999997)
 adjusted complementary:  (11.1344, -0.8154719999999998)
 originalPartialTop: True complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False -1.7900599999999969 19.827602 -19.826999999999998 11.1344 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
 c_corner:  3.2017979999999997
-row 1 start_index 42 start_value 0.0 z: 11.1344
-row 2 start_index 62 start_value 0.3125705000000014 z: 9.46382
-row 3 start_index 42 start_value 0.12814100000000028 z: 7.29624
-row 4 start_index 42 start_value -0.9264584999999999 z: 4.25849
-row 4 updated start_index 43 start_value 2.0873215 z: 7.27227
-row 5 start_index 59 start_value 0.2747420000000007 z: 3.47654
 top layer from  3.47654  to  -23.1348  z_top_max:  3.2017979999999997
 original: (-1.79006, 3.4765400000000004) for patch 5
 original: (11.1344, 3.4580800000000007)
 original: (-1.79006, -8.57044)
 original: (11.1344, -21.4949)
-2 superpoint: -6.28183 9.46382 shadowTop from L1Max: -58.530519999999996 4.452080000000002 from L1Min: -19.757140000000003 43.225460000000005
-3 superpoint: -5.18025 7.29624 shadowTop from L1Max: -21.4949 3.4580800000000007 from L1Min: -8.57044 16.38254
-4 superpoint: -22.5785 7.27227 shadowTop from L1Max: -33.816133333333326 5.984893333333334 from L1Min: -29.507979999999996 10.293046666666665
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -0.09496500000000019 notChoppedPatch False
 z_top_min before: 3.2017979999999997 superpoints[self.env.num_layers-1].min: -23.1348
 complementary:  (-1.79006, 3.4765400000000004)  for z_top_min: -23.1348
@@ -798,20 +771,11 @@ adjusted complementary:  (-1.79006, -34.5054)
 adjusted complementary:  (11.1344, -34.5054)
 originalPartialTop: False complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False -1.79006 24.1449 -13.516017999999999 11.1344 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
 c_corner:  -34.5054
-row 1 start_index 42 start_value 0.0 z: 11.1344
-row 2 start_index 56 start_value -0.47655399999999914 z: -0.752104
-row 2 updated start_index 57 start_value 3.354310000000001 z: 3.07876
-row 3 start_index 26 start_value 1.0252000000000017 z: -10.6603
-row 4 start_index 28 start_value 0.5169500000000014 z: -22.5785
-row 5 start_index 40 start_value 0.0 z: -34.5054
 top layer from  -17.4815  to  -50.0001  z_top_max:  -34.5054
 original: (-1.79006, -17.4815) for patch 7
 original: (11.1344, -21.088160000000002)
 original: (-1.79006, -39.374219999999994)
 original: (11.1344, -50.0001)
-2 superpoint: -11.1861 3.07876 shadowTop from L1Max: -78.1476 -21.088160000000002 from L1Min: -39.374219999999994 17.685219999999997
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -83.1346 -13.280560000000001 from L1Min: -70.21014000000001 -0.3561000000000001
-4 superpoint: -43.0001 -5.55239 shadowTop from L1Max: -61.04493333333333 -11.11465333333333 from L1Min: -56.73678 -6.8065
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  7.605980000000002 notChoppedPatch False
 z_top_min before: -34.5054 superpoints[self.env.num_layers-1].min: -50.0001
 complementary:  (-1.79006, -17.4815)  for z_top_min: -50
@@ -820,21 +784,11 @@ complementary:  (-1.79006, -50.0001)
 complementary:  (11.1344, -50.0001)
 c_corner:  -50.0001
 z1_Align:  -1.79006
-row 1 start_index 27 start_value 0.0 z: -1.79006
-row 2 start_index 67 start_value -0.5725549999999995 z: 10.5849
-row 2 updated start_index 68 start_value 1.1587450000000015 z: 12.3162
-row 3 start_index 55 start_value 0.7034300000000009 z: 24.8084
-row 4 start_index 56 start_value -2.878284999999998 z: 34.1742
-row 4 updated start_index 57 start_value 3.9940150000000045 z: 41.0465
-row 5 start_index 77 start_value 0.00010000000000331966 z: 50.0001
 top layer from  50.0001  to  6.81939  z_top_max:  50
 original: (-13.0433, 50.0001) for patch 9
 original: (-1.79006, 50.0001)
 original: (-13.0433, 26.708219999999997)
 original: (-1.79006, 15.454979999999999)
-2 superpoint: -3.59801 12.3162 shadowTop from L1Max: -9.02186 54.634980000000006 from L1Min: 24.737859999999998 88.3947
-3 superpoint: 6.83246 24.8084 shadowTop from L1Max: 15.454979999999999 51.40686 from L1Min: 26.708219999999997 62.6601
-4 superpoint: 4.25849 41.0465 shadowTop from L1Max: 6.274673333333332 55.32535333333333 from L1Min: 10.025753333333332 59.07643333333333
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -22.981180000000002 notChoppedPatch False
 z_top_min before: -50 superpoints[self.env.num_layers-1].min: 6.81939
 complementary:  (-13.0433, 27.635779999999997)  for z_top_min: 6.81939
@@ -1085,20 +1039,11 @@ adjusted complementary:  (-13.0433, -3.05542)
 adjusted complementary:  (-1.79006, -4.70568)
 originalPartialTop: False complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False -13.043300000000002 26.20022 -78.6688 -1.79006 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
 c_corner:  -3.05542
-row 1 start_index 27 start_value 0.0 z: -1.79006
-row 2 start_index 55 start_value -0.9020800000000002 z: -3.00848
-row 2 updated start_index 56 start_value 1.3542959999999997 z: -0.752104
-row 3 start_index 28 start_value 0.3150599999999999 z: -2.10768
-row 4 start_index 39 start_value 0.3658099999999993 z: -2.37327
-row 5 start_index 57 start_value 0.36043999999999965 z: -2.69498
 top layer from  -2.69498  to  -33.8354  z_top_max:  -3.05542
 original: (-13.0433, -2.6949799999999993) for patch 11
 original: (-1.79006, -2.69498)
 original: (-13.0433, -9.8545)
 original: (-1.79006, -33.8354)
-2 superpoint: -12.2461 -0.752104 shadowTop from L1Max: -43.614219999999996 2.3617639999999995 from L1Min: -9.8545 36.121484
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -70.21014000000001 -0.3561000000000001 from L1Min: -58.956900000000005 10.897140000000002
-4 superpoint: -33.7983 -2.37327 shadowTop from L1Max: -44.46771333333333 -2.5676733333333335 from L1Min: -40.71663333333333 1.1834066666666665
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -13.8405 notChoppedPatch False
 z_top_min before: -3.05542 superpoints[self.env.num_layers-1].min: -33.8354
 complementary:  (-13.0433, -2.6949799999999993)  for z_top_min: -33.8354
@@ -1326,38 +1271,19 @@ adjusted complementary:  (-1.79006, -24.22022) for patch 12
 adjusted complementary:  (-13.0433, -45.3554)
 adjusted complementary:  (-1.79006, -45.3554)
 c_corner:  -45.3554
-row 1 start_index 27 start_value 0.0 z: -1.79006
-row 2 start_index 41 start_value 0.43529500000000176 z: -12.2461
-row 3 start_index 20 start_value -0.8109699999999975 z: -24.3837
-row 3 updated start_index 21 start_value 7.314630000000005 z: -16.2581
-row 4 start_index 24 start_value 0.6657650000000075 z: -33.7983
-row 5 start_index 37 start_value 0.0 z: -45.3554
 top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
 original: (-13.0433, -17.4815) for patch 13
 original: (-1.79006, -43.614219999999996)
 original: (-13.0433, -50.0001)
 original: (-1.79006, -50.0001)
-2 superpoint: -24.3077 -12.2461 shadowTop from L1Max: -91.86062 -43.614219999999996 from L1Min: -58.1009 -9.8545
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -70.21014000000001 -0.3561000000000001 from L1Min: -58.956900000000005 10.897140000000002
-4 superpoint: -43.0001 -5.55239 shadowTop from L1Max: -56.73678 -6.8065 from L1Min: -52.9857 -3.05542
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -3.8041000000000054 notChoppedPatch True
 c_corner:  -50.0001
 z1_Align:  -13.0433
-row 1 start_index 12 start_value 0.0 z: -13.0433
-row 2 start_index 42 start_value -0.09949999999999903 z: -11.1861
-row 2 updated start_index 43 start_value 1.372770000000001 z: -9.71383
-row 3 start_index 26 start_value -1.5303999999999984 z: -10.6603
-row 3 updated start_index 27 start_value 3.949650000000001 z: -5.18025
-row 4 start_index 35 start_value 0.22416000000000125 z: -6.94904
-row 5 start_index 56 start_value 0.5108200000000016 z: -4.70568
 top layer from  -4.70568  to  -33.9894  z_top_max:  -5.216500000000002
 original: (-22.0001, -4.705680000000001) for patch 14
 original: (-4.53043, -25.264029999999998)
 original: (-22.0001, -27.616899999999998)
 original: (-4.53043, -33.9894)
-2 superpoint: -23.4043 -9.71383 shadowTop from L1Max: -80.02591 -25.264029999999998 from L1Min: -27.616899999999998 27.14498
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -67.46977000000001 2.38427 from L1Min: -50.0001 19.853939999999998
-4 superpoint: -43.0001 -5.55239 shadowTop from L1Max: -55.823323333333335 -5.893043333333333 from L1Min: -50.0001 -0.06982
 squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -20.5959 notChoppedPatch False
 z_top_min before: -50 superpoints[self.env.num_layers-1].min: -33.9894
 complementary:  (-22.0001, -4.705680000000001)  for z_top_min: -33.9894
@@ -1365,68 +1291,135 @@ complementary:  (-4.53043, -33.9894) for patch 15
 complementary:  (-22.0001, -33.9894)
 complementary:  (-4.53043, -33.9894)
 c_corner:  -33.9894
-row 1 start_index 12 start_value 0.0 z: -13.0433
-row 2 start_index 36 start_value 0.003325000000003797 z: -18.2765
-row 3 start_index 20 start_value -0.8673499999999983 z: -24.3837
-row 3 updated start_index 21 start_value 7.258250000000004 z: -16.2581
-row 4 start_index 25 start_value -1.7195249999999973 z: -30.4724
-row 4 updated start_index 26 start_value 3.039875000000002 z: -25.713
-row 5 start_index 41 start_value 0.0 z: -33.9894
 top layer from  -17.4815  to  -50.0001  z_top_max:  -33.9894
 original: (-22.0001, -17.4815) for patch 16
 original: (-4.53043, -37.38290000000001)
 original: (-22.0001, -37.38290000000001)
 original: (-4.53043, -37.38290000000001)
-2 superpoint: -25.8458 -18.2765 shadowTop from L1Max: -89.79191 -59.51471 from L1Min: -37.38290000000001 -7.105699999999995
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -67.46977000000001 2.38427 from L1Min: -50.0001 19.853939999999998
-4 superpoint: -43.0001 -5.55239 shadowTop from L1Max: -55.823323333333335 -5.893043333333333 from L1Min: -50.0001 -0.06982
 squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -18.1544 notChoppedPatch False
 complementary:  (-22.0001, -7.272490000000001)  for z_top_min: -37.38290000000001
 complementary:  (-4.53043, -37.38290000000001) for patch 17
 complementary:  (-22.0001, -37.38290000000001)
 complementary:  (-4.53043, -37.38290000000001)
 c_corner:  -37.38290000000001
-row 1 start_index 12 start_value 0.0 z: -13.0433
-row 2 start_index 35 start_value 0.4692000000000007 z: -18.659
-row 3 start_index 19 start_value -0.3344999999999949 z: -25.5476
-row 3 updated start_index 20 start_value 0.8294000000000032 z: -24.3837
-row 4 start_index 25 start_value 0.8256000000000014 z: -30.4724
-row 5 start_index 40 start_value 2.877500000000005 z: -34.5054
 top layer from  -17.4815  to  -50.0001  z_top_max:  -37.38290000000001
 original: (-22.0001, -17.4815) for patch 18
 original: (-4.53043, -38.6901)
 original: (-22.0001, -38.6901)
 original: (-4.53043, -38.6901)
-2 superpoint: -26.1726 -18.659 shadowTop from L1Max: -91.09911 -61.04471 from L1Min: -38.6901 -8.635699999999996
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -67.46977000000001 2.38427 from L1Min: -50.0001 19.853939999999998
-4 superpoint: -43.0001 -5.55239 shadowTop from L1Max: -55.823323333333335 -5.893043333333333 from L1Min: -50.0001 -0.06982
 squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -17.8276 notChoppedPatch False
 complementary:  (-22.0001, -8.635699999999996)  for z_top_min: -38.6901
 complementary:  (-4.53043, -38.6901) for patch 19
 complementary:  (-22.0001, -38.6901)
 complementary:  (-4.53043, -38.6901)
 c_corner:  -38.6901
-row 1 start_index 12 start_value 0.0 z: -13.0433
-row 2 start_index 34 start_value -0.38340000000000174 z: -19.8384
-row 2 updated start_index 35 start_value 0.7959999999999994 z: -18.659
-row 3 start_index 19 start_value 0.31909999999999883 z: -25.5476
-row 4 start_index 24 start_value -1.5198999999999998 z: -33.7983
-row 4 updated start_index 25 start_value 1.8059999999999974 z: -30.4724
-row 5 start_index 39 start_value -1.8133000000000052 z: -40.5034
-row 5 updated start_index 40 start_value 4.184699999999992 z: -34.5054
 top layer from  -17.4815  to  -50.0001  z_top_max:  -38.6901
 original: (-22.0001, -17.4815) for patch 20
 original: (-4.53043, -38.6901)
 original: (-22.0001, -38.6901)
 original: (-4.53043, -38.6901)
-2 superpoint: -26.1726 -18.659 shadowTop from L1Max: -91.09911 -61.04471 from L1Min: -38.6901 -8.635699999999996
-3 superpoint: -36.0001 -1.07308 shadowTop from L1Max: -67.46977000000001 2.38427 from L1Min: -50.0001 19.853939999999998
-4 superpoint: -43.0001 -5.55239 shadowTop from L1Max: -55.823323333333335 -5.893043333333333 from L1Min: -50.0001 -0.06982
 squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -17.8276 notChoppedPatch False
-z_top_min before: -38.6901 superpoints[self.env.num_layers-1].min: -50.0001
-complementary:  (-22.0001, -21.916499999999996)  for z_top_min: -50
-complementary:  (-4.53043, -50.0001) for patch 21
-complementary:  (-22.0001, -50.0001)
-complementary:  (-4.53043, -50.0001)
-c_corner:  -50.0001
+complementary:  (-22.0001, -8.635699999999996)  for z_top_min: -38.6901
+complementary:  (-4.53043, -38.6901) for patch 21
+complementary:  (-22.0001, -38.6901)
+complementary:  (-4.53043, -38.6901)
+-40.5034 -7.27249  repeat_patch:  True
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-22.0001, -17.4815) for patch 22
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 23
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+c_corner:  -46.626900000000006
+top layer from  -17.4815  to  -50.0001  z_top_max:  -46.626900000000006
+original: (-22.0001, -17.4815) for patch 24
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 25
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+-47.3505 -10.6421  repeat_patch:  True
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-22.0001, -17.4815) for patch 26
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 27
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+c_corner:  -46.626900000000006
+top layer from  -17.4815  to  -50.0001  z_top_max:  -46.626900000000006
+original: (-22.0001, -17.4815) for patch 28
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 29
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+-47.3505 -10.6421  repeat_patch:  True
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-22.0001, -17.4815) for patch 30
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 31
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+c_corner:  -46.626900000000006
+top layer from  -17.4815  to  -50.0001  z_top_max:  -46.626900000000006
+original: (-22.0001, -17.4815) for patch 32
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 33
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+-47.3505 -10.6421  repeat_patch:  True
+c_corner:  -45.3554
 z1_Align:  -22.0001
+wedge:  2820  underEfficiency percentage_accepted:  97.96700000000001  z0: -14.95
+segment: -47.967 50
+wedge:  2820  underEfficiency percentage_accepted:  98.042  z0: -14.899999999999999
+segment: -48.042 50
+wedge:  2820  underEfficiency percentage_accepted:  98.117  z0: -14.849999999999998
+segment: -48.117000000000004 50
+wedge:  2820  underEfficiency percentage_accepted:  98.19200000000001  z0: -14.799999999999997
+segment: -48.19200000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.26700000000001  z0: -14.749999999999996
+segment: -48.26700000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.34200000000001  z0: -14.699999999999996
+segment: -48.342000000000006 50
+wedge:  2820  underEfficiency percentage_accepted:  98.417  z0: -14.649999999999995
+segment: -48.417 50
+wedge:  2820  underEfficiency percentage_accepted:  98.49200000000002  z0: -14.599999999999994
+segment: -48.49200000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.56700000000001  z0: -14.549999999999994
+segment: -48.56700000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.64200000000001  z0: -14.499999999999993
+segment: -48.64200000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.71700000000001  z0: -14.449999999999992
+segment: -48.71700000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.792  z0: -14.399999999999991
+segment: -48.792000000000016 50
+wedge:  2820  underEfficiency percentage_accepted:  98.86700000000002  z0: -14.34999999999999
+segment: -48.86700000000002 50
+wedge:  2820  underEfficiency percentage_accepted:  98.94200000000001  z0: -14.29999999999999
+segment: -48.942000000000014 50

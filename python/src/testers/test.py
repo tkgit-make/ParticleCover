@@ -132,7 +132,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 total_measure = unionOfLineSegments(list_of_z0intersections)
                 #print('total_measure:',total_measure)
                 percentage_accepted = 100.0*total_measure/(2.0 * patch.env.top_layer_lim)
-                if (percentage_accepted < 98.0) and (abs(z0) < z0_luminousRegion):
+                if (percentage_accepted < 99.0) and (abs(z0) < z0_luminousRegion):
                     print('wedge: ', k, ' underEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
                     z0Imperfect.append(z0)
                     for seg in list_of_z0intersectionsCopy:
