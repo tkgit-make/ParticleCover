@@ -1264,11 +1264,21 @@ class wedgeCover():
                 original_topR_jR = self.patches[-2].shadow_fromTopToInnermost_topR_jR
                 original_topL_jR = self.patches[-2].shadow_fromTopToInnermost_topL_jR
 
+                originalSaved_topR_jR = original_topR_jR
+                originalSaved_topL_jR = original_topL_jR
+                originalSaved_topR_jL = original_topR_jL
+                originalSaved_topL_jL = original_topL_jL
+                
+                complementarySaved_topR_jL = complementary_topR_jL
+                complementarySaved_topL_jL = complementary_topL_jL
+                
                 horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
                 horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
                 horizontalOverlapTop = -1
                 horizontalOverlapBottom = -1
-
+                newGapTop = -0.000001
+                newGapBottom = -0.000001
+                
                 makeHorizontallyShiftedPatch = False
                 shifted_Align = apexZ0
                 doShiftedPatch = True
@@ -1284,13 +1294,13 @@ class wedgeCover():
                     shiftOriginal = True
                     shifted_Align = apexZ0
 
-                if (horizontalShiftTop > 0 and horizontalShiftBottom > 0):
+                if (horizontalShiftTop > 0 or horizontalShiftBottom > 0):
                     print('originalPartialTop:',originalPartialTop,'complementaryPartialTop:',complementaryPartialTop,'originalPartialBottom:',originalPartialBottom,'complementaryPartialBottom:',complementaryPartialBottom, original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR,'horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
-                while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch and (horizontalOverlapTop <= 0) and (horizontalOverlapBottom <= 0):
+                while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch and (horizontalOverlapTop <= 0) and (horizontalOverlapBottom <= 0) and (newGapTop<0 or newGapBottom<0):
                     print('horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
                     newZtop = z_top_max
                     if shiftOriginal:
-                        shifted_Align -= max(horizontalShiftTop,horizontalShiftBottom)
+                        shifted_Align -= max(horizontalShiftTop,horizontalShiftBottom) #+ min(newGapTop,newGapBottom)
                     else :
                         shifted_Align += max(horizontalShiftTop,horizontalShiftBottom)
                         newZtop = z_top_min
@@ -1312,8 +1322,20 @@ class wedgeCover():
 
                     horizontalShiftTop = original_topR_jL - complementary_topR_jR
                     horizontalShiftBottom = original_topL_jL - complementary_topL_jR
-                    horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
-                    horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
+                    if (shiftOriginal and self.patches[-1].straightLineProjectorFromLayerIJtoK(original_topR_jR,z_top_max,1,self.env.num_layers,0)<self.env.beam_axis_lim):
+                        horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
+                        horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
+                        print('horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
+
+                    """    
+                    if shiftOriginal:
+                        newGapTop = original_topR_jR - originalSaved_topR_jL
+                        newGapBottom = original_topL_jR - originalSaved_topL_jL
+                    else:
+                        newGapTop = complementary_topR_jL - complementarySaved_topR_jR
+                        newGapBottom = complementary_topL_jL - complementarySaved_topL_jR
+                    print('newGapTop:',newGapTop,'newGapBottom:',newGapBottom)
+                    """
                     """
                     if (makeHorizontallyShiftedPatch):
                         if (horizontalOverlapTop > 0) or (horizontalOverlapBottom > 0):
@@ -1326,6 +1348,7 @@ class wedgeCover():
                     """
                     print('original_topR_jL:',original_topR_jL,'complementary_topR_jR',complementary_topR_jR,'original_topL_jL',original_topL_jL,'complementary_topL_jR',complementary_topL_jR,'shiftOriginal',shiftOriginal)
                     makeHorizontallyShiftedPatch = True
+                    print('updated_horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
                 if (makeHorizontallyShiftedPatch):
                     if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) > self.env.beam_axis_lim)) and shiftOriginal:
                         if (len(self.patches) > 2):
@@ -1336,11 +1359,11 @@ class wedgeCover():
                         #self.n_patches -= 1
                         
             z_top_max = c_corner
-            print('c_corner: ', c_corner)
+            print('+++++++++++++++++++++++ c_corner: ', c_corner)
 
         apexZ0 = self.patches[-1].c_corner[0]
         apexZ0 = saved_apexZ0
-        print('z1_Align: ', apexZ0)
+        print('=======================================================  z1_Align: ', apexZ0)
     
       #for i in range(3):
         #del self.patches[-1]                                                                                                  
