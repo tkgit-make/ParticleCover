@@ -7,17 +7,24 @@ class lineSegment():
         
         # the min and max z5 values that are accepted by 1 parallelogram
         
-        if min_z5_accepted > max_z5_accepted: 
+        if min_z5_accepted > max_z5_accepted:
+            print('min_z5_accepted:', min_z5_accepted, 'max_z5_accepted:',max_z5_accepted)
             raise Exception("The minimum z5 accepted is greater than the maximum z5 accepted.")
         
         self.min_z5_accepted = min_z5_accepted
         self.max_z5_accepted = max_z5_accepted
         
     
-def intersection(env:Environment, lineSegments:list): 
-    
-    if len(lineSegments) != env.num_layers - 1: 
-        raise Exception("The number of line segments does not match the number of layers in the environment minus 1")
+def intersection(env:Environment, lineSegments:list, forParallelograms:bool): 
+
+    # This is for when there are 4 cross sections, one per parallelogram
+    if (forParallelograms):
+        if len(lineSegments) != env.num_layers - 1: 
+            raise Exception("The number of line segments does not match the number of layers in the environment minus 1")
+    else:    
+        # This is for when there are 5 shadows, one per superpoint, projected onto layer 5
+        if len(lineSegments) != env.num_layers: 
+            raise Exception("The number of line segments does not match the number of layers in the environment")
     
     all_minimums = [lineSeg.min_z5_accepted for lineSeg in lineSegments]
     all_maximums = [lineSeg.max_z5_accepted for lineSeg in lineSegments]

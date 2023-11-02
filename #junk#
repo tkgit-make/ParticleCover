@@ -1,0 +1,1425 @@
+wedge:  2820
+top layer from  50.0001  to  6.81939  z_top_max:  50
+original: (11.1344, 50.0001) for patch 1
+original: (22.0001, 50.0001)
+original: (11.1344, 19.0386)
+original: (22.0001, 8.172899999999998)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  9.158349999999999 notChoppedPatch False
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: 6.81939
+complementary:  (11.1344, 45.1656)  for z_top_min: 6.81939
+complementary:  (22.0001, 34.299899999999994) for patch 2
+complementary:  (11.1344, 6.81939)
+complementary:  (22.0001, 6.81939)
+
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994
+current white_space_height:  -26.126999999999995
+counter:  0  counterUpshift:  0
+orig_ztop:  62 orig_z_top_min:  6.81939
+1  new_z_i_atTop:  5.274720000000002  shift_i_ztop:  -1.5446699999999982  layerWithSmallestShift:  4
+2  new_z_i_atTop:  3.4580800000000007  shift_i_ztop:  -3.3613099999999996  layerWithSmallestShift:  4
+3  new_z_i_atTop:  5.984893333333334  shift_i_ztop:  -0.8344966666666664  layerWithSmallestShift:  4
+4  new_z_i_atTop:  6.2884  shift_i_ztop:  -0.5309900000000001  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  61  new_z_i_index:  (41, 64, 42, 43, 61)  new_z_top_min:  6.2884  shift_ztop: -0.5309900000000001
+deleted complementary:  (11.1344, 45.1656) for patch 2
+deleted complementary:  (22.0001, 34.299899999999994)
+deleted complementary:  (11.1344, 6.81939)
+deleted complementary:  (22.0001, 6.81939)
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994  new z_top_min:  6.2884
+new white_space_height:  -26.126999999999995
+adjusted complementary:  (11.1344, 45.1656)  for z_top_min: 6.2884
+adjusted complementary:  (22.0001, 34.299899999999994) for patch 2
+adjusted complementary:  (11.1344, 6.2884)
+adjusted complementary:  (22.0001, 6.288399999999999)
+
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994
+current white_space_height:  -26.126999999999995
+counter:  1  counterUpshift:  0
+orig_ztop:  61 orig_z_top_min:  6.2884
+1  new_z_i_atTop:  5.274720000000002  shift_i_ztop:  -1.0136799999999981  layerWithSmallestShift:  1
+2  new_z_i_atTop:  3.4580800000000007  shift_i_ztop:  -2.8303199999999995  layerWithSmallestShift:  1
+3  new_z_i_atTop:  1.966520000000001  shift_i_ztop:  -4.321879999999999  layerWithSmallestShift:  1
+4  new_z_i_atTop:  3.8464100000000006  shift_i_ztop:  -2.4419899999999997  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 1.428310000000002
+new_ztop_index:  60  new_z_i_index:  (41, 64, 42, 42, 60)  new_z_top_min:  5.274720000000002  shift_ztop: -1.0136799999999981
+deleted complementary:  (11.1344, 45.1656) for patch 2
+deleted complementary:  (22.0001, 34.299899999999994)
+deleted complementary:  (11.1344, 6.2884)
+deleted complementary:  (22.0001, 6.288399999999999)
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994  new z_top_min:  5.274720000000002
+new white_space_height:  -26.126999999999995
+adjusted complementary:  (11.1344, 45.1656)  for z_top_min: 5.274720000000002
+adjusted complementary:  (22.0001, 34.299899999999994) for patch 2
+adjusted complementary:  (11.1344, 5.274720000000002)
+adjusted complementary:  (22.0001, 3.8464099999999988)
+
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994
+current white_space_height:  -26.126999999999995
+counter:  2  counterUpshift:  0
+orig_ztop:  61 orig_z_top_min:  5.274720000000002
+1  new_z_i_atTop:  4.9806799999999996  shift_i_ztop:  -0.2940400000000025  layerWithSmallestShift:  1
+2  new_z_i_atTop:  2.8493200000000005  shift_i_ztop:  -2.4254000000000016  layerWithSmallestShift:  1
+3  new_z_i_atTop:  1.966520000000001  shift_i_ztop:  -3.308200000000001  layerWithSmallestShift:  1
+4  new_z_i_atTop:  3.8464100000000006  shift_i_ztop:  -1.4283100000000015  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 1.1342699999999994
+new_ztop_index:  60  new_z_i_index:  (41, 63, 41, 42, 60)  new_z_top_min:  4.9806799999999996  shift_ztop: -0.2940400000000025
+deleted complementary:  (11.1344, 45.1656) for patch 2
+deleted complementary:  (22.0001, 34.299899999999994)
+deleted complementary:  (11.1344, 5.274720000000002)
+deleted complementary:  (22.0001, 3.8464099999999988)
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994  new z_top_min:  4.9806799999999996
+new white_space_height:  -26.126999999999995
+adjusted complementary:  (11.1344, 45.1656)  for z_top_min: 4.9806799999999996
+adjusted complementary:  (22.0001, 34.299899999999994) for patch 2
+adjusted complementary:  (11.1344, 4.9806799999999996)
+adjusted complementary:  (22.0001, 3.8464099999999988)
+
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994
+current white_space_height:  -26.126999999999995
+counter:  3  counterUpshift:  0
+orig_ztop:  60 orig_z_top_min:  4.9806799999999996
+1  new_z_i_atTop:  4.452080000000002  shift_i_ztop:  -0.5285999999999973  layerWithSmallestShift:  1
+2  new_z_i_atTop:  2.8493200000000005  shift_i_ztop:  -2.131359999999999  layerWithSmallestShift:  1
+3  new_z_i_atTop:  1.966520000000001  shift_i_ztop:  -3.0141599999999986  layerWithSmallestShift:  1
+4  new_z_i_atTop:  3.47654  shift_i_ztop:  -1.5041399999999996  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 0.9755400000000023
+new_ztop_index:  59  new_z_i_index:  (41, 62, 41, 42, 59)  new_z_top_min:  4.452080000000002  shift_ztop: -0.5285999999999973
+deleted complementary:  (11.1344, 45.1656) for patch 2
+deleted complementary:  (22.0001, 34.299899999999994)
+deleted complementary:  (11.1344, 4.9806799999999996)
+deleted complementary:  (22.0001, 3.8464099999999988)
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994  new z_top_min:  4.452080000000002
+new white_space_height:  -26.126999999999995
+adjusted complementary:  (11.1344, 45.1656)  for z_top_min: 4.452080000000002
+adjusted complementary:  (22.0001, 34.299899999999994) for patch 2
+adjusted complementary:  (11.1344, 4.452080000000002)
+adjusted complementary:  (22.0001, 3.8464099999999988)
+
+complementary_a: 45.1656   45.1656  || complementary_b: 34.299899999999994   34.299899999999994
+current white_space_height:  -26.126999999999995
+counter:  4  counterUpshift:  0
+orig_ztop:  60 orig_z_top_min:  4.452080000000002
+1  new_z_i_atTop:  -6.166599999999999  shift_i_ztop:  -10.618680000000001  layerWithSmallestShift:  4
+2  new_z_i_atTop:  2.8493200000000005  shift_i_ztop:  -1.6027600000000017  layerWithSmallestShift:  4
+3  new_z_i_atTop:  1.966520000000001  shift_i_ztop:  -2.4855600000000013  layerWithSmallestShift:  4
+4  new_z_i_atTop:  3.47654  shift_i_ztop:  -0.9755400000000023  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  59  new_z_i_index:  (41, 61, 41, 42, 59)  new_z_top_min:  3.47654  shift_ztop: -0.9755400000000023
+deleted complementary:  (11.1344, 45.1656) for patch 2
+deleted complementary:  (22.0001, 34.299899999999994)
+deleted complementary:  (11.1344, 4.452080000000002)
+deleted complementary:  (22.0001, 3.8464099999999988)
+complementary_a: 45.1656   45.1656  || complementary_b: 33.627700000000004   33.627700000000004  new z_top_min:  3.47654
+new white_space_height:  -25.454800000000006
+adjusted complementary:  (11.1344, 45.1656)  for z_top_min: 3.47654
+adjusted complementary:  (22.0001, 33.627700000000004) for patch 2
+adjusted complementary:  (11.1344, 3.47654)
+adjusted complementary:  (22.0001, 3.47654)
+
+complementary_a: 45.1656   45.1656  || complementary_b: 33.627700000000004   33.627700000000004
+current white_space_height:  -25.454800000000006
+counter:  5  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  3.47654
+1  new_z_i_atTop:  -6.166599999999999  shift_i_ztop:  -9.643139999999999  layerWithSmallestShift:  2
+2  new_z_i_atTop:  2.8493200000000005  shift_i_ztop:  -0.6272199999999994  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -4.2994959999999995  shift_i_ztop:  -7.7760359999999995  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -0.8154719999999998  shift_i_ztop:  -4.292012  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 3.6647920000000003
+new_ztop_index:  58  new_z_i_index:  (41, 61, 41, 41, 58)  new_z_top_min:  2.8493200000000005  shift_ztop: -0.6272199999999994
+deleted complementary:  (11.1344, 45.1656) for patch 2
+deleted complementary:  (22.0001, 33.627700000000004)
+deleted complementary:  (11.1344, 3.47654)
+deleted complementary:  (22.0001, 3.47654)
+complementary_a: 41.2242   41.2242  || complementary_b: 30.358500000000003   30.358500000000003  new z_top_min:  2.8493200000000005
+new white_space_height:  -22.185600000000004
+adjusted complementary:  (11.1344, 41.2242)  for z_top_min: 2.8493200000000005
+adjusted complementary:  (22.0001, 30.358500000000003) for patch 2
+adjusted complementary:  (11.1344, 2.8493200000000005)
+adjusted complementary:  (22.0001, -0.8154719999999998)
+
+complementary_a: 41.2242   41.2242  || complementary_b: 30.358500000000003   30.358500000000003
+current white_space_height:  -22.185600000000004
+counter:  6  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  2.8493200000000005
+1  new_z_i_atTop:  -6.166599999999999  shift_i_ztop:  -9.01592  layerWithSmallestShift:  2
+2  new_z_i_atTop:  2.530520000000001  shift_i_ztop:  -0.31879999999999953  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -4.2994959999999995  shift_i_ztop:  -7.148816  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -0.8154719999999998  shift_i_ztop:  -3.6647920000000003  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 3.3459920000000007
+new_ztop_index:  58  new_z_i_index:  (41, 61, 40, 41, 58)  new_z_top_min:  2.530520000000001  shift_ztop: -0.31879999999999953
+deleted complementary:  (11.1344, 41.2242) for patch 2
+deleted complementary:  (22.0001, 30.358500000000003)
+deleted complementary:  (11.1344, 2.8493200000000005)
+deleted complementary:  (22.0001, -0.8154719999999998)
+complementary_a: 38.4824   38.4824  || complementary_b: 27.616699999999998   27.616699999999998  new z_top_min:  2.530520000000001
+new white_space_height:  -19.4438
+adjusted complementary:  (11.1344, 38.4824)  for z_top_min: 2.530520000000001
+adjusted complementary:  (22.0001, 27.616699999999998) for patch 2
+adjusted complementary:  (11.1344, 2.530520000000001)
+adjusted complementary:  (22.0001, -0.8154719999999998)
+
+complementary_a: 38.4824   38.4824  || complementary_b: 27.616699999999998   27.616699999999998
+current white_space_height:  -19.4438
+counter:  7  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  2.530520000000001
+1  new_z_i_atTop:  -6.166599999999999  shift_i_ztop:  -8.69712  layerWithSmallestShift:  2
+2  new_z_i_atTop:  0.3125800000000005  shift_i_ztop:  -2.2179400000000005  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -4.2994959999999995  shift_i_ztop:  -6.8300160000000005  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -0.8154719999999998  shift_i_ztop:  -3.3459920000000007  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 1.1280520000000005
+new_ztop_index:  58  new_z_i_index:  (41, 61, 39, 41, 58)  new_z_top_min:  0.3125800000000005  shift_ztop: -2.2179400000000005
+deleted complementary:  (11.1344, 38.4824) for patch 2
+deleted complementary:  (22.0001, 27.616699999999998)
+deleted complementary:  (11.1344, 2.530520000000001)
+deleted complementary:  (22.0001, -0.8154719999999998)
+complementary_a: 33.5248   33.5248  || complementary_b: 22.6591   22.6591  new z_top_min:  0.3125800000000005
+new white_space_height:  -14.4862
+adjusted complementary:  (11.1344, 33.5248)  for z_top_min: 0.3125800000000005
+adjusted complementary:  (22.0001, 22.6591) for patch 2
+adjusted complementary:  (11.1344, 0.3125800000000005)
+adjusted complementary:  (22.0001, -0.8154719999999998)
+
+complementary_a: 33.5248   33.5248  || complementary_b: 22.6591   22.6591
+current white_space_height:  -14.4862
+counter:  8  counterUpshift:  0
+orig_ztop:  58 orig_z_top_min:  0.3125800000000005
+1  new_z_i_atTop:  -6.166599999999999  shift_i_ztop:  -6.4791799999999995  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -3.731959999999999  shift_i_ztop:  -4.04454  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -4.2994959999999995  shift_i_ztop:  -4.612076  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -2.694980000000001  shift_i_ztop:  -3.0075600000000016  layerWithSmallestShift:  4
+new_def_z_top_min_diff: -8.881784197001252e-16
+new_ztop_index:  57  new_z_i_index:  (41, 61, 38, 41, 57)  new_z_top_min:  -2.694980000000001  shift_ztop: -3.0075600000000016
+deleted complementary:  (11.1344, 33.5248) for patch 2
+deleted complementary:  (22.0001, 22.6591)
+deleted complementary:  (11.1344, 0.3125800000000005)
+deleted complementary:  (22.0001, -0.8154719999999998)
+complementary_a: 33.0086   33.0086  || complementary_b: 22.1429   22.1429  new z_top_min:  -2.694980000000001
+new white_space_height:  -13.970000000000002
+adjusted complementary:  (11.1344, 33.0086)  for z_top_min: -2.694980000000001
+adjusted complementary:  (22.0001, 22.1429) for patch 2
+adjusted complementary:  (11.1344, -2.694980000000001)
+adjusted complementary:  (22.0001, -2.694980000000001)
+
+complementary_a: 33.0086   33.0086  || complementary_b: 22.1429   22.1429
+current white_space_height:  -13.970000000000002
+counter:  9  counterUpshift:  0
+orig_ztop:  57 orig_z_top_min:  -2.694980000000001
+1  new_z_i_atTop:  -9.884319999999999  shift_i_ztop:  -7.189339999999998  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -4.94416  shift_i_ztop:  -2.249179999999999  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -5.015007999999998  shift_i_ztop:  -2.320027999999997  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -4.705680000000001  shift_i_ztop:  -2.0107  layerWithSmallestShift:  4
+new_def_z_top_min_diff: -8.881784197001252e-16
+new_ztop_index:  56  new_z_i_index:  (41, 60, 37, 40, 56)  new_z_top_min:  -4.705680000000001  shift_ztop: -2.0107
+deleted complementary:  (11.1344, 33.0086) for patch 2
+deleted complementary:  (22.0001, 22.1429)
+deleted complementary:  (11.1344, -2.694980000000001)
+deleted complementary:  (22.0001, -2.694980000000001)
+complementary_a: 31.037399999999998   31.037399999999998  || complementary_b: 20.171699999999998   20.171699999999998  new z_top_min:  -4.705680000000001
+new white_space_height:  -11.9988
+adjusted complementary:  (11.1344, 31.037399999999998)  for z_top_min: -4.705680000000001
+adjusted complementary:  (22.0001, 20.171699999999998) for patch 2
+adjusted complementary:  (11.1344, -4.705680000000001)
+adjusted complementary:  (22.0001, -4.705680000000001)
+
+complementary_a: 31.037399999999998   31.037399999999998  || complementary_b: 20.171699999999998   20.171699999999998
+current white_space_height:  -11.9988
+counter:  10  counterUpshift:  0
+orig_ztop:  56 orig_z_top_min:  -4.705680000000001
+1  new_z_i_atTop:  -9.884319999999999  shift_i_ztop:  -5.178639999999998  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -5.453699999999998  shift_i_ztop:  -0.7480199999999968  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -6.875826666666665  shift_i_ztop:  -2.170146666666664  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -6.161000000000001  shift_i_ztop:  -1.4553200000000004  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.7073000000000018
+new_ztop_index:  55  new_z_i_index:  (41, 60, 36, 39, 55)  new_z_top_min:  -5.453699999999998  shift_ztop: -0.7480199999999968
+deleted complementary:  (11.1344, 31.037399999999998) for patch 2
+deleted complementary:  (22.0001, 20.171699999999998)
+deleted complementary:  (11.1344, -4.705680000000001)
+deleted complementary:  (22.0001, -4.705680000000001)
+complementary_a: 26.873866666666665   26.873866666666665  || complementary_b: 17.8297   17.8297  new z_top_min:  -5.453699999999998
+new white_space_height:  -7.835266666666666
+adjusted complementary:  (11.1344, 26.873866666666665)  for z_top_min: -5.453699999999998
+adjusted complementary:  (22.0001, 17.8297) for patch 2
+adjusted complementary:  (11.1344, -5.453699999999998)
+adjusted complementary:  (22.0001, -6.160999999999998)
+
+complementary_a: 26.873866666666665   26.873866666666665  || complementary_b: 17.8297   17.8297
+current white_space_height:  -7.835266666666666
+counter:  11  counterUpshift:  0
+orig_ztop:  55 orig_z_top_min:  -5.453699999999998
+1  new_z_i_atTop:  -9.884319999999999  shift_i_ztop:  -4.430620000000001  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -5.476399999999998  shift_i_ztop:  -0.022700000000000387  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -6.875826666666665  shift_i_ztop:  -1.4221266666666672  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -7.272490000000001  shift_i_ztop:  -1.8187900000000035  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 1.7960900000000022
+new_ztop_index:  54  new_z_i_index:  (41, 60, 35, 39, 54)  new_z_top_min:  -5.476399999999998  shift_ztop: -0.022700000000000387
+deleted complementary:  (11.1344, 26.873866666666665) for patch 2
+deleted complementary:  (22.0001, 17.8297)
+deleted complementary:  (11.1344, -5.453699999999998)
+deleted complementary:  (22.0001, -6.160999999999998)
+complementary_a: 25.823   25.823  || complementary_b: 14.9573   14.9573  new z_top_min:  -5.476399999999998
+new white_space_height:  -6.7844000000000015
+adjusted complementary:  (11.1344, 25.823)  for z_top_min: -5.476399999999998
+adjusted complementary:  (22.0001, 14.9573) for patch 2
+adjusted complementary:  (11.1344, -5.476399999999998)
+adjusted complementary:  (22.0001, -6.160999999999998)
+
+complementary_a: 25.823   25.823  || complementary_b: 14.9573   14.9573
+current white_space_height:  -6.7844000000000015
+counter:  12  counterUpshift:  0
+orig_ztop:  55 orig_z_top_min:  -5.476399999999998
+1  new_z_i_atTop:  -9.884319999999999  shift_i_ztop:  -4.407920000000001  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -7.266680000000001  shift_i_ztop:  -1.7902800000000028  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -6.875826666666665  shift_i_ztop:  -1.3994266666666668  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -7.272490000000001  shift_i_ztop:  -1.796090000000003  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.39666333333333537
+new_ztop_index:  54  new_z_i_index:  (41, 60, 34, 39, 54)  new_z_top_min:  -6.875826666666665  shift_ztop: -1.3994266666666668
+deleted complementary:  (11.1344, 25.823) for patch 2
+deleted complementary:  (22.0001, 14.9573)
+deleted complementary:  (11.1344, -5.476399999999998)
+deleted complementary:  (22.0001, -6.160999999999998)
+complementary_a: 22.273600000000002   22.273600000000002  || complementary_b: 11.407900000000001   11.407900000000001  new z_top_min:  -6.875826666666665
+new white_space_height:  -3.235000000000003
+adjusted complementary:  (11.1344, 22.273600000000002)  for z_top_min: -6.875826666666665
+adjusted complementary:  (22.0001, 11.407900000000001) for patch 2
+adjusted complementary:  (11.1344, -6.875826666666665)
+adjusted complementary:  (22.0001, -7.272490000000001)
+
+complementary_a: 22.273600000000002   22.273600000000002  || complementary_b: 11.407900000000001   11.407900000000001
+current white_space_height:  -3.235000000000003
+counter:  13  counterUpshift:  0
+orig_ztop:  54 orig_z_top_min:  -6.875826666666665
+1  new_z_i_atTop:  -9.884319999999999  shift_i_ztop:  -3.008493333333334  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -7.83306  shift_i_ztop:  -0.9572333333333347  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -9.681706666666663  shift_i_ztop:  -2.8058799999999984  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -8.14367  shift_i_ztop:  -1.2678433333333352  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.3106100000000005
+new_ztop_index:  53  new_z_i_index:  (41, 60, 33, 38, 53)  new_z_top_min:  -7.83306  shift_ztop: -0.9572333333333347
+deleted complementary:  (11.1344, 22.273600000000002) for patch 2
+deleted complementary:  (22.0001, 11.407900000000001)
+deleted complementary:  (11.1344, -6.875826666666665)
+deleted complementary:  (22.0001, -7.272490000000001)
+complementary_a: 21.1164   21.1164  || complementary_b: 10.250699999999998   10.250699999999998  new z_top_min:  -7.83306
+new white_space_height:  -2.0778
+adjusted complementary:  (11.1344, 21.1164)  for z_top_min: -7.83306
+adjusted complementary:  (22.0001, 10.250699999999998) for patch 2
+adjusted complementary:  (11.1344, -7.83306)
+adjusted complementary:  (22.0001, -8.14367)
+
+complementary_a: 21.1164   21.1164  || complementary_b: 10.250699999999998   10.250699999999998
+current white_space_height:  -2.0778
+counter:  14  counterUpshift:  0
+orig_ztop:  53 orig_z_top_min:  -7.83306
+1  new_z_i_atTop:  -9.884319999999999  shift_i_ztop:  -2.051259999999999  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -8.642679999999999  shift_i_ztop:  -0.8096199999999989  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -9.681706666666663  shift_i_ztop:  -1.8486466666666637  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -8.784190000000002  shift_i_ztop:  -0.9511300000000027  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.14151000000000202
+new_ztop_index:  52  new_z_i_index:  (41, 60, 32, 38, 52)  new_z_top_min:  -8.642679999999999  shift_ztop: -0.8096199999999989
+deleted complementary:  (11.1344, 21.1164) for patch 2
+deleted complementary:  (22.0001, 10.250699999999998)
+deleted complementary:  (11.1344, -7.83306)
+deleted complementary:  (22.0001, -8.14367)
+complementary_a: 19.099   19.099  || complementary_b: 8.2333   8.2333  new z_top_min:  -8.642679999999999
+new white_space_height:  -0.06040000000000134
+adjusted complementary:  (11.1344, 19.099)  for z_top_min: -8.642679999999999
+adjusted complementary:  (22.0001, 8.2333) for patch 2
+adjusted complementary:  (11.1344, -8.642679999999999)
+adjusted complementary:  (22.0001, -8.784189999999999)
+
+complementary_a: 19.099   19.099  || complementary_b: 8.2333   8.2333
+current white_space_height:  -0.06040000000000134
+counter:  15  counterUpshift:  0
+orig_ztop:  52 orig_z_top_min:  -8.642679999999999
+1  new_z_i_atTop:  -10.494159999999997  shift_i_ztop:  -1.8514799999999987  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -9.722662  shift_i_ztop:  -1.079982000000001  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -9.939519999999998  shift_i_ztop:  -1.2968399999999995  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -10.6421  shift_i_ztop:  -1.9994200000000006  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.9194379999999995
+new_ztop_index:  51  new_z_i_index:  (41, 59, 31, 37, 51)  new_z_top_min:  -9.722662  shift_ztop: -1.079982000000001
+deleted complementary:  (11.1344, 19.099) for patch 2
+deleted complementary:  (22.0001, 8.2333)
+deleted complementary:  (11.1344, -8.642679999999999)
+deleted complementary:  (22.0001, -8.784189999999999)
+complementary_a: 19.0386   19.0386  || complementary_b: 8.172899999999998   8.172899999999998  new z_top_min:  -9.722662
+new white_space_height:  0.0
+adjusted complementary:  (11.1344, 19.0386)  for z_top_min: -9.722662
+adjusted complementary:  (22.0001, 8.172899999999998) for patch 2
+adjusted complementary:  (11.1344, -9.722662)
+adjusted complementary:  (22.0001, -10.642100000000003)
+originalPartialTop: False complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False 11.1344 74.768386 -65.8832 22.0001 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
+c_corner:  -9.722662
+z1_Align:  11.1344
+top layer from  50.0001  to  6.81939  z_top_max:  50
+original: (-1.79006, 50.0001) for patch 3
+original: (11.1344, 50.0001)
+original: (-1.79006, 28.889059999999997)
+original: (11.1344, 11.895)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -9.459840000000003 notChoppedPatch False
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: 6.81939
+complementary:  (-1.79006, 35.198060000000005)  for z_top_min: 6.81939
+complementary:  (11.1344, 22.273600000000002) for patch 4
+complementary:  (-1.79006, 6.81939)
+complementary:  (11.1344, 6.81939)
+
+original c: 28.889059999999997   28.889059999999997 || original d: 11.895   11.895
+complementary_a: 35.198060000000005   35.198060000000005  || complementary_b: 22.273600000000002   22.273600000000002
+current white_space_height:  -6.309000000000008
+counter:  0  counterUpshift:  0
+orig_ztop:  62 orig_z_top_min:  6.81939
+1  new_z_i_atTop:  -6.663740000000001  shift_i_ztop:  -13.483130000000001  layerWithSmallestShift:  4
+2  new_z_i_atTop:  5.657779999999999  shift_i_ztop:  -1.1616100000000014  layerWithSmallestShift:  4
+3  new_z_i_atTop:  0.008657333333333295  shift_i_ztop:  -6.8107326666666665  layerWithSmallestShift:  4
+4  new_z_i_atTop:  6.288399999999999  shift_i_ztop:  -0.530990000000001  layerWithSmallestShift:  4
+new_def_z_top_min_diff: -8.881784197001252e-16
+new_ztop_index:  61  new_z_i_index:  (26, 55, 34, 41, 61)  new_z_top_min:  6.288399999999999  shift_ztop: -0.530990000000001
+deleted complementary:  (-1.79006, 35.198060000000005) for patch 4
+deleted complementary:  (11.1344, 22.273600000000002)
+deleted complementary:  (-1.79006, 6.81939)
+deleted complementary:  (11.1344, 6.81939)
+complementary_a: 35.198060000000005   35.198060000000005  || complementary_b: 22.273600000000002   22.273600000000002  new z_top_min:  6.288399999999999
+new white_space_height:  -6.309000000000008
+adjusted complementary:  (-1.79006, 35.198060000000005)  for z_top_min: 6.288399999999999
+adjusted complementary:  (11.1344, 22.273600000000002) for patch 4
+adjusted complementary:  (-1.79006, 6.288399999999999)
+adjusted complementary:  (11.1344, 6.2884)
+
+original c: 28.889059999999997   28.889059999999997 || original d: 11.895   11.895
+complementary_a: 35.198060000000005   35.198060000000005  || complementary_b: 22.273600000000002   22.273600000000002
+current white_space_height:  -6.309000000000008
+counter:  1  counterUpshift:  0
+orig_ztop:  61 orig_z_top_min:  6.288399999999999
+1  new_z_i_atTop:  -6.663740000000001  shift_i_ztop:  -12.95214  layerWithSmallestShift:  2
+2  new_z_i_atTop:  5.0914  shift_i_ztop:  -1.1969999999999992  layerWithSmallestShift:  2
+3  new_z_i_atTop:  0.008657333333333295  shift_i_ztop:  -6.279742666666666  layerWithSmallestShift:  2
+4  new_z_i_atTop:  3.84641  shift_i_ztop:  -2.441989999999999  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 1.24499
+new_ztop_index:  60  new_z_i_index:  (26, 55, 33, 41, 60)  new_z_top_min:  5.0914  shift_ztop: -1.1969999999999992
+deleted complementary:  (-1.79006, 35.198060000000005) for patch 4
+deleted complementary:  (11.1344, 22.273600000000002)
+deleted complementary:  (-1.79006, 6.288399999999999)
+deleted complementary:  (11.1344, 6.2884)
+complementary_a: 34.04086   34.04086  || complementary_b: 21.1164   21.1164  new z_top_min:  5.0914
+new white_space_height:  -5.151800000000005
+adjusted complementary:  (-1.79006, 34.04086)  for z_top_min: 5.0914
+adjusted complementary:  (11.1344, 21.1164) for patch 4
+adjusted complementary:  (-1.79006, 5.0914)
+adjusted complementary:  (11.1344, 3.8464100000000006)
+
+original c: 28.889059999999997   28.889059999999997 || original d: 11.895   11.895
+complementary_a: 34.04086   34.04086  || complementary_b: 21.1164   21.1164
+current white_space_height:  -5.151800000000005
+counter:  2  counterUpshift:  0
+orig_ztop:  61 orig_z_top_min:  5.0914
+1  new_z_i_atTop:  -6.663740000000001  shift_i_ztop:  -11.75514  layerWithSmallestShift:  2
+2  new_z_i_atTop:  4.2817799999999995  shift_i_ztop:  -0.8096200000000007  layerWithSmallestShift:  2
+3  new_z_i_atTop:  0.008657333333333295  shift_i_ztop:  -5.082742666666666  layerWithSmallestShift:  2
+4  new_z_i_atTop:  3.84641  shift_i_ztop:  -1.24499  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 0.43536999999999937
+new_ztop_index:  60  new_z_i_index:  (26, 55, 32, 41, 60)  new_z_top_min:  4.2817799999999995  shift_ztop: -0.8096200000000007
+deleted complementary:  (-1.79006, 34.04086) for patch 4
+deleted complementary:  (11.1344, 21.1164)
+deleted complementary:  (-1.79006, 5.0914)
+deleted complementary:  (11.1344, 3.8464100000000006)
+complementary_a: 32.02346   32.02346  || complementary_b: 19.099   19.099  new z_top_min:  4.2817799999999995
+new white_space_height:  -3.134400000000003
+adjusted complementary:  (-1.79006, 32.02346)  for z_top_min: 4.2817799999999995
+adjusted complementary:  (11.1344, 19.099) for patch 4
+adjusted complementary:  (-1.79006, 4.2817799999999995)
+adjusted complementary:  (11.1344, 3.8464100000000006)
+
+original c: 28.889059999999997   28.889059999999997 || original d: 11.895   11.895
+complementary_a: 32.02346   32.02346  || complementary_b: 19.099   19.099
+current white_space_height:  -3.134400000000003
+counter:  3  counterUpshift:  0
+orig_ztop:  60 orig_z_top_min:  4.2817799999999995
+1  new_z_i_atTop:  -6.663740000000001  shift_i_ztop:  -10.94552  layerWithSmallestShift:  4
+2  new_z_i_atTop:  3.2017979999999997  shift_i_ztop:  -1.0799819999999998  layerWithSmallestShift:  4
+3  new_z_i_atTop:  0.008657333333333295  shift_i_ztop:  -4.273122666666666  layerWithSmallestShift:  4
+4  new_z_i_atTop:  3.4765400000000004  shift_i_ztop:  -0.8052399999999991  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 4.440892098500626e-16
+new_ztop_index:  59  new_z_i_index:  (26, 55, 31, 41, 59)  new_z_top_min:  3.4765400000000004  shift_ztop: -0.8052399999999991
+deleted complementary:  (-1.79006, 32.02346) for patch 4
+deleted complementary:  (11.1344, 19.099)
+deleted complementary:  (-1.79006, 4.2817799999999995)
+deleted complementary:  (11.1344, 3.8464100000000006)
+complementary_a: 31.963059999999995   31.963059999999995  || complementary_b: 19.0386   19.0386  new z_top_min:  3.4765400000000004
+new white_space_height:  -3.073999999999998
+adjusted complementary:  (-1.79006, 31.963059999999995)  for z_top_min: 3.4765400000000004
+adjusted complementary:  (11.1344, 19.0386) for patch 4
+adjusted complementary:  (-1.79006, 3.4765400000000004)
+adjusted complementary:  (11.1344, 3.47654)
+
+original c: 28.889059999999997   28.889059999999997 || original d: 11.895   11.895
+complementary_a: 31.963059999999995   31.963059999999995  || complementary_b: 19.0386   19.0386
+current white_space_height:  -3.073999999999998
+counter:  4  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  3.4765400000000004
+1  new_z_i_atTop:  -6.663740000000001  shift_i_ztop:  -10.14028  layerWithSmallestShift:  2
+2  new_z_i_atTop:  2.304148  shift_i_ztop:  -1.1723920000000003  layerWithSmallestShift:  2
+3  new_z_i_atTop:  0.008657333333333295  shift_i_ztop:  -3.467882666666667  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -0.815472  shift_i_ztop:  -4.292012000000001  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 3.1196200000000003
+new_ztop_index:  58  new_z_i_index:  (26, 55, 30, 41, 58)  new_z_top_min:  2.304148  shift_ztop: -1.1723920000000003
+deleted complementary:  (-1.79006, 31.963059999999995) for patch 4
+deleted complementary:  (11.1344, 19.0386)
+deleted complementary:  (-1.79006, 3.4765400000000004)
+deleted complementary:  (11.1344, 3.47654)
+complementary_a: 25.60866   25.60866  || complementary_b: 12.6842   12.6842  new z_top_min:  2.304148
+new white_space_height:  3.2803999999999967
+adjusted complementary:  (-1.79006, 25.60866)  for z_top_min: 2.304148
+adjusted complementary:  (11.1344, 12.6842) for patch 4
+adjusted complementary:  (-1.79006, 2.304148)
+adjusted complementary:  (11.1344, -0.8154719999999998)
+
+original c: 28.889059999999997   28.889059999999997 || original d: 11.895   11.895
+complementary_a: 25.60866   25.60866  || complementary_b: 12.6842   12.6842
+current white_space_height:  3.2803999999999967
+counter:  5  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  2.304148
+1  new_z_i_atTop:  17.685219999999997  shift_i_ztop:  15.381071999999998  layerWithSmallestShift:  2
+2  new_z_i_atTop:  3.2017979999999997  shift_i_ztop:  0.8976499999999996  layerWithSmallestShift:  2
+3  new_z_i_atTop:  6.274673333333332  shift_i_ztop:  3.9705253333333324  layerWithSmallestShift:  2
+4  new_z_i_atTop:  3.84641  shift_i_ztop:  1.542262  layerWithSmallestShift:  2
+new_def_z_top_min_diff: -0.6446120000000004
+new_ztop_index:  60  new_z_i_index:  (28, 57, 31, 42, 60)  new_z_top_min:  3.2017979999999997  shift_ztop: 0.8976499999999996
+deleted complementary:  (-1.79006, 25.60866) for patch 4
+deleted complementary:  (11.1344, 12.6842)
+deleted complementary:  (-1.79006, 2.304148)
+deleted complementary:  (11.1344, -0.8154719999999998)
+complementary_a: 31.963059999999995   31.963059999999995  || complementary_b: 19.0386   19.0386  new z_top_min:  3.2017979999999997
+new white_space_height:  -3.073999999999998
+adjusted complementary:  (-1.79006, 31.963059999999995)  for z_top_min: 3.2017979999999997
+adjusted complementary:  (11.1344, 19.0386) for patch 4
+adjusted complementary:  (-1.79006, 3.2017979999999997)
+adjusted complementary:  (11.1344, -0.8154719999999998)
+originalPartialTop: True complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False -1.7900599999999969 19.827602 -19.826999999999998 11.1344 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
+c_corner:  3.2017979999999997
+top layer from  3.47654  to  -23.1348  z_top_max:  3.2017979999999997
+original: (-1.79006, 3.4765400000000004) for patch 5
+original: (11.1344, 3.4580800000000007)
+original: (-1.79006, -8.57044)
+original: (11.1344, -21.4949)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -0.09496500000000019 notChoppedPatch False
+z_top_min before: 3.2017979999999997 superpoints[self.env.num_layers-1].min: -23.1348
+complementary:  (-1.79006, 3.4765400000000004)  for z_top_min: -23.1348
+complementary:  (11.1344, -6.166599999999999) for patch 6
+complementary:  (-1.79006, -23.1348)
+complementary:  (11.1344, -23.1348)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: 3.4765400000000004   3.4765400000000004  || complementary_b: -6.166599999999999   -6.166599999999999
+current white_space_height:  -12.04698
+counter:  0  counterUpshift:  0
+orig_ztop:  44 orig_z_top_min:  -23.1348
+1  new_z_i_atTop:  -27.185979999999997  shift_i_ztop:  -4.051179999999999  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -26.65314  shift_i_ztop:  -3.518340000000002  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -27.074513333333332  shift_i_ztop:  -3.9397133333333336  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -25.7186  shift_i_ztop:  -2.5838  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  43  new_z_i_index:  (26, 45, 24, 29, 43)  new_z_top_min:  -25.7186  shift_ztop: -2.5838
+deleted complementary:  (-1.79006, 3.4765400000000004) for patch 6
+deleted complementary:  (11.1344, -6.166599999999999)
+deleted complementary:  (-1.79006, -23.1348)
+deleted complementary:  (11.1344, -23.1348)
+complementary_a: -0.815472   -0.815472  || complementary_b: -9.884319999999999   -9.884319999999999  new z_top_min:  -25.7186
+new white_space_height:  -7.754968
+adjusted complementary:  (-1.79006, -0.815472)  for z_top_min: -25.7186
+adjusted complementary:  (11.1344, -9.884319999999999) for patch 6
+adjusted complementary:  (-1.79006, -25.7186)
+adjusted complementary:  (11.1344, -25.718599999999995)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -0.815472   -0.815472  || complementary_b: -9.884319999999999   -9.884319999999999
+current white_space_height:  -7.754968
+counter:  1  counterUpshift:  0
+orig_ztop:  43 orig_z_top_min:  -25.7186
+1  new_z_i_atTop:  -33.16334  shift_i_ztop:  -7.4447399999999995  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -28.52734  shift_i_ztop:  -2.8087400000000002  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -29.507979999999996  shift_i_ztop:  -3.7893799999999978  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -33.8354  shift_i_ztop:  -8.116800000000001  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 5.308060000000001
+new_ztop_index:  42  new_z_i_index:  (26, 44, 23, 28, 42)  new_z_top_min:  -28.52734  shift_ztop: -2.8087400000000002
+deleted complementary:  (-1.79006, -0.815472) for patch 6
+deleted complementary:  (11.1344, -9.884319999999999)
+deleted complementary:  (-1.79006, -25.7186)
+deleted complementary:  (11.1344, -25.718599999999995)
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997  new z_top_min:  -28.52734
+new white_space_height:  -5.8754599999999995
+adjusted complementary:  (-1.79006, -2.69498)  for z_top_min: -28.52734
+adjusted complementary:  (11.1344, -10.494159999999997) for patch 6
+adjusted complementary:  (-1.79006, -28.52734)
+adjusted complementary:  (11.1344, -33.816133333333326)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997
+current white_space_height:  -5.8754599999999995
+counter:  2  counterUpshift:  0
+orig_ztop:  43 orig_z_top_min:  -28.52734
+1  new_z_i_atTop:  -33.16334  shift_i_ztop:  -4.635999999999999  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -29.145139999999998  shift_i_ztop:  -0.617799999999999  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -32.83691333333333  shift_i_ztop:  -4.309573333333329  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -33.8354  shift_i_ztop:  -5.308060000000001  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 4.690260000000002
+new_ztop_index:  42  new_z_i_index:  (26, 44, 22, 27, 42)  new_z_top_min:  -29.145139999999998  shift_ztop: -0.617799999999999
+deleted complementary:  (-1.79006, -2.69498) for patch 6
+deleted complementary:  (11.1344, -10.494159999999997)
+deleted complementary:  (-1.79006, -28.52734)
+deleted complementary:  (11.1344, -33.816133333333326)
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997  new z_top_min:  -29.145139999999998
+new white_space_height:  -5.8754599999999995
+adjusted complementary:  (-1.79006, -2.69498)  for z_top_min: -29.145139999999998
+adjusted complementary:  (11.1344, -10.494159999999997) for patch 6
+adjusted complementary:  (-1.79006, -29.145139999999998)
+adjusted complementary:  (11.1344, -33.816133333333326)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997
+current white_space_height:  -5.8754599999999995
+counter:  3  counterUpshift:  0
+orig_ztop:  43 orig_z_top_min:  -29.145139999999998
+1  new_z_i_atTop:  -33.16334  shift_i_ztop:  -4.0182  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -30.726139999999997  shift_i_ztop:  -1.5809999999999995  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -32.83691333333333  shift_i_ztop:  -3.6917733333333302  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -33.8354  shift_i_ztop:  -4.690260000000002  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 3.1092600000000026
+new_ztop_index:  42  new_z_i_index:  (26, 44, 21, 27, 42)  new_z_top_min:  -30.726139999999997  shift_ztop: -1.5809999999999995
+deleted complementary:  (-1.79006, -2.69498) for patch 6
+deleted complementary:  (11.1344, -10.494159999999997)
+deleted complementary:  (-1.79006, -29.145139999999998)
+deleted complementary:  (11.1344, -33.816133333333326)
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997  new z_top_min:  -30.726139999999997
+new white_space_height:  -5.8754599999999995
+adjusted complementary:  (-1.79006, -2.69498)  for z_top_min: -30.726139999999997
+adjusted complementary:  (11.1344, -10.494159999999997) for patch 6
+adjusted complementary:  (-1.79006, -30.726139999999997)
+adjusted complementary:  (11.1344, -33.8354)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997
+current white_space_height:  -5.8754599999999995
+counter:  4  counterUpshift:  0
+orig_ztop:  42 orig_z_top_min:  -30.726139999999997
+1  new_z_i_atTop:  -33.485139999999994  shift_i_ztop:  -2.758999999999997  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -46.97734  shift_i_ztop:  -16.2512  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -32.83691333333333  shift_i_ztop:  -2.1107733333333307  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -33.9894  shift_i_ztop:  -3.263260000000006  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.1524866666666753
+new_ztop_index:  41  new_z_i_index:  (26, 43, 20, 27, 41)  new_z_top_min:  -32.83691333333333  shift_ztop: -2.1107733333333307
+deleted complementary:  (-1.79006, -2.69498) for patch 6
+deleted complementary:  (11.1344, -10.494159999999997)
+deleted complementary:  (-1.79006, -30.726139999999997)
+deleted complementary:  (11.1344, -33.8354)
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997  new z_top_min:  -32.83691333333333
+new white_space_height:  -5.8754599999999995
+adjusted complementary:  (-1.79006, -2.69498)  for z_top_min: -32.83691333333333
+adjusted complementary:  (11.1344, -10.494159999999997) for patch 6
+adjusted complementary:  (-1.79006, -32.83691333333333)
+adjusted complementary:  (11.1344, -33.8354)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -2.69498   -2.69498  || complementary_b: -10.494159999999997   -10.494159999999997
+current white_space_height:  -5.8754599999999995
+counter:  5  counterUpshift:  0
+orig_ztop:  42 orig_z_top_min:  -32.83691333333333
+1  new_z_i_atTop:  -33.485139999999994  shift_i_ztop:  -0.6482266666666661  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -46.97734  shift_i_ztop:  -14.14042666666667  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -33.68731333333333  shift_i_ztop:  -0.8504000000000005  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -33.9894  shift_i_ztop:  -1.1524866666666753  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 0.5042600000000093
+new_ztop_index:  41  new_z_i_index:  (26, 43, 20, 26, 41)  new_z_top_min:  -33.485139999999994  shift_ztop: -0.6482266666666661
+deleted complementary:  (-1.79006, -2.69498) for patch 6
+deleted complementary:  (11.1344, -10.494159999999997)
+deleted complementary:  (-1.79006, -32.83691333333333)
+deleted complementary:  (11.1344, -33.8354)
+complementary_a: -2.69498   -2.69498  || complementary_b: -14.93132   -14.93132  new z_top_min:  -33.485139999999994
+new white_space_height:  -5.8754599999999995
+adjusted complementary:  (-1.79006, -2.69498)  for z_top_min: -33.485139999999994
+adjusted complementary:  (11.1344, -14.93132) for patch 6
+adjusted complementary:  (-1.79006, -33.485139999999994)
+adjusted complementary:  (11.1344, -33.8354)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -2.69498   -2.69498  || complementary_b: -14.93132   -14.93132
+current white_space_height:  -5.8754599999999995
+counter:  6  counterUpshift:  0
+orig_ztop:  42 orig_z_top_min:  -33.485139999999994
+1  new_z_i_atTop:  -39.374219999999994  shift_i_ztop:  -5.88908  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -46.97734  shift_i_ztop:  -13.492200000000004  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.033179999999994  shift_i_ztop:  -6.54804  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -33.9894  shift_i_ztop:  -0.5042600000000093  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  41  new_z_i_index:  (26, 42, 20, 25, 41)  new_z_top_min:  -33.9894  shift_ztop: -0.5042600000000093
+deleted complementary:  (-1.79006, -2.69498) for patch 6
+deleted complementary:  (11.1344, -14.93132)
+deleted complementary:  (-1.79006, -33.485139999999994)
+deleted complementary:  (11.1344, -33.8354)
+complementary_a: -4.70568   -4.70568  || complementary_b: -21.088160000000002   -21.088160000000002  new z_top_min:  -33.9894
+new white_space_height:  -0.4067399999999992
+adjusted complementary:  (-1.79006, -4.70568)  for z_top_min: -33.9894
+adjusted complementary:  (11.1344, -21.088160000000002) for patch 6
+adjusted complementary:  (-1.79006, -33.9894)
+adjusted complementary:  (11.1344, -33.9894)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -4.70568   -4.70568  || complementary_b: -21.088160000000002   -21.088160000000002
+current white_space_height:  -0.4067399999999992
+counter:  7  counterUpshift:  0
+orig_ztop:  41 orig_z_top_min:  -33.9894
+1  new_z_i_atTop:  -39.374219999999994  shift_i_ztop:  -5.384819999999991  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -46.97734  shift_i_ztop:  -12.987939999999995  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.033179999999994  shift_i_ztop:  -6.043779999999991  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -34.5054  shift_i_ztop:  -0.5159999999999982  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  40  new_z_i_index:  (26, 42, 20, 25, 40)  new_z_top_min:  -34.5054  shift_ztop: -0.5159999999999982
+deleted complementary:  (-1.79006, -4.70568) for patch 6
+deleted complementary:  (11.1344, -21.088160000000002)
+deleted complementary:  (-1.79006, -33.9894)
+deleted complementary:  (11.1344, -33.9894)
+complementary_a: -6.161   -6.161  || complementary_b: -21.088160000000002   -21.088160000000002  new z_top_min:  -34.5054
+new white_space_height:  -0.4067399999999992
+adjusted complementary:  (-1.79006, -6.161)  for z_top_min: -34.5054
+adjusted complementary:  (11.1344, -21.088160000000002) for patch 6
+adjusted complementary:  (-1.79006, -34.5054)
+adjusted complementary:  (11.1344, -34.5054)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -6.161   -6.161  || complementary_b: -21.088160000000002   -21.088160000000002
+current white_space_height:  -0.4067399999999992
+counter:  8  counterUpshift:  0
+orig_ztop:  40 orig_z_top_min:  -34.5054
+1  new_z_i_atTop:  -39.374219999999994  shift_i_ztop:  -4.868819999999992  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -46.97734  shift_i_ztop:  -12.471939999999996  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -40.033179999999994  shift_i_ztop:  -5.527779999999993  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -40.5034  shift_i_ztop:  -5.9979999999999976  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 1.1291800000000052
+new_ztop_index:  39  new_z_i_index:  (26, 42, 20, 25, 39)  new_z_top_min:  -39.374219999999994  shift_ztop: -4.868819999999992
+deleted complementary:  (-1.79006, -6.161) for patch 6
+deleted complementary:  (11.1344, -21.088160000000002)
+deleted complementary:  (-1.79006, -34.5054)
+deleted complementary:  (11.1344, -34.5054)
+complementary_a: -7.272490000000001   -7.272490000000001  || complementary_b: -21.088160000000002   -21.088160000000002  new z_top_min:  -39.374219999999994
+new white_space_height:  -0.4067399999999992
+adjusted complementary:  (-1.79006, -7.272490000000001)  for z_top_min: -39.374219999999994
+adjusted complementary:  (11.1344, -21.088160000000002) for patch 6
+adjusted complementary:  (-1.79006, -39.374219999999994)
+adjusted complementary:  (11.1344, -40.5034)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -7.272490000000001   -7.272490000000001  || complementary_b: -21.088160000000002   -21.088160000000002
+current white_space_height:  -0.4067399999999992
+counter:  9  counterUpshift:  0
+orig_ztop:  39 orig_z_top_min:  -39.374219999999994
+1  new_z_i_atTop:  -43.614219999999996  shift_i_ztop:  -4.240000000000002  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -49.305139999999994  shift_i_ztop:  -9.93092  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -44.46771333333333  shift_i_ztop:  -5.093493333333335  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -44.5128  shift_i_ztop:  -5.138580000000005  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 0.8985800000000026
+new_ztop_index:  38  new_z_i_index:  (26, 41, 19, 24, 38)  new_z_top_min:  -43.614219999999996  shift_ztop: -4.240000000000002
+deleted complementary:  (-1.79006, -7.272490000000001) for patch 6
+deleted complementary:  (11.1344, -21.088160000000002)
+deleted complementary:  (-1.79006, -39.374219999999994)
+deleted complementary:  (11.1344, -40.5034)
+complementary_a: -8.14367   -8.14367  || complementary_b: -36.411615999999995   -36.411615999999995  new z_top_min:  -43.614219999999996
+new white_space_height:  14.916715999999994
+adjusted complementary:  (-1.79006, -8.14367)  for z_top_min: -43.614219999999996
+adjusted complementary:  (11.1344, -36.411615999999995) for patch 6
+adjusted complementary:  (-1.79006, -43.614219999999996)
+adjusted complementary:  (11.1344, -44.5128)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -8.14367   -8.14367  || complementary_b: -36.411615999999995   -36.411615999999995
+current white_space_height:  14.916715999999994
+counter:  10  counterUpshift:  0
+orig_ztop:  38 orig_z_top_min:  -43.614219999999996
+1  new_z_i_atTop:  -39.374219999999994  shift_i_ztop:  4.240000000000002  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -30.726139999999997  shift_i_ztop:  12.888079999999999  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.033179999999994  shift_i_ztop:  3.5810400000000016  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -40.5034  shift_i_ztop:  3.110819999999997  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  39  new_z_i_index:  (28, 42, 21, 25, 39)  new_z_top_min:  -40.5034  shift_ztop: 3.110819999999997
+deleted complementary:  (-1.79006, -8.14367) for patch 6
+deleted complementary:  (11.1344, -36.411615999999995)
+deleted complementary:  (-1.79006, -43.614219999999996)
+deleted complementary:  (11.1344, -44.5128)
+complementary_a: -7.272490000000001   -7.272490000000001  || complementary_b: -36.411615999999995   -36.411615999999995  new z_top_min:  -40.5034
+new white_space_height:  14.916715999999994
+adjusted complementary:  (-1.79006, -7.272490000000001)  for z_top_min: -40.5034
+adjusted complementary:  (11.1344, -36.411615999999995) for patch 6
+adjusted complementary:  (-1.79006, -40.5034)
+adjusted complementary:  (11.1344, -40.5034)
+
+original c: -8.57044   -8.57044 || original d: -21.4949   -21.4949
+complementary_a: -7.272490000000001   -7.272490000000001  || complementary_b: -36.411615999999995   -36.411615999999995
+current white_space_height:  14.916715999999994
+counter:  10  counterUpshift:  1
+orig_ztop:  39 orig_z_top_min:  -40.5034
+1  new_z_i_atTop:  -33.485139999999994  shift_i_ztop:  7.018260000000005  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -30.726139999999997  shift_i_ztop:  9.777260000000002  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -33.68731333333333  shift_i_ztop:  6.816086666666671  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -34.5054  shift_i_ztop:  5.9979999999999976  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  40  new_z_i_index:  (28, 43, 21, 26, 40)  new_z_top_min:  -34.5054  shift_ztop: 5.9979999999999976
+deleted complementary:  (-1.79006, -7.272490000000001) for patch 6
+deleted complementary:  (11.1344, -36.411615999999995)
+deleted complementary:  (-1.79006, -40.5034)
+deleted complementary:  (11.1344, -40.5034)
+complementary_a: -6.161   -6.161  || complementary_b: -21.088160000000002   -21.088160000000002  new z_top_min:  -34.5054
+new white_space_height:  -0.4067399999999992
+adjusted complementary:  (-1.79006, -6.161)  for z_top_min: -34.5054
+adjusted complementary:  (11.1344, -21.088160000000002) for patch 6
+adjusted complementary:  (-1.79006, -34.5054)
+adjusted complementary:  (11.1344, -34.5054)
+originalPartialTop: False complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False -1.79006 24.1449 -13.516017999999999 11.1344 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
+c_corner:  -34.5054
+top layer from  -17.4815  to  -50.0001  z_top_max:  -34.5054
+original: (-1.79006, -17.4815) for patch 7
+original: (11.1344, -21.088160000000002)
+original: (-1.79006, -39.374219999999994)
+original: (11.1344, -50.0001)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  7.605980000000002 notChoppedPatch False
+z_top_min before: -34.5054 superpoints[self.env.num_layers-1].min: -50.0001
+complementary:  (-1.79006, -17.4815)  for z_top_min: -50
+complementary:  (11.1344, -45.52348) for patch 8
+complementary:  (-1.79006, -50.0001)
+complementary:  (11.1344, -50.0001)
+c_corner:  -50.0001
+z1_Align:  -1.79006
+top layer from  50.0001  to  6.81939  z_top_max:  50
+original: (-13.0433, 50.0001) for patch 9
+original: (-1.79006, 50.0001)
+original: (-13.0433, 26.708219999999997)
+original: (-1.79006, 15.454979999999999)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -22.981180000000002 notChoppedPatch False
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: 6.81939
+complementary:  (-13.0433, 27.635779999999997)  for z_top_min: 6.81939
+complementary:  (-1.79006, 16.38254) for patch 10
+complementary:  (-13.0433, 6.81939)
+complementary:  (-1.79006, 6.81939)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254
+current white_space_height:  -0.9275599999999997
+counter:  0  counterUpshift:  0
+orig_ztop:  62 orig_z_top_min:  6.81939
+1  new_z_i_atTop:  0.5963799999999981  shift_i_ztop:  -6.223010000000002  layerWithSmallestShift:  4
+2  new_z_i_atTop:  2.6828000000000003  shift_i_ztop:  -4.13659  layerWithSmallestShift:  4
+3  new_z_i_atTop:  3.0442253333333316  shift_i_ztop:  -3.7751646666666687  layerWithSmallestShift:  4
+4  new_z_i_atTop:  6.288400000000001  shift_i_ztop:  -0.5309899999999992  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 8.881784197001252e-16
+new_ztop_index:  61  new_z_i_index:  (11, 44, 27, 40, 61)  new_z_top_min:  6.288400000000001  shift_ztop: -0.5309899999999992
+deleted complementary:  (-13.0433, 27.635779999999997) for patch 10
+deleted complementary:  (-1.79006, 16.38254)
+deleted complementary:  (-13.0433, 6.81939)
+deleted complementary:  (-1.79006, 6.81939)
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254  new z_top_min:  6.288400000000001
+new white_space_height:  -0.9275599999999997
+adjusted complementary:  (-13.0433, 27.635779999999997)  for z_top_min: 6.288400000000001
+adjusted complementary:  (-1.79006, 16.38254) for patch 10
+adjusted complementary:  (-13.0433, 6.288400000000001)
+adjusted complementary:  (-1.79006, 6.288399999999999)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254
+current white_space_height:  -0.9275599999999997
+counter:  1  counterUpshift:  0
+orig_ztop:  61 orig_z_top_min:  6.288400000000001
+1  new_z_i_atTop:  0.5963799999999981  shift_i_ztop:  -5.692020000000003  layerWithSmallestShift:  4
+2  new_z_i_atTop:  2.6828000000000003  shift_i_ztop:  -3.605600000000001  layerWithSmallestShift:  4
+3  new_z_i_atTop:  3.0442253333333316  shift_i_ztop:  -3.2441746666666695  layerWithSmallestShift:  4
+4  new_z_i_atTop:  3.8464100000000006  shift_i_ztop:  -2.4419900000000005  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 4.440892098500626e-16
+new_ztop_index:  60  new_z_i_index:  (11, 44, 27, 40, 60)  new_z_top_min:  3.8464100000000006  shift_ztop: -2.4419900000000005
+deleted complementary:  (-13.0433, 27.635779999999997) for patch 10
+deleted complementary:  (-1.79006, 16.38254)
+deleted complementary:  (-13.0433, 6.288400000000001)
+deleted complementary:  (-1.79006, 6.288399999999999)
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254  new z_top_min:  3.8464100000000006
+new white_space_height:  -0.9275599999999997
+adjusted complementary:  (-13.0433, 27.635779999999997)  for z_top_min: 3.8464100000000006
+adjusted complementary:  (-1.79006, 16.38254) for patch 10
+adjusted complementary:  (-13.0433, 3.8464100000000006)
+adjusted complementary:  (-1.79006, 3.84641)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254
+current white_space_height:  -0.9275599999999997
+counter:  2  counterUpshift:  0
+orig_ztop:  60 orig_z_top_min:  3.8464100000000006
+1  new_z_i_atTop:  0.5963799999999981  shift_i_ztop:  -3.2500300000000024  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -12.123709999999999  layerWithSmallestShift:  4
+3  new_z_i_atTop:  3.0442253333333316  shift_i_ztop:  -0.802184666666669  layerWithSmallestShift:  4
+4  new_z_i_atTop:  3.4765400000000017  shift_i_ztop:  -0.3698699999999988  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 1.7763568394002505e-15
+new_ztop_index:  59  new_z_i_index:  (11, 44, 26, 40, 59)  new_z_top_min:  3.4765400000000017  shift_ztop: -0.3698699999999988
+deleted complementary:  (-13.0433, 27.635779999999997) for patch 10
+deleted complementary:  (-1.79006, 16.38254)
+deleted complementary:  (-13.0433, 3.8464100000000006)
+deleted complementary:  (-1.79006, 3.84641)
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254  new z_top_min:  3.4765400000000017
+new white_space_height:  -0.9275599999999997
+adjusted complementary:  (-13.0433, 27.635779999999997)  for z_top_min: 3.4765400000000017
+adjusted complementary:  (-1.79006, 16.38254) for patch 10
+adjusted complementary:  (-13.0433, 3.4765400000000017)
+adjusted complementary:  (-1.79006, 3.4765400000000004)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254
+current white_space_height:  -0.9275599999999997
+counter:  3  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  3.4765400000000017
+1  new_z_i_atTop:  0.27458000000000204  shift_i_ztop:  -3.2019599999999997  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -11.75384  layerWithSmallestShift:  3
+3  new_z_i_atTop:  3.0442253333333316  shift_i_ztop:  -0.4323146666666702  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -0.8154719999999998  shift_i_ztop:  -4.2920120000000015  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 3.8596973333333313
+new_ztop_index:  58  new_z_i_index:  (11, 43, 26, 40, 58)  new_z_top_min:  3.0442253333333316  shift_ztop: -0.4323146666666702
+deleted complementary:  (-13.0433, 27.635779999999997) for patch 10
+deleted complementary:  (-1.79006, 16.38254)
+deleted complementary:  (-13.0433, 3.4765400000000017)
+deleted complementary:  (-1.79006, 3.4765400000000004)
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254  new z_top_min:  3.0442253333333316
+new white_space_height:  -0.9275599999999997
+adjusted complementary:  (-13.0433, 27.635779999999997)  for z_top_min: 3.0442253333333316
+adjusted complementary:  (-1.79006, 16.38254) for patch 10
+adjusted complementary:  (-13.0433, 3.0442253333333316)
+adjusted complementary:  (-1.79006, -0.7068546666666666)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.635779999999997   27.635779999999997  || complementary_b: 16.38254   16.38254
+current white_space_height:  -0.9275599999999997
+counter:  4  counterUpshift:  0
+orig_ztop:  59 orig_z_top_min:  3.0442253333333316
+1  new_z_i_atTop:  0.27458000000000204  shift_i_ztop:  -2.7696453333333295  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -11.32152533333333  layerWithSmallestShift:  3
+3  new_z_i_atTop:  1.1834066666666665  shift_i_ztop:  -1.860818666666665  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -0.8154719999999998  shift_i_ztop:  -3.8596973333333313  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.9988786666666665
+new_ztop_index:  58  new_z_i_index:  (11, 43, 26, 39, 58)  new_z_top_min:  1.1834066666666665  shift_ztop: -1.860818666666665
+deleted complementary:  (-13.0433, 27.635779999999997) for patch 10
+deleted complementary:  (-1.79006, 16.38254)
+deleted complementary:  (-13.0433, 3.0442253333333316)
+deleted complementary:  (-1.79006, -0.7068546666666666)
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  1.1834066666666665
+new white_space_height:  -0.31879999999999953
+adjusted complementary:  (-13.0433, 27.02702)  for z_top_min: 1.1834066666666665
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, 1.1834066666666665)
+adjusted complementary:  (-1.79006, -0.815472)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999
+current white_space_height:  -0.31879999999999953
+counter:  5  counterUpshift:  0
+orig_ztop:  58 orig_z_top_min:  1.1834066666666665
+1  new_z_i_atTop:  0.27458000000000204  shift_i_ztop:  -0.9088266666666645  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -9.460706666666665  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -1.6224733333333354  shift_i_ztop:  -2.805880000000002  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -2.6949799999999993  shift_i_ztop:  -3.8783866666666658  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 2.969560000000002
+new_ztop_index:  57  new_z_i_index:  (11, 43, 26, 38, 57)  new_z_top_min:  0.27458000000000204  shift_ztop: -0.9088266666666645
+deleted complementary:  (-13.0433, 27.02702) for patch 10
+deleted complementary:  (-1.79006, 15.773779999999999)
+deleted complementary:  (-13.0433, 1.1834066666666665)
+deleted complementary:  (-1.79006, -0.815472)
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  0.27458000000000204
+new white_space_height:  -0.31879999999999953
+adjusted complementary:  (-13.0433, 27.02702)  for z_top_min: 0.27458000000000204
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, 0.27458000000000204)
+adjusted complementary:  (-1.79006, -0.815472)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999
+current white_space_height:  -0.31879999999999953
+counter:  6  counterUpshift:  0
+orig_ztop:  58 orig_z_top_min:  0.27458000000000204
+1  new_z_i_atTop:  -5.614499999999998  shift_i_ztop:  -5.88908  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -8.55188  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -1.6224733333333354  shift_i_ztop:  -1.8970533333333375  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -2.6949799999999993  shift_i_ztop:  -2.9695600000000013  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.0725066666666647
+new_ztop_index:  57  new_z_i_index:  (11, 42, 26, 38, 57)  new_z_top_min:  -1.6224733333333354  shift_ztop: -1.8970533333333375
+deleted complementary:  (-13.0433, 27.02702) for patch 10
+deleted complementary:  (-1.79006, 15.773779999999999)
+deleted complementary:  (-13.0433, 0.27458000000000204)
+deleted complementary:  (-1.79006, -0.815472)
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  -1.6224733333333354
+new white_space_height:  -0.31879999999999953
+adjusted complementary:  (-13.0433, 27.02702)  for z_top_min: -1.6224733333333354
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, -1.6224733333333354)
+adjusted complementary:  (-1.79006, -2.69498)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999
+current white_space_height:  -0.31879999999999953
+counter:  7  counterUpshift:  0
+orig_ztop:  58 orig_z_top_min:  -1.6224733333333354
+1  new_z_i_atTop:  -5.614499999999998  shift_i_ztop:  -3.9920266666666624  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -6.654826666666663  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -1.8802866666666667  shift_i_ztop:  -0.25781333333333123  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -2.6949799999999993  shift_i_ztop:  -1.0725066666666638  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 0.8146933333333335
+new_ztop_index:  57  new_z_i_index:  (11, 42, 26, 37, 57)  new_z_top_min:  -1.8802866666666667  shift_ztop: -0.25781333333333123
+deleted complementary:  (-13.0433, 27.02702) for patch 10
+deleted complementary:  (-1.79006, 15.773779999999999)
+deleted complementary:  (-13.0433, -1.6224733333333354)
+deleted complementary:  (-1.79006, -2.69498)
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  -1.8802866666666667
+new white_space_height:  -0.31879999999999953
+adjusted complementary:  (-13.0433, 27.02702)  for z_top_min: -1.8802866666666667
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, -1.8802866666666667)
+adjusted complementary:  (-1.79006, -2.69498)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999
+current white_space_height:  -0.31879999999999953
+counter:  8  counterUpshift:  0
+orig_ztop:  57 orig_z_top_min:  -1.8802866666666667
+1  new_z_i_atTop:  -5.614499999999998  shift_i_ztop:  -3.734213333333331  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -8.277299999999999  shift_i_ztop:  -6.397013333333332  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -3.05542  shift_i_ztop:  -1.1751333333333331  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -4.705679999999999  shift_i_ztop:  -2.8253933333333325  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 1.6502600000000003
+new_ztop_index:  56  new_z_i_index:  (11, 42, 26, 36, 56)  new_z_top_min:  -3.05542  shift_ztop: -1.1751333333333331
+deleted complementary:  (-13.0433, 27.02702) for patch 10
+deleted complementary:  (-1.79006, 15.773779999999999)
+deleted complementary:  (-13.0433, -1.8802866666666667)
+deleted complementary:  (-1.79006, -2.69498)
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  -3.05542
+new white_space_height:  -0.31879999999999953
+adjusted complementary:  (-13.0433, 27.02702)  for z_top_min: -3.05542
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, -3.05542)
+adjusted complementary:  (-1.79006, -4.70568)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999
+current white_space_height:  -0.31879999999999953
+counter:  9  counterUpshift:  0
+orig_ztop:  57 orig_z_top_min:  -3.05542
+1  new_z_i_atTop:  -9.8545  shift_i_ztop:  -6.79908  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -12.4321  shift_i_ztop:  -9.37668  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -4.917620000000001  shift_i_ztop:  -1.8622000000000014  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -4.705679999999999  shift_i_ztop:  -1.6502599999999994  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 8.881784197001252e-16
+new_ztop_index:  56  new_z_i_index:  (11, 41, 25, 35, 56)  new_z_top_min:  -4.705679999999999  shift_ztop: -1.6502599999999994
+deleted complementary:  (-13.0433, 27.02702) for patch 10
+deleted complementary:  (-1.79006, 15.773779999999999)
+deleted complementary:  (-13.0433, -3.05542)
+deleted complementary:  (-1.79006, -4.70568)
+complementary_a: 24.732033333333327   24.732033333333327  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  -4.705679999999999
+new white_space_height:  1.9761866666666705
+adjusted complementary:  (-13.0433, 24.732033333333327)  for z_top_min: -4.705679999999999
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, -4.705679999999999)
+adjusted complementary:  (-1.79006, -4.70568)
+
+original c: 26.708219999999997   26.708219999999997 || original d: 15.454979999999999   15.454979999999999
+complementary_a: 24.732033333333327   24.732033333333327  || complementary_b: 15.773779999999999   15.773779999999999
+current white_space_height:  1.9761866666666705
+counter:  10  counterUpshift:  0
+orig_ztop:  56 orig_z_top_min:  -4.705679999999999
+1  new_z_i_atTop:  0.27458000000000204  shift_i_ztop:  4.980260000000001  layerWithSmallestShift:  3
+2  new_z_i_atTop:  2.6828000000000003  shift_i_ztop:  7.3884799999999995  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -3.05542  shift_i_ztop:  1.6502599999999994  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -2.6949799999999993  shift_i_ztop:  2.0107  layerWithSmallestShift:  3
+new_def_z_top_min_diff: -0.36043999999999965
+new_ztop_index:  57  new_z_i_index:  (13, 43, 27, 36, 57)  new_z_top_min:  -3.05542  shift_ztop: 1.6502599999999994
+deleted complementary:  (-13.0433, 24.732033333333327) for patch 10
+deleted complementary:  (-1.79006, 15.773779999999999)
+deleted complementary:  (-13.0433, -4.705679999999999)
+deleted complementary:  (-1.79006, -4.70568)
+complementary_a: 27.02702   27.02702  || complementary_b: 15.773779999999999   15.773779999999999  new z_top_min:  -3.05542
+new white_space_height:  -0.31879999999999953
+adjusted complementary:  (-13.0433, 27.02702)  for z_top_min: -3.05542
+adjusted complementary:  (-1.79006, 15.773779999999999) for patch 10
+adjusted complementary:  (-13.0433, -3.05542)
+adjusted complementary:  (-1.79006, -4.70568)
+originalPartialTop: False complementaryPartialTop: False originalPartialBottom: False complementaryPartialBottom: False -13.043300000000002 26.20022 -78.6688 -1.79006 horizontalOverlapTop: -1 horizontalOverlapBottom: -1
+c_corner:  -3.05542
+top layer from  -2.69498  to  -33.8354  z_top_max:  -3.05542
+original: (-13.0433, -2.6949799999999993) for patch 11
+original: (-1.79006, -2.69498)
+original: (-13.0433, -9.8545)
+original: (-1.79006, -33.8354)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -13.8405 notChoppedPatch False
+z_top_min before: -3.05542 superpoints[self.env.num_layers-1].min: -33.8354
+complementary:  (-13.0433, -2.6949799999999993)  for z_top_min: -33.8354
+complementary:  (-1.79006, -12.68762) for patch 12
+complementary:  (-13.0433, -33.8354)
+complementary:  (-1.79006, -33.8354)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -2.6949799999999993   -2.6949799999999993  || complementary_b: -12.68762   -12.68762
+current white_space_height:  -7.1595200000000006
+counter:  0  counterUpshift:  0
+orig_ztop:  42 orig_z_top_min:  -33.8354
+1  new_z_i_atTop:  -35.506099999999996  shift_i_ztop:  -1.6706999999999965  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -38.051899999999996  shift_i_ztop:  -4.216499999999996  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.71663333333333  shift_i_ztop:  -6.881233333333327  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -33.9894  shift_i_ztop:  -0.15400000000000347  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  41  new_z_i_index:  (11, 35, 19, 24, 41)  new_z_top_min:  -33.9894  shift_ztop: -0.15400000000000347
+deleted complementary:  (-13.0433, -2.6949799999999993) for patch 12
+deleted complementary:  (-1.79006, -12.68762)
+deleted complementary:  (-13.0433, -33.8354)
+deleted complementary:  (-1.79006, -33.8354)
+complementary_a: -4.705679999999999   -4.705679999999999  || complementary_b: -16.72442   -16.72442  new z_top_min:  -33.9894
+new white_space_height:  -5.148820000000001
+adjusted complementary:  (-13.0433, -4.705679999999999)  for z_top_min: -33.9894
+adjusted complementary:  (-1.79006, -16.72442) for patch 12
+adjusted complementary:  (-13.0433, -33.9894)
+adjusted complementary:  (-1.79006, -33.9894)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -4.705679999999999   -4.705679999999999  || complementary_b: -16.72442   -16.72442
+current white_space_height:  -5.148820000000001
+counter:  1  counterUpshift:  0
+orig_ztop:  41 orig_z_top_min:  -33.9894
+1  new_z_i_atTop:  -35.506099999999996  shift_i_ztop:  -1.516699999999993  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -38.051899999999996  shift_i_ztop:  -4.062499999999993  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.71663333333333  shift_i_ztop:  -6.727233333333324  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -34.5054  shift_i_ztop:  -0.5159999999999982  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  40  new_z_i_index:  (11, 35, 19, 24, 40)  new_z_top_min:  -34.5054  shift_ztop: -0.5159999999999982
+deleted complementary:  (-13.0433, -4.705679999999999) for patch 12
+deleted complementary:  (-1.79006, -16.72442)
+deleted complementary:  (-13.0433, -33.9894)
+deleted complementary:  (-1.79006, -33.9894)
+complementary_a: -6.161   -6.161  || complementary_b: -16.72442   -16.72442  new z_top_min:  -34.5054
+new white_space_height:  -3.6935000000000002
+adjusted complementary:  (-13.0433, -6.161)  for z_top_min: -34.5054
+adjusted complementary:  (-1.79006, -16.72442) for patch 12
+adjusted complementary:  (-13.0433, -34.5054)
+adjusted complementary:  (-1.79006, -34.5054)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -6.161   -6.161  || complementary_b: -16.72442   -16.72442
+current white_space_height:  -3.6935000000000002
+counter:  2  counterUpshift:  0
+orig_ztop:  40 orig_z_top_min:  -34.5054
+1  new_z_i_atTop:  -35.506099999999996  shift_i_ztop:  -1.0006999999999948  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -38.051899999999996  shift_i_ztop:  -3.5464999999999947  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -40.71663333333333  shift_i_ztop:  -6.211233333333325  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -40.5034  shift_i_ztop:  -5.9979999999999976  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 4.997300000000003
+new_ztop_index:  39  new_z_i_index:  (11, 35, 19, 24, 39)  new_z_top_min:  -35.506099999999996  shift_ztop: -1.0006999999999948
+deleted complementary:  (-13.0433, -6.161) for patch 12
+deleted complementary:  (-1.79006, -16.72442)
+deleted complementary:  (-13.0433, -34.5054)
+deleted complementary:  (-1.79006, -34.5054)
+complementary_a: -7.27249   -7.27249  || complementary_b: -16.72442   -16.72442  new z_top_min:  -35.506099999999996
+new white_space_height:  -2.5820099999999995
+adjusted complementary:  (-13.0433, -7.27249)  for z_top_min: -35.506099999999996
+adjusted complementary:  (-1.79006, -16.72442) for patch 12
+adjusted complementary:  (-13.0433, -35.506099999999996)
+adjusted complementary:  (-1.79006, -40.033179999999994)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -7.27249   -7.27249  || complementary_b: -16.72442   -16.72442
+current white_space_height:  -2.5820099999999995
+counter:  3  counterUpshift:  0
+orig_ztop:  40 orig_z_top_min:  -35.506099999999996
+1  new_z_i_atTop:  -40.2237  shift_i_ztop:  -4.7176000000000045  layerWithSmallestShift:  2
+2  new_z_i_atTop:  -38.051899999999996  shift_i_ztop:  -2.5458  layerWithSmallestShift:  2
+3  new_z_i_atTop:  -40.71663333333333  shift_i_ztop:  -5.210533333333331  layerWithSmallestShift:  2
+4  new_z_i_atTop:  -40.5034  shift_i_ztop:  -4.997300000000003  layerWithSmallestShift:  2
+new_def_z_top_min_diff: 2.451500000000003
+new_ztop_index:  39  new_z_i_index:  (11, 34, 19, 24, 39)  new_z_top_min:  -38.051899999999996  shift_ztop: -2.5458
+deleted complementary:  (-13.0433, -7.27249) for patch 12
+deleted complementary:  (-1.79006, -16.72442)
+deleted complementary:  (-13.0433, -35.506099999999996)
+deleted complementary:  (-1.79006, -40.033179999999994)
+complementary_a: -7.27249   -7.27249  || complementary_b: -18.10054   -18.10054  new z_top_min:  -38.051899999999996
+new white_space_height:  -2.5820099999999995
+adjusted complementary:  (-13.0433, -7.27249)  for z_top_min: -38.051899999999996
+adjusted complementary:  (-1.79006, -18.10054) for patch 12
+adjusted complementary:  (-13.0433, -38.051899999999996)
+adjusted complementary:  (-1.79006, -40.5034)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -7.27249   -7.27249  || complementary_b: -18.10054   -18.10054
+current white_space_height:  -2.5820099999999995
+counter:  4  counterUpshift:  0
+orig_ztop:  39 orig_z_top_min:  -38.051899999999996
+1  new_z_i_atTop:  -41.0781  shift_i_ztop:  -3.026200000000003  layerWithSmallestShift:  3
+2  new_z_i_atTop:  -49.40650000000001  shift_i_ztop:  -11.354600000000012  layerWithSmallestShift:  3
+3  new_z_i_atTop:  -40.71663333333333  shift_i_ztop:  -2.6647333333333307  layerWithSmallestShift:  3
+4  new_z_i_atTop:  -44.5128  shift_i_ztop:  -6.460900000000002  layerWithSmallestShift:  3
+new_def_z_top_min_diff: 3.7961666666666716
+new_ztop_index:  38  new_z_i_index:  (11, 33, 18, 24, 38)  new_z_top_min:  -40.71663333333333  shift_ztop: -2.6647333333333307
+deleted complementary:  (-13.0433, -7.27249) for patch 12
+deleted complementary:  (-1.79006, -18.10054)
+deleted complementary:  (-13.0433, -38.051899999999996)
+deleted complementary:  (-1.79006, -40.5034)
+complementary_a: -8.14367   -8.14367  || complementary_b: -18.212619999999998   -18.212619999999998  new z_top_min:  -40.71663333333333
+new white_space_height:  -1.7108299999999996
+adjusted complementary:  (-13.0433, -8.14367)  for z_top_min: -40.71663333333333
+adjusted complementary:  (-1.79006, -18.212619999999998) for patch 12
+adjusted complementary:  (-13.0433, -40.71663333333333)
+adjusted complementary:  (-1.79006, -44.46771333333333)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -8.14367   -8.14367  || complementary_b: -18.212619999999998   -18.212619999999998
+current white_space_height:  -1.7108299999999996
+counter:  5  counterUpshift:  0
+orig_ztop:  39 orig_z_top_min:  -40.71663333333333
+1  new_z_i_atTop:  -42.4201  shift_i_ztop:  -1.703466666666671  layerWithSmallestShift:  1
+2  new_z_i_atTop:  -49.40650000000001  shift_i_ztop:  -8.689866666666681  layerWithSmallestShift:  1
+3  new_z_i_atTop:  -47.356899999999996  shift_i_ztop:  -6.640266666666669  layerWithSmallestShift:  1
+4  new_z_i_atTop:  -44.5128  shift_i_ztop:  -3.7961666666666716  layerWithSmallestShift:  1
+new_def_z_top_min_diff: 2.0927000000000007
+new_ztop_index:  38  new_z_i_index:  (11, 32, 18, 23, 38)  new_z_top_min:  -42.4201  shift_ztop: -1.703466666666671
+deleted complementary:  (-13.0433, -8.14367) for patch 12
+deleted complementary:  (-1.79006, -18.212619999999998)
+deleted complementary:  (-13.0433, -40.71663333333333)
+deleted complementary:  (-1.79006, -44.46771333333333)
+complementary_a: -8.14367   -8.14367  || complementary_b: -19.757140000000003   -19.757140000000003  new z_top_min:  -42.4201
+new white_space_height:  -1.7108299999999996
+adjusted complementary:  (-13.0433, -8.14367)  for z_top_min: -42.4201
+adjusted complementary:  (-1.79006, -19.757140000000003) for patch 12
+adjusted complementary:  (-13.0433, -42.4201)
+adjusted complementary:  (-1.79006, -44.5128)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -8.14367   -8.14367  || complementary_b: -19.757140000000003   -19.757140000000003
+current white_space_height:  -1.7108299999999996
+counter:  6  counterUpshift:  0
+orig_ztop:  39 orig_z_top_min:  -42.4201
+1  new_z_i_atTop:  -48.786899999999996  shift_i_ztop:  -6.366799999999998  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -49.40650000000001  shift_i_ztop:  -6.98640000000001  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -47.356899999999996  shift_i_ztop:  -4.936799999999998  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -44.5128  shift_i_ztop:  -2.0927000000000007  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  38  new_z_i_index:  (11, 31, 18, 23, 38)  new_z_top_min:  -44.5128  shift_ztop: -2.0927000000000007
+deleted complementary:  (-13.0433, -8.14367) for patch 12
+deleted complementary:  (-1.79006, -19.757140000000003)
+deleted complementary:  (-13.0433, -42.4201)
+deleted complementary:  (-1.79006, -44.5128)
+complementary_a: -8.14367   -8.14367  || complementary_b: -24.22022   -24.22022  new z_top_min:  -44.5128
+new white_space_height:  -1.7108299999999996
+adjusted complementary:  (-13.0433, -8.14367)  for z_top_min: -44.5128
+adjusted complementary:  (-1.79006, -24.22022) for patch 12
+adjusted complementary:  (-13.0433, -44.5128)
+adjusted complementary:  (-1.79006, -44.5128)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -8.14367   -8.14367  || complementary_b: -24.22022   -24.22022
+current white_space_height:  -1.7108299999999996
+counter:  7  counterUpshift:  0
+orig_ztop:  38 orig_z_top_min:  -44.5128
+1  new_z_i_atTop:  -48.786899999999996  shift_i_ztop:  -4.274099999999997  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -53.914500000000004  shift_i_ztop:  -9.401700000000005  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -49.935433333333336  shift_i_ztop:  -5.422633333333337  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -45.3554  shift_i_ztop:  -0.8426000000000045  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  37  new_z_i_index:  (11, 31, 17, 22, 37)  new_z_top_min:  -45.3554  shift_ztop: -0.8426000000000045
+deleted complementary:  (-13.0433, -8.14367) for patch 12
+deleted complementary:  (-1.79006, -24.22022)
+deleted complementary:  (-13.0433, -44.5128)
+deleted complementary:  (-1.79006, -44.5128)
+complementary_a: -8.78419   -8.78419  || complementary_b: -24.22022   -24.22022  new z_top_min:  -45.3554
+new white_space_height:  -1.0703099999999992
+adjusted complementary:  (-13.0433, -8.78419)  for z_top_min: -45.3554
+adjusted complementary:  (-1.79006, -24.22022) for patch 12
+adjusted complementary:  (-13.0433, -45.3554)
+adjusted complementary:  (-1.79006, -45.3554)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -8.78419   -8.78419  || complementary_b: -24.22022   -24.22022
+current white_space_height:  -1.0703099999999992
+counter:  8  counterUpshift:  0
+orig_ztop:  37 orig_z_top_min:  -45.3554
+1  new_z_i_atTop:  -48.786899999999996  shift_i_ztop:  -3.4314999999999927  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -53.914500000000004  shift_i_ztop:  -8.5591  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -49.935433333333336  shift_i_ztop:  -4.580033333333333  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -47.3505  shift_i_ztop:  -1.9950999999999937  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  36  new_z_i_index:  (11, 31, 17, 22, 36)  new_z_top_min:  -47.3505  shift_ztop: -1.9950999999999937
+deleted complementary:  (-13.0433, -8.78419) for patch 12
+deleted complementary:  (-1.79006, -24.22022)
+deleted complementary:  (-13.0433, -45.3554)
+deleted complementary:  (-1.79006, -45.3554)
+complementary_a: -10.6421   -10.6421  || complementary_b: -24.22022   -24.22022  new z_top_min:  -47.3505
+new white_space_height:  0.7875999999999994
+adjusted complementary:  (-13.0433, -10.6421)  for z_top_min: -47.3505
+adjusted complementary:  (-1.79006, -24.22022) for patch 12
+adjusted complementary:  (-13.0433, -47.3505)
+adjusted complementary:  (-1.79006, -47.3505)
+
+original c: -9.8545   -9.8545 || original d: -33.8354   -33.8354
+complementary_a: -10.6421   -10.6421  || complementary_b: -24.22022   -24.22022
+current white_space_height:  0.7875999999999994
+counter:  9  counterUpshift:  0
+orig_ztop:  36 orig_z_top_min:  -47.3505
+1  new_z_i_atTop:  -42.4201  shift_i_ztop:  4.930399999999999  layerWithSmallestShift:  4
+2  new_z_i_atTop:  -38.051899999999996  shift_i_ztop:  9.2986  layerWithSmallestShift:  4
+3  new_z_i_atTop:  -40.71663333333333  shift_i_ztop:  6.63386666666667  layerWithSmallestShift:  4
+4  new_z_i_atTop:  -45.3554  shift_i_ztop:  1.9950999999999937  layerWithSmallestShift:  4
+new_def_z_top_min_diff: 0.0
+new_ztop_index:  37  new_z_i_index:  (13, 32, 19, 24, 37)  new_z_top_min:  -45.3554  shift_ztop: 1.9950999999999937
+deleted complementary:  (-13.0433, -10.6421) for patch 12
+deleted complementary:  (-1.79006, -24.22022)
+deleted complementary:  (-13.0433, -47.3505)
+deleted complementary:  (-1.79006, -47.3505)
+complementary_a: -8.78419   -8.78419  || complementary_b: -24.22022   -24.22022  new z_top_min:  -45.3554
+new white_space_height:  -1.0703099999999992
+adjusted complementary:  (-13.0433, -8.78419)  for z_top_min: -45.3554
+adjusted complementary:  (-1.79006, -24.22022) for patch 12
+adjusted complementary:  (-13.0433, -45.3554)
+adjusted complementary:  (-1.79006, -45.3554)
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-13.0433, -17.4815) for patch 13
+original: (-1.79006, -43.614219999999996)
+original: (-13.0433, -50.0001)
+original: (-1.79006, -50.0001)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -3.8041000000000054 notChoppedPatch True
+c_corner:  -50.0001
+z1_Align:  -13.0433
+top layer from  -4.70568  to  -33.9894  z_top_max:  -5.216500000000002
+original: (-22.0001, -4.705680000000001) for patch 14
+original: (-4.53043, -25.264029999999998)
+original: (-22.0001, -27.616899999999998)
+original: (-4.53043, -33.9894)
+squareAcceptance:  False triangleAcceptance:  False  projectionOfCcornerToBeam:  -20.5959 notChoppedPatch False
+z_top_min before: -50 superpoints[self.env.num_layers-1].min: -33.9894
+complementary:  (-22.0001, -4.705680000000001)  for z_top_min: -33.9894
+complementary:  (-4.53043, -33.9894) for patch 15
+complementary:  (-22.0001, -33.9894)
+complementary:  (-4.53043, -33.9894)
+c_corner:  -33.9894
+top layer from  -17.4815  to  -50.0001  z_top_max:  -33.9894
+original: (-22.0001, -17.4815) for patch 16
+original: (-4.53043, -37.38290000000001)
+original: (-22.0001, -37.38290000000001)
+original: (-4.53043, -37.38290000000001)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -18.1544 notChoppedPatch False
+complementary:  (-22.0001, -7.272490000000001)  for z_top_min: -37.38290000000001
+complementary:  (-4.53043, -37.38290000000001) for patch 17
+complementary:  (-22.0001, -37.38290000000001)
+complementary:  (-4.53043, -37.38290000000001)
+c_corner:  -37.38290000000001
+top layer from  -17.4815  to  -50.0001  z_top_max:  -37.38290000000001
+original: (-22.0001, -17.4815) for patch 18
+original: (-4.53043, -38.6901)
+original: (-22.0001, -38.6901)
+original: (-4.53043, -38.6901)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -17.8276 notChoppedPatch False
+complementary:  (-22.0001, -8.635699999999996)  for z_top_min: -38.6901
+complementary:  (-4.53043, -38.6901) for patch 19
+complementary:  (-22.0001, -38.6901)
+complementary:  (-4.53043, -38.6901)
+c_corner:  -38.6901
+top layer from  -17.4815  to  -50.0001  z_top_max:  -38.6901
+original: (-22.0001, -17.4815) for patch 20
+original: (-4.53043, -38.6901)
+original: (-22.0001, -38.6901)
+original: (-4.53043, -38.6901)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -17.8276 notChoppedPatch False
+complementary:  (-22.0001, -8.635699999999996)  for z_top_min: -38.6901
+complementary:  (-4.53043, -38.6901) for patch 21
+complementary:  (-22.0001, -38.6901)
+complementary:  (-4.53043, -38.6901)
+-40.5034 -7.27249  repeat_patch:  True
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-22.0001, -17.4815) for patch 22
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 23
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+c_corner:  -46.626900000000006
+top layer from  -17.4815  to  -50.0001  z_top_max:  -46.626900000000006
+original: (-22.0001, -17.4815) for patch 24
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 25
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+-47.3505 -10.6421  repeat_patch:  True
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-22.0001, -17.4815) for patch 26
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 27
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+c_corner:  -46.626900000000006
+top layer from  -17.4815  to  -50.0001  z_top_max:  -46.626900000000006
+original: (-22.0001, -17.4815) for patch 28
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 29
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+-47.3505 -10.6421  repeat_patch:  True
+c_corner:  -45.3554
+top layer from  -17.4815  to  -50.0001  z_top_max:  -45.3554
+original: (-22.0001, -17.4815) for patch 30
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 31
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+c_corner:  -46.626900000000006
+top layer from  -17.4815  to  -50.0001  z_top_max:  -46.626900000000006
+original: (-22.0001, -17.4815) for patch 32
+original: (-4.53043, -46.626900000000006)
+original: (-22.0001, -46.626900000000006)
+original: (-4.53043, -46.626900000000006)
+squareAcceptance:  False triangleAcceptance:  True  projectionOfCcornerToBeam:  -15.843399999999999 notChoppedPatch False
+complementary:  (-22.0001, -15.549699999999998)  for z_top_min: -46.626900000000006
+complementary:  (-4.53043, -46.626900000000006) for patch 33
+complementary:  (-22.0001, -46.626900000000006)
+complementary:  (-4.53043, -46.626900000000006)
+-47.3505 -10.6421  repeat_patch:  True
+c_corner:  -45.3554
+z1_Align:  -22.0001
+wedge:  2820  underEfficiency percentage_accepted:  97.96700000000001  z0: -14.95
+segment: -47.967 50
+wedge:  2820  underEfficiency percentage_accepted:  98.042  z0: -14.899999999999999
+segment: -48.042 50
+wedge:  2820  underEfficiency percentage_accepted:  98.117  z0: -14.849999999999998
+segment: -48.117000000000004 50
+wedge:  2820  underEfficiency percentage_accepted:  98.19200000000001  z0: -14.799999999999997
+segment: -48.19200000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.26700000000001  z0: -14.749999999999996
+segment: -48.26700000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.34200000000001  z0: -14.699999999999996
+segment: -48.342000000000006 50
+wedge:  2820  underEfficiency percentage_accepted:  98.417  z0: -14.649999999999995
+segment: -48.417 50
+wedge:  2820  underEfficiency percentage_accepted:  98.49200000000002  z0: -14.599999999999994
+segment: -48.49200000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.56700000000001  z0: -14.549999999999994
+segment: -48.56700000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.64200000000001  z0: -14.499999999999993
+segment: -48.64200000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.71700000000001  z0: -14.449999999999992
+segment: -48.71700000000001 50
+wedge:  2820  underEfficiency percentage_accepted:  98.792  z0: -14.399999999999991
+segment: -48.792000000000016 50
+wedge:  2820  underEfficiency percentage_accepted:  98.86700000000002  z0: -14.34999999999999
+segment: -48.86700000000002 50
+wedge:  2820  underEfficiency percentage_accepted:  98.94200000000001  z0: -14.29999999999999
+segment: -48.942000000000014 50

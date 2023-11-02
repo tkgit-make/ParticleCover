@@ -22,11 +22,15 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         v (str, optional): version of data, ensure data file is in directory as "wedgeData_{v}_128.txt"
         acceptance_method : choose between 'Analytic' or 'MonteCarlo'
     """
-    
+
+    accept_cutoff = z0_luminousRegion    
     #create list for z values we're testing the acceptance of, number of covers, and PRF
+    showZimperfect = False
+    if (wedges[1]-wedges[0]) == 1:
+        showZimperfect = True
     if (wedges[1]-wedges[0]) > 50:
         show_acceptance_of_cover = False
-        z0_spacing = 0.5
+        z0_spacing = 0.2
     num_covers = []
     PRF = []
     data_string = f'{v} events'
@@ -34,20 +38,22 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         data_string = f'Uniform {uniform_N_points} points'
         wedges = [0, 1]
 
-    z0 = np.arange(-22, 22+z0_spacing, z0_spacing)
-    mean_list = np.zeros(( wedges[1]-wedges[0], len(z0)))
-
+    zInnerLayer = np.arange(-22, 22+z0_spacing, z0_spacing)
+    z0Array = np.arange(-z0_luminousRegion, z0_luminousRegion+z0_spacing, z0_spacing)
+    mean_list = np.zeros(( wedges[1]-wedges[0], len(z0Array)))
+    z0Imperfect = []
+    z0OverEfficiency = []
     #read wedgeData file and create environment
     all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
-        print(k)
+        print('wedge: ', k)
         #convert to existing data format
         env, points = all_data[k] 
         env = Environment(top_layer_lim = top_layer_cutoff, beam_axis_lim=z0_luminousRegion)
         data = DataSet(env)
         if show_acceptance_of_cover:
-            plt.figure(figsize = (z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
+            plt.figure(figsize = (1.7*z0_luminousRegion/figSizeScale, top_layer_cutoff/figSizeScale))
         if uniform_N_points == False:
             data.importData(points)
         else:
@@ -72,40 +78,85 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         
                 out.append(num_in)
         PRF.append(out)
-        sleep_time_between_patches = 5
+        sleep_time_between_patches = 0.0
         
-        #these loops calculate line acceptance
-        for iz, z in enumerate(np.array(z0)):
+        #this loop shows quilt of patches  
+        for iz, zIn in enumerate(np.array(zInnerLayer)):
+            
+            list_of_intersections = []
+            for patch in cover.patches: 
+                list_of_segs = [pgram.crossSection(zIn) for pgram in patch.parallelograms]
+                overlap_of_superpoints = intersection(patch.env, list_of_segs, True) 
+                list_of_intersections.append(overlap_of_superpoints)
+                
+            if show_acceptance_of_cover:
+                    
+                plt.xlabel(r"$z_1$ (cm)", fontsize = 18)
+                plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
+                plt.title("acceptance of cover", fontsize = 18)
+                z1Lim = cover.patches[-1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,z0_luminousRegion,env.num_layers,0,1)
+                plt.axline((z1Lim, -top_layer_cutoff), (env.trapezoid_edges[0], top_layer_cutoff),linewidth=1, color='black')
+                plt.axline((-z1Lim, top_layer_cutoff), (-env.trapezoid_edges[0], -top_layer_cutoff),linewidth=1, color='black')
+
+                colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "rosybrown", "tomato","olive", "deeppink"]
+                    
+                col = 0
+                for line in list_of_intersections: 
+                    #plt.xlim(-z0_luminousRegion,z0_luminousRegion)
+                    plt.xlim(-env.trapezoid_edges[0],env.trapezoid_edges[0])
+                    plt.ylim(-top_layer_cutoff, top_layer_cutoff)
+                    plt.plot([zIn, zIn], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
+                    col += 1
+                    time.sleep(sleep_time_between_patches)
+
+        #these loops calculate acceptance vs z0
+        for iz, z0 in enumerate(np.array(z0Array)):
             
             if acceptance_method == "Analytic": 
                 
-                list_of_intersections = []
+                list_of_z0intersections = []
+                list_of_z0intersectionsCopy = []
                 for patch in cover.patches: 
-                    #time.sleep(sleep_time_between_patches)
-                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
-                    overlap_of_superpoints = intersection(patch.env, list_of_segs) 
-                    list_of_intersections.append(overlap_of_superpoints)
-                
-                if show_acceptance_of_cover:
-                    
-                    plt.xlabel(r"$z_1$ (cm)", fontsize = 18)
-                    plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
-                    plt.title("acceptance of cover", fontsize = 18)
-                    
-                    colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "rosybrown", "tomato","olive", "deeppink"]
-                    
-                    col = 0
-                    for line in list_of_intersections: 
-                        #plt.xlim(-z0_luminousRegion,z0_luminousRegion)
-                        plt.xlim(-env.trapezoid_edges[0],env.trapezoid_edges[0])
-                        plt.ylim(-top_layer_cutoff, top_layer_cutoff)
-                        plt.plot([z, z], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
-                        col += 1     
-                total_measure = unionOfLineSegments(list_of_intersections)
-                
-                percentage_accepted = total_measure/(2.0 * patch.env.top_layer_lim)
+                    # convert to a z0 scan when parameter space is (z1,z5), cast shadow from z0 to layer5 of each superpoint 
+                    list_of_segs_z0Scan = [
+                        lineSegment(
+                            min(patch.env.top_layer_lim,max(-patch.env.top_layer_lim,
+                                patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.min,0,spLayer+1,patch.env.num_layers))),
+                            max(-patch.env.top_layer_lim,min(patch.env.top_layer_lim,
+                                patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.max,0,spLayer+1,patch.env.num_layers))),
+                        ) for spLayer, SuPoint in enumerate(patch.superpoints)]
+                    overlap_of_superpoints_z0Scan = intersection(patch.env, list_of_segs_z0Scan, False) 
+                    list_of_z0intersections.append(overlap_of_superpoints_z0Scan)
 
-                
+                list_of_z0intersectionsCopy = list_of_z0intersections
+                total_measure = unionOfLineSegments(list_of_z0intersections)
+                #print('total_measure:',total_measure)
+                percentage_accepted = 100.0*total_measure/(2.0 * patch.env.top_layer_lim)
+                if (percentage_accepted < 99.0) and (abs(z0) < z0_luminousRegion):
+                    print('wedge: ', k, ' underEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
+                    z0Imperfect.append(z0)
+                    for seg in list_of_z0intersectionsCopy:
+                        print('segment:',seg.min_z5_accepted, seg.max_z5_accepted)
+                    #for patch in cover.patches:
+                        #if (overlap_of_superpoints_z0Scan.min_z5_accepted < overlap_of_superpoints_z0Scan.max_z5_accepted):
+                            #print('overlap_of_superpoints_z0Scan:',overlap_of_superpoints_z0Scan.min_z5_accepted,overlap_of_superpoints_z0Scan.max_z5_accepted)
+                if (percentage_accepted > 100.0001) and (abs(z0) < z0_luminousRegion):
+                    print('wedge: ', k, ' overEfficiency percentage_accepted: ', percentage_accepted, ' z0:', z0)
+                    z0OverEfficiency.append(z0)
+
+                if showZimperfect and show_acceptance_of_cover:
+                    zTopVal = [-top_layer_cutoff,top_layer_cutoff]
+                    for zImperfect in z0Imperfect:
+                        z1Left = cover.patches[-1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,zImperfect,env.num_layers,0,1)
+                        z1Right = cover.patches[-1].straightLineProjectorFromLayerIJtoK(top_layer_cutoff,zImperfect,env.num_layers,0,1)
+                        z1Val = [z1Left,z1Right]
+                        plt.plot(z1Val, zTopVal, linewidth=0.01, color='moccasin', alpha=0.4)
+                    for zOverEff in z0OverEfficiency:
+                        z1Left = cover.patches[-1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,zOverEff,env.num_layers,0,1)
+                        z1Right = cover.patches[-1].straightLineProjectorFromLayerIJtoK(top_layer_cutoff,zOverEff,env.num_layers,0,1)
+                        z1Val = [z1Left,z1Right]
+                        plt.plot(z1Val, zTopVal, linewidth=0.01, color='lightskyblue', alpha=0.2)
+                    
             elif acceptance_method == "MonteCarlo": 
                 percentage_accepted = 0 
                 
@@ -117,9 +168,8 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                         if patch.contains(test_lines[i]):
                             percentage_accepted += 1 
                             break
-
                 
-                percentage_accepted = percentage_accepted/lines
+                percentage_accepted = 100.0*percentage_accepted/lines
             
             mean_list[ik, iz] = mean_list[ik, iz] + percentage_accepted
             
@@ -127,29 +177,29 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
             plt.show()
             plt.close()
         
-    
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")
 
     #sets minimum for plot
     if type(apexZ0) == float:
-        ymin = 0.95
+        ymin = 95
     elif type(apexZ0) == int:
-        ymin = 0.95
+        ymin = 99.99
     else:
-        ymin = 0.95
+        ymin = 95
 
     #creates plots and saves them
-    plt.scatter(z0, np.mean(mean_list, axis = 0), color = 'r', s = 10)
-    plt.plot(z0, np.mean(mean_list, axis = 0), color = 'k')
+    plt.scatter(z0Array, np.mean(mean_list, axis = 0), color = 'r', s = 10)
+    plt.plot(z0Array, np.mean(mean_list, axis = 0), color = 'k')
     plt.xlabel(r'$z_0$ [cm]', fontsize = 16)
-    plt.ylabel('Acceptance',  fontsize = 16)
-    plt.ylim(ymin, 1.0)
+    plt.ylabel('Acceptance (%)',  fontsize = 16)
+    plt.ylim(ymin, 100.0)
+    plt.xlim(-z0_luminousRegion,z0_luminousRegion)  
     plt.title(f'{lining}', fontsize = 16)
-    mask = np.abs(z0) <= accept_cutoff
+    mask = np.abs(z0Array) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage Acceptance [-{accept_cutoff}, {accept_cutoff}]: {np.round(np.mean(mean_list[:, mask])*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage non-Acceptance [-{accept_cutoff}, {accept_cutoff}]: {int((100.0-np.mean(mean_list[:, mask]))*10000)} ppm"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
@@ -384,7 +434,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
     plt.title(f'{lining}', fontsize = 16)
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_{top}$ = " +f"{z_top}\n" r'$apexZ_0$' + f" = {last_apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage Acceptance: {np.round(np.mean(mean_list)*100, 2)}%"],
+    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPRF: {PRFm}" + r'$\pm$' + f"{PRFs}, " + r"$z_{top}$ = " +f"{z_top}\n" r'$apexZ_0$' + f" = {last_apexZ0}\n" + r'$N_{wedges}$ ' + f"= {wedges}, {data_string}, ppl = {ppl}\nAverage non-acceptance: {np.round((1.0-np.mean(mean_list))*100, 3)}%"],
         loc = 8, fontsize = 12)
     if savefig == True:
         plt.savefig(f"python/Figures/binary_search_{start}_({lining}_{data_string}_ztop_{z_top}_ppl{16}_wedges{wedges}_z_lum{z0_luminousRegion})")
