@@ -161,8 +161,8 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     #cover.plot()
 
 def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', top_layer_cutoff = 100., uniform_points = False): 
-    filepath = f"data/wedgeData_{v}_128.txt"
-    f = open(f'data/{v}_patches.txt')
+    filepath = f"python/data/wedgeData_{v}_128.txt"
+    f = open(f'python/data/{v}_patches.txt')
     filedata = readFile(filepath, stop=128, performance=False)
     env, points = filedata[wedge_number]
     env = Environment(top_layer_lim = top_layer_cutoff)
@@ -174,7 +174,7 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
         ds.generateUniform([uniform_points,uniform_points,uniform_points, uniform_points,uniform_points])
     else:
         ds.importData(points)
-    ds.add()
+    ds.addBoundaryPoint()
     colors = ['b', 'orange', 'm', 'c', 'k']
     plt.figure(figsize = (10, 8))
     lines_to_plot = []
@@ -233,11 +233,11 @@ def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:l
     if unaccepted == True:
         plt.plot([0],color = 'r', label = f'Lines Not Accepted from {line_origin}')
     
-    plt.legend(loc = 'lower left', fontsize = 12)
+    plt.legend(loc = 'lower left', fontsize = 20)
     plt.xlim(-top_layer_cutoff, top_layer_cutoff)
     ds.plot(True, False)
 
-    plt.title(datastring, fontsize = 20)
+    plt.title(datastring, fontsize = 24)
     plt.show()
 
 def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", accept = 0.999, start = 'odd', ppl = 16, wedges = 128, z_top = 50., z0_spacing = 0.5, z0_luminousRegion = 15., v = 'v3', savefig = False):
@@ -311,7 +311,7 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
                 '''
                 list_of_intersections = []
                 for patch in cover.patches: 
-                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms]
+                    list_of_segs = [pgram.crossSection(z) for pgram in patch.parallelograms_v1]
                     overlap_of_superpoints = intersection(patch.env, list_of_segs) 
                     list_of_intersections.append(overlap_of_superpoints)
                 
@@ -322,10 +322,13 @@ def minimal_cover_binary_search(lining:str = "makePatches_Projective_center", ac
 
         z0_means = np.mean(mean_list, axis = 1)
         last_apexZ0 = apexZ0
+        print(z0_means[:int(len(z0)/2+1)])
         if np.all(z0_means[:int(len(z0)/2+1)] >= accept):
             left_stop = True
-        if np.all(z0_means[int(len(z0)/2+1):]>= accept):
+            print('left')
+        if np.all(z0_means[int(len(z0)/2+1):] >= accept):
             right_stop = True
+            print('right')
         if (left_stop == True) & (right_stop == True):
             reached = True
         if np.all(z0_means[left_middle:int(len(z0)/2)+1] >= accept):

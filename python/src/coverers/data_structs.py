@@ -116,10 +116,11 @@ class DataSet():
         plt.scatter(*zip(*coords), c="g", s=3)
         
         # X Y Labels
-        plt.xlabel('z [cm]', fontsize = 16)
-        plt.ylabel('r [cm]',  fontsize = 16)
-        plt.yticks(np.arange(0, max_height + 1, self.env.num_layers))
-        plt.title(f'Scatter Plot of Space Points', fontsize = 16)
+        plt.xlabel('z [cm]', fontsize = 20)
+        plt.ylabel('r [cm]',  fontsize = 20)
+        plt.yticks(np.arange(0, max_height + 1, self.env.num_layers), fontsize = 20)
+        plt.xticks(fontsize = 20)
+        plt.title(f'Scatter Plot of Space Points', fontsize = 24)
     
         if show_lines == True: 
             

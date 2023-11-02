@@ -53,6 +53,7 @@ class wedgePatch():
         # first superpoint in array should be the 1st layer 
         
         self.getParallelograms()
+        self.getParallelograms_v1()
         self.get_acceptanceCorners()
         self.get_end_layer()
         
@@ -150,10 +151,10 @@ class wedgePatch():
             b = self.straightLineProjector(top_layer_zmax, z_j_max, j)
             
             pSlope = self.env.parallelogramSlopes[j-1]
-            Parallelogram = parallelogram(j, top_layer_zmin, top_layer_zmax, a, b, pSlope)
+            Parallelogram = parallelogram_v1(j, top_layer_zmin, top_layer_zmax, a, b, pSlope)
             parallelograms.append(Parallelogram)
         
-        self.parallelograms = parallelograms
+        self.parallelograms_v1 = parallelograms
 
     def get_acceptanceCorners(self):
 
@@ -398,10 +399,12 @@ class wedgeCover():
         self.data = data 
         self.fitting_lines = [] 
         self.superPoints = [] 
+        self.all_patches = []
         
     def add_patch(self, curr_patch:wedgePatch): 
         if self.n_patches == 0: 
             self.patches.append(curr_patch) 
+            self.all_patches.append(curr_patch)
             self.n_patches += 1 
         else:
             prev_patch = self.patches[-1] 
@@ -411,8 +414,12 @@ class wedgeCover():
             for l in range(len(prev_sp)): 
                 if (prev_sp[l].min != curr_sp[l].min) or (prev_sp[l].max != curr_sp[l].max): 
                     self.patches.append(curr_patch) 
+                    self.all_patches.append(curr_patch)
                     self.n_patches += 1 
                     break
+    
+    def delete_patch(self, index):
+        del self.patches[index]
 
     def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, leftRight:bool =True, show = True):
         if show == True:
