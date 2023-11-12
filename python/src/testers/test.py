@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import time
 
-def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, savefig=False, figSizeScale=6):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, movie = False, savefig=False, figSizeScale=6):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -107,7 +107,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                     plt.ylim(-top_layer_cutoff, top_layer_cutoff)
                     plt.plot([zIn, zIn], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
                     col += 1
-                    time.sleep(sleep_time_between_patches)
+                    time.sleep(0)
 
         #these loops calculate acceptance vs z0
         for iz, z0 in enumerate(np.array(z0Array)):
@@ -172,10 +172,14 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
                 percentage_accepted = 100.0*percentage_accepted/lines
             
             mean_list[ik, iz] = mean_list[ik, iz] + percentage_accepted
-            
-        if show_acceptance_of_cover: 
+
+        if movie:
+            cover.movie(z0_spacing = z0_spacing, figSizeScale = figSizeScale*2.1)     
+            plt.close()       
+        if show_acceptance_of_cover:
             plt.show()
             plt.close()
+
         
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")

@@ -454,11 +454,13 @@ class wedgeCover():
         self.fitting_lines = [] 
         self.superPoints = [] 
         self.all_patches = []
+        self.real_patch_list = []
         
     def add_patch(self, curr_patch:wedgePatch): 
         if self.n_patches == 0: 
             self.patches.append(curr_patch) 
             self.all_patches.append(curr_patch)
+            self.real_patch_list.append(True)
             self.n_patches += 1 
         else:
             prev_patch = self.patches[-1] 
@@ -469,11 +471,13 @@ class wedgeCover():
                 if (prev_sp[l].min != curr_sp[l].min) or (prev_sp[l].max != curr_sp[l].max): 
                     self.patches.append(curr_patch) 
                     self.all_patches.append(curr_patch)
+                    self.real_patch_list.append(True)
                     self.n_patches += 1 
                     break
     
     def delete_patch(self, index):
         del self.patches[index]
+        self.real_patch_list[-1] = False
 
     def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, leftRight:bool =True, show = True):
 
@@ -897,7 +901,8 @@ class wedgeCover():
                     complementary_apexZ0 = self.patches[-1].straightLineProjector(z_top_min, self.patches[-1].superpoints[0].min, 1)
                     #print("shortened, complementary_apexZ0 ", complementary_apexZ0, " updated z_top_min ", z_top_min)
                 # delete the check patch
-                del self.patches[-1]
+                #del self.patches[-1]
+                self.delete_patch(-1)
                 self.n_patches -= 1
                 # now make actual complementary patch 
                 self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
@@ -956,7 +961,8 @@ class wedgeCover():
                     complementary_apexZ0 = self.patches[-1].straightLineProjector(z_top_max, self.patches[-1].superpoints[0].max, 1)
                     print("shortened: updated complementary_apexZ0 ", complementary_apexZ0, " updated z_top_max ", z_top_max, len(self.patches))  
                 # delete the check patch                               
-                del self.patches[-1]
+                #del self.patches[-1]
+                self.delete_patch(-1)
                 self.n_patches -= 1
                 print("after deleting checkPatch, N_patches: ", len(self.patches))
                 # now make actual complementary patch  
@@ -1083,7 +1089,7 @@ class wedgeCover():
          
 #        print(z_top_min,z_top_max)
     def makePatches_ShadowQuilt_fromEdges(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
-      """This method uses the geometry of shadows to generate patches based on superpoints
+        """This method uses the geometry of shadows to generate patches based on superpoints
             the outer layer and the z0 of the collision point. 
 
         Args:
@@ -1091,293 +1097,296 @@ class wedgeCover():
             stop (num, optional): Where to stop, normalized to 1. Defaults to 1.
             ppl (int, optional): Points per patch per layer. Defaults to 16.
             leftRight (bool, optional): If False, goes from right to left instead of left to right. Defaults to True.
-      """
-      #self.makePatches_Projective(leftRight=False)
-      #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
+        """
+        #self.makePatches_Projective(leftRight=False)
+        #initialize the method to make patches floor by floor, topFloor down and bottomFloor up
 
-      fix42 = True
-      apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
-      while (apexZ0 > -self.env.trapezoid_edges[0]):
-        z_top_min = -self.env.top_layer_lim
-        complementary_apexZ0 = 0
-        first_row_count = 0
-        c_corner = np.inf
-        z_top_max = self.env.top_layer_lim + self.env.boundaryPoint_offset
-        if (len(self.patches) > 0):
-            z_top_max = min(z_top_max,
-                        self.patches[-1].straightLineProjectorFromLayerIJtoK(-self.env.beam_axis_lim,apexZ0,0,1,self.env.num_layers))
-        nPatchesInColumn = 0
-        projectionOfCcornerToBeam = 0
-        while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (nPatchesInColumn<100000000) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
-            nPatchesInColumn += 1
-            self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
-            print ('top layer from ', self.patches[-1].superpoints[self.env.num_layers-1].max, ' to ', self.patches[-1].superpoints[self.env.num_layers-1].min, ' z_top_max: ', z_top_max)
-            print('original:',self.patches[-1].a_corner, 'for patch',len(self.patches))
-            print('original:',self.patches[-1].b_corner)
-            print('original:',self.patches[-1].c_corner)
-            print('original:',self.patches[-1].d_corner)
-            for j, sp in enumerate(self.patches[-1].superpoints[1:-1], start=2):
-                print (j,'superpoint:',sp.min,sp.max,'shadowTop from L1Max:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.min,1,j,self.env.num_layers),self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.max,1,j,self.env.num_layers),'from L1Min:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,sp.min,1,j,self.env.num_layers),self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,sp.max,1,j,self.env.num_layers))
-            #original_c = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].c_corner[1], 'below')
-            #original_d = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].d_corner[1], 'below')
-            original_c = self.patches[-1].c_corner[1]
-            original_d = self.patches[-1].d_corner[1]
-            c_corner = original_c
-            repeat_patch = False
-            repeat_original = False
-            if len(self.patches) > 2:
-                repeat_original = (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]) and (self.patches[-1].superpoints[1] == self.patches[-3].superpoints[1]) and (self.patches[-1].superpoints[2] == self.patches[-3].superpoints[2]) and (self.patches[-1].superpoints[3] == self.patches[-3].superpoints[3])
-            #if (self.patches[-1].triangleAcceptance == True):
-                #original_c = self.patches[-1].b_corner[1]
-            seed_apexZ0 = apexZ0
-            projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].c_corner[1],self.patches[-1].c_corner[0],self.env.num_layers,1,0)
-            squarePatch_alternate1 = ((self.patches[-1].a_corner[1] > z_top_max) and (self.patches[-1].b_corner[1] > z_top_max) and self.patches[-1].flatBottom)
-            squarePatch_alternate2 = ((self.patches[-1].a_corner[1] > z_top_max) and self.patches[-1].flatBottom)
-            notChoppedPatch = (self.patches[-1].squareAcceptance) or squarePatch_alternate1 or squarePatch_alternate2
-            madeComplementaryPatch = False
-            nPatchesAtOriginal = len(self.patches)
-            print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam,'notChoppedPatch',notChoppedPatch)
-            if (not notChoppedPatch) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
-                complementary_apexZ0 = self.patches[-1].superpoints[0].min
-                if (self.patches[-1].triangleAcceptance == True) and not(repeat_original):
-                    z_top_min = self.patches[-1].d_corner[1]
-                else:
-                    print('z_top_min before:', z_top_min, 'superpoints[self.env.num_layers-1].min:', self.patches[-1].superpoints[self.env.num_layers-1].min)
-                    z_top_min = max(-self.env.top_layer_lim, self.patches[-1].superpoints[self.env.num_layers-1].min)
-                self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
-                madeComplementaryPatch = True
-                print('complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
-                print('complementary: ', self.patches[-1].b_corner,'for patch',len(self.patches))
-                print('complementary: ', self.patches[-1].c_corner)
-                print('complementary: ', self.patches[-1].d_corner)
-                #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
-                #complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
-                complementary_a = self.patches[-1].a_corner[1]
-                complementary_b = self.patches[-1].b_corner[1]
-                white_space_height = max(original_c - complementary_a, original_d - complementary_b)
-                previous_white_space_height = -1
-                counter = 0
-                counterUpshift = 0
-                current_z_top_index = -1
-                previous_z_top_min = -999
-                #while ((white_space_height > 0) or (abs(white_space_height) > 10)) and (counter < 5):
-                #while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
-                
-                #while not((white_space_height < 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and (self.patches[-2].triangleAcceptance == False) :
-                while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and (abs(white_space_height)>0.000001) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch) and not(repeat_original):
-                    print()
-                    if (len(self.patches) > 2):
-                        print('original c:', original_c, ' ', self.patches[-2].c_corner[1], '|| original d:', original_d, ' ', self.patches[-2].d_corner[1])
-                    print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1])
-                    current_z_top_index = self.get_index_from_z(self.env.num_layers-1, z_top_min)
-                    print('current white_space_height: ', white_space_height)
-                    print('counter: ',counter, ' counterUpshift: ', counterUpshift)
-                    print('orig_ztop: ', current_z_top_index, 'orig_z_top_min: ', z_top_min)
-                    current_z_i_index = tuple(self.get_index_from_z(
-                        layer,
-                        self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min,1,self.env.num_layers,layer+1)
-                        ) for layer in range(self.env.num_layers))
-                    if (z_top_min == previous_z_top_min):
-                        current_z_top_index += 1
-                        new_z_i_index = tuple(oldIndex+1 for oldIndex in current_z_i_index)
-                    previous_z_top_min = z_top_min
-                    if (white_space_height < 0):
-                        counter +=1
-                        current_z_top_index -= 1
-                        new_z_i_index = tuple(oldIndex-1 for oldIndex in current_z_i_index)
+        fix42 = True
+        apexZ0 = self.env.trapezoid_edges[0] # switched from z0 to z1
+        while (apexZ0 > -self.env.trapezoid_edges[0]):
+            z_top_min = -self.env.top_layer_lim
+            complementary_apexZ0 = 0
+            first_row_count = 0
+            c_corner = np.inf
+            z_top_max = self.env.top_layer_lim + self.env.boundaryPoint_offset
+            if (len(self.patches) > 0):
+                z_top_max = min(z_top_max,
+                            self.patches[-1].straightLineProjectorFromLayerIJtoK(-self.env.beam_axis_lim,apexZ0,0,1,self.env.num_layers))
+            nPatchesInColumn = 0
+            projectionOfCcornerToBeam = 0
+            while (c_corner > -self.env.trapezoid_edges[self.env.num_layers-1]) and (nPatchesInColumn<100000000) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
+                nPatchesInColumn += 1
+                self.makePatch_alignedToLine(apexZ0 = apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
+                print ('top layer from ', self.patches[-1].superpoints[self.env.num_layers-1].max, ' to ', self.patches[-1].superpoints[self.env.num_layers-1].min, ' z_top_max: ', z_top_max)
+                print('original:',self.patches[-1].a_corner, 'for patch',len(self.patches))
+                print('original:',self.patches[-1].b_corner)
+                print('original:',self.patches[-1].c_corner)
+                print('original:',self.patches[-1].d_corner)
+                for j, sp in enumerate(self.patches[-1].superpoints[1:-1], start=2):
+                    print (j,'superpoint:',sp.min,sp.max,'shadowTop from L1Max:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.min,1,j,self.env.num_layers),self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].max,sp.max,1,j,self.env.num_layers),'from L1Min:',self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,sp.min,1,j,self.env.num_layers),self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].superpoints[0].min,sp.max,1,j,self.env.num_layers))
+                #original_c = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].c_corner[1], 'below')
+                #original_d = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].d_corner[1], 'below')
+                original_c = self.patches[-1].c_corner[1]
+                original_d = self.patches[-1].d_corner[1]
+                c_corner = original_c
+                repeat_patch = False
+                repeat_original = False
+                if len(self.patches) > 2:
+                    repeat_original = (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]) and (self.patches[-1].superpoints[1] == self.patches[-3].superpoints[1]) and (self.patches[-1].superpoints[2] == self.patches[-3].superpoints[2]) and (self.patches[-1].superpoints[3] == self.patches[-3].superpoints[3])
+                #if (self.patches[-1].triangleAcceptance == True):
+                    #original_c = self.patches[-1].b_corner[1]
+                seed_apexZ0 = apexZ0
+                projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(self.patches[-1].c_corner[1],self.patches[-1].c_corner[0],self.env.num_layers,1,0)
+                squarePatch_alternate1 = ((self.patches[-1].a_corner[1] > z_top_max) and (self.patches[-1].b_corner[1] > z_top_max) and self.patches[-1].flatBottom)
+                squarePatch_alternate2 = ((self.patches[-1].a_corner[1] > z_top_max) and self.patches[-1].flatBottom)
+                notChoppedPatch = (self.patches[-1].squareAcceptance) or squarePatch_alternate1 or squarePatch_alternate2
+                madeComplementaryPatch = False
+                nPatchesAtOriginal = len(self.patches)
+                print('squareAcceptance: ', self.patches[-1].squareAcceptance, 'triangleAcceptance: ', self.patches[-1].triangleAcceptance, ' projectionOfCcornerToBeam: ', projectionOfCcornerToBeam,'notChoppedPatch',notChoppedPatch)
+                if (not notChoppedPatch) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) and (projectionOfCcornerToBeam < self.env.beam_axis_lim):
+                    complementary_apexZ0 = self.patches[-1].superpoints[0].min
+                    if (self.patches[-1].triangleAcceptance == True) and not(repeat_original):
+                        z_top_min = self.patches[-1].d_corner[1]
                     else:
-                        counterUpshift += 1
-                        current_z_top_index += 1
-                        new_z_i_index = tuple(oldIndex+1 for oldIndex in current_z_i_index)
-                    current_z_top_index = min(current_z_top_index,len(self.data.array[self.env.num_layers-1])-1)
-                    new_z_i_index = tuple(min(z_i_index,len(self.data.array[layer])-1) for layer, z_i_index in enumerate(new_z_i_index)) 
-                    new_z_i_index = tuple(max(z_i_index,0) for layer, z_i_index in enumerate(new_z_i_index))
-                    new_z_i = tuple(self.data.array[layer][new_z_i_index[layer]].z for layer in range(self.env.num_layers))
-                    new_z_i_atTop = tuple(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,new_z_i[layer],1,layer+1,self.env.num_layers) for layer in range(1,self.env.num_layers))
-                    layerWithSmallestShift = 1 + np.argmin(np.abs(np.array(new_z_i_atTop)-previous_z_top_min))
-                    for layer in range(self.env.num_layers-1):
-                        print (layer+1, ' new_z_i_atTop: ', new_z_i_atTop[layer], ' shift_i_ztop: ', new_z_i_atTop[layer]-previous_z_top_min,
-                               ' layerWithSmallestShift: ', layerWithSmallestShift)
-                    z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
-                    z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift
-                    if abs(z_top_min-previous_z_top_min) < 0.000001:
-                        z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
-                    if abs(z_top_min-previous_z_top_min) < 0.000001:
-                        z_top_min = self.data.array[self.env.num_layers-2][current_z_top_index].z
-                    if abs(z_top_min-previous_z_top_min) < 0.000001:
-                        z_top_min = self.data.array[self.env.num_layers-3][current_z_top_index].z
-                    if ((z_top_min-previous_z_top_min)*(white_space_height)) < 0:
-                        z_top_min = new_z_i_atTop[self.env.num_layers-2]
-                    print('new_def_z_top_min_diff:',z_top_min-self.data.array[self.env.num_layers-1][current_z_top_index].z)
-                    print('new_ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min, ' shift_ztop:', z_top_min-previous_z_top_min)
-                    nPatchesAtComplementary = len(self.patches)
-                    if (nPatchesAtComplementary > nPatchesAtOriginal):
-                        print('deleted complementary: ', self.patches[-1].a_corner, 'for patch',len(self.patches))
-                        print('deleted complementary: ', self.patches[-1].b_corner)
-                        print('deleted complementary: ', self.patches[-1].c_corner)
-                        print('deleted complementary: ', self.patches[-1].d_corner)
-                        del self.patches[-1]
-                        self.n_patches -= 1
+                        print('z_top_min before:', z_top_min, 'superpoints[self.env.num_layers-1].min:', self.patches[-1].superpoints[self.env.num_layers-1].min)
+                        z_top_min = max(-self.env.top_layer_lim, self.patches[-1].superpoints[self.env.num_layers-1].min)
                     self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
+                    madeComplementaryPatch = True
+                    print('complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
+                    print('complementary: ', self.patches[-1].b_corner,'for patch',len(self.patches))
+                    print('complementary: ', self.patches[-1].c_corner)
+                    print('complementary: ', self.patches[-1].d_corner)
                     #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
                     #complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
                     complementary_a = self.patches[-1].a_corner[1]
                     complementary_b = self.patches[-1].b_corner[1]
-                    previous_white_space_height = white_space_height
                     white_space_height = max(original_c - complementary_a, original_d - complementary_b)
-                    print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1], ' new z_top_min: ', z_top_min)
-                    print('new white_space_height: ', white_space_height)
-                    print('adjusted complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
-                    print('adjusted complementary: ', self.patches[-1].b_corner, 'for patch',len(self.patches))
-                    print('adjusted complementary: ', self.patches[-1].c_corner)
-                    print('adjusted complementary: ', self.patches[-1].d_corner)
-                if (self.n_patches > 3) and fix42:
-                    if (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]) and (self.patches[-1].superpoints[1] == self.patches[-3].superpoints[1]) and (self.patches[-1].superpoints[2] == self.patches[-3].superpoints[2]) and (self.patches[-1].superpoints[3] == self.patches[-3].superpoints[3]):
-                        repeat_patch = True
-                        print (self.patches[-1].superpoints[self.env.num_layers-1].min, self.patches[-1].superpoints[self.env.num_layers-1].max, ' repeat_patch: ', repeat_patch)
-                        del self.patches[-1]
-                        self.n_patches -= 1
-                        current_z_top_index -= 1
+                    previous_white_space_height = -1
+                    counter = 0
+                    counterUpshift = 0
+                    current_z_top_index = -1
+                    previous_z_top_min = -999
+                    #while ((white_space_height > 0) or (abs(white_space_height) > 10)) and (counter < 5):
+                    #while (counterUpshift < 100) and (white_space_height != 0) and ((counter < 15) or (white_space_height > 0)) and (self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]):
+                    
+                    #while not((white_space_height < 0) and (previous_white_space_height >= 0)) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and (self.patches[-2].triangleAcceptance == False) :
+                    while not((white_space_height <= 0) and (previous_white_space_height >= 0)) and (abs(white_space_height)>0.000001) and ((self.patches[-1].c_corner[1] > -self.env.trapezoid_edges[self.env.num_layers-1]) or (white_space_height > 0)) and (current_z_top_index < (len(self.data.array[self.env.num_layers-1])-1)) and not(repeat_patch) and not(repeat_original):
+                        print()
+                        if (len(self.patches) > 2):
+                            print('original c:', original_c, ' ', self.patches[-2].c_corner[1], '|| original d:', original_d, ' ', self.patches[-2].d_corner[1])
+                        print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1])
+                        current_z_top_index = self.get_index_from_z(self.env.num_layers-1, z_top_min)
+                        print('current white_space_height: ', white_space_height)
+                        print('counter: ',counter, ' counterUpshift: ', counterUpshift)
+                        print('orig_ztop: ', current_z_top_index, 'orig_z_top_min: ', z_top_min)
+                        current_z_i_index = tuple(self.get_index_from_z(
+                            layer,
+                            self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min,1,self.env.num_layers,layer+1)
+                            ) for layer in range(self.env.num_layers))
+                        if (z_top_min == previous_z_top_min):
+                            current_z_top_index += 1
+                            new_z_i_index = tuple(oldIndex+1 for oldIndex in current_z_i_index)
+                        previous_z_top_min = z_top_min
+                        if (white_space_height < 0):
+                            counter +=1
+                            current_z_top_index -= 1
+                            new_z_i_index = tuple(oldIndex-1 for oldIndex in current_z_i_index)
+                        else:
+                            counterUpshift += 1
+                            current_z_top_index += 1
+                            new_z_i_index = tuple(oldIndex+1 for oldIndex in current_z_i_index)
+                        current_z_top_index = min(current_z_top_index,len(self.data.array[self.env.num_layers-1])-1)
+                        new_z_i_index = tuple(min(z_i_index,len(self.data.array[layer])-1) for layer, z_i_index in enumerate(new_z_i_index)) 
+                        new_z_i_index = tuple(max(z_i_index,0) for layer, z_i_index in enumerate(new_z_i_index))
+                        new_z_i = tuple(self.data.array[layer][new_z_i_index[layer]].z for layer in range(self.env.num_layers))
+                        new_z_i_atTop = tuple(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,new_z_i[layer],1,layer+1,self.env.num_layers) for layer in range(1,self.env.num_layers))
+                        layerWithSmallestShift = 1 + np.argmin(np.abs(np.array(new_z_i_atTop)-previous_z_top_min))
+                        for layer in range(self.env.num_layers-1):
+                            print (layer+1, ' new_z_i_atTop: ', new_z_i_atTop[layer], ' shift_i_ztop: ', new_z_i_atTop[layer]-previous_z_top_min,
+                                ' layerWithSmallestShift: ', layerWithSmallestShift)
                         z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
-                        z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift    
+                        z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift
+                        if abs(z_top_min-previous_z_top_min) < 0.000001:
+                            z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                        if abs(z_top_min-previous_z_top_min) < 0.000001:
+                            z_top_min = self.data.array[self.env.num_layers-2][current_z_top_index].z
+                        if abs(z_top_min-previous_z_top_min) < 0.000001:
+                            z_top_min = self.data.array[self.env.num_layers-3][current_z_top_index].z
+                        if ((z_top_min-previous_z_top_min)*(white_space_height)) < 0:
+                            z_top_min = new_z_i_atTop[self.env.num_layers-2]
+                        print('new_def_z_top_min_diff:',z_top_min-self.data.array[self.env.num_layers-1][current_z_top_index].z)
+                        print('new_ztop_index: ', current_z_top_index, ' new_z_i_index: ', new_z_i_index, ' new_z_top_min: ', z_top_min, ' shift_ztop:', z_top_min-previous_z_top_min)
+                        nPatchesAtComplementary = len(self.patches)
+                        if (nPatchesAtComplementary > nPatchesAtOriginal):
+                            print('deleted complementary: ', self.patches[-1].a_corner, 'for patch',len(self.patches))
+                            print('deleted complementary: ', self.patches[-1].b_corner)
+                            print('deleted complementary: ', self.patches[-1].c_corner)
+                            print('deleted complementary: ', self.patches[-1].d_corner)
+                            #del self.patches[-1]
+                            self.delete_patch(-1)
+                            self.n_patches -= 1
                         self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
+                        #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
+                        #complementary_b = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].b_corner[1], 'above')
+                        complementary_a = self.patches[-1].a_corner[1]
+                        complementary_b = self.patches[-1].b_corner[1]
+                        previous_white_space_height = white_space_height
+                        white_space_height = max(original_c - complementary_a, original_d - complementary_b)
+                        print('complementary_a:', complementary_a, ' ', self.patches[-1].a_corner[1], ' || complementary_b:', complementary_b, ' ', self.patches[-1].b_corner[1], ' new z_top_min: ', z_top_min)
+                        print('new white_space_height: ', white_space_height)
+                        print('adjusted complementary: ', self.patches[-1].a_corner, ' for z_top_min:', z_top_min)
+                        print('adjusted complementary: ', self.patches[-1].b_corner, 'for patch',len(self.patches))
+                        print('adjusted complementary: ', self.patches[-1].c_corner)
+                        print('adjusted complementary: ', self.patches[-1].d_corner)
+                    if (self.n_patches > 3) and fix42:
+                        if (self.patches[-1].superpoints[self.env.num_layers-1] == self.patches[-3].superpoints[self.env.num_layers-1]) and (self.patches[-1].superpoints[0] == self.patches[-3].superpoints[0]) and (self.patches[-1].superpoints[1] == self.patches[-3].superpoints[1]) and (self.patches[-1].superpoints[2] == self.patches[-3].superpoints[2]) and (self.patches[-1].superpoints[3] == self.patches[-3].superpoints[3]):
+                            repeat_patch = True
+                            print (self.patches[-1].superpoints[self.env.num_layers-1].min, self.patches[-1].superpoints[self.env.num_layers-1].max, ' repeat_patch: ', repeat_patch)
+                            #del self.patches[-1]
+                            self.delete_patch[-1]
+                            self.n_patches -= 1
+                            current_z_top_index -= 1
+                            z_top_min = self.data.array[self.env.num_layers-1][current_z_top_index].z
+                            z_top_min = new_z_i_atTop[layerWithSmallestShift-1] # AVK try smallest shift    
+                            self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_min, leftRight=True)
 
-            c_corner = self.patches[-1].c_corner[1]
-            projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(c_corner,self.patches[-1].c_corner[0],self.env.num_layers,1,0)
+                c_corner = self.patches[-1].c_corner[1]
+                projectionOfCcornerToBeam = self.patches[-1].straightLineProjectorFromLayerIJtoK(c_corner,self.patches[-1].c_corner[0],self.env.num_layers,1,0)
 
-            saved_apexZ0 = self.patches[-1].c_corner[0]
+                saved_apexZ0 = self.patches[-1].c_corner[0]
 
-            if madeComplementaryPatch:
-                self.patches[-1].getShadows(z_top_min,z_top_max)
-                self.patches[-2].getShadows(z_top_min,z_top_max)
-                #abAlignment = self.patches[-1].a_corner[1]-self.patches[-2].b_corner[1]
-                #cdAlignment = self.patches[-1].c_corner[1]-self.patches[-2].d_corner[1]
-                #print('alignment:',self.patches[-1].a_corner[1]-self.patches[-2].b_corner[1], self.patches[-1].c_corner[1]-self.patches[-2].d_corner[1])
-                #print('z_top_min:', z_top_min, 'z_top_max:', z_top_max, 'shadow_fromTopToInnermost_topL_jL:', self.patches[-1].shadow_fromTopToInnermost_topL_jL, 'shadow_fromTopToInnermost_topL_jR:', self.patches[-1].shadow_fromTopToInnermost_topL_jR, 'shadow_fromTopToInnermost_topR_jL:', self.patches[-1].shadow_fromTopToInnermost_topR_jL, 'shadow_fromTopToInnermost_topR_jR:', self.patches[-1].shadow_fromTopToInnermost_topR_jR)
-                original_topR_jL = self.patches[-2].shadow_fromTopToInnermost_topR_jL
-                originalPartialTop = (original_topR_jL > complementary_apexZ0) and (original_topR_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topR_jL,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
-                original_topL_jL = self.patches[-2].shadow_fromTopToInnermost_topL_jL
-                originalPartialBottom = (original_topL_jL > complementary_apexZ0) and (original_topL_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
-                complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
-                complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) and (complementary_topR_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
-                complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
-                complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
-
-                horizontalShiftTop = original_topR_jL - complementary_topR_jR
-                horizontalShiftBottom = original_topL_jL - complementary_topL_jR
-
-                complementary_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
-                complementary_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
-                original_topR_jR = self.patches[-2].shadow_fromTopToInnermost_topR_jR
-                original_topL_jR = self.patches[-2].shadow_fromTopToInnermost_topL_jR
-
-                originalSaved_topR_jR = original_topR_jR
-                originalSaved_topL_jR = original_topL_jR
-                originalSaved_topR_jL = original_topR_jL
-                originalSaved_topL_jL = original_topL_jL
-                
-                complementarySaved_topR_jL = complementary_topR_jL
-                complementarySaved_topL_jL = complementary_topL_jL
-                
-                horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
-                horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
-                horizontalOverlapTop = -1
-                horizontalOverlapBottom = -1
-                newGapTop = -0.000001
-                newGapBottom = -0.000001
-                
-                makeHorizontallyShiftedPatch = False
-                shifted_Align = apexZ0
-                doShiftedPatch = True
-                # decide whether to shift original patch or complementary patch
-                # compute z0 associated with b-corner of original patch and c-corner of complementary patch
-                z0_original_bCorner = self.patches[-2].straightLineProjectorFromLayerIJtoK(apexZ0,z_top_max,1,self.env.num_layers,0)
-                z0_complementary_cCorner = self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min,1,self.env.num_layers,0)
-                shiftOriginal = True
-                if (z0_original_bCorner < 0):
-                    shiftOriginal = False
-                    shifted_Align = complementary_apexZ0
-                if (z0_complementary_cCorner > 0):
-                    shiftOriginal = True
-                    shifted_Align = apexZ0
-
-                if (horizontalShiftTop > 0 or horizontalShiftBottom > 0):
-                    print('originalPartialTop:',originalPartialTop,'complementaryPartialTop:',complementaryPartialTop,'originalPartialBottom:',originalPartialBottom,'complementaryPartialBottom:',complementaryPartialBottom, original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR,'horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
-                while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch and (horizontalOverlapTop <= 0) and (horizontalOverlapBottom <= 0) and (newGapTop<0 or newGapBottom<0):
-                    print('horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
-                    newZtop = z_top_max
-                    if shiftOriginal:
-                        shifted_Align -= max(horizontalShiftTop,horizontalShiftBottom) #+ min(newGapTop,newGapBottom)
-                    else :
-                        shifted_Align += max(horizontalShiftTop,horizontalShiftBottom)
-                        newZtop = z_top_min
-                    if (makeHorizontallyShiftedPatch):  
-                        del self.patches[-1]                                                                                             
-                        self.n_patches -= 1                        
-                    self.makePatch_alignedToLine(apexZ0 = shifted_Align, ppl = ppl, z_top = newZtop, leftRight = (not shiftOriginal))
+                if madeComplementaryPatch:
                     self.patches[-1].getShadows(z_top_min,z_top_max)
-                    if shiftOriginal:
-                        original_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
-                        original_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
-                        original_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
-                        original_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
-                    else :
-                        complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
-                        complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
-                        complementary_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
-                        complementary_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                    self.patches[-2].getShadows(z_top_min,z_top_max)
+                    #abAlignment = self.patches[-1].a_corner[1]-self.patches[-2].b_corner[1]
+                    #cdAlignment = self.patches[-1].c_corner[1]-self.patches[-2].d_corner[1]
+                    #print('alignment:',self.patches[-1].a_corner[1]-self.patches[-2].b_corner[1], self.patches[-1].c_corner[1]-self.patches[-2].d_corner[1])
+                    #print('z_top_min:', z_top_min, 'z_top_max:', z_top_max, 'shadow_fromTopToInnermost_topL_jL:', self.patches[-1].shadow_fromTopToInnermost_topL_jL, 'shadow_fromTopToInnermost_topL_jR:', self.patches[-1].shadow_fromTopToInnermost_topL_jR, 'shadow_fromTopToInnermost_topR_jL:', self.patches[-1].shadow_fromTopToInnermost_topR_jL, 'shadow_fromTopToInnermost_topR_jR:', self.patches[-1].shadow_fromTopToInnermost_topR_jR)
+                    original_topR_jL = self.patches[-2].shadow_fromTopToInnermost_topR_jL
+                    originalPartialTop = (original_topR_jL > complementary_apexZ0) and (original_topR_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topR_jL,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
+                    original_topL_jL = self.patches[-2].shadow_fromTopToInnermost_topL_jL
+                    originalPartialBottom = (original_topL_jL > complementary_apexZ0) and (original_topL_jL < apexZ0) and (abs(self.patches[-2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
+                    complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
+                    complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) and (complementary_topR_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
+                    complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
+                    complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
 
                     horizontalShiftTop = original_topR_jL - complementary_topR_jR
                     horizontalShiftBottom = original_topL_jL - complementary_topL_jR
-                    if (shiftOriginal and self.patches[-1].straightLineProjectorFromLayerIJtoK(original_topR_jR,z_top_max,1,self.env.num_layers,0)<self.env.beam_axis_lim):
-                        horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
-                        horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
-                        print('horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
 
-                    """    
-                    if shiftOriginal:
-                        newGapTop = original_topR_jR - originalSaved_topR_jL
-                        newGapBottom = original_topL_jR - originalSaved_topL_jL
-                    else:
-                        newGapTop = complementary_topR_jL - complementarySaved_topR_jR
-                        newGapBottom = complementary_topL_jL - complementarySaved_topL_jR
-                    print('newGapTop:',newGapTop,'newGapBottom:',newGapBottom)
-                    """
-                    """
-                    if (makeHorizontallyShiftedPatch):
-                        if (horizontalOverlapTop > 0) or (horizontalOverlapBottom > 0):
-                            del self.patches[-1]
-                            self.n_patches -= 1        
+                    complementary_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
+                    complementary_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                    original_topR_jR = self.patches[-2].shadow_fromTopToInnermost_topR_jR
+                    original_topL_jR = self.patches[-2].shadow_fromTopToInnermost_topL_jR
+
+                    originalSaved_topR_jR = original_topR_jR
+                    originalSaved_topL_jR = original_topL_jR
+                    originalSaved_topR_jL = original_topR_jL
+                    originalSaved_topL_jL = original_topL_jL
+                    
+                    complementarySaved_topR_jL = complementary_topR_jL
+                    complementarySaved_topL_jL = complementary_topL_jL
+                    
+                    horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
+                    horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
+                    horizontalOverlapTop = -1
+                    horizontalOverlapBottom = -1
+                    newGapTop = -0.000001
+                    newGapBottom = -0.000001
+                    
+                    makeHorizontallyShiftedPatch = False
+                    shifted_Align = apexZ0
+                    doShiftedPatch = True
+                    # decide whether to shift original patch or complementary patch
+                    # compute z0 associated with b-corner of original patch and c-corner of complementary patch
+                    z0_original_bCorner = self.patches[-2].straightLineProjectorFromLayerIJtoK(apexZ0,z_top_max,1,self.env.num_layers,0)
+                    z0_complementary_cCorner = self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min,1,self.env.num_layers,0)
+                    shiftOriginal = True
+                    if (z0_original_bCorner < 0):
+                        shiftOriginal = False
+                        shifted_Align = complementary_apexZ0
+                    if (z0_complementary_cCorner > 0):
+                        shiftOriginal = True
+                        shifted_Align = apexZ0
+
+                    if (horizontalShiftTop > 0 or horizontalShiftBottom > 0):
+                        print('originalPartialTop:',originalPartialTop,'complementaryPartialTop:',complementaryPartialTop,'originalPartialBottom:',originalPartialBottom,'complementaryPartialBottom:',complementaryPartialBottom, original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR,'horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
+                    while ((horizontalShiftTop > 0 and originalPartialTop and complementaryPartialTop) or (horizontalShiftBottom > 0 and originalPartialBottom and complementaryPartialBottom)) and doShiftedPatch and (horizontalOverlapTop <= 0) and (horizontalOverlapBottom <= 0) and (newGapTop<0 or newGapBottom<0):
+                        print('horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
+                        newZtop = z_top_max
+                        if shiftOriginal:
+                            shifted_Align -= max(horizontalShiftTop,horizontalShiftBottom) #+ min(newGapTop,newGapBottom)
+                        else :
+                            shifted_Align += max(horizontalShiftTop,horizontalShiftBottom)
+                            newZtop = z_top_min
+                        if (makeHorizontallyShiftedPatch):  
+                            #del self.patches[-1]
+                            self.delete_patch(-1)                                                                                          
+                            self.n_patches -= 1                        
+                        self.makePatch_alignedToLine(apexZ0 = shifted_Align, ppl = ppl, z_top = newZtop, leftRight = (not shiftOriginal))
+                        self.patches[-1].getShadows(z_top_min,z_top_max)
+                        if shiftOriginal:
+                            original_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
+                            original_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+                            original_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
+                            original_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
+                        else :
+                            complementary_topR_jR = self.patches[-1].shadow_fromTopToInnermost_topR_jR
+                            complementary_topL_jR = self.patches[-1].shadow_fromTopToInnermost_topL_jR
+                            complementary_topR_jL = self.patches[-1].shadow_fromTopToInnermost_topR_jL
+                            complementary_topL_jL = self.patches[-1].shadow_fromTopToInnermost_topL_jL
+
+                        horizontalShiftTop = original_topR_jL - complementary_topR_jR
+                        horizontalShiftBottom = original_topL_jL - complementary_topL_jR
+                        if (shiftOriginal and self.patches[-1].straightLineProjectorFromLayerIJtoK(original_topR_jR,z_top_max,1,self.env.num_layers,0)<self.env.beam_axis_lim):
+                            horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR)
+                            horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR)
+                            print('horizontalOverlapTop:',horizontalOverlapTop,'horizontalOverlapBottom:',horizontalOverlapBottom)
+
+                        """    
+                        if shiftOriginal:
+                            newGapTop = original_topR_jR - originalSaved_topR_jL
+                            newGapBottom = original_topL_jR - originalSaved_topL_jL
                         else:
-                            if (len(self.patches) > 1):
-                                del self.patches[-2]
+                            newGapTop = complementary_topR_jL - complementarySaved_topR_jR
+                            newGapBottom = complementary_topL_jL - complementarySaved_topL_jR
+                        print('newGapTop:',newGapTop,'newGapBottom:',newGapBottom)
+                        """
+                        """
+                        if (makeHorizontallyShiftedPatch):
+                            if (horizontalOverlapTop > 0) or (horizontalOverlapBottom > 0):
+                                del self.patches[-1]
+                                self.n_patches -= 1        
+                            else:
+                                if (len(self.patches) > 1):
+                                    del self.patches[-2]
+                                    self.n_patches -= 1
+                        """
+                        print('original_topR_jL:',original_topR_jL,'complementary_topR_jR',complementary_topR_jR,'original_topL_jL',original_topL_jL,'complementary_topL_jR',complementary_topL_jR,'shiftOriginal',shiftOriginal)
+                        makeHorizontallyShiftedPatch = True
+                        print('updated_horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
+                    if (makeHorizontallyShiftedPatch):
+                        if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) > self.env.beam_axis_lim)) and shiftOriginal:
+                            if (len(self.patches) > 2):
+                                #del self.patches[-3]
+                                self.delete_patch(-3)
                                 self.n_patches -= 1
-                    """
-                    print('original_topR_jL:',original_topR_jL,'complementary_topR_jR',complementary_topR_jR,'original_topL_jL',original_topL_jL,'complementary_topL_jR',complementary_topL_jR,'shiftOriginal',shiftOriginal)
-                    makeHorizontallyShiftedPatch = True
-                    print('updated_horizontalShifts:',horizontalShiftTop,horizontalShiftBottom, 'shifted_Align:',shifted_Align)
-                if (makeHorizontallyShiftedPatch):
-                    if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) > self.env.beam_axis_lim)) and shiftOriginal:
-                        if (len(self.patches) > 2):
-                            del self.patches[-3]
-                            self.n_patches -= 1
-                    #if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) < -self.env.beam_axis_lim)) and (not shiftOriginal):
-                        #del self.patches[-2]
-                        #self.n_patches -= 1
-                        
-            z_top_max = c_corner
-            print('+++++++++++++++++++++++ c_corner: ', c_corner)
+                        #if ((self.patches[-1].straightLineProjectorFromLayerIJtoK(shifted_Align,newZtop,1,self.env.num_layers,0) < -self.env.beam_axis_lim)) and (not shiftOriginal):
+                            #del self.patches[-2]
+                            #self.n_patches -= 1
+                            
+                z_top_max = c_corner
+                print('+++++++++++++++++++++++ c_corner: ', c_corner)
 
-        apexZ0 = self.patches[-1].c_corner[0]
-        apexZ0 = saved_apexZ0
-        print('=======================================================  z1_Align: ', apexZ0)
-    
-      #for i in range(3):
-        #del self.patches[-1]                                                                                                  
-      #for i in range(34):
-        #del self.patches[-1]                                                                                                  
-      #for i in range(8):
-        #del self.patches[-4]
+            apexZ0 = self.patches[-1].c_corner[0]
+            apexZ0 = saved_apexZ0
+            print('=======================================================  z1_Align: ', apexZ0)
+        #for i in range(3):
+            #del self.patches[-1]                                                                                                  
+        #for i in range(34):
+            #del self.patches[-1]                                                                                                  
+        #for i in range(8):
+            #del self.patches[-4]
         
     def makePatches_ShadowQuilt_fromCenter(self, apexZ0 = 0, stop = 1, ppl = 16, leftRight = True):
         """This method uses the geometry of shadows to generate patches based on superpoints
@@ -1457,7 +1466,8 @@ class wedgeCover():
                     print('new ztop: ', current_z_top_index, ' arrayLength: ', len(self.data.array[self.env.num_layers-1]))
                     current_z_top_index = min(current_z_top_index,len(self.data.array[self.env.num_layers-1])-1)
                     z_top_max = self.data.array[self.env.num_layers-1][current_z_top_index].z
-                    del self.patches[-1]
+                    #del self.patches[-1]
+                    self.delete_patch(-1)
                     self.n_patches -= 1
                     self.makePatch_alignedToLine(apexZ0 = complementary_apexZ0, ppl = ppl, z_top = z_top_max, leftRight=False)
                     #complementary_a = self.get_index_from_z(self.env.num_layers-1, self.patches[-1].a_corner[1], 'above')
@@ -1917,7 +1927,8 @@ class wedgeCover():
                 #generate point left of starting
                 self.makePatches_Projective_Loop(apexZ0, stop = -1, ppl = ppl, leftRight = False)
                 #delete one of the inital patches so no duplices
-                del self.patches[n_patch_start-1]
+                #del self.patches[n_patch_start-1]
+                self.delete_patch(n_patch_start-1)
                 self.n_patches = self.n_patches - 1
                 return
             #starts right of center
@@ -1931,7 +1942,8 @@ class wedgeCover():
                 #generates patches left of starting, stopping at center
                 self.makePatches_Projective_Loop(apexZ0, stop = 0, ppl = ppl, leftRight = False)
                 #delete one of the initial patches so no duplicates
-                del self.patches[n_patch_start-1]
+                #del self.patches[n_patch_start-1]
+                self.delete_patch(n_patch_start-1)
                 self.n_patches = self.n_patches - 1
                 return
         else:
@@ -1944,7 +1956,8 @@ class wedgeCover():
             #generates patches left of starting
             self.makePatches_Projective_Loop(apexZ0, ppl = ppl, stop = -1, leftRight = False)
             #delete one of the initial patches so no duplicates
-            del self.patches[n_patch_start-1]
+            #del self.patches[n_patch_start-1]
+            self.delete_patch(n_patch_start-1)
             self.n_patches = self.n_patches - 1
             return          
         
@@ -2065,3 +2078,85 @@ class wedgeCover():
                 print(f"Deleted File: {file}")
                 
             cv2.destroyAllWindows()
+
+    def movie(self, z0_spacing=0.5, figSizeScale = 6.5):
+        zInnerLayer = np.arange(-22, 22+z0_spacing, z0_spacing)
+        
+        if self.n_patches == 0: 
+            raise Exception("You must run the solve method first to generate the patches. ")
+        
+        name = 0
+        plt.figure(figsize = (1.7*self.env.beam_axis_lim/figSizeScale, self.env.top_layer_lim/figSizeScale))
+        for i, patch in enumerate(self.all_patches): 
+            for iz, zIn in enumerate(np.array(zInnerLayer)):
+                
+                list_of_intersections = []
+                for j, patch in enumerate(self.all_patches[:i+1]): 
+                    if (j == i) or (self.real_patch_list[j]):
+                        list_of_segs = [pgram.crossSection(zIn) for pgram in patch.parallelograms]
+                        overlap_of_superpoints = intersection(patch.env, list_of_segs, True) 
+                        list_of_intersections.append(overlap_of_superpoints)
+
+                
+                plt.xlabel(r"$z_1$ (cm)", fontsize = 18)
+                plt.ylabel(r"$z_{top}$ (cm)", fontsize = 18)
+                plt.title("acceptance of cover", fontsize = 18)
+                z1Lim = self.all_patches[-1].straightLineProjectorFromLayerIJtoK(-self.env.top_layer_lim ,self.env.beam_axis_lim,self.env.num_layers,0,1)
+                plt.axline((z1Lim, -self.env.top_layer_lim), (self.env.trapezoid_edges[0], self.env.top_layer_lim),linewidth=1, color='black')
+                plt.axline((-z1Lim, self.env.top_layer_lim), (-self.env.trapezoid_edges[0], -self.env.top_layer_lim),linewidth=1, color='black')
+
+                colors = ["b", "r", "g", "c", "m", "y", "k", "chocolate", "indigo", "springgreen", "orange", "rosybrown", "tomato","olive", "deeppink"]
+                    
+                col = 0
+                for line in list_of_intersections: 
+                    #plt.xlim(-z0_luminousRegion,z0_luminousRegion)
+                    plt.xlim(-self.env.trapezoid_edges[0],self.env.trapezoid_edges[0])
+                    plt.ylim(-self.env.top_layer_lim, self.env.top_layer_lim)
+                    plt.plot([zIn, zIn], [line.min_z5_accepted, line.max_z5_accepted], c=colors[col % len(colors)], alpha=0.3, linewidth=3)
+                    col += 1
+
+                #plt.show()
+            plt.savefig(f"python/temp_image_dir/{str(name).zfill(2)}.png")
+            plt.clf() 
+            name += 1 
+
+                
+                        
+        image_files = glob.glob("python/temp_image_dir/*.png")
+        
+        image_files.sort()
+
+        # index to keep track of current image
+        current_image_idx = 0
+                
+        while True:
+            # read and display the current image
+            image = cv2.imread(image_files[current_image_idx])
+            cv2.imshow("Slideshow", image)
+
+            # wait for a key press and check its value
+            key = cv2.waitKey(0) & 0xFF
+
+            # if the 'e' key is pressed, go to the next image
+            if key == ord('e'):
+                current_image_idx += 1
+                # wrap around if we're at the end of the list
+                if current_image_idx == len(image_files):
+                    current_image_idx = 0
+
+            # if the 'w' key is pressed, go to the previous image
+            elif key == ord('w'):
+                current_image_idx -= 1
+                # wrap around if we're at the start of the list
+                if current_image_idx < 0:
+                    current_image_idx = len(image_files) - 1
+
+            # if the 'q' key is pressed, break the loop and end the slideshow
+            elif key == ord('q'): 
+                break
+            
+        for file in image_files: 
+            os.remove(file) 
+            print(f"Deleted File: {file}")
+            
+        cv2.destroyAllWindows()
