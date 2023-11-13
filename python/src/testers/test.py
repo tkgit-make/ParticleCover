@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import time
 
-def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, movie = False, savefig=False, figSizeScale=6):
+def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spacing = 0.5, ppl = 16, z0_luminousRegion = 15., wedges = [0, 128], lines=1000, v = 'v3', top_layer_cutoff = 50., accept_cutoff = 10., leftRightAlign=True, uniform_N_points = False, acceptance_method = "Analytic", show_acceptance_of_cover=False, movie = False, savefig=False, figSizeScale=6, movieFigSizeScale=3):
     """Creates acceptance vs z0 plot
     
     Args:
@@ -176,7 +176,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
             mean_list[ik, iz] = mean_list[ik, iz] + percentage_accepted
 
         if movie:
-            cover.movie(z0_spacing = z0_spacing, figSizeScale = figSizeScale*2.1)     
+            cover.movie(z0_spacing = z0_spacing, figSizeScale = movieFigSizeScale)     
             plt.close()       
         if show_acceptance_of_cover:
             plt.show()
