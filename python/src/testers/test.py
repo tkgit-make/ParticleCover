@@ -32,6 +32,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         show_acceptance_of_cover = False
         z0_spacing = 0.2
     num_covers = []
+    num_all_patches = []
     PRF = []
     data_string = f'{v} events'
     if uniform_N_points != False:
@@ -65,6 +66,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         cover.solve(apexZ0 = apexZ0, lining=lining, ppl = ppl, leftRight=leftRightAlign, show = False)
         #append number of covers in the patch
         num_covers.append(cover.n_patches)
+        num_all_patches.append(len(cover.all_patches))
         out = [] 
 
         #these loops calculate PRF
@@ -183,6 +185,8 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
         
     mean_num = format(np.mean(num_covers), ".1f")
     std_num = format(np.std(num_covers), ".1f")
+    all_patches_mean = format(np.mean(num_all_patches), ".1f")
+    all_patches_std = format(np.std(num_all_patches), ".1f")
 
     #sets minimum for plot
     if type(apexZ0) == float:
@@ -203,7 +207,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     mask = np.abs(z0Array) <= accept_cutoff
     PRFm = format(np.mean(out), '.2f')
     PRFs = format(np.std(out), '.2f')
-    plt.legend([f"Number of Patches: {mean_num}" + r'$\pm$' + f"{std_num}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage non-Acceptance [-{accept_cutoff}, {accept_cutoff}]: {int((100.0-np.mean(mean_list[:, mask]))*10000)} ppm"],
+    plt.legend([f"N_realPatches: {mean_num}" + r'$\pm$' + f"{std_num}\nN_allPatches: {all_patches_mean}" + r'$\pm$' + f"{all_patches_std}\nPoint Repetition Factor: {PRFm}" + r'$\pm$' + f"{PRFs}\n" + r'$apexZ_0$' + f" = {apexZ0}, ppl = {ppl}, " + r"$z_{top}$: "+ f"{top_layer_cutoff}\n" + r'$N_{wedges}$ ' + f"= {wedges[1]}, {data_string}\nAverage non-Acceptance [-{accept_cutoff}, {accept_cutoff}]: {int((100.0-np.mean(mean_list[:, mask]))*10000)} ppm"],
         loc = 8, fontsize = 12)
     if savefig == True:
         try:
@@ -212,6 +216,30 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
             at = 0
         plt.savefig(f"Figures/wedge_test({lining}_{data_string}_{at}_ppl{ppl}_z0{top_layer_cutoff})")
     plt.show()
+    plt.hist(num_covers, 
+                    bins=np.arange(np.min(num_covers), np.max(num_covers)+2)-0.5,
+                    edgecolor='black', 
+                    rwidth=0.8, label = f"mean: {mean_num}, stdev: {std_num}"
+                )
+    plt.title(f"Number of Real Patches per Cover ({lining})", fontsize = '20')
+    plt.xlabel("Number of Real Patches", fontsize = '16')
+    plt.ylabel("Number of Covers", fontsize = '16')
+    plt.legend(fontsize = '20')
+    plt.show()
+    if (np.max(num_all_patches) - np.min(num_all_patches)) > 10:
+        hist_step = 5
+    else:
+        hist_step = 1
+    plt.hist(num_all_patches, 
+                    bins=np.arange(np.min(num_all_patches), np.max(num_all_patches)+2, hist_step)-0.5,
+                    edgecolor='black', 
+                    rwidth=0.8, label = f"mean: {all_patches_mean}, stdev: {all_patches_std}")
+    plt.title(f"Number of All Patches per Cover ({lining})", fontsize = '20')
+    plt.xlabel("Number of All Patches", fontsize = '16')
+    plt.ylabel("Number of Covers", fontsize = '16')
+    plt.legend(fontsize = '20')
+    plt.show()  
+
     #cover.plot()
 
 def unaccepted_lines(apexZ0:list = [-10, 0, 10], wedge_number = 0, line_origin:list = [-5, 5], accepted = False, unaccepted = True, v = 'v3', top_layer_cutoff = 100., uniform_points = False): 

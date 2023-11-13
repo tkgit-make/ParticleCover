@@ -476,8 +476,9 @@ class wedgeCover():
                     break
     
     def delete_patch(self, index):
+        
         del self.patches[index]
-        self.real_patch_list[-1] = False
+        self.real_patch_list[index] = False
 
     def solve(self, lining:str = "makePatches_Projective", apexZ0=0, ppl = 16, nlines:int=100, leftRight:bool =True, show = True):
 
