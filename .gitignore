@@ -1,2 +1,10 @@
 *.txt
 plot_testing.ipynb
+python/temp_image_dir
+
+# ignore all python cache files
+**/__pycache__
+
+# ignore all DS_Store files
+**/.DS_Store
+
