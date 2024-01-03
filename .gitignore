@@ -1,4 +1,3 @@
-*.txt
 plot_testing.ipynb
 python/temp_image_dir
 
@@ -8,3 +7,11 @@ python/temp_image_dir
 # ignore all DS_Store files
 **/.DS_Store
 
+python/data/wedgeData_v3_128.txt
+C/build
+
+# ignore all .pyc
+**/*.pyc
+
+# ignore all ipynb checkpoints
+**/.ipynb_checkpoints
