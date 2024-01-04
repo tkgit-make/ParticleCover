@@ -1,27 +1,25 @@
+#include "debug.h"
+#include "parser.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser.h"
 
-int main()
-{
-    char *file_path = "/Users/crinstaniev/Research/aifpga/ParticleCover/C/data/wedgeData_v3_128.txt";
+int main(int argc, char **argv) {
+  // must be single argument
+  if (argc != 2) {
+    // usage: ./<argv[0]> <file_path>
+    printf("usage: %s <file_path>\n", argv[0]);
+    exit(EXIT_FAILURE);
+  }
 
-    DataPointArr_s *data_points_arr = malloc(sizeof(DataPointArr_s));
-    data_points_arr->num_points = 0;
-    data_points_arr->points = NULL;
+  print_constants();
 
-    read_points(file_path, data_points_arr);
+  // read the points from the file
+  char *file_path = argv[1];
+  DataPointArr_s data_points_arr = init_DataPointArr();
+  read_points(file_path, &data_points_arr);
 
-    // DEBUG: print the points
-    for (int i = 0; i < data_points_arr->num_points; i++)
-    {
-        printf(
-            "layer: %d, radius: %d, angle: %lf, z: %lf\n",
-            data_points_arr->points[i].layer,
-            data_points_arr->points[i].radius,
-            data_points_arr->points[i].angle,
-            data_points_arr->points[i].z);
-    }
+  // print the points
+  print_DataPointArr(&data_points_arr);
 
-    return 0;
+  return 0;
 }

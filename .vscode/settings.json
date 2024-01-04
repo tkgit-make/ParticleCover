@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "types.h": "c",
+        "parser.h": "c",
+        "environment.h": "c"
+    }
+}
