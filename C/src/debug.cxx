@@ -1,11 +1,11 @@
 #include "debug.h"
 #include <stdio.h>
 
-void print_DataPointArr(DataPointArr_s *data_points_arr) {
-  for (int i = 0; i < data_points_arr->num_points; i++) {
+void print_DataPointArr(PointArr_s *point_arr) {
+  for (int i = 0; i < point_arr->num_points; i++) {
     printf("layer: %d, radius: %d, angle: %lf, z: %lf\n",
-           data_points_arr->points[i].layer, data_points_arr->points[i].radius,
-           data_points_arr->points[i].angle, data_points_arr->points[i].z);
+           point_arr->points[i].layer, point_arr->points[i].radius,
+           point_arr->points[i].angle, point_arr->points[i].z);
   }
 }
 

@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
 
   // read the points from the file
   char *file_path = argv[1];
-  DataPointArr_s data_points_arr = init_DataPointArr();
+  PointArr_s data_points_arr = init_PointArr();
   read_points(file_path, &data_points_arr);
 
   // print the points

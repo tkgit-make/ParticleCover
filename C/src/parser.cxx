@@ -5,14 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-DataPointArr_s init_DataPointArr() {
-  DataPointArr_s data_point_arr;
+PointArr_s init_PointArr() {
+  PointArr_s data_point_arr;
   data_point_arr.num_points = 0;
 
   return data_point_arr;
 }
 
-void read_points(char *file_path, DataPointArr_s *data_points_arr_out) {
+void read_points(char *file_path, PointArr_s *data_points_arr_out) {
   FILE *file = fopen(file_path, "r");
 
   if (file == NULL) {
@@ -28,7 +28,7 @@ void read_points(char *file_path, DataPointArr_s *data_points_arr_out) {
   // loop through each character in the file,
   // until reaching the end of the line
   // data format: (layer,radius,angle,z), separated by commas
-  DataPoint_s temp_point;
+  Point_s temp_point;
 
   while (fscanf(file, "(%d,%d,%lf,%lf)", &temp_point.layer, &temp_point.radius,
                 &temp_point.angle, &temp_point.z) == 4) {

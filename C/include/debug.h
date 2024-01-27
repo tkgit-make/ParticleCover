@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-void print_DataPointArr(DataPointArr_s *data_points_arr);
+void print_DataPointArr(PointArr_s *data_points_arr);
 
 void print_constants();
 

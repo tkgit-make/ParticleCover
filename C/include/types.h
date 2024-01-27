@@ -8,11 +8,11 @@ typedef struct {
   int radius;
   double angle;
   double z;
-} DataPoint_s;
+} Point_s;
 
 typedef struct {
   unsigned int num_points;
-  DataPoint_s points[MAX_NUM_POINTS];
-} DataPointArr_s;
+  Point_s points[MAX_NUM_POINTS];
+} PointArr_s;
 
 #endif

@@ -3,8 +3,8 @@
 
 #include "types.h"
 
-DataPointArr_s init_DataPointArr();
+PointArr_s init_PointArr();
 
-void read_points(char *file_path, DataPointArr_s *data_points_arr_out);
+void read_points(char *file_path, PointArr_s *points_arr_out);
 
 #endif

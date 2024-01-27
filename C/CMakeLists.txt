@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(ParticleCover VERSION 0.0.1 LANGUAGES C)
+project(ParticleCover VERSION 0.0.1)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED True)
+# cpp standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Set the default build type if not specified
 if(NOT CMAKE_BUILD_TYPE)
