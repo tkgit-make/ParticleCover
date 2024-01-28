@@ -1,0 +1,3 @@
+[submodule "HLS"]
+	path = HLS
+	url = git@github.com:Crinstaniev/ParticleCoverHLS.git
