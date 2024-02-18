@@ -1,6 +1,9 @@
 
 # ParticlePartition
 
+## Documentation (In Progress)
+We will use [Mermaid](https://mermaid.js.org/) to create flowcharts for these algorithms. An overview of Mermaid syntax can be found here: https://mermaid.js.org/intro/. If you are using Visual Studio Code, please install the [Markdown Preview Mermaid Support](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid) extension.
+
 ## Environment and Data Objects
 Before we do anything, we must import the data.py module and create an environment. An environment object contains information about the kind of collider that the data will be generated in. It can be initialized with a constructor, and it has the following attributes 
 ```
