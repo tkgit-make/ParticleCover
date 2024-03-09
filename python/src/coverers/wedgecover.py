@@ -1,5 +1,7 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
+#import sys
+#sys.path.append('Users\zakkh\Dark Matter\ParticleCover\python')
 from src.coverers.data_structs import * 
 from src.coverers.line import *
 import math

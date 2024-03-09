@@ -1,3 +1,9 @@
+'''
+import os
+import sys
+print(os.getcwd())
+print(sys.path)
+'''
 from src.coverers.data_structs import * 
 from src.coverers.line import * 
 from src.readers.reader import *
