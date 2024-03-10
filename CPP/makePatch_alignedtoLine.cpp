@@ -1,3 +1,4 @@
+#include <climits>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -169,7 +170,7 @@ public:
     Environment env;
     vector<Point> list_of_Points;
 
-    Event(Environment envI = NULL, vector<Point> listP = {})
+    Event(Environment envI, vector<Point> listP = {})
     {
         env = envI;
         list_of_Points = listP;
@@ -418,14 +419,14 @@ public:
         end_layer = -1;
         left_end_layer = -1;
         right_end_layer = -1;
-        left_end_lambdaZ = NULL;
-        right_end_lambdaZ = NULL;
+        left_end_lambdaZ = 0;
+        right_end_lambdaZ = 0;
         apexZ0 = apexZ0I;
 
-        shadow_fromTopToInnermost_topL_jL = NULL;
-        shadow_fromTopToInnermost_topL_jR = NULL;
-        shadow_fromTopToInnermost_topR_jL = NULL;
-        shadow_fromTopToInnermost_topR_jR = NULL;
+        shadow_fromTopToInnermost_topL_jL = 0;
+        shadow_fromTopToInnermost_topL_jR = 0;
+        shadow_fromTopToInnermost_topR_jL = 0;
+        shadow_fromTopToInnermost_topR_jR = 0;
 
         if(superpointsI.size() != env.num_layers)
         {
@@ -784,6 +785,7 @@ public:
                 return index - 1;
             }
         }
+        return 0; //need return type
     }
 
     void delete_patch(int index)
