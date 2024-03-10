@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.rmd": "markdown",
+        "deque": "c",
+        "string": "c",
+        "vector": "c"
+    }
+}
