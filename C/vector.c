@@ -3,11 +3,11 @@
 
 typedef struct
 {
-	int objSize;
-	int allocCount;
-	int growBy;
-	int usedCount;
-	void *data;
+	int objSize; //size each vector in the object
+	int allocCount; //the total number of objects for which memory has been allocated, which includes the overhead. so, no less than usedCount, but up to growthBy more.
+	int growBy; //linear growth
+	int usedCount; //how many objects are actually being stored in the vector
+	void *data; //a generic pointer to the memory of the first object in the vector
 } Vector;
 
 Vector* Vector_create(int objSize, int intialSize, int growBy)
@@ -28,7 +28,7 @@ void* Vector_getitem(Vector *v, int n)
 	if (n < v->usedCount) {
 		return v->data + (n * v->objSize);
 		//data is a pointer to the first element in the vector
-		//n*objSize is the number of bytes to skip
+		//n*objSize is the number of bytes to skip. we can do this because a single continuous block of memory was allocated with malloc
 		//pointer arithmetic 
 	} else {
 		return 0;
@@ -43,7 +43,7 @@ void* Vector_newitem(Vector *v)
 	if (v->usedCount == v->allocCount)
 	{
 		v->allocCount = v->allocCount + v->growBy; //linear growth
-		v->data = realloc(v->data, v->allocCount * v->objSize); //accommodate the new size
+		v->data = realloc(v->data, v->allocCount * v->objSize); //accommodate the new size, either by expanding the block in place or making a new continuous block elsewhere
 		assert(v->data); //check if data == null. this would imply failure
 	}
 

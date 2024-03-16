@@ -3,6 +3,7 @@
         "*.rmd": "markdown",
         "deque": "c",
         "string": "c",
-        "vector": "c"
+        "vector": "c",
+        "header.h": "c"
     }
 }
