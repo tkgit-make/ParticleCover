@@ -9,10 +9,10 @@
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 #define max(X, Y)  ((X) < (Y) ? (Y) : (X))
 
-#define MAX_Layers 5
-#define MAX_POINTS_IN_EVENT 512
 #define MAX_LAYERS 5
-#define MAX_POINTS_FOR_DATASET 512
+#define MAX_POINTS_IN_EVENT 512
+#define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
+#define MAX_POINTS_PER_LAYER 256 //not yet used
 
 #ifdef MAIN_C
 	#define EXTERN

@@ -10,5 +10,3 @@ int Point_load(Point* p)
 
 	return 0;
 }
-
-//CREATE_VECTOR_OF_T(Point) //macro invocation. creates alias of PointVector and generates Point specific vector functions. 

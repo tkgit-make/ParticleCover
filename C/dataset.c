@@ -18,11 +18,5 @@ void initDataSetExtra(DataSet* ds, Environment* envI) {
         }
     }
 
-    //redundant
-    //for (int i = 0; i < MAX_LAYERS; i++) {
-    //    ds->n_points[i] = 0;
-    //}
-
-
     //continue writing importData and addBoundaryPoint
 }
