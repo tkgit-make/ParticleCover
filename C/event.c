@@ -1,30 +1,43 @@
 #include "header.h"
 
-#define EVENT_C
-#ifndef POINT_C
-	#include "point.c"
-#endif
-
-//an event only has a list of points
-typedef struct
-{
-	Vector* list_of_Points;
-} Event;
-
-void Event_init(Event* e)
-{
-	e->list_of_Points = VectorOf_Point(512, 256); //initial size and linear growth factor
+void Event_init(Event* e) {
+    e->count = 0;  //no points added yet
 }
 
-void Event_addpoint(Event* e, Point pt)
+int Event_load(Event* e)
 {
-	Point* newpt = PointVector_newitem(e->list_of_Points);
-	*newpt = pt; //dereferencing newpt to access the memory slot for the new element, then copying the fields of the pt structure into this new Point instance at the end of the vector.
+	int n = 0;
+	char ch=',';
+
+	while ((ch == ',') && (n < MAX_POINTS_IN_EVENT)) {
+		if (Point_load(&e->points[n]) < 1) break;
+		n++;
+
+		scanf("%c", &ch);
+		// event ends with a '\n' new line (continues with a ',')
+	}
+
+	AssertWithMessage(!((ch==',') && (n == MAX_POINTS_IN_EVENT)),"Reached maximum number of points");
+
+	e->count = n;
+	return n>0;
 }
 
-Point* Event_getpoint(Event* e, int n)
-{
-	return PointVector_getitem(e->list_of_Points, n);
+/*
+void Event_addpoint(Event* e, Point pt) {
+    if (e->count >= MAX_POINTS_IN_EVENT) {
+        printf("Failure to add, array full");
+        return;
+    }
+    e->points[e->count] = pt;  //dereferencing and assigning value
+    e->count++;  //deferencing and incrementing
 }
 
-CREATE_VECTOR_OF_T(Event) //vector alias and type-specific methods
+Point* Event_getpoint(Event* e, int index) {
+    if (index < 0 || index >= e->count) {
+        printf("Out of bounds or not yet assigned");
+        return NULL;
+    }
+    return &(e->points[index]); //return pointer to the point
+}
+*/
