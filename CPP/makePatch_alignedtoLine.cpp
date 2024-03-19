@@ -97,6 +97,7 @@ public:
     DataSet(Environment& envI)
     {
         env = &envI;
+        total_points = 0;
 
         for(int i = 0; i < 5; i++)
         {
@@ -109,7 +110,6 @@ public:
             n_points.push_back(0);
         }
 
-        total_points = 0;
     }
 
     void importData(vector<Point> data_array)
