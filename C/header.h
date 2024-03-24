@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdbool.h>
+#include <float.h>
 
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 #define max(X, Y)  ((X) < (Y) ? (Y) : (X))
@@ -14,6 +15,7 @@
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
 #define MAX_POINTS_PER_LAYER 256 //not yet used
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
+#define MAX_POINTS_IN_WEDGESUPERPOINT 32
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -94,6 +96,14 @@ typedef struct {
     float top_layer_zmin;
     float top_layer_zmax;
 } parallelogram_v1;
+
+typedef struct {
+    Point points[MAX_POINTS_IN_WEDGESUPERPOINT];
+    float z_values[MAX_POINTS_IN_WEDGESUPERPOINT];
+    int point_count;
+    float min;
+    float max;
+} wedgeSuperPoint;
 
 extern int Point_load(Point* p);
 extern int Event_load(Event* e);
