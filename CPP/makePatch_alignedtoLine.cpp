@@ -3,9 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <functional>
 #include <regex>
-#include <sstream>
 #include <set>
 
 using namespace std;
@@ -27,6 +25,11 @@ public:
     }
 };
 
+struct pointComparison
+{
+    bool operator()(Point& a, Point& b)  { return a.z < b.z; }
+} pC;
+
 class Environment
 {
 public:
@@ -39,8 +42,16 @@ public:
     float boundaryPoint_offset;
     vector<float> trapezoid_edges;
 
-    Environment(float top_layer_limI = 100.0, float beam_axis_limI = 15.0, int num_layersI = 5, vector<float> radiiI = { 5.0, 10.0, 15.0, 20.0, 25.0 })
+    Environment(float top_layer_limI = 100.0, float beam_axis_limI = 15.0, int num_layersI = 5, vector<float> radiiI = vector<float>())
     {
+        if (radiiI.empty())
+        {
+            radiiI.push_back(5.0);
+            radiiI.push_back(10.0);
+            radiiI.push_back(15.0);
+            radiiI.push_back(20.0);
+            radiiI.push_back(25.0);
+        }
         if(top_layer_limI < beam_axis_limI)
         {
             throw "The top layer limits cannot be smaller than the bottom layer limits.";
@@ -125,7 +136,7 @@ public:
 
         for(int i = 0; i < array.size(); i++)
         {
-            sort(array[i].begin(), array[i].end(), [](Point &a, Point &b){ return a.z < b.z; });
+            sort(array[i].begin(), array[i].end(), pC);
             n_points[i] = array[i].size();
             ln++;
         }
@@ -151,7 +162,7 @@ public:
 
         for(int i = 0; i < array.size(); i++)
         {
-            sort(array[i].begin(), array[i].end(), [](Point &a, Point &b){ return a.z < b.z; });
+            sort(array[i].begin(), array[i].end(), pC);
             n_points[ln] = array[i].size();
             ln++;
         }
@@ -170,7 +181,7 @@ public:
     Environment env;
     vector<Point> list_of_Points;
 
-    Event(Environment envI, vector<Point> listP = {})
+    Event(Environment envI = NULL, vector<Point> listP = vector<Point>())
     {
         env = envI;
         list_of_Points = listP;
@@ -442,7 +453,7 @@ public:
 
     }
 
-    float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, float i, float j, float k)
+    float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k)
     {
         float radius_i = 0;
         float radius_j = 0;
@@ -785,7 +796,8 @@ public:
                 return index - 1;
             }
         }
-        return 0; //need return type
+
+        return index;
     }
 
     void delete_patch(int index)
@@ -816,7 +828,7 @@ public:
                 firstTime = false;
                 if(foundIdentical)
                 {
-                    sort(data->array[i].begin(), data->array[i].end(), [](Point &a, Point &b){ return a.z < b.z; });
+                    sort(data->array[i].begin(), data->array[i].end(), pC);
                 }
             }
         }
@@ -1346,11 +1358,13 @@ public:
 
 				if((start_index + ppl) > (right_bound + 1))
 				{
-					init_patch.push_back(wedgeSuperPoint({row_data[i].begin() + right_bound + 1 - ppl, row_data[i].begin() + right_bound + 1})); 
+                    vector<Point> temp(row_data[i].begin() + right_bound + 1 - ppl, row_data[i].begin() + right_bound + 1);
+					init_patch.push_back(wedgeSuperPoint(temp));
 				}
 				else
 				{
-					init_patch.push_back(wedgeSuperPoint({row_data[i].begin() + start_index, row_data[i].begin() + start_index + ppl})); 
+                    vector<Point> temp(row_data[i].begin() + start_index, row_data[i].begin() + start_index + ppl);
+					init_patch.push_back(wedgeSuperPoint(temp));
 				}
 			}
 			else
@@ -1368,11 +1382,13 @@ public:
 
 				if((start_index - ppl + 1) < left_bound)
 				{
-					init_patch.push_back(wedgeSuperPoint({row_data[i].begin() + left_bound, row_data[i].begin() + left_bound + ppl})); 
+                    vector<Point> temp(row_data[i].begin() + left_bound, row_data[i].begin() + left_bound + ppl);
+					init_patch.push_back(wedgeSuperPoint(temp));
 				}
 				else
 				{
-					init_patch.push_back(wedgeSuperPoint({row_data[i].begin() + start_index + 1 - ppl, row_data[i].begin() + start_index + 1})); 
+                    vector<Point> temp(row_data[i].begin() + start_index + 1 - ppl, row_data[i].begin() + start_index + 1);
+					init_patch.push_back(wedgeSuperPoint(temp));
 				}
 			}
 		}
@@ -1498,8 +1514,13 @@ public:
 class Tester
 {
 public:
-    void wedge_test(string lining = "makePatches_Projective_center", float apexZ0 = 0, float z0_spacing = 0.5, int ppl = 16, float z0_luminousRegion = 15.0, vector<int> wedges = { 0, 128 }, int lines = 1000, string v = "v3", float top_layer_cutoff = 50.0, float accept_cutoff = 10.0, bool leftRightAlign = true, bool uniform_N_points = false, string acceptance_method = "Analytic", bool show_acceptance_of_cover = false, bool movie = false, bool savefig = false, int figSizeScale = 6, int movieFigSizeScale = 3)
+    void wedge_test(string lining = "makePatches_Projective_center", float apexZ0 = 0, float z0_spacing = 0.5, int ppl = 16, float z0_luminousRegion = 15.0, vector<int> wedges = vector<int>(), int lines = 1000, string v = "v3", float top_layer_cutoff = 50.0, float accept_cutoff = 10.0, bool leftRightAlign = true, bool uniform_N_points = false, string acceptance_method = "Analytic", bool show_acceptance_of_cover = false, bool movie = false, bool savefig = false, int figSizeScale = 6, int movieFigSizeScale = 3)
     {
+        if (wedges.empty())
+        {
+            wedges.push_back(0);
+            wedges.push_back(128);
+        }
         accept_cutoff = z0_luminousRegion;
 
         bool showZimperfect = false;
@@ -1525,7 +1546,8 @@ public:
         if(uniform_N_points != false)
         {
             data_string = "Uniform 1 points";
-            wedges = {0, 1};
+            wedges[0] = 0;
+            wedges[1] = 1;
         }
 
         vector<float> zInnerLayer;
@@ -1598,6 +1620,11 @@ public:
             for(int i = 0; i < cover.patches.size(); i++)
             {
                 myfile << "Patch " << endl;
+                myfile << cover.patches[i].shadow_fromTopToInnermost_topL_jL << endl;
+                myfile << cover.patches[i].shadow_fromTopToInnermost_topL_jR << endl;
+                myfile << cover.patches[i].shadow_fromTopToInnermost_topR_jL << endl;
+                myfile << cover.patches[i].shadow_fromTopToInnermost_topR_jR << endl;
+
                 for(int j = 0; j < cover.patches[i].superpoints.size(); j++)
                 {
                     myfile << "Superpoint " << endl;
@@ -1660,5 +1687,8 @@ int main()
 
     wedgeCover cov = wedgeCover(env, ds);
     Tester test;
-    test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, {129, 130}, 1000, "v3", 50, 15.0, false, false, "Analytic", false, true, false, 6, 3);
+    vector<int> wedgesToTest;
+    wedgesToTest.push_back(0);
+    wedgesToTest.push_back(1);
+    test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, true, false, 6, 3);
 };

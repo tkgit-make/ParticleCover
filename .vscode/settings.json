@@ -4,6 +4,7 @@
         "deque": "c",
         "string": "c",
         "vector": "c",
-        "header.h": "c"
+        "header.h": "c",
+        "stdio.h": "c"
     }
 }
