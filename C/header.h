@@ -48,7 +48,7 @@ typedef struct {
 typedef struct {
     Environment* env;
     Point array[MAX_LAYERS][MAX_POINTS_FOR_DATASET]; //2D array of points
-    int n_points[MAX_LAYERS]; 
+    int n_points[MAX_LAYERS]; //number of points in each layer of the array
     int total_points;
     float boundaryPoint_offset;
 } DataSet;
