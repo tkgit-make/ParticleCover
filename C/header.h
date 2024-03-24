@@ -13,6 +13,7 @@
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
 #define MAX_POINTS_PER_LAYER 256 //not yet used
+#define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -53,11 +54,57 @@ typedef struct {
     float boundaryPoint_offset;
 } DataSet;
 
+
+typedef struct {
+    Environment* env;
+    float slope;
+    float points[MAX_POINTS_IN_LINE]; 
+    int num_points; //number of points in the line
+} Line;
+
+typedef struct {
+    Environment* env;
+    float start;
+    float slope_ll;
+    float slope_ul;
+} LineGenerator;
+
+typedef struct {
+    int layer_num;
+    float pSlope;
+
+    float shadow_bottomL_jR;
+    float shadow_bottomR_jR;
+    float shadow_bottomL_jL;
+    float shadow_bottomR_jL;
+
+    float z1_min;
+    float z1_max;
+} Parallelogram;
+
+typedef struct {
+    int layer_num;
+    float pSlope;
+
+    float shadow_topR_jL;
+    float shadow_topR_jR;
+    float shadow_topL_jL;
+    float shadow_topL_jR;
+
+    float top_layer_zmin;
+    float top_layer_zmax;
+} parallelogram_v1;
+
 extern int Point_load(Point* p);
 extern int Event_load(Event* e);
 extern void initEnvironment(Environment* env, float top_layer_limI, float beam_axis_limI, int num_layersI, float* radiiI);
 extern void initDataSetBase(DataSet* ds);
 extern void initDataSetExtra(DataSet* ds, Environment* envI);
+extern void importData(DataSet* ds, Point* data_array, int data_array_size);
+extern void addBoundaryPoint(DataSet* ds, float offset);
+extern void initLine(Line* line, Environment* envI, float start, float slopeI);
+extern void initLineGenerator(LineGenerator* lg, Environment* envI, float startI);
+extern void generateEvenGrid(LineGenerator* lg, Line* lines, int n);
 
 extern int floatCompare(const void* a, const void* b);
 
