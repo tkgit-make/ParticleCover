@@ -1,40 +1,78 @@
-- **Required Methods Traced from Main**
-  - **FileReader**
-    - readFile
-    - splitString
-  - **Environment**
-  - **DataSet**
-    - importData
-    - addBoundaryPoint
-  - **wedgeCover**
-    - Constructor
-      - wedgeSuperPoint
-      - Line
-      - wedgePatch
-    - solve (same lining parameter of "makePatches_ShadowQuilt_fromEdges", show = false)
-      - makePatches_ShadowQuilt_from_Edges
-        - straightLineProjectorFromLayerIJtoK (in wedgePatch)
-        - makePatch_alignedToLine
-          - wedgeSuperPoint
-          - addPatch
-        - get_index_from_z
-        - delete_patch
-        - getShadows (in wedgePatch)
-          - (nothing new)
-  - **wedgeSuperPoint constructor**
-    - (nothing)
-  - **addPatch**
-    - (nothing)
-  - **wedgePatch Constructor**
-    - parallelogram
-    - parallelogram_v1
-    - get_acceptanceCorners
-    - get_end_layer
-    - getParallelograms
-      - (nothing)
-    - getParallelograms_v1
-      - straightLineProjector
-        - (nothing)
-  - **Tester**
-    - wedge_test (lining = "makePatches_ShadowQuilt_fromEdges", savefig = movie = show_acceptance_of_cover = false, acceptance_method = "Analytic" 
- 
+# Required Particle Cover Algorithm Structures & Implementation Status
+
+## Class Definitions
+
+### Point
+- Constructor: `Point(int layerNum, float rad, float ph, float zVal)` ✅
+
+### Environment
+- Constructor: `Environment(float top_layer_limI, float beam_axis_limI, int num_layersI, vector<float> radiiI)` ✅
+
+### DataSet
+- Constructors:
+  - `DataSet()` ✅
+  - `DataSet(Environment& envI)` ✅
+- Methods:
+  - `importData(vector<Point> data_array)` ✅
+  - `addBoundaryPoint(float offset)` ✅
+
+### Event
+- Constructor: `Event(Environment envI, vector<Point> listP)` ✅
+
+### Line
+- Constructor: `Line(Environment envI, float start, float slopeI)` ✅
+
+### Parallelogram
+- Constructor: `parallelogram(int layer_numI, float z1_minI, float z1_maxI, ... )` ✅
+
+### Parallelogram_v1
+- Constructor: `parallelogram_v1(int layer_numI, float top_layer_zminI, float top_layer_zmaxI, ...)` ✅
+
+### wedgeSuperPoint
+- Constructor: `wedgeSuperPoint(vector<Point> pointsI)` ✅
+- Operators:
+  - `operator==` ✅
+
+### wedgePatch
+- Constructor: `wedgePatch(Environment envI, vector<wedgeSuperPoint> superpointsI, float apexZ0I)` ❌
+- Methods:
+  - `straightLineProjectorFromLayerIJtoK(...)` ❌
+  - `getParallelograms()` ❌
+  - `getShadows(float zTopMin, float zTopMax)` ❌
+  - `getParallelograms_v1()` ❌
+  - `straightLineProjector(float z_top, float z_j, int j)` ❌
+  - `get_acceptanceCorners()` ❌
+  - `get_end_layer()` ❌
+
+### wedgeCover
+- Constructor: `wedgeCover(Environment envI, DataSet& dataI)` ❌
+- Methods:
+  - `add_patch(wedgePatch curr_patch)` ❌
+  - `get_index_from_z(int layer, float z_value, string alignment)` ❌
+  - `delete_patch(int index)` ❌
+  - `solve(...)` ❌
+  - `makePatches_ShadowQuilt_fromEdges(...)` ❌
+  - `makePatch_alignedToLine(...)` ❌
+
+### FileReader
+- Static Methods:
+  - `splitString(string str, string splitter)` ❌
+  - `readFile(string filepath, int stop, bool performance)` ❌
+
+### Tester
+- Method: `wedge_test(...)` ❌
+
+## Main Function
+
+```cpp
+int main() 
+```
+### Not Used
+> ### LineGenerator
+> - Constructor: `LineGenerator(Environment envI, float startI)` ✅
+> - Method: `generateEvenGrid(int n)` ✅ 
+> 
+> ### wedgeCover
+> - Method: `tester()`
+
+
