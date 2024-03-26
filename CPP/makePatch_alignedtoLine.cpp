@@ -1514,6 +1514,7 @@ public:
 class Tester
 {
 public:
+    //test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, true, false, 6, 3);
     void wedge_test(string lining = "makePatches_Projective_center", float apexZ0 = 0, float z0_spacing = 0.5, int ppl = 16, float z0_luminousRegion = 15.0, vector<int> wedges = vector<int>(), int lines = 1000, string v = "v3", float top_layer_cutoff = 50.0, float accept_cutoff = 10.0, bool leftRightAlign = true, bool uniform_N_points = false, string acceptance_method = "Analytic", bool show_acceptance_of_cover = false, bool movie = false, bool savefig = false, int figSizeScale = 6, int movieFigSizeScale = 3)
     {
         if (wedges.empty())

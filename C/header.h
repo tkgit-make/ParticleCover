@@ -16,6 +16,8 @@
 #define MAX_POINTS_PER_LAYER 256 //not yet used
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
 #define MAX_POINTS_IN_WEDGESUPERPOINT 32
+#define SUPERPOINTS_IN_PATCH 5
+#define MAX_PARALLELOGRAMS_PER_PATCH SUPERPOINTS_IN_PATCH //not sure. could it be 1 parallelogram per superpoint?
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -95,7 +97,7 @@ typedef struct {
 
     float top_layer_zmin;
     float top_layer_zmax;
-} parallelogram_v1;
+} Parallelogram_v1;
 
 typedef struct {
     Point points[MAX_POINTS_IN_WEDGESUPERPOINT];
@@ -104,6 +106,42 @@ typedef struct {
     float min;
     float max;
 } wedgeSuperPoint;
+
+typedef struct {
+    Environment* env;
+    int end_layer;
+    int left_end_layer;
+    int right_end_layer;
+    float left_end_lambdaZ;
+    float right_end_lambdaZ;
+    float apexZ0;
+
+    float shadow_fromTopToInnermost_topL_jL;
+    float shadow_fromTopToInnermost_topL_jR;
+    float shadow_fromTopToInnermost_topR_jL;
+    float shadow_fromTopToInnermost_topR_jR;
+
+    float a_corner[2];
+    float b_corner[2];
+    float c_corner[2];
+    float d_corner[2];
+
+    wedgeSuperPoint superpoints[SUPERPOINTS_IN_PATCH];
+    int superpoint_count;
+
+    bool flatBottom;
+    bool flatTop;
+
+    bool squareAcceptance;
+    bool triangleAcceptance;
+
+    Parallelogram parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
+    int parallelogram_count;
+
+    //Parallelogram_v1 parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
+    //int parallelogram_v1_count;
+} wedgePatch;
+
 
 extern int Point_load(Point* p);
 extern int Event_load(Event* e);
@@ -115,6 +153,8 @@ extern void addBoundaryPoint(DataSet* ds, float offset);
 extern void initLine(Line* line, Environment* envI, float start, float slopeI);
 extern void initLineGenerator(LineGenerator* lg, Environment* envI, float startI);
 extern void generateEvenGrid(LineGenerator* lg, Line* lines, int n);
+extern void initWedgeSuperPoint(wedgeSuperPoint* wsp, Point* points, int pointCount);
+extern int areWedgeSuperPointsEqual(wedgeSuperPoint* wsp1, wedgeSuperPoint* wsp2);
 
 extern int floatCompare(const void* a, const void* b);
 
