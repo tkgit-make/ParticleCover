@@ -34,13 +34,13 @@
   - `operator==` ✅
 
 ### wedgePatch
-- Constructor: `wedgePatch(Environment envI, vector<wedgeSuperPoint> superpointsI, float apexZ0I)` ❌
+- Constructor: `wedgePatch(Environment envI, vector<wedgeSuperPoint> superpointsI, float apexZ0I)` ✅
 - Methods:
-  - `straightLineProjectorFromLayerIJtoK(...)` ❌
-  - `getParallelograms()` ❌
+  - `straightLineProjectorFromLayerIJtoK(...)` ✅
+  - `getParallelograms()` ✅
   - `getShadows(float zTopMin, float zTopMax)` ❌
   - `getParallelograms_v1()` ❌
-  - `straightLineProjector(float z_top, float z_j, int j)` ❌
+  - `straightLineProjector(float z_top, float z_j, int j)` ✅
   - `get_acceptanceCorners()` ❌
   - `get_end_layer()` ❌
 

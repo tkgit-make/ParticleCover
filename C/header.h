@@ -126,7 +126,7 @@ typedef struct {
     float c_corner[2];
     float d_corner[2];
 
-    wedgeSuperPoint superpoints[SUPERPOINTS_IN_PATCH];
+    wedgeSuperPoint* superpoints[SUPERPOINTS_IN_PATCH]; //array of pointers
     int superpoint_count;
 
     bool flatBottom;
@@ -135,11 +135,11 @@ typedef struct {
     bool squareAcceptance;
     bool triangleAcceptance;
 
-    Parallelogram parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
+    Parallelogram* parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
     int parallelogram_count;
 
-    //Parallelogram_v1 parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
-    //int parallelogram_v1_count;
+    Parallelogram_v1* parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
+    int parallelogram_v1_count;
 } wedgePatch;
 
 
@@ -155,6 +155,12 @@ extern void initLineGenerator(LineGenerator* lg, Environment* envI, float startI
 extern void generateEvenGrid(LineGenerator* lg, Line* lines, int n);
 extern void initWedgeSuperPoint(wedgeSuperPoint* wsp, Point* points, int pointCount);
 extern int areWedgeSuperPointsEqual(wedgeSuperPoint* wsp1, wedgeSuperPoint* wsp2);
+extern void initParallelogram(Parallelogram* pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
+extern void init_parallelogram_v1(Parallelogram_v1 *pg, int layer_numI, float top_layer_zminI, float top_layer_zmaxI, float shadow_topR_jLI, float shadow_topR_jRI, float pSlopeI);
+extern void wedgePatch_init(wedgePatch* wp, Environment* envI, wedgeSuperPoint* superpointsI, int superpoint_count, float apexZ0I);
+extern float straightLineProjectorFromLayerIJtoK(wedgePatch* wp, float z_i, float z_j, int i, int j, int k);
+extern float straightLineProjector(float z_top, float z_j, int j, Environment* env);
+extern void getParallelograms(wedgePatch* wp);
 
 extern int floatCompare(const void* a, const void* b);
 
