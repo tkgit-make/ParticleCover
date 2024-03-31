@@ -25,9 +25,6 @@
 ### Parallelogram
 - Constructor: `parallelogram(int layer_numI, float z1_minI, float z1_maxI, ... )` ✅
 
-### Parallelogram_v1
-- Constructor: `parallelogram_v1(int layer_numI, float top_layer_zminI, float top_layer_zmaxI, ...)` ✅
-
 ### wedgeSuperPoint
 - Constructor: `wedgeSuperPoint(vector<Point> pointsI)` ✅
 - Operators:
@@ -39,7 +36,6 @@
   - `straightLineProjectorFromLayerIJtoK(...)` ✅
   - `getParallelograms()` ✅
   - `getShadows(float zTopMin, float zTopMax)` ✅
-  - `getParallelograms_v1()` ✅
   - `straightLineProjector(float z_top, float z_j, int j)` ✅
   - `get_acceptanceCorners()` ✅
   - `get_end_layer()` ✅
@@ -72,7 +68,14 @@ int main()
 > - Constructor: `LineGenerator(Environment envI, float startI)` ✅
 > - Method: `generateEvenGrid(int n)` ✅ 
 > 
+> ### wedgePatch
+> - Method: `getParallelograms_v1()` ✅
+> 
+> ### Parallelogram_v1
+> - Constructor: `parallelogram_v1(int layer_numI, float top_layer_zminI, float top_layer_zmaxI, ...)` ✅
+> 
 > ### wedgeCover
 > - Method: `tester()`
+
 
 
