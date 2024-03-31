@@ -16,8 +16,8 @@
 #define MAX_POINTS_PER_LAYER 256 //not yet used
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
 #define MAX_POINTS_IN_WEDGESUPERPOINT 32
-#define SUPERPOINTS_IN_PATCH 5
-#define MAX_PARALLELOGRAMS_PER_PATCH SUPERPOINTS_IN_PATCH //not sure. could it be 1 parallelogram per superpoint?
+#define MAX_SUPERPOINTS_IN_PATCH 5
+#define MAX_PARALLELOGRAMS_PER_PATCH MAX_SUPERPOINTS_IN_PATCH //not sure. could it be 1 parallelogram per superpoint?
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -126,7 +126,7 @@ typedef struct {
     float c_corner[2];
     float d_corner[2];
 
-    wedgeSuperPoint* superpoints[SUPERPOINTS_IN_PATCH]; //array of pointers
+    wedgeSuperPoint* superpoints[MAX_SUPERPOINTS_IN_PATCH]; //array of pointers
     int superpoint_count;
 
     bool flatBottom;
@@ -161,6 +161,10 @@ extern void wedgePatch_init(wedgePatch* wp, Environment* envI, wedgeSuperPoint* 
 extern float straightLineProjectorFromLayerIJtoK(wedgePatch* wp, float z_i, float z_j, int i, int j, int k);
 extern float straightLineProjector(float z_top, float z_j, int j, Environment* env);
 extern void getParallelograms(wedgePatch* wp);
+extern void getParallelograms_v1(wedgePatch* wp);
+extern void getShadows(wedgePatch* wp, float zTopMin, float zTopMax);
+extern void get_acceptanceCorners(wedgePatch* wp);
+extern void get_end_layer(wedgePatch* wp);
 
 extern int floatCompare(const void* a, const void* b);
 

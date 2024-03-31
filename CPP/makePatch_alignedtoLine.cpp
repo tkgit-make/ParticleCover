@@ -673,7 +673,7 @@ public:
             lambdaZ_left_list.push_back((superpoints[i].min - apexZ0) / env.radii[i]);
             lambdaZ_right_list.push_back((superpoints[i].max - apexZ0)/ env.radii[i]);
         }
-
+        
         float lambdaZLeftMax = -1 * INT_MAX + 2;
         float lambdaZRightMin = INT_MAX - 2;
 

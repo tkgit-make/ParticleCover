@@ -38,11 +38,11 @@
 - Methods:
   - `straightLineProjectorFromLayerIJtoK(...)` ✅
   - `getParallelograms()` ✅
-  - `getShadows(float zTopMin, float zTopMax)` ❌
-  - `getParallelograms_v1()` ❌
+  - `getShadows(float zTopMin, float zTopMax)` ✅
+  - `getParallelograms_v1()` ✅
   - `straightLineProjector(float z_top, float z_j, int j)` ✅
-  - `get_acceptanceCorners()` ❌
-  - `get_end_layer()` ❌
+  - `get_acceptanceCorners()` ✅
+  - `get_end_layer()` ✅
 
 ### wedgeCover
 - Constructor: `wedgeCover(Environment envI, DataSet& dataI)` ❌
