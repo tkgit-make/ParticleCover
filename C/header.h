@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdbool.h>
+#include <float.h>
 
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 #define max(X, Y)  ((X) < (Y) ? (Y) : (X))
@@ -14,6 +15,9 @@
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
 #define MAX_POINTS_PER_LAYER 256 //not yet used
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
+#define MAX_POINTS_IN_WEDGESUPERPOINT 32
+#define MAX_SUPERPOINTS_IN_PATCH 5
+#define MAX_PARALLELOGRAMS_PER_PATCH MAX_SUPERPOINTS_IN_PATCH //not sure. could it be 1 parallelogram per superpoint?
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -93,7 +97,51 @@ typedef struct {
 
     float top_layer_zmin;
     float top_layer_zmax;
-} parallelogram_v1;
+} Parallelogram_v1;
+
+typedef struct {
+    Point points[MAX_POINTS_IN_WEDGESUPERPOINT];
+    float z_values[MAX_POINTS_IN_WEDGESUPERPOINT];
+    int point_count;
+    float min;
+    float max;
+} wedgeSuperPoint;
+
+typedef struct {
+    Environment* env;
+    int end_layer;
+    int left_end_layer;
+    int right_end_layer;
+    float left_end_lambdaZ;
+    float right_end_lambdaZ;
+    float apexZ0;
+
+    float shadow_fromTopToInnermost_topL_jL;
+    float shadow_fromTopToInnermost_topL_jR;
+    float shadow_fromTopToInnermost_topR_jL;
+    float shadow_fromTopToInnermost_topR_jR;
+
+    float a_corner[2];
+    float b_corner[2];
+    float c_corner[2];
+    float d_corner[2];
+
+    wedgeSuperPoint* superpoints[MAX_SUPERPOINTS_IN_PATCH]; //array of pointers
+    int superpoint_count;
+
+    bool flatBottom;
+    bool flatTop;
+
+    bool squareAcceptance;
+    bool triangleAcceptance;
+
+    Parallelogram* parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
+    int parallelogram_count;
+
+    Parallelogram_v1* parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
+    int parallelogram_v1_count;
+} wedgePatch;
+
 
 extern int Point_load(Point* p);
 extern int Event_load(Event* e);
@@ -105,6 +153,18 @@ extern void addBoundaryPoint(DataSet* ds, float offset);
 extern void initLine(Line* line, Environment* envI, float start, float slopeI);
 extern void initLineGenerator(LineGenerator* lg, Environment* envI, float startI);
 extern void generateEvenGrid(LineGenerator* lg, Line* lines, int n);
+extern void initWedgeSuperPoint(wedgeSuperPoint* wsp, Point* points, int pointCount);
+extern int areWedgeSuperPointsEqual(wedgeSuperPoint* wsp1, wedgeSuperPoint* wsp2);
+extern void initParallelogram(Parallelogram* pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
+extern void init_parallelogram_v1(Parallelogram_v1 *pg, int layer_numI, float top_layer_zminI, float top_layer_zmaxI, float shadow_topR_jLI, float shadow_topR_jRI, float pSlopeI);
+extern void wedgePatch_init(wedgePatch* wp, Environment* envI, wedgeSuperPoint* superpointsI, int superpoint_count, float apexZ0I);
+extern float straightLineProjectorFromLayerIJtoK(wedgePatch* wp, float z_i, float z_j, int i, int j, int k);
+extern float straightLineProjector(float z_top, float z_j, int j, Environment* env);
+extern void getParallelograms(wedgePatch* wp);
+extern void getParallelograms_v1(wedgePatch* wp);
+extern void getShadows(wedgePatch* wp, float zTopMin, float zTopMax);
+extern void get_acceptanceCorners(wedgePatch* wp);
+extern void get_end_layer(wedgePatch* wp);
 
 extern int floatCompare(const void* a, const void* b);
 

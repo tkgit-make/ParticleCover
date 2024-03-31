@@ -1,0 +1,40 @@
+- **Required Methods Traced from Main**
+  - **FileReader**
+    - readFile
+    - splitString
+  - **Environment**
+  - **DataSet**
+    - importData
+    - addBoundaryPoint
+  - **wedgeCover**
+    - Constructor
+      - wedgeSuperPoint
+      - Line
+      - wedgePatch
+    - solve (same lining parameter of "makePatches_ShadowQuilt_fromEdges", show = false)
+      - makePatches_ShadowQuilt_from_Edges
+        - straightLineProjectorFromLayerIJtoK (in wedgePatch)
+        - makePatch_alignedToLine
+          - wedgeSuperPoint
+          - addPatch
+        - get_index_from_z
+        - delete_patch
+        - getShadows (in wedgePatch)
+          - (nothing new)
+  - **wedgeSuperPoint constructor**
+    - (nothing)
+  - **addPatch**
+    - (nothing)
+  - **wedgePatch Constructor**
+    - parallelogram
+    - parallelogram_v1
+    - get_acceptanceCorners
+    - get_end_layer
+    - getParallelograms
+      - (nothing)
+    - getParallelograms_v1
+      - straightLineProjector
+        - (nothing)
+  - **Tester**
+    - wedge_test (lining = "makePatches_ShadowQuilt_fromEdges", savefig = movie = show_acceptance_of_cover = false, acceptance_method = "Analytic" 
+ 

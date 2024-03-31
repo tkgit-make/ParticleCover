@@ -1,6 +1,6 @@
 #include "header.h"
 
-void init_parallelogram_v1(parallelogram_v1 *pg, int layer_numI, float top_layer_zminI, float top_layer_zmaxI, float shadow_topR_jLI, float shadow_topR_jRI, float pSlopeI) {
+void init_parallelogram_v1(Parallelogram_v1 *pg, int layer_numI, float top_layer_zminI, float top_layer_zmaxI, float shadow_topR_jLI, float shadow_topR_jRI, float pSlopeI) {
     pg->layer_num = layer_numI;
     pg->pSlope = pSlopeI;
 

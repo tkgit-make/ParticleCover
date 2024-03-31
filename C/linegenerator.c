@@ -27,6 +27,6 @@ void generateEvenGrid(LineGenerator* lg, Line* lines, int n) {
     for (int i = 0; i < n; i++) {
         float z = (-1 * lg->env->top_layer_lim) + i * stepVal; //an entry in Zcoor in C++
         float slope = Rcoor / (z - lg->start);
-        initLine(&lines[i], lg->env, lg->start, slope); //equivalent to lines.push_back(Line(env, start, Rcoor / (Zcoor[i] - start)));
+        initLine(&lines[i], lg->env, lg->start, slope); //equivalent to lines.push_back(Line(env, start, Rcoor / (Zcoor[i] - start)));.
     }
 }
