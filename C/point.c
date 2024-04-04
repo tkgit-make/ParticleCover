@@ -10,3 +10,11 @@ int Point_load(Point* p)
 
 	return 0;
 }
+
+int comparePoints(const void* a, const void* b) {
+    const Point* pointA = (const Point*)a;
+    const Point* pointB = (const Point*)b;
+    if (pointA->z < pointB->z) return -1;
+    if (pointA->z > pointB->z) return 1;
+    return 0;
+}

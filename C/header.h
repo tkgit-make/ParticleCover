@@ -10,6 +10,12 @@
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 #define max(X, Y)  ((X) < (Y) ? (Y) : (X))
 
+#define CLOSEST 11
+#define ABOVE 12
+#define BELOW 13
+#define MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES 33
+
+
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
@@ -18,6 +24,9 @@
 #define MAX_POINTS_IN_WEDGESUPERPOINT 32
 #define MAX_SUPERPOINTS_IN_PATCH 5
 #define MAX_PARALLELOGRAMS_PER_PATCH MAX_SUPERPOINTS_IN_PATCH //not sure. could it be 1 parallelogram per superpoint?
+#define MAX_PATCHES 64 //not sure 
+#define MAX_LINES 64 //not sure
+#define MAX_SUPERPOINTS_IN_COVER 64 //not sure
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -145,6 +154,18 @@ typedef struct {
 } wedgePatch;
 
 
+typedef struct {
+    int n_patches;
+    wedgePatch patches[MAX_PATCHES];
+    Environment* env;
+    DataSet* data;
+    Line fitting_lines[MAX_LINES]; 
+    wedgeSuperPoint* superPoints[MAX_POINTS_IN_WEDGESUPERPOINT];
+    wedgePatch* all_patches[MAX_PATCHES];
+    bool real_patch_list[MAX_PATCHES];
+} wedgeCover;
+
+
 extern int Point_load(Point* p);
 extern int Event_load(Event* e);
 extern void initEnvironment(Environment* env, float top_layer_limI, float beam_axis_limI, int num_layersI, float* radiiI);
@@ -167,6 +188,13 @@ extern void getParallelograms(wedgePatch* wp);
 extern void getShadows(wedgePatch* wp, float zTopMin, float zTopMax);
 extern void get_acceptanceCorners(wedgePatch* wp);
 extern void get_end_layer(wedgePatch* wp);
+extern void wedgeCover_init(wedgeCover* wc, Environment* envI, DataSet* dataI);
+extern int comparePoints(const void* a, const void* b);
+extern void add_patch(wedgeCover* cover, wedgePatch* curr_patch);
+extern void delete_patch(int index, wedgeCover* cover);
+extern int get_index_from_z(DataSet* data, int layer, float z_value, int alignment);
+extern void solve(wedgeCover* cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight);
+
 
 extern int floatCompare(const void* a, const void* b);
 

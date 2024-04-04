@@ -41,12 +41,12 @@
   - `get_end_layer()` ✅
 
 ### wedgeCover
-- Constructor: `wedgeCover(Environment envI, DataSet& dataI)` ❌
+- Constructor: `wedgeCover(Environment envI, DataSet& dataI)` ✅
 - Methods:
-  - `add_patch(wedgePatch curr_patch)` ❌
-  - `get_index_from_z(int layer, float z_value, string alignment)` ❌
-  - `delete_patch(int index)` ❌
-  - `solve(...)` ❌
+  - `add_patch(wedgePatch curr_patch)` ✅
+  - `get_index_from_z(int layer, float z_value, string alignment)` ✅
+  - `delete_patch(int index)` ✅
+  - `solve(...)` ✅
   - `makePatches_ShadowQuilt_fromEdges(...)` ❌
   - `makePatch_alignedToLine(...)` ❌
 
@@ -60,9 +60,8 @@
 
 ## Main Function
 
-```cpp
-int main() 
-```
+- Method: `int main()` ❌
+
 ### Not Used
 > ### LineGenerator
 > - Constructor: `LineGenerator(Environment envI, float startI)` ✅

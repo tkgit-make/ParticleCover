@@ -33,7 +33,7 @@ void importData(DataSet* ds, Point* data_array, int data_array_size) {
     //iterating over the layers in DataSet
     for (int i = 0; i < ds->env->num_layers; i++) {
         //sorts the points in the ith layer
-        qsort(ds->array[i], ds->n_points[i], sizeof(Point), floatCompare);
+        qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints);
     }
 }
 
@@ -67,7 +67,7 @@ void addBoundaryPoint(DataSet* ds, float offset) {
     //iterating over the layers in DataSet
     for (int i = 0; i < ds->env->num_layers; i++) {
         //like before, sorting the points in the ith layer
-        qsort(ds->array[i], ds->n_points[i], sizeof(Point), floatCompare);
+        qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints);
         //our code ensures n_points stays up to date and fresh and doesn't need to be recomputed here
         total += ds->n_points[i]; //summing sizes of 1D array
     }
