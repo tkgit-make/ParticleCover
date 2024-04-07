@@ -1061,7 +1061,7 @@ public:
                             cout << i + 1 << " new_z_i_atTop: " << new_z_i_atTop[i] << " shift_i_ztop: " << new_z_i_atTop[i] - previous_z_top_min << " layerWithSmallestShift: " << layerWithSmallestShift << endl;
                         }
 
-                        z_top_min = data->array[env.num_layers - 1][current_z_top_index].z;
+                        //z_top_min = data->array[env.num_layers - 1][current_z_top_index].z; //this assignment is just overridden
                         z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
                         if (abs(z_top_min-previous_z_top_min) < 0.000001)

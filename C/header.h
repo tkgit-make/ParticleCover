@@ -10,6 +10,8 @@
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 #define max(X, Y)  ((X) < (Y) ? (Y) : (X))
 
+#define index_type unsigned int
+
 #define CLOSEST 11
 #define ABOVE 12
 #define BELOW 13
@@ -22,8 +24,8 @@
 #define MAX_POINTS_PER_LAYER 256 //not yet used
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
 #define MAX_POINTS_IN_WEDGESUPERPOINT 32
-#define MAX_SUPERPOINTS_IN_PATCH 5
-#define MAX_PARALLELOGRAMS_PER_PATCH MAX_SUPERPOINTS_IN_PATCH //not sure. could it be 1 parallelogram per superpoint?
+#define MAX_SUPERPOINTS_IN_PATCH MAX_LAYERS
+#define MAX_PARALLELOGRAMS_PER_PATCH MAX_LAYERS-1
 #define MAX_PATCHES 64 //not sure 
 #define MAX_LINES 64 //not sure
 #define MAX_SUPERPOINTS_IN_COVER 64 //not sure
@@ -191,7 +193,7 @@ extern void get_end_layer(wedgePatch* wp);
 extern void wedgeCover_init(wedgeCover* wc, Environment* envI, DataSet* dataI);
 extern int comparePoints(const void* a, const void* b);
 extern void add_patch(wedgeCover* cover, wedgePatch* curr_patch);
-extern void delete_patch(int index, wedgeCover* cover);
+extern void delete_patch(wedgeCover* cover, int index);
 extern int get_index_from_z(DataSet* data, int layer, float z_value, int alignment);
 extern void solve(wedgeCover* cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight);
 
