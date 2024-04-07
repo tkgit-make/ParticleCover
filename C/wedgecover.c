@@ -483,8 +483,8 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                             }
                         }
                     }
-                    
-                    lastPatchIndex = cover->n_patches - 1;
+
+                    lastPatchIndex = cover->n_patches - 1; //just to keep fresh in case we use it
                     c_corner = cover->patches[lastPatchIndex].c_corner[1];
 
                     projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], c_corner, cover->patches[lastPatchIndex].c_corner[0], cover->env->num_layers, 1, 0);
