@@ -162,7 +162,7 @@ typedef struct {
     Environment* env;
     DataSet* data;
     Line fitting_lines[MAX_LINES]; 
-    wedgeSuperPoint* superPoints[MAX_POINTS_IN_WEDGESUPERPOINT];
+    wedgeSuperPoint* superPoints[MAX_POINTS_IN_WEDGESUPERPOINT]; //double check this quantity
     wedgePatch* all_patches[MAX_PATCHES];
     bool real_patch_list[MAX_PATCHES];
 } wedgeCover;
