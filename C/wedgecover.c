@@ -490,7 +490,146 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], c_corner, cover->patches[lastPatchIndex].c_corner[0], cover->env->num_layers, 1, 0);
 
                     saved_apexZ0 = cover->patches[lastPatchIndex].c_corner[0];
-    
+
+                    if (madeComplementaryPatch) {
+                        int secondLastPatchIndex = lastPatchIndex - 1;
+                        
+                        //modifying patches, not adding patches, so index variables do not need to be updated. 
+                        getShadows(&cover->patches[lastPatchIndex], z_top_min, z_top_max);
+                        getShadows(&cover->patches[secondLastPatchIndex], z_top_min, z_top_max);
+
+                        float original_topR_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jL;
+                        bool originalPartialTop = (original_topR_jL > complementary_apexZ0) && (original_topR_jL < apexZ0) && 
+                                                (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topR_jL, z_top_max, 1, cover->env->num_layers, 0)) < 20 * cover->env->beam_axis_lim);
+                        
+                        float original_topL_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
+                        bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && (original_topL_jL < apexZ0) && 
+                                                    (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topL_jL, z_top_min, 1, cover->env->num_layers, 0)) < 20 * cover->env->beam_axis_lim);
+                        
+                        float complementary_topR_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+                        bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) && 
+                                                    (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topR_jR, z_top_max, 1, cover->env->num_layers, 0)) < 20 * cover->env->beam_axis_lim);
+                        
+                        float complementary_topL_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
+                        bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && (complementary_topL_jR < apexZ0) && 
+                                                        (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topL_jR, z_top_min, 1, cover->env->num_layers, 0)) < 20 * cover->env->beam_axis_lim);
+
+                        float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
+                        float horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
+
+                        float complementary_topR_jL = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jL;
+                        float complementary_topL_jL = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jL;
+                        float original_topR_jR = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+                        float original_topL_jR = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jR;
+
+                        float horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
+                        float horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
+
+                        horizontalOverlapTop = -1;
+                        horizontalOverlapBottom = -1;
+                        float newGapTop = -0.000001;
+                        float newGapBottom = -0.000001;
+
+                        bool makeHorizontallyShiftedPatch = false;
+                        float shifted_Align = apexZ0;
+                        bool doShiftedPatch = true;
+
+                        float newZtop = 0;
+
+                        float z0_original_bCorner = straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], apexZ0, z_top_max, 1, cover->env->num_layers, 0);
+                        float z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, cover->env->num_layers, 0);
+                        bool shiftOriginal = true;
+
+                        if (z0_original_bCorner < 0) {
+                            shiftOriginal = false;
+                            shifted_Align = complementary_apexZ0;
+                        }
+
+                        if (z0_complementary_cCorner > 0) {
+                            shiftOriginal = true;
+                            shifted_Align = apexZ0;
+                        }
+
+                        if (horizontalShiftTop > 0 || horizontalShiftBottom > 0) {
+                            printf("originalPartialTop: %d complementaryPartialTop: %d originalPartialBottom: %d complementaryPartialBottom: %d %f %f %f %f horizontalOverlapTop: %f horizontalOverlapBottom: %f\n",
+                                originalPartialTop, complementaryPartialTop, originalPartialBottom, complementaryPartialBottom,
+                                original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR,
+                                horizontalOverlapTop, horizontalOverlapBottom);
+                        }
+
+                        while (((horizontalShiftTop > 0 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0)) {
+                            printf("horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
+
+                            newZtop = z_top_max;
+
+                            if (shiftOriginal) {
+                                shifted_Align -= max(horizontalShiftTop, horizontalShiftBottom);
+                            } else {
+                                shifted_Align += max(horizontalShiftTop, horizontalShiftBottom);
+                                newZtop = z_top_min;
+                            }
+
+                            if (makeHorizontallyShiftedPatch) {
+                                delete_patch(cover, cover->n_patches - 1);
+                                //decrement n_patches is handled by delete_patch
+                            }
+
+                            makePatch_alignedToLine(cover, shifted_Align, newZtop, ppl, !shiftOriginal);
+
+                            getShadows(&cover->patches[cover->n_patches - 1], z_top_min, z_top_max);
+
+                            if (shiftOriginal) {
+                                original_topR_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jL;
+                                original_topL_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jL;
+                                original_topR_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jR;
+                                original_topL_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jR;
+                            } else {
+                                complementary_topR_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jR;
+                                complementary_topL_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jR;
+                                complementary_topR_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jL;
+                                complementary_topL_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jL;
+                            }
+
+                            horizontalShiftTop = original_topR_jL - complementary_topR_jR;
+                            horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
+
+                            if (shiftOriginal && straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], original_topR_jR, z_top_max, 1, cover->env->num_layers, 0) < cover->env->beam_axis_lim) {
+                                horizontalOverlapTop = fmax(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
+                                horizontalOverlapBottom = fmax(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
+                                printf(" horizontalOverlapTop: %f horizontalOverlapBottom: %f\n", horizontalOverlapTop, horizontalOverlapBottom);
+                            }
+
+                            printf("original_topR_jL: %f complementary_topR_jR %f original_topL_jL %f complementary_topL_jR %f shiftOriginal %d\n",
+                                original_topR_jL, complementary_topR_jR, original_topL_jL, complementary_topL_jR, shiftOriginal);
+
+                            makeHorizontallyShiftedPatch = true;
+
+                            printf("updated_horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
+                        }
+                        if (makeHorizontallyShiftedPatch) {
+                            if ((straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], shifted_Align, newZtop, 1, cover->env->num_layers, 0) > cover->env->beam_axis_lim) && shiftOriginal) {
+                                if (cover->n_patches > 2) {
+                                    delete_patch(cover, cover->n_patches - 3);
+                            }
+                        }
+                    }
+                }
+
+                z_top_max = c_corner;
+
+                printf("+++++++++++++++++++++++ c_corner: %f\n", c_corner);
+            }
+
+            apexZ0 = cover->patches[cover->n_patches - 1].c_corner[0];
+            apexZ0 = saved_apexZ0;
+            printf("'=======================================================  z1_Align: %f\n", apexZ0);
+        }
+    }
+
+
+
+
+                        
 
 
 
@@ -499,4 +638,4 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
 
 
-                    
+                                        
