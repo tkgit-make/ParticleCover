@@ -623,7 +623,7 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
     wedgeSuperPoint init_patch[MAX_LAYERS * MAX_POINTS_PER_LAYER];  //figure out
     int original_ppl = ppl;
     float alignmentAccuracy = 0.00001;
-    Point row_data[MAX_LAYERS][MAX_POINTS_PER_LAYER];
+    Point row_data[MAX_LAYERS][MAX_POINTS_PER_LAYER]; //figure out all constants here
     int init_patch_size = 0;
 
     for (int i = 0; i < cover->env->num_layers; i++) {
@@ -689,8 +689,32 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
                 }
             }
         } else {
+            if (start_index != row_list_size - 1) {
+                printf("row %d start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
+                if (start_value < -1 * alignmentAccuracy) {
+                    start_index += 1;
+                    start_value = row_list[start_index] - projectionToRow;
+                    printf("row %d updated start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
+                }
+            }
+
+            if ((start_index - ppl + 1) < left_bound) {
+                for (int j = left_bound; j < left_bound + ppl; j++) {
+                    temp[temp_size++] = cover->data->array[i][j];
+                }
+            } else {
+                for (int j = start_index - ppl + 1; j <= start_index; j++) {
+                    temp[temp_size++] = cover->data->array[i][j];
+                }
+            }
         }
 
+        initWedgeSuperPoint(&init_patch[init_patch_size++], temp, temp_size);
+        init_patch_size++;
     }
 
+    //once all points are added to init_patch, add the entire patch to the cover
+    wedgePatch new_patch;
+    wedgePatch_init(&new_patch, cover->env, init_patch, init_patch_size, apexZ0);
+    add_patch(cover, &new_patch);
 }
