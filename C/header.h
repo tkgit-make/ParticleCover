@@ -196,6 +196,8 @@ extern void add_patch(wedgeCover* cover, wedgePatch* curr_patch);
 extern void delete_patch(wedgeCover* cover, int index);
 extern int get_index_from_z(DataSet* data, int layer, float z_value, int alignment);
 extern void solve(wedgeCover* cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight);
+extern void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int stop, int ppl, bool leftRight);
+extern void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
 
 
 extern int floatCompare(const void* a, const void* b);
