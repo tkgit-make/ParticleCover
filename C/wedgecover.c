@@ -49,7 +49,7 @@ void delete_patch(wedgeCover * cover, int index) {
 
     cover -> real_patch_list[index] = false;
 
-    for (int i = index; i < cover -> n_patches - 1; i++) {
+    for (index_type i = index; i < cover -> n_patches - 1; i++) {
         cover -> patches[i] = cover -> patches[i + 1];
         cover -> real_patch_list[i] = cover -> real_patch_list[i + 1];
     }
@@ -179,8 +179,8 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
                 cover -> patches[lastPatchIndex].d_corner[0],
                 cover -> patches[lastPatchIndex].d_corner[1]);
 
-            for (int i = 1; i < cover -> patches[lastPatchIndex].superpoint_count - 1; i++) {
-                int j = i + 1;
+            for (index_type i = 1; i < cover -> patches[lastPatchIndex].superpoint_count - 1; i++) {
+                index_type j = i + 1;
                 printf("%d superpoint: %f %f shadowTop from L1Max: %f %f from L1 min: %f %f\n",
                     j,
                     cover -> patches[lastPatchIndex].superpoints[i] -> min,
@@ -620,18 +620,18 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
 }
 
 void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl) {
-    wedgeSuperPoint init_patch[MAX_LAYERS * MAX_POINTS_PER_LAYER];  //figure out
+    wedgeSuperPoint init_patch[MAX_LAYERS]; //correct
     int original_ppl = ppl;
     float alignmentAccuracy = 0.00001;
-    Point row_data[MAX_LAYERS][MAX_POINTS_PER_LAYER]; //figure out all constants here
+    //Point row_data[MAX_LAYERS][MAX_POINTS_FOR_DATASET];
     int init_patch_size = 0;
 
-    for (int i = 0; i < cover->env->num_layers; i++) {
+    for (index_type i = 0; i < cover->env->num_layers; i++) {
         float y = cover->env->radii[i];
         float row_list[MAX_POINTS_PER_LAYER];
         int row_list_size = 0;
 
-        for (int j = 0; j < cover->data->n_points[i]; j++) {
+        for (index_type j = 0; j < cover->data->n_points[i]; j++) {
             row_list[row_list_size++] = cover->data->array[i][j].z;
         }
 
@@ -641,7 +641,7 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
         int start_index = 0;
         float start_value = 1000000;
 
-        for (int j = 0; j < row_list_size; j++) {
+        for (index_type j = 0; j < row_list_size; j++) {
             if (fabs(row_list[j] - projectionToRow) < fabs(start_value)) {
                 start_index = j;
                 start_value = row_list[j] - projectionToRow;
@@ -653,7 +653,7 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
         int right_bound = 0;
         float rbVal = INT_MAX;
 
-        for (int j = 0; j < row_list_size; j++) {
+        for (index_type j = 0; j < row_list_size; j++) {
             if (fabs((row_list[j] + cover->env->trapezoid_edges[i] + cover->env->boundaryPoint_offset)) < lbVal) {
                 left_bound = j;
                 lbVal = fabs((row_list[j] + cover->env->trapezoid_edges[i] + cover->env->boundaryPoint_offset));
@@ -680,12 +680,12 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
             }
             //making and adding a new vector that is a subset of "row_data" or array, going from right+1-ppl to right+1?
             if ((start_index + ppl) > (right_bound + 1)) {
-                for (int j = right_bound + 1 - ppl; j <= right_bound; j++) {
+                for (index_type j = right_bound + 1 - ppl; j <= right_bound; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
             //similarly 
             } else {
-                for (int j = start_index; j < start_index + ppl; j++) {
+                for (index_type j = start_index; j < start_index + ppl; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
             }
@@ -700,12 +700,12 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
             }
             //similarly adding subset of 'array' which represents row_data
             if ((start_index - ppl + 1) < left_bound) {
-                for (int j = left_bound; j < left_bound + ppl; j++) {
+                for (index_type j = left_bound; j < left_bound + ppl; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
             //similarly
             } else {
-                for (int j = start_index - ppl + 1; j <= start_index; j++) {
+                for (index_type j = start_index - ppl + 1; j <= start_index; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
             }

@@ -21,7 +21,7 @@
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
-#define MAX_POINTS_PER_LAYER 256 //not yet used
+#define MAX_POINTS_PER_LAYER 256 //not yet used but correct
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
 #define MAX_POINTS_IN_WEDGESUPERPOINT 32
 #define MAX_SUPERPOINTS_IN_PATCH MAX_LAYERS
@@ -168,7 +168,8 @@ typedef struct {
 } wedgeCover;
 
 
-extern int Point_load(Point* p);
+extern int Point_read_and_init(Point* p);
+extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
 extern int Event_load(Event* e);
 extern void initEnvironment(Environment* env, float top_layer_limI, float beam_axis_limI, int num_layersI, float* radiiI);
 extern void initDataSetBase(DataSet* ds);
