@@ -21,14 +21,14 @@
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP
-#define MAX_POINTS_PER_LAYER 256 //not yet used but correct
+#define MAX_POINTS_PER_LAYER 256 //not yet used
 #define MAX_POINTS_IN_LINE MAX_LAYERS //a point on the line is calculated for each layer in the environment.
-#define MAX_POINTS_IN_WEDGESUPERPOINT 32
-#define MAX_SUPERPOINTS_IN_PATCH MAX_LAYERS
-#define MAX_PARALLELOGRAMS_PER_PATCH MAX_LAYERS-1
-#define MAX_PATCHES 64 //not sure 
-#define MAX_LINES 64 //not sure
-#define MAX_SUPERPOINTS_IN_COVER 64 //not sure
+#define MAX_POINTS_IN_SUPERPOINT 32
+#define MAX_SUPERPOINTS_IN_PATCH 5
+#define MAX_PARALLELOGRAMS_PER_PATCH MAX_LAYERS-1 //layer 1 is a vertical ribbon, the other 4 layers are sloping, so each intersects with layer 1 to make a parallelogram
+#define MAX_PATCHES 32 //upper bound, 14-18 average.
+//#define MAX_LINES __ //only used in visualization
+#define MAX_SUPERPOINTS_IN_COVER (MAX_PATCHES*MAX_SUPERPOINTS_IN_PATCH)
 
 #ifdef MAIN_C
 	#define EXTERN
@@ -113,8 +113,8 @@ typedef struct {
 */
 
 typedef struct {
-    Point points[MAX_POINTS_IN_WEDGESUPERPOINT];
-    float z_values[MAX_POINTS_IN_WEDGESUPERPOINT];
+    Point points[MAX_POINTS_IN_SUPERPOINT];
+    float z_values[MAX_POINTS_IN_SUPERPOINT];
     index_type point_count;
     float min;
     float max;
@@ -161,8 +161,8 @@ typedef struct {
     wedgePatch patches[MAX_PATCHES];
     Environment* env;
     DataSet* data;
-    Line fitting_lines[MAX_LINES]; 
-    wedgeSuperPoint* superPoints[MAX_POINTS_IN_WEDGESUPERPOINT]; //double check this quantity
+    //Line fitting_lines[MAX_LINES]; //only used in visualization
+    wedgeSuperPoint* superPoints[MAX_SUPERPOINTS_IN_COVER];
     wedgePatch* all_patches[MAX_PATCHES];
     bool real_patch_list[MAX_PATCHES];
 } wedgeCover;

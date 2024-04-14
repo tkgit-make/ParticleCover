@@ -23,14 +23,15 @@ void add_patch(wedgeCover * cover, wedgePatch * curr_patch) {
         wedgePatch * prev_patch = & (cover -> patches[cover -> n_patches - 1]);
         bool different = false;
 
-        for (index_type i = 0; i < MAX_SUPERPOINTS_IN_PATCH; i++) {
+        for (index_type i = 0; i < prev_patch->superpoint_count; i++) {
             if ((prev_patch -> superpoints[i] -> min != curr_patch -> superpoints[i] -> min) ||
                 (prev_patch -> superpoints[i] -> max != curr_patch -> superpoints[i] -> max)) {
                 different = true;
                 break;
             }
         }
-
+        
+        //if the min and max are the same for each superpoint, don't add a patch
         if (different) {
             if (cover -> n_patches < MAX_PATCHES) {
                 cover -> patches[cover -> n_patches] = * curr_patch;
