@@ -671,18 +671,19 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
             ppl = original_ppl;
         }
 
-        Point temp[MAX_POINTS_PER_LAYER];
+        Point temp[MAX_POINTS_PER_LAYER]; //check
         int temp_size = 0;  
 
         if (leftRight) {
             if (start_index != 0 && start_value > alignmentAccuracy) {
                 start_index -= 1;
             }
-
+            //making and adding a new vector that is a subset of "row_data" or array, going from right+1-ppl to right+1?
             if ((start_index + ppl) > (right_bound + 1)) {
                 for (int j = right_bound + 1 - ppl; j <= right_bound; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
+            //similarly 
             } else {
                 for (int j = start_index; j < start_index + ppl; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
@@ -697,23 +698,23 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
                     printf("row %d updated start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
                 }
             }
-
+            //similarly adding subset of 'array' which represents row_data
             if ((start_index - ppl + 1) < left_bound) {
                 for (int j = left_bound; j < left_bound + ppl; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
+            //similarly
             } else {
                 for (int j = start_index - ppl + 1; j <= start_index; j++) {
                     temp[temp_size++] = cover->data->array[i][j];
                 }
             }
         }
-
+        //passing in address to an uninitialized WedgeSuperPoint structure in the init_patch array with the points from temp to initialize it.
         initWedgeSuperPoint(&init_patch[init_patch_size++], temp, temp_size);
-        init_patch_size++;
     }
 
-    //once all points are added to init_patch, add the entire patch to the cover
+    //once all points are added to init_patch, add the entire patch to the cover (first init it)
     wedgePatch new_patch;
     wedgePatch_init(&new_patch, cover->env, init_patch, init_patch_size, apexZ0);
     add_patch(cover, &new_patch);

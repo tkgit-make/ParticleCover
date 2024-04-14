@@ -47,8 +47,8 @@
   - `get_index_from_z(int layer, float z_value, string alignment)` ✅
   - `delete_patch(int index)` ✅
   - `solve(...)` ✅
-  - `makePatches_ShadowQuilt_fromEdges(...)` ❌
-  - `makePatch_alignedToLine(...)` ❌
+  - `makePatches_ShadowQuilt_fromEdges(...)` ✅
+  - `makePatch_alignedToLine(...)` ✅
 
 ### FileReader
 - Static Methods:
