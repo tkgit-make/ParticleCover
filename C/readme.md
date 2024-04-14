@@ -25,9 +25,6 @@
 ### Parallelogram
 - Constructor: `parallelogram(int layer_numI, float z1_minI, float z1_maxI, ... )` ✅
 
-### Parallelogram_v1
-- Constructor: `parallelogram_v1(int layer_numI, float top_layer_zminI, float top_layer_zmaxI, ...)` ✅
-
 ### wedgeSuperPoint
 - Constructor: `wedgeSuperPoint(vector<Point> pointsI)` ✅
 - Operators:
@@ -39,20 +36,19 @@
   - `straightLineProjectorFromLayerIJtoK(...)` ✅
   - `getParallelograms()` ✅
   - `getShadows(float zTopMin, float zTopMax)` ✅
-  - `getParallelograms_v1()` ✅
   - `straightLineProjector(float z_top, float z_j, int j)` ✅
   - `get_acceptanceCorners()` ✅
   - `get_end_layer()` ✅
 
 ### wedgeCover
-- Constructor: `wedgeCover(Environment envI, DataSet& dataI)` ❌
+- Constructor: `wedgeCover(Environment envI, DataSet& dataI)` ✅
 - Methods:
-  - `add_patch(wedgePatch curr_patch)` ❌
-  - `get_index_from_z(int layer, float z_value, string alignment)` ❌
-  - `delete_patch(int index)` ❌
-  - `solve(...)` ❌
-  - `makePatches_ShadowQuilt_fromEdges(...)` ❌
-  - `makePatch_alignedToLine(...)` ❌
+  - `add_patch(wedgePatch curr_patch)` ✅
+  - `get_index_from_z(int layer, float z_value, string alignment)` ✅
+  - `delete_patch(int index)` ✅
+  - `solve(...)` ✅
+  - `makePatches_ShadowQuilt_fromEdges(...)` ✅
+  - `makePatch_alignedToLine(...)` ✅
 
 ### FileReader
 - Static Methods:
@@ -64,15 +60,21 @@
 
 ## Main Function
 
-```cpp
-int main() 
-```
+- Method: `int main()` ❌
+
 ### Not Used
 > ### LineGenerator
 > - Constructor: `LineGenerator(Environment envI, float startI)` ✅
 > - Method: `generateEvenGrid(int n)` ✅ 
 > 
+> ### wedgePatch
+> - Method: `getParallelograms_v1()` ✅
+> 
+> ### Parallelogram_v1
+> - Constructor: `parallelogram_v1(int layer_numI, float top_layer_zminI, float top_layer_zmaxI, ...)` ✅
+> 
 > ### wedgeCover
 > - Method: `tester()`
+
 
 

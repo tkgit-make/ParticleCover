@@ -1,10 +1,12 @@
-#include <climits>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <regex>
 #include <set>
+#include <format>
+#include <ios>
+#include <iomanip>
 
 using namespace std;
 
@@ -108,7 +110,6 @@ public:
     DataSet(Environment& envI)
     {
         env = &envI;
-        total_points = 0;
 
         for(int i = 0; i < 5; i++)
         {
@@ -121,6 +122,7 @@ public:
             n_points.push_back(0);
         }
 
+        total_points = 0;
     }
 
     void importData(vector<Point> data_array)
@@ -673,7 +675,7 @@ public:
             lambdaZ_left_list.push_back((superpoints[i].min - apexZ0) / env.radii[i]);
             lambdaZ_right_list.push_back((superpoints[i].max - apexZ0)/ env.radii[i]);
         }
-        
+
         float lambdaZLeftMax = -1 * INT_MAX + 2;
         float lambdaZRightMin = INT_MAX - 2;
 
@@ -977,8 +979,8 @@ public:
                         cout << "counter: " << counter << " counterUpshift: " << counterUpshift << endl;
                         cout << "orig_ztop: " << current_z_top_index << " orig_z_top_min: " << z_top_min << endl;
 
-                        vector<float> current_z_i_index;
-                        vector<float> new_z_i_index;
+                        vector<int> current_z_i_index;
+                        vector<int> new_z_i_index;
 
                         for(int i = 0; i < env.num_layers; i++)
                         {
@@ -1020,12 +1022,12 @@ public:
 
                         for(int i = 0; i < new_z_i_index.size(); i++)
                         {
-                            new_z_i_index[i] = min(new_z_i_index[i], (float) data->array[i].size() - 1);
+                            new_z_i_index[i] = min(new_z_i_index[i], (int) data->array[i].size() - 1);
                         }
 
                         for(int i = 0; i < new_z_i_index.size(); i++)
                         {
-                            new_z_i_index[i] = max(new_z_i_index[i], (float) 0.0);
+                            new_z_i_index[i] = max(new_z_i_index[i], 0);
                         }
 
                         vector<float> new_z_i;
@@ -1154,8 +1156,9 @@ public:
                     float complementary_topR_jR = patches[patches.size() - 1].shadow_fromTopToInnermost_topR_jR;
                     bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
                     float complementary_topL_jR = patches[patches.size() - 1].shadow_fromTopToInnermost_topL_jR;
-                    bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
-
+                    bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < 0.0001) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
+                    //   complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
+                    // NOTE THAT (complementary_topL_jR - apexZ0) < 0.0001 is hack to avoid an infinite loop due to Wedge 42
                     float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
                     float horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
 
@@ -1194,12 +1197,12 @@ public:
                         shifted_Align = apexZ0;
                     }
 
-                    if (horizontalShiftTop > 0 or horizontalShiftBottom > 0)
+                    if (horizontalShiftTop > 0.000001 or horizontalShiftBottom > 0) // NOTE THAT horizontalShiftTop > 0.000001 is a "hack" to avoid infinite loop from Wedge 42 in this condition and the next
                     {
                         cout << "originalPartialTop: " << originalPartialTop << " complementaryPartialTop: " << complementaryPartialTop << " originalPartialBottom: " << originalPartialBottom << " complementaryPartialBottom: " << complementaryPartialBottom << " " << original_topR_jL << " " << original_topL_jL << " " << complementary_topR_jR << " " << complementary_topL_jR << " h orizontalOverlapTop: " << horizontalOverlapTop << " horizontalOverlapBottom: " << horizontalOverlapBottom << endl;
                     }
 
-                    while (((horizontalShiftTop > 0 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
+                    while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
                     {
                         cout << "horizontalShifts: " << horizontalShiftTop << " " << horizontalShiftBottom << " shifted_Align: " << shifted_Align << endl;
 
@@ -1514,7 +1517,6 @@ public:
 class Tester
 {
 public:
-    //test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, true, false, 6, 3);
     void wedge_test(string lining = "makePatches_Projective_center", float apexZ0 = 0, float z0_spacing = 0.5, int ppl = 16, float z0_luminousRegion = 15.0, vector<int> wedges = vector<int>(), int lines = 1000, string v = "v3", float top_layer_cutoff = 50.0, float accept_cutoff = 10.0, bool leftRightAlign = true, bool uniform_N_points = false, string acceptance_method = "Analytic", bool show_acceptance_of_cover = false, bool movie = false, bool savefig = false, int figSizeScale = 6, int movieFigSizeScale = 3)
     {
         if (wedges.empty())
@@ -1580,9 +1582,14 @@ public:
 
         int ik = 0;
 
+        ofstream myfile;
+        myfile.open ("cppOutput.txt", ios::out | ios::trunc);
+        streamsize ss = cout.precision();
+
         for(int k = wedges[0]; k < wedges[1]; k++)
         {
             cout << "wedge: " << k << endl;
+            myfile << "wedge " << k << endl;
 
             Environment env = all_data[k].env;
             vector<Point> points = all_data[k].list_of_Points;
@@ -1615,44 +1622,50 @@ public:
             num_covers.push_back(cover.n_patches);
             num_all_patches.push_back(cover.all_patches.size());
 
-            ofstream myfile;
-            myfile.open ("cppOutput.txt", ios::out | ios::trunc);
+
+            //myfile << setprecision(4);
 
             for(int i = 0; i < cover.patches.size(); i++)
             {
                 myfile << "Patch " << endl;
-                myfile << cover.patches[i].shadow_fromTopToInnermost_topL_jL << endl;
-                myfile << cover.patches[i].shadow_fromTopToInnermost_topL_jR << endl;
-                myfile << cover.patches[i].shadow_fromTopToInnermost_topR_jL << endl;
-                myfile << cover.patches[i].shadow_fromTopToInnermost_topR_jR << endl;
+                //myfile << fixed;
+                //myfile.precision(4);
+                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000) << endl;
+                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000) << endl;
+                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000) << endl;
+                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jR * 10000) << endl;
 
                 for(int j = 0; j < cover.patches[i].superpoints.size(); j++)
                 {
                     myfile << "Superpoint " << endl;
                     for(int r = 0; r < cover.patches[i].superpoints[j].points.size(); r++)
                     {
+                        //myfile << fixed;
+                        //myfile.precision(4);
                         Point currentPt = cover.patches[i].superpoints[j].points[r];
-                        myfile << currentPt.layer_num << " " << currentPt.phi << " " << currentPt.radius << " " << currentPt.z << endl;
+                        myfile << currentPt.layer_num << " " <<  currentPt.phi << " " << int(currentPt.radius);
+                        //myfile << fixed;
+                        //myfile.precision(4);
+                        myfile << " " << currentPt.z << endl;
                     }
                 }
             }
-
-            myfile << fixed;
-            myfile.precision(5);
+            //myfile << fixed;
+            //myfile.precision(4);
 
             for(int i = 0; i < cover.patches.size(); i++)
             {
-                myfile << "['" << cover.patches[i].a_corner[0] << "', '" << cover.patches[i].a_corner[1] << "']" << endl;
-                myfile << "['" << cover.patches[i].b_corner[0] << "', '" << cover.patches[i].b_corner[1] << "']" << endl;
-                myfile << "['" << cover.patches[i].c_corner[0] << "', '" << cover.patches[i].c_corner[1] << "']" << endl;
-                myfile << "['" << cover.patches[i].d_corner[0] << "', '" << cover.patches[i].d_corner[1] << "']" << endl;
+                myfile << "[" << round(cover.patches[i].a_corner[0] * 10000) << ", " << round(cover.patches[i].a_corner[1] * 10000) << "]" << endl;
+                myfile << "[" << round(cover.patches[i].b_corner[0] * 10000) << ", " << round(cover.patches[i].b_corner[1] * 10000) << "]" << endl;
+                myfile << "[" << round(cover.patches[i].c_corner[0] * 10000) << ", " << round(cover.patches[i].c_corner[1] * 10000) << "]" << endl;
+                myfile << "[" << round(cover.patches[i].d_corner[0] * 10000) << ", " << round(cover.patches[i].d_corner[1] * 10000) << "]" << endl;
                 myfile << endl;
             }
-
-            myfile.close();
-
             ik++;
         }
+
+        myfile.close();
+
     }
 };
 
@@ -1689,7 +1702,7 @@ int main()
     wedgeCover cov = wedgeCover(env, ds);
     Tester test;
     vector<int> wedgesToTest;
-    wedgesToTest.push_back(0);
-    wedgesToTest.push_back(1);
-    test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, true, false, 6, 3);
+    wedgesToTest.push_back(24);
+    wedgesToTest.push_back(25);
+    test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };

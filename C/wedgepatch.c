@@ -25,7 +25,7 @@ void wedgePatch_init(wedgePatch* wp, Environment* envI, wedgeSuperPoint* superpo
     wp->superpoint_count = superpoint_count;
 
     getParallelograms(wp);
-    getParallelograms_v1(wp);
+    //getParallelograms_v1(wp);
     get_acceptanceCorners(wp);
     get_end_layer(wp);
 }
@@ -162,6 +162,7 @@ void getShadows(wedgePatch* wp, float zTopMin, float zTopMax) {
     }
 }
 
+/*
 void getParallelograms_v1(wedgePatch* wp) {
     float top_layer_zmin = max(wp->superpoints[wp->superpoint_count - 1]->min, -1 * wp->env->top_layer_lim);
     float top_layer_zmax = min(wp->superpoints[wp->superpoint_count - 1]->max, wp->env->top_layer_lim);
@@ -195,6 +196,7 @@ void getParallelograms_v1(wedgePatch* wp) {
         }
     }
 }
+*/
 
 void get_acceptanceCorners(wedgePatch* wp) {
     wp->squareAcceptance = true;
