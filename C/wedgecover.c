@@ -62,7 +62,7 @@ void delete_patch(wedgeCover * cover, int index) {
 }
 
 //can't provide default parameters 
-int get_index_from_z(DataSet * data, int layer, float z_value, int alignment) {
+index_type get_index_from_z(DataSet * data, int layer, float z_value, int alignment) {
     //c doesn't support string comparison directly, using integer comparison for effiency
     //CLOSEST = 11, ABOVE = 12, BELOW = 13
     float minVal = 1000000;
@@ -108,7 +108,7 @@ void solve(wedgeCover * cover, int lining, float apexZ0, int ppl, int nlines, bo
 
         while (foundIdentical || firstTime) {
             foundIdentical = false;
-            for (int x = 0; x < cover -> data -> n_points[i] - 1; x++) {
+            for (index_type x = 0; x < cover -> data -> n_points[i] - 1; x++) {
                 if (cover -> data -> array[i][x].z == cover -> data -> array[i][x + 1].z) {
                     cover -> data -> array[i][x + 1].z += 0.00001;
                     foundIdentical = true;
@@ -136,7 +136,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
         float z_top_min = -1 * cover -> env -> top_layer_lim;
 
         float complementary_apexZ0 = 0;
-        int first_row_count = 0;
+        index_type first_row_count = 0;
         float c_corner = LONG_MAX;
 
         float z_top_max = cover -> env -> top_layer_lim + cover -> env -> boundaryPoint_offset;
@@ -147,7 +147,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
             ));
         }
 
-        int nPatchesInColumn = 0;
+        index_type nPatchesInColumn = 0;
         float projectionOfCornerToBeam = 0;
 
         while ((c_corner > -1 * cover -> env -> trapezoid_edges[cover -> env -> num_layers - 1]) && (projectionOfCornerToBeam < cover -> env -> beam_axis_lim)) {
@@ -157,7 +157,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
             //will need to revisit parameters when we write this method
             makePatch_alignedToLine(cover, apexZ0, z_top_max, ppl, false, false);
 
-            int lastPatchIndex = cover -> n_patches - 1;
+            index_type lastPatchIndex = cover -> n_patches - 1;
 
             printf("top layer from %f to %f z_top_max: %f\n",
                 cover -> patches[lastPatchIndex].superpoints[cover -> env -> num_layers - 1] -> max,
@@ -213,9 +213,9 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
             */
             //dynamic version below
             if (cover -> n_patches > 2) {
-                int thirdLastPatchIndex = lastPatchIndex - 2;
+                index_type thirdLastPatchIndex = lastPatchIndex - 2;
                 repeat_original = true; // assume they are the same initially
-                for (index_type i = 0; i < 5; i++) { // iterating over the first five superpoints
+                for (index_type i = 0; i < MAX_SUPERPOINTS_IN_PATCH; i++) { // iterating over the first (five) superpoints
                     if (cover -> patches[lastPatchIndex].superpoints[i] != cover -> patches[thirdLastPatchIndex].superpoints[i]) {
                         repeat_original = false; // if any pair of superpoints don't match, set to false
                         break; // no need to check further if a mismatch is found
@@ -273,7 +273,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
                         !(repeat_patch) && !(repeat_original))) {
                     printf("\n");
                     if (cover -> n_patches > 2) {
-                        int secondLastPatchIndex = lastPatchIndex - 1;
+                        index_type secondLastPatchIndex = lastPatchIndex - 1;
                         printf("original c: %f %f || original d: %f %f\n",
                             original_c, cover -> patches[secondLastPatchIndex].c_corner[1],
                             original_d, cover -> patches[secondLastPatchIndex].d_corner[1]);
@@ -444,12 +444,12 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
                         cover -> patches[lastPatchIndex].d_corner[0], cover -> patches[lastPatchIndex].d_corner[1]);
 
                     if ((cover -> n_patches > 3) && fix42) {
-                        int lastPatchIdx = cover -> n_patches - 1;
-                        int thirdLastPatchIdx = lastPatchIdx - 2;
+                        index_type lastPatchIdx = cover -> n_patches - 1;
+                        index_type thirdLastPatchIdx = lastPatchIdx - 2;
 
                         //checking if the superpoints of the last and third last patches are the same
                         bool repeat_patch = true;
-                        //turned this into a for loop. if ((patches[patches.size() - 1].superpoints[env.num_layers - 1] == patches[patches.size() - 3].superpoints[env.num_layers - 1]) && (patches[patches.size() - 1].superpoints[0] == patches[patches.size() - 3].superpoints[0]) && (patches[patches.size() - 1].superpoints[1] == patches[patches.size() - 3].superpoints[1]) && (patches[patches.size() - 1].superpoints[2] == patches[patches.size() - 3].superpoints[2]) && (patches[patches.size() - 1].superpoints[3] == patches[patches.size() - 3].superpoints[3]))
+                        //turned this into a for loop, dynamic. if ((patches[patches.size() - 1].superpoints[env.num_layers - 1] == patches[patches.size() - 3].superpoints[env.num_layers - 1]) && (patches[patches.size() - 1].superpoints[0] == patches[patches.size() - 3].superpoints[0]) && (patches[patches.size() - 1].superpoints[1] == patches[patches.size() - 3].superpoints[1]) && (patches[patches.size() - 1].superpoints[2] == patches[patches.size() - 3].superpoints[2]) && (patches[patches.size() - 1].superpoints[3] == patches[patches.size() - 3].superpoints[3]))
                         //that code checked 0 to 4 
                         for (index_type i = 0; i < cover -> env -> num_layers; i++) {
                             if (cover -> patches[lastPatchIdx].superpoints[i] != cover -> patches[thirdLastPatchIdx].superpoints[i]) {
@@ -624,7 +624,7 @@ void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int p
     int original_ppl = ppl;
     float alignmentAccuracy = 0.00001;
     //Point row_data[MAX_LAYERS][MAX_POINTS_FOR_DATASET];
-    int init_patch_size = 0;
+    index_type init_patch_size = 0;
 
     for (index_type i = 0; i < cover->env->num_layers; i++) {
         float y = cover->env->radii[i];

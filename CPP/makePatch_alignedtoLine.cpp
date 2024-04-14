@@ -1,4 +1,3 @@
-#include <climits>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -111,7 +110,6 @@ public:
     DataSet(Environment& envI)
     {
         env = &envI;
-        total_points = 0;
 
         for(int i = 0; i < 5; i++)
         {
@@ -124,6 +122,7 @@ public:
             n_points.push_back(0);
         }
 
+        total_points = 0;
     }
 
     void importData(vector<Point> data_array)
@@ -676,7 +675,7 @@ public:
             lambdaZ_left_list.push_back((superpoints[i].min - apexZ0) / env.radii[i]);
             lambdaZ_right_list.push_back((superpoints[i].max - apexZ0)/ env.radii[i]);
         }
-        
+
         float lambdaZLeftMax = -1 * INT_MAX + 2;
         float lambdaZRightMin = INT_MAX - 2;
 
@@ -1064,7 +1063,7 @@ public:
                             cout << i + 1 << " new_z_i_atTop: " << new_z_i_atTop[i] << " shift_i_ztop: " << new_z_i_atTop[i] - previous_z_top_min << " layerWithSmallestShift: " << layerWithSmallestShift << endl;
                         }
 
-                        //z_top_min = data->array[env.num_layers - 1][current_z_top_index].z; //this assignment is just overridden
+                        z_top_min = data->array[env.num_layers - 1][current_z_top_index].z;
                         z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
                         if (abs(z_top_min-previous_z_top_min) < 0.000001)
@@ -1518,7 +1517,6 @@ public:
 class Tester
 {
 public:
-    //test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, true, false, 6, 3);
     void wedge_test(string lining = "makePatches_Projective_center", float apexZ0 = 0, float z0_spacing = 0.5, int ppl = 16, float z0_luminousRegion = 15.0, vector<int> wedges = vector<int>(), int lines = 1000, string v = "v3", float top_layer_cutoff = 50.0, float accept_cutoff = 10.0, bool leftRightAlign = true, bool uniform_N_points = false, string acceptance_method = "Analytic", bool show_acceptance_of_cover = false, bool movie = false, bool savefig = false, int figSizeScale = 6, int movieFigSizeScale = 3)
     {
         if (wedges.empty())

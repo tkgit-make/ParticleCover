@@ -38,7 +38,7 @@
 
 typedef struct
 {
-	int layer_num;
+	index_type layer_num;
 	float radius;
 	float phi;
 	float z;
@@ -47,13 +47,13 @@ typedef struct
 typedef struct
 {
 	Point points[MAX_POINTS_IN_EVENT];
-	int count;
+	index_type count;
 } Event;
 
 typedef struct {
     float top_layer_lim;
     float beam_axis_lim;
-    int num_layers;
+    index_type num_layers;
     float radii[MAX_LAYERS];
     float parallelogramSlopes[MAX_LAYERS];
     float radii_leverArm[MAX_LAYERS];
@@ -65,7 +65,7 @@ typedef struct {
     Environment* env;
     Point array[MAX_LAYERS][MAX_POINTS_FOR_DATASET]; //2D array of points
     int n_points[MAX_LAYERS]; //number of points in each layer of the array
-    int total_points;
+    index_type total_points;
     float boundaryPoint_offset;
 } DataSet;
 
@@ -74,7 +74,7 @@ typedef struct {
     Environment* env;
     float slope;
     float points[MAX_POINTS_IN_LINE]; 
-    int num_points; //number of points in the line
+    index_type num_points; //number of points in the line
 } Line;
 
 typedef struct {
@@ -85,7 +85,7 @@ typedef struct {
 } LineGenerator;
 
 typedef struct {
-    int layer_num;
+    index_type layer_num;
     float pSlope;
 
     float shadow_bottomL_jR;
@@ -115,7 +115,7 @@ typedef struct {
 typedef struct {
     Point points[MAX_POINTS_IN_WEDGESUPERPOINT];
     float z_values[MAX_POINTS_IN_WEDGESUPERPOINT];
-    int point_count;
+    index_type point_count;
     float min;
     float max;
 } wedgeSuperPoint;
@@ -140,7 +140,7 @@ typedef struct {
     float d_corner[2];
 
     wedgeSuperPoint* superpoints[MAX_SUPERPOINTS_IN_PATCH]; //array of pointers
-    int superpoint_count;
+    index_type superpoint_count;
 
     bool flatBottom;
     bool flatTop;
@@ -149,7 +149,7 @@ typedef struct {
     bool triangleAcceptance;
 
     Parallelogram* parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
-    int parallelogram_count;
+    index_type parallelogram_count;
 
     //Parallelogram_v1* parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
     //int parallelogram_v1_count;
@@ -157,7 +157,7 @@ typedef struct {
 
 
 typedef struct {
-    int n_patches;
+    index_type n_patches;
     wedgePatch patches[MAX_PATCHES];
     Environment* env;
     DataSet* data;
@@ -168,9 +168,10 @@ typedef struct {
 } wedgeCover;
 
 
-extern int Point_read_and_init(Point* p);
+extern index_type Point_read_and_init(Point* p);
 extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
-extern int Event_load(Event* e);
+extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
+extern index_type Event_load(Event* e);
 extern void initEnvironment(Environment* env, float top_layer_limI, float beam_axis_limI, int num_layersI, float* radiiI);
 extern void initDataSetBase(DataSet* ds);
 extern void initDataSetExtra(DataSet* ds, Environment* envI);
