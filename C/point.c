@@ -7,10 +7,10 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
     p->z = zVal;
 }
 
-index_type Point_read_and_init(Point* p)
+index_type Point_load(Point* p)
 {
 	//reads input of the form (layer_num,radius,phi,z) to populate point structure. 1 if worked, 0 if not.
-	if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4) //p->layer_num equivalent to (*p).layer_num, address of that
+	if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
 	{
 		return 1;
 	}

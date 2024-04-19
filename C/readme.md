@@ -51,7 +51,7 @@
   - `makePatch_alignedToLine(...)` ✅
 
 ### FileReader
-- Static Methods:
+- Methods:
   - `splitString(string str, string splitter)` ❌
   - `readFile(string filepath, int stop, bool performance)` ❌
 

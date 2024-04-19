@@ -4,6 +4,7 @@ void wedgeCover_init(wedgeCover * wc, Environment * envI, DataSet * dataI) {
     wc -> n_patches = 0;
     wc -> env = envI;
     wc -> data = dataI;
+    /*
     for (index_type i = 0; i < MAX_PATCHES; i++) {
         wc -> all_patches[i] = NULL;
         wc -> real_patch_list[i] = false;
@@ -11,6 +12,7 @@ void wedgeCover_init(wedgeCover * wc, Environment * envI, DataSet * dataI) {
     for (index_type i = 0; i < MAX_SUPERPOINTS_IN_COVER; i++) {
         wc -> superPoints[i] = NULL;
     }
+    */
 }
 
 void add_patch(wedgeCover * cover, wedgePatch * curr_patch) {
@@ -265,7 +267,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int sto
                 float previous_white_space_height = -1;
                 int counter = 0;
                 int counterUpshift = 0;
-                int current_z_top_index = -1;
+                index_type current_z_top_index = -1;
                 double previous_z_top_min = -999;
 
                 while (!(white_space_height <= 0 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000001) &&

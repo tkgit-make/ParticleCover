@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <float.h>
+#include <math.h>
+
 
 #define min(X, Y)  ((X) < (Y) ? (X) : (Y))
 #define max(X, Y)  ((X) < (Y) ? (Y) : (X))
@@ -168,7 +170,7 @@ typedef struct {
 } wedgeCover;
 
 
-extern index_type Point_read_and_init(Point* p);
+extern index_type Point_load(Point* p);
 extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
 extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
 extern index_type Event_load(Event* e);
@@ -196,7 +198,7 @@ extern void wedgeCover_init(wedgeCover* wc, Environment* envI, DataSet* dataI);
 extern int comparePoints(const void* a, const void* b);
 extern void add_patch(wedgeCover* cover, wedgePatch* curr_patch);
 extern void delete_patch(wedgeCover* cover, int index);
-extern int get_index_from_z(DataSet* data, int layer, float z_value, int alignment);
+extern index_type get_index_from_z(DataSet* data, int layer, float z_value, int alignment);
 extern void solve(wedgeCover* cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight);
 extern void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int stop, int ppl, bool leftRight);
 extern void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);

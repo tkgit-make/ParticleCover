@@ -102,7 +102,7 @@ void getParallelograms(wedgePatch* wp) {
 
         //directly assign the values to the array
         if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH) {
-            Parallelogram* p = &wp->parallelograms[wp->parallelogram_count++]; //making a pointer to the address of first empty element in the array
+            Parallelogram* p = wp->parallelograms[wp->parallelogram_count++]; //making a pointer to the address of first empty element in the array
             p->layer_num = j; //then dereferencing and assigning values to the properties
             p->pSlope = pSlope;
             p->shadow_bottomL_jR = a;

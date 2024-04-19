@@ -32,7 +32,7 @@ index_type Event_load(Event* e)
 		// event ends with a '\n' new line (continues with a ',')
 	}
 
-	printf("Reached maximum number of points");
+	printf("Reached maximum number of points [in event.c]");
 
 	e->count = n;
 	return n>0;
