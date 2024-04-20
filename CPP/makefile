@@ -1,6 +1,6 @@
-CXX=g++-11
+CXX=g++
 RM=rm -f
-CPPFLAGS=-g -std=c++20
+CPPFLAGS=-g
 LDFLAGS=-g
 LDLIBS=
 SRCS=makePatch_alignedtoLine.cpp
@@ -10,7 +10,7 @@ makePatch: $(OBJS)
 	 $(CXX)  $(LDFLAGS) -o makePatch $(OBJS) $(LDLIBS)
 
 makePatch_alignedtoLine.o: makePatch_alignedtoLine.cpp
-	$(CXX) $(CPPFLAGS) -c makePatch_alignedtoLine.cpp
+	g++ $(CPPFLAGS) -c makePatch_alignedtoLine.cpp
 
 clean: 
 	$(RM) $(OBJS)

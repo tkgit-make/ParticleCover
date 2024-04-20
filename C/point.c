@@ -1,11 +1,13 @@
 #include "header.h"
 
+/*
 void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
     p->layer_num = layerNum;
     p->radius = rad;
     p->phi = ph;
     p->z = zVal;
 }
+*/
 
 int Point_load(Point *p, float *radius) {
     if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4) {
