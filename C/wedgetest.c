@@ -69,7 +69,11 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
     }
 
     int k = wedges[0];
-	while (/*Event_load(&G_event) > 0 &&*/ k < wedges[1])
+    for(index_type z = 0; z<k; z++) {
+        Event_load(&G_event);
+		ProcessEvent();
+    }
+	while (k < wedges[1])
 	{
         Event_load(&G_event);
 		ProcessEvent();

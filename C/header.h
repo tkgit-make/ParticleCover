@@ -126,7 +126,7 @@ typedef struct {
 } wedgeSuperPoint;
 
 typedef struct {
-    Environment* env;
+    Environment env;
     int end_layer;
     int left_end_layer;
     int right_end_layer;
@@ -174,8 +174,8 @@ typedef struct {
 
 
 extern int Point_load(Point* p, float* radius);
-extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
-extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
+//extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
+//extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
 extern index_type Event_load(Event* e);
 extern void initEnvironment(Environment* env, float top_layer_limI, float beam_axis_limI, int num_layersI, float* radiiI);
 extern void initDataSetBase(DataSet* ds);

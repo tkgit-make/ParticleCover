@@ -1,5 +1,6 @@
 #include "header.h"
 
+/*
 void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints) {
     index_type old_count = e->count;
 	e->env = *envI;
@@ -19,6 +20,7 @@ void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints) 
     }
 
 }
+*/
 
 bool isUniqueRadius(float radius, float *uniqueRadii, int count) {
     for (int i = 0; i < count; i++) {
