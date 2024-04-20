@@ -19,7 +19,7 @@
 #define BELOW 13
 #define MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES 33
 
-
+#define MAX_EVENTS_TO_READ 16000 
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_FOR_DATASET 512 //max size of vector of points "vect" in CPP

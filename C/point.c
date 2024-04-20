@@ -14,7 +14,8 @@ index_type Point_load(Point* p)
 	{
 		return 1;
 	}
-
+    
+    printf("Failed to load point [in point.c]");
 	return 0;
 }
 

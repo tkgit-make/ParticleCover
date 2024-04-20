@@ -29,10 +29,11 @@ index_type Event_load(Event* e)
 		n++;
 
 		scanf("%c", &ch);
+		//if(scanf("%c", &ch) < 1) break; //error reading, don't use in conjunction with previous line
 		// event ends with a '\n' new line (continues with a ',')
 	}
 
-	printf("Reached maximum number of points [in event.c]");
+	//printf("Filled event [in event.c]");
 
 	e->count = n;
 	return n>0;
