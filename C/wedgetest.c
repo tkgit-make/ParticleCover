@@ -1,6 +1,6 @@
 #include "header.h"
 
-void wedge_test(Event* events, const char* lining, float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, const char* v, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, const char* acceptance_method, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale) {
+void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, const char* v, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, const char* acceptance_method, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale) {
     //set default values for wedges if not given anything usable (would be unusual)
     if (wedge_count == 0) {
         static int default_wedges[] = {0, 128};
@@ -65,7 +65,7 @@ void wedge_test(Event* events, const char* lining, float apexZ0, float z0_spacin
 
     if (myfile == NULL) {
         printf("Error opening file");
-        return -1; 
+        return /*-1*/; 
     }
 
     int k = wedges[0];
@@ -73,18 +73,18 @@ void wedge_test(Event* events, const char* lining, float apexZ0, float z0_spacin
 	{
         Event_load(&G_event);
 		ProcessEvent();
-        printf(myfile, "wedge: %d\n", k);
+        printf("wedge: %d\n", k);
         fprintf(myfile, "wedge: %d\n", k);
 
-        Environment env = G_event.env; 
+        Environment* env = G_event.env; 
         Point* points = G_event.points;
         int num_points = G_event.count;
 
-        env.top_layer_lim = top_layer_cutoff;
-        env.beam_axis_lim = z0_luminousRegion;
+        env->top_layer_lim = top_layer_cutoff;
+        env->beam_axis_lim = z0_luminousRegion;
 
         DataSet data;
-        initDataSet(&data, env); 
+        initDataSetExtra(&data, env); 
 
         //no need to implement logic if show_acceptance_of_cover == true
         if (!uniform_N_points) {
@@ -96,9 +96,9 @@ void wedge_test(Event* events, const char* lining, float apexZ0, float z0_spacin
         addBoundaryPoint(&data, 0.0001); //with default param
 
         wedgeCover cover;
-        initWedgeCover(&cover, &data);
+        initWedgeCover(&cover, env, &data);
 
-        solve(&cover, lining, apexZ0, ppl, 100, leftRightAlign); //solve modifies cover
+        solve(&cover, 33, apexZ0, ppl, 100, leftRightAlign); //solve modifies cover
 
         //num_covers and num_all_patches not needed
 

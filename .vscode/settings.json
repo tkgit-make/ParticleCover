@@ -11,6 +11,7 @@
         "bitset": "c",
         "string_view": "c",
         "initializer_list": "c",
-        "regex": "c"
+        "regex": "c",
+        "cmath": "cpp"
     }
 }

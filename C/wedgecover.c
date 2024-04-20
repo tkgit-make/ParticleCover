@@ -1,6 +1,6 @@
 #include "header.h"
 
-void wedgeCover_init(wedgeCover * wc, Environment * envI, DataSet * dataI) {
+void initWedgeCover(wedgeCover* wc, Environment* envI, DataSet* dataI) {
     wc -> n_patches = 0;
     wc -> env = envI;
     wc -> data = dataI;
@@ -15,14 +15,14 @@ void wedgeCover_init(wedgeCover * wc, Environment * envI, DataSet * dataI) {
     */
 }
 
-void add_patch(wedgeCover * cover, wedgePatch * curr_patch) {
+void add_patch(wedgeCover* cover, wedgePatch* curr_patch) {
     if (cover -> n_patches == 0) {
         cover -> patches[0] = * curr_patch;
         cover -> all_patches[0] = curr_patch;
         cover -> real_patch_list[0] = true;
         cover -> n_patches = 1;
     } else {
-        wedgePatch * prev_patch = & (cover -> patches[cover -> n_patches - 1]);
+        wedgePatch* prev_patch = & (cover -> patches[cover -> n_patches - 1]);
         bool different = false;
 
         for (index_type i = 0; i < prev_patch->superpoint_count; i++) {
@@ -45,7 +45,7 @@ void add_patch(wedgeCover * cover, wedgePatch * curr_patch) {
     }
 }
 
-void delete_patch(wedgeCover * cover, int index) {
+void delete_patch(wedgeCover* cover, int index) {
     if (index < 0 || index >= cover -> n_patches) {
         return;
     }
@@ -65,7 +65,7 @@ void delete_patch(wedgeCover * cover, int index) {
 }
 
 //can't provide default parameters 
-index_type get_index_from_z(DataSet * data, int layer, float z_value, int alignment) {
+index_type get_index_from_z(DataSet* data, int layer, float z_value, int alignment) {
     //c doesn't support string comparison directly, using integer comparison for effiency
     //CLOSEST = 11, ABOVE = 12, BELOW = 13
     float minVal = 1000000;
@@ -104,7 +104,7 @@ index_type get_index_from_z(DataSet * data, int layer, float z_value, int alignm
 //not implementing the logic corresponding to show = true (that would involve Line Generators, etc)
 //Line Generator and its accompanying methods have been coded, but we are not going to implement show=true case here as main method passes with show=false.
 //MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES defined as 33
-void solve(wedgeCover * cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight) {
+void solve(wedgeCover* cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight) {
     for (index_type i = 0; i < cover -> env -> num_layers; i++) {
         bool foundIdentical = false;
         bool firstTime = true;
@@ -130,7 +130,7 @@ void solve(wedgeCover * cover, int lining, float apexZ0, int ppl, int nlines, bo
     }
 }
 
-void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int stop, int ppl, bool leftRight) {
+void makePatches_ShadowQuilt_fromEdges(wedgeCover* cover, float apexZ0, int stop, int ppl, bool leftRight) {
     bool fix42 = true;
     apexZ0 = cover -> env -> trapezoid_edges[0];
     float saved_apexZ0;

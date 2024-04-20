@@ -17,7 +17,7 @@ fi
 
 mkdir -p bin
 rm -f bin/ProcessInput
-if ! gcc $OPTS C/*.c -o bin/ProcessInput; then
+if ! gcc -g $OPTS C/*.c -o bin/ProcessInput -lm; then
 	echo "compile fail"
 	exit
 fi

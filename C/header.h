@@ -46,13 +46,6 @@ typedef struct
 	float z;
 } Point;
 
-typedef struct
-{
-	Point points[MAX_POINTS_IN_EVENT];
-	index_type count;
-    Environment* env;
-} Event;
-
 typedef struct {
     float top_layer_lim;
     float beam_axis_lim;
@@ -63,6 +56,13 @@ typedef struct {
     float trapezoid_edges[MAX_LAYERS];
     float boundaryPoint_offset; 
 } Environment;
+
+typedef struct
+{
+	Point points[MAX_POINTS_IN_EVENT];
+	index_type count;
+    Environment* env;
+} Event;
 
 typedef struct {
     Environment* env;
@@ -195,7 +195,7 @@ extern void getParallelograms(wedgePatch* wp);
 extern void getShadows(wedgePatch* wp, float zTopMin, float zTopMax);
 extern void get_acceptanceCorners(wedgePatch* wp);
 extern void get_end_layer(wedgePatch* wp);
-extern void wedgeCover_init(wedgeCover* wc, Environment* envI, DataSet* dataI);
+extern void initWedgeCover(wedgeCover * wc, Environment * envI, DataSet * dataI);
 extern int comparePoints(const void* a, const void* b);
 extern void add_patch(wedgeCover* cover, wedgePatch* curr_patch);
 extern void delete_patch(wedgeCover* cover, int index);
@@ -203,6 +203,7 @@ extern index_type get_index_from_z(DataSet* data, int layer, float z_value, int 
 extern void solve(wedgeCover* cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight);
 extern void makePatches_ShadowQuilt_fromEdges(wedgeCover * cover, float apexZ0, int stop, int ppl, bool leftRight);
 extern void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
+extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, const char* v, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, const char* acceptance_method, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale);
 
 
 extern int floatCompare(const void* a, const void* b);
@@ -213,5 +214,7 @@ typedef struct {
     int count_events;
     int count_points;
 } EventStats;
+
+extern void ProcessEvent();
 
 EXTERN EventStats G_stats; 
