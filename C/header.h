@@ -50,6 +50,7 @@ typedef struct
 {
 	Point points[MAX_POINTS_IN_EVENT];
 	index_type count;
+    Environment* env;
 } Event;
 
 typedef struct {
@@ -207,3 +208,10 @@ extern void makePatch_alignedToLine(wedgeCover* cover, float apexZ0, float z_top
 extern int floatCompare(const void* a, const void* b);
 
 EXTERN Event G_event;
+
+typedef struct {
+    int count_events;
+    int count_points;
+} EventStats;
+
+EXTERN EventStats G_stats; 
