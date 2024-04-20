@@ -14,7 +14,7 @@ void initEnvironment(Environment* env, float top_layer_limI, float beam_axis_lim
         exit(1);
     }
     */
-   if (MAX_LAYERS > num_layersI) {
+   if (MAX_LAYERS < num_layersI) {
     printf("Arrays aren't big enough");
     exit(2);
    }
