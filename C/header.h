@@ -171,7 +171,7 @@ typedef struct {
 } wedgeCover;
 
 
-extern index_type Point_load(Point* p);
+extern int Point_load(Point* p, float* radius);
 extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
 extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
 extern index_type Event_load(Event* e);
