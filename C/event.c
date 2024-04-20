@@ -23,23 +23,23 @@ void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints) 
 bool isUniqueRadius(float radius, float *uniqueRadii, int count) {
     for (int i = 0; i < count; i++) {
         if (uniqueRadii[i] == radius) {
-            return false;  // not unique
+            return false;  //not unique
         }
     }
-    return true;  // unique
+    return true;  //unique
 }
 
 index_type Event_load(Event* e) {
     index_type n = 0;
     char ch = ',';
-    float uniqueRadii[MAX_POINTS_IN_EVENT];  // Assuming no more than MAX_POINTS_IN_EVENT unique radii
+    float uniqueRadii[MAX_POINTS_IN_EVENT]; 
     int numUniqueRadii = 0;
     float radius;
 
     while ((ch == ',') && (n < MAX_POINTS_IN_EVENT)) {
-        if (Point_load(&e->points[n], &radius) < 1) break;  // Modified Point_load to return radius via a pointer argument
+        if (Point_load(&e->points[n], &radius) < 1) break; 
         if (isUniqueRadius(radius, uniqueRadii, numUniqueRadii)) {
-            uniqueRadii[numUniqueRadii++] = radius;  // Add to unique radii if it's new
+            uniqueRadii[numUniqueRadii++] = radius; 
         }
         n++;
         scanf("%c", &ch);
@@ -47,8 +47,7 @@ index_type Event_load(Event* e) {
 
     e->count = n;
 
-    // Optionally, you can initialize the environment here with the unique radii and numUniqueRadii
-    initEnvironment(&e->env, 100.0, 15.0, numUniqueRadii, uniqueRadii);  // Assuming certain values for top and beam limits
+    initEnvironment(&e->env, 100.0, 15.0, numUniqueRadii, uniqueRadii); 
 
     return n > 0;
 }
