@@ -102,7 +102,7 @@ void getParallelograms(wedgePatch* wp) {
 
         //directly assign the values to the array
         if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH) {
-            Parallelogram* p = wp->parallelograms[wp->parallelogram_count++]; //making a pointer to the address of first empty element in the array
+            Parallelogram* p = &wp->parallelograms[wp->parallelogram_count++]; //making a pointer to the address of first empty element in the array
             p->layer_num = j; //then dereferencing and assigning values to the properties
             p->pSlope = pSlope;
             p->shadow_bottomL_jR = a;
@@ -211,7 +211,7 @@ void get_acceptanceCorners(wedgePatch* wp) {
 
     //getting min or max corners in all parallelograms
     for (int i = 0; i < wp->parallelogram_count; ++i) {
-        Parallelogram* pg = wp->parallelograms[i];
+        Parallelogram* pg = &wp->parallelograms[i];
         if (pg->shadow_bottomL_jR < a_corner_min) {
             a_corner_min = pg->shadow_bottomL_jR;
         }
@@ -227,29 +227,29 @@ void get_acceptanceCorners(wedgePatch* wp) {
     }
 
     //assigning to the size-2 corner arrays
-    wp->a_corner[0] = wp->parallelograms[0]->z1_min;
+    wp->a_corner[0] = wp->parallelograms[0].z1_min;
     wp->a_corner[1] = a_corner_min;
-    wp->b_corner[0] = wp->parallelograms[0]->z1_max;
+    wp->b_corner[0] = wp->parallelograms[0].z1_max;
     wp->b_corner[1] = b_corner_min;
-    wp->c_corner[0] = wp->parallelograms[0]->z1_min;
+    wp->c_corner[0] = wp->parallelograms[0].z1_min;
     wp->c_corner[1] = c_corner_max;
-    wp->d_corner[0] = wp->parallelograms[0]->z1_max;
+    wp->d_corner[0] = wp->parallelograms[0].z1_max;
     wp->d_corner[1] = d_corner_max;
 
     //the nth element of shadow_bottom is the same as the nth element in the corner lists in CPP
-    if (a_corner_min != wp->parallelograms[wp->env->num_layers - 2]->shadow_bottomL_jR) {
+    if (a_corner_min != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomL_jR) {
         wp->squareAcceptance = false;
         wp->flatTop = false;
     }
-    if (b_corner_min != wp->parallelograms[wp->env->num_layers - 2]->shadow_bottomR_jR) {
+    if (b_corner_min != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomR_jR) {
         wp->squareAcceptance = false;
         wp->flatTop = false;
     }
-    if (c_corner_max != wp->parallelograms[wp->env->num_layers - 2]->shadow_bottomL_jL) {
+    if (c_corner_max != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomL_jL) {
         wp->squareAcceptance = false;
         wp->flatBottom = false;
     }
-    if (d_corner_max != wp->parallelograms[wp->env->num_layers - 2]->shadow_bottomR_jL) {
+    if (d_corner_max != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomR_jL) {
         wp->squareAcceptance = false;
         wp->flatBottom = false;
     }

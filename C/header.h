@@ -1,4 +1,6 @@
-
+//gdb bin/ProcessInput
+//run < CPP/wedgeData_v3_128.txt
+//bt
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -151,7 +153,7 @@ typedef struct {
     bool squareAcceptance;
     bool triangleAcceptance;
 
-    Parallelogram* parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
+    Parallelogram parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
     index_type parallelogram_count;
 
     //Parallelogram_v1* parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
