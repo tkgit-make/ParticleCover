@@ -1,6 +1,6 @@
 CXX=g++
 RM=rm -f
-CPPFLAGS=-g
+CPPFLAGS=-g -std=gnu++23
 LDFLAGS=-g
 LDLIBS=
 SRCS=makePatch_alignedtoLine.cpp
