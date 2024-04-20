@@ -76,7 +76,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         printf("wedge: %d\n", k);
         fprintf(myfile, "wedge: %d\n", k);
 
-        Environment* env = G_event.env; 
+        Environment* env = &G_event.env; 
         Point* points = G_event.points;
         int num_points = G_event.count;
 

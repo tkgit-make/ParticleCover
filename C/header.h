@@ -61,7 +61,7 @@ typedef struct
 {
 	Point points[MAX_POINTS_IN_EVENT];
 	index_type count;
-    Environment* env;
+    Environment env;
 } Event;
 
 typedef struct {

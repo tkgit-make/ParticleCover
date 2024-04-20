@@ -2,7 +2,7 @@
 
 void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints) {
     index_type old_count = e->count;
-	e->env = envI;
+	e->env = *envI;
 	e->count = 0;
 	index_type i = 0;
     for (; i < numPoints && i < MAX_POINTS_IN_EVENT; i++) {
@@ -47,7 +47,7 @@ index_type Event_load(Event* e) {
 
     e->count = n;
 
-    initEnvironment(e->env, 100.0, 15.0, numUniqueRadii, uniqueRadii); 
+    initEnvironment(&e->env, 100.0, 15.0, numUniqueRadii, uniqueRadii); 
 
     return n > 0;
 }
