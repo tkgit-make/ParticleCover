@@ -13,7 +13,7 @@
 #define min(X, Y) ((X) < (Y) ? (X) : (Y))
 #define max(X, Y) ((X) < (Y) ? (Y) : (X))
 
-#define index_type unsigned int
+#define index_type int //change to unsigned int once it is verified that there are no errors
 
 #define CLOSEST 11
 #define ABOVE 12
@@ -23,8 +23,9 @@
 #define MAX_EVENTS_TO_READ 16000
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
-#define MAX_POINTS_FOR_DATASET 512    // max size of vector of points "vect" in CPP
-#define MAX_POINTS_PER_LAYER 256      // not yet used
+#define MAX_POINTS_PER_LAYER 256    // max size of vector of points "vect" in CPP. equivalent to MAX_POINTS_PER_DATASET
+#define MAX_POINTS_FOR_DATASET MAX_POINTS_PER_LAYER    // max size of vector of points "vect" in CPP
+
 #define MAX_POINTS_IN_LINE MAX_LAYERS // a point on the line is calculated for each layer in the environment.
 #define MAX_POINTS_IN_SUPERPOINT 32
 #define MAX_SUPERPOINTS_IN_PATCH 5
@@ -131,7 +132,7 @@ typedef struct
 
 typedef struct
 {
-    Environment env;
+    Environment* env;
     int end_layer;
     int left_end_layer;
     int right_end_layer;
@@ -149,7 +150,7 @@ typedef struct
     float c_corner[2];
     float d_corner[2];
 
-    wedgeSuperPoint *superpoints[MAX_SUPERPOINTS_IN_PATCH]; // array of pointers
+    wedgeSuperPoint* superpoints[MAX_SUPERPOINTS_IN_PATCH]; 
     index_type superpoint_count;
 
     bool flatBottom;
@@ -172,8 +173,8 @@ typedef struct
     Environment *env;
     DataSet *data;
     // Line fitting_lines[MAX_LINES]; //only used in visualization
-    wedgeSuperPoint *superPoints[MAX_SUPERPOINTS_IN_COVER];
-    wedgePatch *all_patches[MAX_PATCHES];
+    //wedgeSuperPoint *superPoints[MAX_SUPERPOINTS_IN_COVER]; //not used
+    //wedgePatch *all_patches[MAX_PATCHES]; //not needed anymore
     bool real_patch_list[MAX_PATCHES];
 } wedgeCover;
 
@@ -213,14 +214,3 @@ extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminou
 
 extern int floatCompare(const void *a, const void *b);
 
-EXTERN Event G_event;
-
-typedef struct
-{
-    int count_events;
-    int count_points;
-} EventStats;
-
-extern void ProcessEvent();
-
-EXTERN EventStats G_stats;

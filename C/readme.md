@@ -52,15 +52,15 @@
 
 ### FileReader
 - Methods:
-  - `splitString(string str, string splitter)` ❌
-  - `readFile(string filepath, int stop, bool performance)` ❌
+  - `splitString(string str, string splitter)` ✅ (equivalent)
+  - `readFile(string filepath, int stop, bool performance)` ✅ (equivalent)
 
 ### Tester
-- Method: `wedge_test(...)` ❌
+- Method: `wedge_test(...)` ✅
 
 ## Main Function
 
-- Method: `int main()` ❌
+- Method: `int main()` ✅
 
 ### Not Used
 > ### LineGenerator

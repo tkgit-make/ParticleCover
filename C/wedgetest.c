@@ -4,33 +4,25 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 {
     int numEventsLoaded = 0;
 
-    G_stats.count_events = 0;
-    G_stats.count_points = 0;
-
     FILE *myfile;
     myfile = fopen("C/cOutput.txt", "w"); // writing
 
     if (myfile == NULL)
     {
         // printf("Error opening file");
-        return /*-1*/;
+        return;
     }
 
-    int k = wedges[0];
-    for (index_type z = 0; z < k; z++)
-    { // skip the events before the first wedge value that we are supposed to process
-        Event_load(&G_event);
-    }
-    for (; k < wedges[1]; k++)
+    for (index_type z = 0; z < wedges[1]; z++)
     {
-        Event_load(&G_event);
-        ProcessEvent();
-        printf("wedge: %d\n", k);
-        fprintf(myfile, "wedge: %d\n", k);
+        Event event;
+        Event_load(&event);
+        if(z<wedges[0]) continue;
+        printf("wedge: %d\n", z);
+        fprintf(myfile, "wedge: %d\n", z);
 
-        Environment *env = &G_event.env;
-        Point *points = G_event.points;
-        int num_points = G_event.count;
+        Environment *env = &event.env;
+        Point *points = event.points;
 
         env->top_layer_lim = top_layer_cutoff;
         env->beam_axis_lim = z0_luminousRegion;
@@ -41,7 +33,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         // no need to implement logic if show_acceptance_of_cover == true
         if (!uniform_N_points)
         {
-            importData(&data, points, num_points);
+            importData(&data, points, event.count);
         }
         else
         {

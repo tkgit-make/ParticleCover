@@ -20,8 +20,8 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
 {
     if (cover->n_patches == 0)
     {
-        cover->patches[0] = *curr_patch;
-        cover->all_patches[0] = curr_patch;
+        cover->patches[0] = *curr_patch; //copy the patch directly
+        //cover->all_patches[0] = curr_patch;
         cover->real_patch_list[0] = true;
         cover->n_patches = 1;
     }
@@ -46,7 +46,7 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
             if (cover->n_patches < MAX_PATCHES)
             {
                 cover->patches[cover->n_patches] = *curr_patch;
-                cover->all_patches[cover->n_patches] = curr_patch;
+                //cover->all_patches[cover->n_patches] = curr_patch;
                 cover->real_patch_list[cover->n_patches] = true;
                 cover->n_patches += 1;
             }
@@ -825,6 +825,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
 
     // once all points are added to init_patch, add the entire patch to the cover (first init it)
     wedgePatch new_patch;
+    //init_patch will disappear from memory once makePatch_alignedToLine terminates, so we don't want wedgePatch_init to point superpoints to it. 
     wedgePatch_init(&new_patch, cover->env, init_patch, init_patch_size, apexZ0);
     add_patch(cover, &new_patch);
 }
