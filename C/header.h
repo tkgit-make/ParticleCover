@@ -150,7 +150,7 @@ typedef struct
     float c_corner[2];
     float d_corner[2];
 
-    wedgeSuperPoint* superpoints[MAX_SUPERPOINTS_IN_PATCH]; 
+    wedgeSuperPoint superpoints[MAX_SUPERPOINTS_IN_PATCH]; //changed to direct assignment as opposed to pointer
     index_type superpoint_count;
 
     bool flatBottom;

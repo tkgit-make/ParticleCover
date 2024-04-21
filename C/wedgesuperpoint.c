@@ -30,5 +30,7 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
 // operator overloading not allowed in C, write separate method to check equality
 int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2)
 {
-    return (wsp1->min == wsp2->min) && (wsp1->max == wsp2->max);
+    //return (wsp1->min == wsp2->min) && (wsp1->max == wsp2->max);
+    const float tolerance = 0.0001;
+    return (fabs(wsp1->min - wsp2->min) < tolerance) && (fabs(wsp1->max - wsp2->max) < tolerance);
 }

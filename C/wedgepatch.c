@@ -23,7 +23,7 @@ void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpo
 
     for (size_t i = 0; i < superpoint_count; i++)
     {                                          // size_t objects should only be non-negative and are more performant than ints
-        wp->superpoints[i] = &superpointsI[i]; // wp->superpoints is an array of pointers. Making the elements point to the elements in superpointsI.
+        wp->superpoints[i] = superpointsI[i]; // wp->superpoints is an array of pointers. Making the elements point to the elements in superpointsI.
     }
     wp->superpoint_count = superpoint_count;
 
@@ -77,8 +77,8 @@ float straightLineProjector(float z_top, float z_j, int j, Environment *env)
 
 void getParallelograms(wedgePatch *wp)
 {
-    float z1_min = max(wp->superpoints[0]->min, -1 * wp->env->trapezoid_edges[0]);
-    float z1_max = min(wp->superpoints[0]->max, wp->env->trapezoid_edges[0]);
+    float z1_min = max(wp->superpoints[0].min, -1 * wp->env->trapezoid_edges[0]);
+    float z1_max = min(wp->superpoints[0].max, wp->env->trapezoid_edges[0]);
 
     if (z1_min > z1_max)
     {
@@ -98,8 +98,8 @@ void getParallelograms(wedgePatch *wp)
     {
         int j = i + 1;
 
-        float z_j_min = wp->superpoints[i]->min;
-        float z_j_max = wp->superpoints[i]->max;
+        float z_j_min = wp->superpoints[i].min;
+        float z_j_max = wp->superpoints[i].max;
 
         float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, wp->env->num_layers);
         float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, wp->env->num_layers);
@@ -153,8 +153,8 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
     for (int i = 0; i < wp->superpoint_count - 1; ++i)
     {
         int j = i + 1;
-        float z_j_min = wp->superpoints[i]->min;
-        float z_j_max = wp->superpoints[i]->max;
+        float z_j_min = wp->superpoints[i].min;
+        float z_j_max = wp->superpoints[i].max;
 
         topL_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_min, wp->env->num_layers, j, 1);
         topL_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_max, wp->env->num_layers, j, 1);
@@ -319,8 +319,8 @@ void get_end_layer(wedgePatch *wp)
     // combined two independent loops
     for (int i = 0; i < wp->env->num_layers; i++)
     {
-        float lambdaZ_left = (wp->superpoints[i]->min - wp->apexZ0) / wp->env->radii[i];
-        float lambdaZ_right = (wp->superpoints[i]->max - wp->apexZ0) / wp->env->radii[i];
+        float lambdaZ_left = (wp->superpoints[i].min - wp->apexZ0) / wp->env->radii[i];
+        float lambdaZ_right = (wp->superpoints[i].max - wp->apexZ0) / wp->env->radii[i];
 
         if (lambdaZ_left > lambdaZLeftMax)
         {
