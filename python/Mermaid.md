@@ -56,7 +56,8 @@ graph TD;
     class C conditional;
     class J,Q,W functionCall;
 ```
-```mermaid
+
+#```mermaid
 graph TD;
     classDef default fill:#f9f,stroke:#333,stroke-width:2px;
     classDef functionCall fill:#ff9,stroke:#333,stroke-width:2px;
