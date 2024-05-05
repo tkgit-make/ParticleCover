@@ -5,11 +5,11 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
     int numEventsLoaded = 0;
 
     FILE *myfile;
-    myfile = fopen("C/cOutput.txt", "w"); // writing
+    myfile = fopen("C/cOutput.txt", "w"); //writing
 
     if (myfile == NULL)
     {
-        // printf("Error opening file");
+        printf("Error opening file");
         return;
     }
 
@@ -20,13 +20,16 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         if(z<wedges[0]) continue;
         printf("wedge %d\n", z); //main print
         fprintf(myfile, "wedge: %d\n", z); //file to diff
-        fprintf(stderr, "wedge %d. \n", z); //debugging
 
         Environment *env = &event.env;
         Point *points = event.points;
+        fprintf(stderr, "event.points %d. \n", event.points[0]); 
 
         env->top_layer_lim = top_layer_cutoff;
         env->beam_axis_lim = z0_luminousRegion;
+
+        fprintf(stderr, "top_layer_cutoff %d. \n", top_layer_cutoff); 
+        fprintf(stderr, "z0_luminousRegion %d. \n", z0_luminousRegion); 
 
         DataSet data;
         initDataSetExtra(&data, env);
@@ -43,6 +46,14 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         addBoundaryPoint(&data, 0.0001); // with default param
 
+        fprintf(stderr, "data array %d. \n", data.array); 
+        fprintf(stderr, "boundary point offset %d. \n", data.boundaryPoint_offset); 
+        fprintf(stderr, "beam axis lim %d. \n", data.env->beam_axis_lim); 
+        fprintf(stderr, "parall slopes %d. \n", data.env->parallelogramSlopes); 
+        fprintf(stderr, "radii %d. \n", data.env->radii); 
+        fprintf(stderr, "trapez edges %d. \n", data.env->trapezoid_edges); 
+        fprintf(stderr, "points in event %d. \n", event.points); 
+
         wedgeCover cover;
         initWedgeCover(&cover, env, &data);
 
@@ -54,6 +65,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         for (int i = 0; i < (&cover)->n_patches; i++)
         {
             fprintf(myfile, "Patch\n");
+            //discrepancy happens below
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000));
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000));
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000));

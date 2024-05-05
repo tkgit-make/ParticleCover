@@ -1,0 +1,265 @@
+Sun May  5 07:31:57 PM EDT 2024
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+ no time accumulated
+
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ts/call  Ts/call  name    
+  0.00      0.00     0.00    10067     0.00     0.00  Point_load
+  0.00      0.00     0.00    10067     0.00     0.00  isUniqueRadius
+  0.00      0.00     0.00     2991     0.00     0.00  straightLineProjectorFromLayerIJtoK
+  0.00      0.00     0.00      525     0.00     0.00  initWedgeSuperPoint
+  0.00      0.00     0.00      468     0.00     0.00  get_index_from_z
+  0.00      0.00     0.00      149     0.00     0.00  areWedgeSuperPointsEqual
+  0.00      0.00     0.00      105     0.00     0.00  add_patch
+  0.00      0.00     0.00      105     0.00     0.00  getParallelograms
+  0.00      0.00     0.00      105     0.00     0.00  get_acceptanceCorners
+  0.00      0.00     0.00      105     0.00     0.00  get_end_layer
+  0.00      0.00     0.00      105     0.00     0.00  makePatch_alignedToLine
+  0.00      0.00     0.00      105     0.00     0.00  wedgePatch_init
+  0.00      0.00     0.00       79     0.00     0.00  delete_patch
+  0.00      0.00     0.00       25     0.00     0.00  Event_load
+  0.00      0.00     0.00       25     0.00     0.00  initEnvironment
+  0.00      0.00     0.00       22     0.00     0.00  getShadows
+  0.00      0.00     0.00        1     0.00     0.00  addBoundaryPoint
+  0.00      0.00     0.00        1     0.00     0.00  importData
+  0.00      0.00     0.00        1     0.00     0.00  initDataSetExtra
+  0.00      0.00     0.00        1     0.00     0.00  initWedgeCover
+  0.00      0.00     0.00        1     0.00     0.00  makePatches_ShadowQuilt_fromEdges
+  0.00      0.00     0.00        1     0.00     0.00  solve
+  0.00      0.00     0.00        1     0.00     0.00  wedge_test
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2023 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) no time propagated
+
+index % time    self  children    called     name
+                0.00    0.00   10067/10067       Event_load [14]
+[1]      0.0    0.00    0.00   10067         Point_load [1]
+-----------------------------------------------
+                0.00    0.00   10067/10067       Event_load [14]
+[2]      0.0    0.00    0.00   10067         isUniqueRadius [2]
+-----------------------------------------------
+                0.00    0.00     352/2991        getShadows [16]
+                0.00    0.00     959/2991        makePatches_ShadowQuilt_fromEdges [21]
+                0.00    0.00    1680/2991        getParallelograms [8]
+[3]      0.0    0.00    0.00    2991         straightLineProjectorFromLayerIJtoK [3]
+-----------------------------------------------
+                0.00    0.00     525/525         makePatch_alignedToLine [11]
+[4]      0.0    0.00    0.00     525         initWedgeSuperPoint [4]
+-----------------------------------------------
+                0.00    0.00     468/468         makePatches_ShadowQuilt_fromEdges [21]
+[5]      0.0    0.00    0.00     468         get_index_from_z [5]
+-----------------------------------------------
+                0.00    0.00     149/149         makePatches_ShadowQuilt_fromEdges [21]
+[6]      0.0    0.00    0.00     149         areWedgeSuperPointsEqual [6]
+-----------------------------------------------
+                0.00    0.00     105/105         makePatch_alignedToLine [11]
+[7]      0.0    0.00    0.00     105         add_patch [7]
+-----------------------------------------------
+                0.00    0.00     105/105         wedgePatch_init [12]
+[8]      0.0    0.00    0.00     105         getParallelograms [8]
+                0.00    0.00    1680/2991        straightLineProjectorFromLayerIJtoK [3]
+-----------------------------------------------
+                0.00    0.00     105/105         wedgePatch_init [12]
+[9]      0.0    0.00    0.00     105         get_acceptanceCorners [9]
+-----------------------------------------------
+                0.00    0.00     105/105         wedgePatch_init [12]
+[10]     0.0    0.00    0.00     105         get_end_layer [10]
+-----------------------------------------------
+                0.00    0.00     105/105         makePatches_ShadowQuilt_fromEdges [21]
+[11]     0.0    0.00    0.00     105         makePatch_alignedToLine [11]
+                0.00    0.00     525/525         initWedgeSuperPoint [4]
+                0.00    0.00     105/105         wedgePatch_init [12]
+                0.00    0.00     105/105         add_patch [7]
+-----------------------------------------------
+                0.00    0.00     105/105         makePatch_alignedToLine [11]
+[12]     0.0    0.00    0.00     105         wedgePatch_init [12]
+                0.00    0.00     105/105         get_acceptanceCorners [9]
+                0.00    0.00     105/105         getParallelograms [8]
+                0.00    0.00     105/105         get_end_layer [10]
+-----------------------------------------------
+                0.00    0.00      79/79          makePatches_ShadowQuilt_fromEdges [21]
+[13]     0.0    0.00    0.00      79         delete_patch [13]
+-----------------------------------------------
+                0.00    0.00      25/25          wedge_test [23]
+[14]     0.0    0.00    0.00      25         Event_load [14]
+                0.00    0.00   10067/10067       Point_load [1]
+                0.00    0.00   10067/10067       isUniqueRadius [2]
+                0.00    0.00      25/25          initEnvironment [15]
+-----------------------------------------------
+                0.00    0.00      25/25          Event_load [14]
+[15]     0.0    0.00    0.00      25         initEnvironment [15]
+-----------------------------------------------
+                0.00    0.00      22/22          makePatches_ShadowQuilt_fromEdges [21]
+[16]     0.0    0.00    0.00      22         getShadows [16]
+                0.00    0.00     352/2991        straightLineProjectorFromLayerIJtoK [3]
+-----------------------------------------------
+                0.00    0.00       1/1           wedge_test [23]
+[17]     0.0    0.00    0.00       1         addBoundaryPoint [17]
+-----------------------------------------------
+                0.00    0.00       1/1           wedge_test [23]
+[18]     0.0    0.00    0.00       1         importData [18]
+-----------------------------------------------
+                0.00    0.00       1/1           wedge_test [23]
+[19]     0.0    0.00    0.00       1         initDataSetExtra [19]
+-----------------------------------------------
+                0.00    0.00       1/1           wedge_test [23]
+[20]     0.0    0.00    0.00       1         initWedgeCover [20]
+-----------------------------------------------
+                0.00    0.00       1/1           solve [22]
+[21]     0.0    0.00    0.00       1         makePatches_ShadowQuilt_fromEdges [21]
+                0.00    0.00     959/2991        straightLineProjectorFromLayerIJtoK [3]
+                0.00    0.00     468/468         get_index_from_z [5]
+                0.00    0.00     149/149         areWedgeSuperPointsEqual [6]
+                0.00    0.00     105/105         makePatch_alignedToLine [11]
+                0.00    0.00      79/79          delete_patch [13]
+                0.00    0.00      22/22          getShadows [16]
+-----------------------------------------------
+                0.00    0.00       1/1           wedge_test [23]
+[22]     0.0    0.00    0.00       1         solve [22]
+                0.00    0.00       1/1           makePatches_ShadowQuilt_fromEdges [21]
+-----------------------------------------------
+                0.00    0.00       1/1           main [36]
+[23]     0.0    0.00    0.00       1         wedge_test [23]
+                0.00    0.00      25/25          Event_load [14]
+                0.00    0.00       1/1           initDataSetExtra [19]
+                0.00    0.00       1/1           importData [18]
+                0.00    0.00       1/1           addBoundaryPoint [17]
+                0.00    0.00       1/1           initWedgeCover [20]
+                0.00    0.00       1/1           solve [22]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2023 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [14] Event_load              [9] get_acceptanceCorners   [2] isUniqueRadius
+   [1] Point_load             [10] get_end_layer          [11] makePatch_alignedToLine
+  [17] addBoundaryPoint        [5] get_index_from_z       [21] makePatches_ShadowQuilt_fromEdges
+   [7] add_patch              [18] importData             [22] solve
+   [6] areWedgeSuperPointsEqual [19] initDataSetExtra      [3] straightLineProjectorFromLayerIJtoK
+  [13] delete_patch           [15] initEnvironment        [12] wedgePatch_init
+   [8] getParallelograms      [20] initWedgeCover         [23] wedge_test
+  [16] getShadows              [4] initWedgeSuperPoint

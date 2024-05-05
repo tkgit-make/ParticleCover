@@ -1597,8 +1597,13 @@ public:
             Environment env = all_data[k].env;
             vector<Point> points = all_data[k].list_of_Points;
 
+            fprintf(stderr, "event.points %d. \n", all_data[k].list_of_Points[0]);
+            fprintf(stderr, "top_layer_cutoff %d. \n", top_layer_cutoff); 
+            fprintf(stderr, "z0_luminousRegion %d. \n", z0_luminousRegion); 
+            
             env = Environment(top_layer_cutoff, z0_luminousRegion);
             DataSet data(env);
+
 
             if(show_acceptance_of_cover)
             {
@@ -1616,6 +1621,14 @@ public:
                 //data.generateUniform(vect);
             }
 
+            //debugging
+            fprintf(stderr, "data array %d. \n", data.array); 
+            fprintf(stderr, "boundary point offset %d. \n", data.boundaryPoint_offset); 
+            fprintf(stderr, "beam axis lim %d. \n", data.env->beam_axis_lim); 
+            fprintf(stderr, "parall slopes %d. \n", data.env->parallelogramSlopes); 
+            fprintf(stderr, "radii %d. \n", data.env->radii); 
+            fprintf(stderr, "trapez edges %d. \n", data.env->trapezoid_edges); 
+            
             data.addBoundaryPoint();
 
             wedgeCover cover(env, data);
