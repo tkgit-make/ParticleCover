@@ -18,8 +18,9 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         Event event;
         Event_load(&event);
         if(z<wedges[0]) continue;
-        printf("wedge: %d\n", z);
-        fprintf(myfile, "wedge: %d\n", z);
+        printf("wedge %d\n", z); //main print
+        fprintf(myfile, "wedge: %d\n", z); //file to diff
+        fprintf(stderr, "wedge %d. \n", z); //debugging
 
         Environment *env = &event.env;
         Point *points = event.points;
