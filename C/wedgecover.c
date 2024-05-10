@@ -571,7 +571,9 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                                                (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topR_jR, z_top_max, 1, cover->env->num_layers, 0)) < 20 * cover->env->beam_axis_lim);
 
                 float complementary_topL_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
-                bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && (complementary_topL_jR < apexZ0) &&
+                //CPP Old: bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
+                //CPP New: bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < 0.0001) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
+                bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && (complementary_topL_jR - apexZ0 < 0.0001) &&
                                                   (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topL_jR, z_top_min, 1, cover->env->num_layers, 0)) < 20 * cover->env->beam_axis_lim);
 
                 float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
@@ -612,7 +614,8 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     shifted_Align = apexZ0;
                 }
 
-                if (horizontalShiftTop > 0 || horizontalShiftBottom > 0)
+                //if (horizontalShiftTop > 0 || horizontalShiftBottom > 0)
+                if (horizontalShiftTop > 0.000001 || horizontalShiftBottom > 0) // NOTE THAT horizontalShiftTop > 0.000001 is a "hack" to avoid infinite loop from Wedge 42 in this condition and the next
                 {
                     printf("originalPartialTop: %d complementaryPartialTop: %d originalPartialBottom: %d complementaryPartialBottom: %d %f %f %f %f horizontalOverlapTop: %f horizontalOverlapBottom: %f\n",
                            originalPartialTop, complementaryPartialTop, originalPartialBottom, complementaryPartialBottom,
@@ -620,7 +623,8 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                            horizontalOverlapTop, horizontalOverlapBottom);
                 }
 
-                while (((horizontalShiftTop > 0 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
+                //while (((horizontalShiftTop > 0 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
+                while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
                 {
                     printf("horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
 

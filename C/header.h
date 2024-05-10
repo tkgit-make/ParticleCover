@@ -214,3 +214,4 @@ extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminou
 
 extern int floatCompare(const void *a, const void *b);
 
+//cm to microns x10000 for points.

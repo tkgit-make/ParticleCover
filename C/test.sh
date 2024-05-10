@@ -24,7 +24,7 @@ if ! gcc -g $OPTS C/*.c -o bin/ProcessInput -lm; then
 	exit
 fi
 zcat C/wedgedata.txt.gz | $INVOKER bin/ProcessInput
-# cat wedgedata-sample.txt | bin/ProcessInput
+# cat wedgedata-sample.txt | $INVOKER bin/ProcessInput
 if [[ $1 == "gprof" ]]; then
 	date > bin/gprof.results.txt
 	gprof bin/ProcessInput gmon.out >> bin/gprof.results.txt

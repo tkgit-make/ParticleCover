@@ -61,7 +61,6 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         // num_covers and num_all_patches not needed
 
-        // revisit rounding
         for (int i = 0; i < (&cover)->n_patches; i++)
         {
             fprintf(myfile, "Patch\n");
@@ -76,6 +75,9 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
                 fprintf(myfile, "Superpoint\n");
                 for (int r = 0; r < cover.patches[i].superpoints[j].point_count; r++)
                 {
+                    // Old: myfile << currentPt.layer_num << " " << currentPt.phi << " " << currentPt.radius << " " << currentPt.z << endl;
+                    // New: myfile << currentPt.layer_num << " " <<  currentPt.phi << " " << int(currentPt.radius);
+                    // New: myfile << " " << currentPt.z << endl;
                     Point currentPt = cover.patches[i].superpoints[j].points[r];
                     fprintf(myfile, "%d %.4f %d %.4f\n",
                             currentPt.layer_num,
