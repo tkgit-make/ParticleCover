@@ -3,13 +3,13 @@
 // c doesn't support overloading
 void initDataSetBase(DataSet *ds)
 {
-    ds->total_points = 0;
+    //ds->total_points = 0; //not used
     memset(ds->n_points, 0, sizeof(ds->n_points)); // initialize n_points with 0
 }
 
 void initDataSetExtra(DataSet *ds, Environment *envI)
 {
-    ds->total_points = 0;
+    //ds->total_points = 0; //not used
     // lhs is pointer, consistent with rhs
     ds->env = envI;
     memset(ds->n_points, 0, sizeof(ds->n_points));
@@ -26,15 +26,13 @@ void initDataSetExtra(DataSet *ds, Environment *envI)
 void importData(DataSet *ds, Point *data_array, int data_array_size)
 {
     // need data_array_size. we can't eliminate the parameter and count the total number of points because we are adding points, we don't know how many
-    ds->total_points = data_array_size;
+    //ds->total_points = data_array_size; //not used
 
     for (index_type i = 0; i < data_array_size; i++)
     {
         index_type layer = data_array[i].layer_num - 1;
-        if (ds->n_points[layer] < MAX_POINTS_FOR_DATASET)
-        {
-            ds->array[layer][ds->n_points[layer]++] = data_array[i];
-        }
+        //if (ds->n_points[layer] < MAX_POINTS_FOR_DATASET) //not needed, coming from event that already can't store more than MAX_POINTS_FOR_DATASET
+        ds->array[layer][ds->n_points[layer]++] = data_array[i];
     }
     // iterating over the layers in DataSet
     for (index_type i = 0; i < ds->env->num_layers; i++)
@@ -71,18 +69,26 @@ void addBoundaryPoint(DataSet *ds, float offset)
 
             ds->n_points[i] += 2;
         }
+        else {
+            printf("No space to add boundary point"); 
+        }    
     }
 
-    index_type total = 0;
+    //index_type total = 0;
     // iterating over the layers in DataSet
     for (index_type i = 0; i < ds->env->num_layers; i++)
     {
         // like before, sorting the points in the ith layer
-        qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints);
+        //it is worth noting that the sort could be made more efficient because it is assumed all but two points are sorted, 
+        //and they are at the endpoints. we just need to fit the endpoints where they should go.
+        qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints); 
         // our code ensures n_points stays up to date and fresh and doesn't need to be recomputed here
-        total += ds->n_points[i]; // summing sizes of 1D array
+        //total += ds->n_points[i]; // summing sizes of 1D array
     }
-    ds->total_points = total; // size of 2D array, giving total number of points in the dataset
+    //ds->total_points = total; // size of 2D array, giving total number of points in the dataset
+    //should this actually be num_layers, not total? .size for a 2D array would give you just the number of rows [if you think of it with matrix convention]
+    //total_points isn't even used, don't need it.
+    //ds->total_points = ds->env->num_layers;
 
     for (index_type i = 0; i < ds->env->num_layers; i++)
     {

@@ -149,6 +149,7 @@ public:
         }
     }
 
+    //potential off by one issue based on code output
     void addBoundaryPoint(float offset = 0.0001)
     {
         boundaryPoint_offset = offset;

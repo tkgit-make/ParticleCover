@@ -72,7 +72,7 @@ typedef struct
     Environment *env;
     Point array[MAX_LAYERS][MAX_POINTS_FOR_DATASET]; // 2D array of points
     int n_points[MAX_LAYERS];                        // number of points in each layer of the array
-    index_type total_points;
+    //index_type total_points; //not used
     float boundaryPoint_offset;
 } DataSet;
 

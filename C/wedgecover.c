@@ -139,6 +139,7 @@ void solve(wedgeCover *cover, int lining, float apexZ0, int ppl, int nlines, boo
                 if (cover->data->array[i][x].z == cover->data->array[i][x + 1].z)
                 {
                     cover->data->array[i][x + 1].z += 0.00001;
+                    fprintf(stderr, "in solve method loop %d. \n", cover->data->array[i][x + 1].z ); 
                     foundIdentical = true;
                 }
             }
@@ -172,11 +173,13 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
         float c_corner = LONG_MAX;
 
         float z_top_max = cover->env->top_layer_lim + cover->env->boundaryPoint_offset;
+        fprintf(stderr, "z_top_max %d. \n", z_top_max ); 
 
         if (cover->n_patches > 0)
         {
             z_top_max = min(z_top_max, straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], -1 * cover->env->beam_axis_lim, apexZ0, 0, 1, cover->env->num_layers // includes passing a pointer to the last patch
-                                                                           ));
+                            ));
+            fprintf(stderr, "z_top_max inside %d. \n", z_top_max ); 
         }
 
         index_type nPatchesInColumn = 0;

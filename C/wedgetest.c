@@ -39,10 +39,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         {
             importData(&data, points, event.count);
         }
-        else
-        {
-            //(1) will not run for our input. (2) else does nothing even if ran
-        }
+        //else not needed, //(1) will not run for our input. (2) else does nothing even if ran
 
         addBoundaryPoint(&data, 0.0001); // with default param
 
@@ -65,6 +62,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         {
             fprintf(myfile, "Patch\n");
             //discrepancy happens below
+            //suspect issue is when solve calls makePatches_ShadowQuilt_fromEdges
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000));
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000));
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000));
