@@ -23,11 +23,14 @@ int Point_load(Point *p, float *radius)
 
 int comparePoints(const void *a, const void *b)
 {
-    const Point *pointA = (const Point *)a;
-    const Point *pointB = (const Point *)b;
-    if (pointA->z < pointB->z)
+    float a_z = ((const Point *)a)->z;
+    float b_z = ((const Point *)b)->z;
+    return (a_z < b_z) ? -1 : 1; //turnary equivalent treating point equality in the second case
+    /*
+    if (a_z < b_z)
         return -1;
-    if (pointA->z > pointB->z)
+    if (a_z > b_z)
         return 1;
-    return 0;
+    return 1;
+    */
 }
