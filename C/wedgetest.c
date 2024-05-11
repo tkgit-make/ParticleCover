@@ -19,7 +19,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         Event_load(&event);
         if(z<wedges[0]) continue;
         printf("wedge %d\n", z); //main print
-        fprintf(myfile, "wedge: %d\n", z); //file to diff
+        fprintf(myfile, "wedge %d\n", z); //file to diff
 
         Environment *env = &event.env;
         Point *points = event.points;
@@ -70,7 +70,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         for (int i = 0; i < (&cover)->n_patches; i++)
         {
-            fprintf(myfile, "Patch\n");
+            fprintf(myfile, "Patch \n");
             //discrepancy happens below
             //suspect issue is when solve calls makePatches_ShadowQuilt_fromEdges
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000));
@@ -80,7 +80,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
             for (int j = 0; j < cover.patches[i].superpoint_count; j++)
             {
-                fprintf(myfile, "Superpoint\n");
+                fprintf(myfile, "Superpoint \n");
                 for (int r = 0; r < cover.patches[i].superpoints[j].point_count; r++)
                 {
                     // Old: myfile << currentPt.layer_num << " " << currentPt.phi << " " << currentPt.radius << " " << currentPt.z << endl;

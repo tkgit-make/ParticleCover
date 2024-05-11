@@ -1597,7 +1597,7 @@ public:
 
         for(int k = wedges[0]; k < wedges[1]; k++)
         {
-            cout << "wedge: " << k << endl;
+            cout << "wedge " << k << endl;
             myfile << "wedge " << k << endl;
 
             Environment env = all_data[k].env;
