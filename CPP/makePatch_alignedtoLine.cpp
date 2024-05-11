@@ -77,6 +77,8 @@ public:
 
         for(int i = 0; i < radii.size() - 1; i++)
         {
+            //fprintf(stderr, "radii i %d %d.", i); 
+            //fprintf(stderr, "%d %d. \n", i, radii[i]); 
             float currentVal = (radii[0] - radii[i]) / (radii[radii.size() - 1] - radii[i]);
             parallelogramSlopes.push_back(currentVal);
         }
@@ -826,6 +828,7 @@ public:
                     if(data->array[i][x].z == data->array[i][x + 1].z)
                     {
                         data->array[i][x + 1].z += 0.00001;
+                        fprintf(stderr, "in solve method loop %d. \n", data->array[i][x + 1].z ); 
                         foundIdentical = true;
                     }
                 }
@@ -881,10 +884,12 @@ public:
             float c_corner = LONG_MAX;
 
             float z_top_max = env.top_layer_lim + env.boundaryPoint_offset;
+            fprintf(stderr, "z_top_max %d. \n", z_top_max ); 
 
             if(patches.size() > 0)
             {
                 z_top_max = min(z_top_max, patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(-1 * env.beam_axis_lim, apexZ0, 0, 1, env.num_layers));
+                fprintf(stderr, "z_top_max inside %d. \n", z_top_max ); 
             }
 
             int nPatchesInColumn = 0;
