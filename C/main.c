@@ -3,7 +3,7 @@
 
 int main()
 {
-    int wedgesToTest[] = {24, 25};
+    int wedgesToTest[] = {0, 128};
 
     wedge_test(0, 0.5, 16, 15.0, wedgesToTest, 2, 1000, 50, 15.0, false, false, false, false, false, 6, 3);
 

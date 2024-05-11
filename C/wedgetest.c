@@ -23,7 +23,6 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         Environment *env = &event.env;
         Point *points = event.points;
-        fprintf(stderr, "event.points %d. \n", event.points[0]); 
 
         //env->top_layer_lim = top_layer_cutoff;
         //env->beam_axis_lim = z0_luminousRegion;
@@ -32,9 +31,6 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         Environment new_env; 
         float new_radii[5] = {5.0, 10.0, 15.0, 20.0, 25.0};
         initEnvironment(&new_env, top_layer_cutoff, z0_luminousRegion, 5, &new_radii);
-
-        fprintf(stderr, "top_layer_cutoff %d. \n", top_layer_cutoff); 
-        fprintf(stderr, "z0_luminousRegion %d. \n", z0_luminousRegion); 
 
         DataSet data;
         initDataSetExtra(&data, &new_env);
@@ -47,14 +43,6 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         //else not needed, //(1) will not run for our input. (2) else does nothing even if ran
 
         addBoundaryPoint(&data, 0.0001); // with default param
-
-        fprintf(stderr, "data array %d. \n", data.array); 
-        fprintf(stderr, "boundary point offset %d. \n", data.boundaryPoint_offset); 
-        fprintf(stderr, "beam axis lim %d. \n", data.env->beam_axis_lim); 
-        fprintf(stderr, "parall slopes %d. \n", data.env->parallelogramSlopes); 
-        fprintf(stderr, "radii %d. \n", data.env->radii); 
-        fprintf(stderr, "trapez edges %d. \n", data.env->trapezoid_edges); 
-        fprintf(stderr, "points in event %d. \n", event.points); 
 
         wedgeCover cover;
         initWedgeCover(&cover, &new_env, &data);
