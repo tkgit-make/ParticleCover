@@ -25,14 +25,24 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         Point *points = event.points;
         fprintf(stderr, "event.points %d. \n", event.points[0]); 
 
-        env->top_layer_lim = top_layer_cutoff;
-        env->beam_axis_lim = z0_luminousRegion;
+        //env->top_layer_lim = top_layer_cutoff;
+        //env->beam_axis_lim = z0_luminousRegion;
+
+        //make new environment with default parameters instead of above
+        Environment new_env; 
+        float new_radii[5];
+        new_radii[0] = 5.0;
+        new_radii[1] = 10.0;
+        new_radii[2] = 15.0;
+        new_radii[3] = 20.0;
+        new_radii[4] = 25.0;
+        initEnvironment(&new_env, top_layer_cutoff, z0_luminousRegion, 5, &new_radii);
 
         fprintf(stderr, "top_layer_cutoff %d. \n", top_layer_cutoff); 
         fprintf(stderr, "z0_luminousRegion %d. \n", z0_luminousRegion); 
 
         DataSet data;
-        initDataSetExtra(&data, env);
+        initDataSetExtra(&data, &new_env);
 
         // no need to implement logic if show_acceptance_of_cover == true
         if (!uniform_N_points)
@@ -52,7 +62,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         fprintf(stderr, "points in event %d. \n", event.points); 
 
         wedgeCover cover;
-        initWedgeCover(&cover, env, &data);
+        initWedgeCover(&cover, &new_env, &data);
 
         solve(&cover, 33, apexZ0, ppl, 100, leftRightAlign); // solve modifies cover
 

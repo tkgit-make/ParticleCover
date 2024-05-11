@@ -1608,6 +1608,8 @@ public:
             fprintf(stderr, "z0_luminousRegion %d. \n", z0_luminousRegion); 
             
             env = Environment(top_layer_cutoff, z0_luminousRegion);
+            //env.top_layer_lim = top_layer_cutoff;
+            //env.beam_axis_lim = z0_luminousRegion;
             DataSet data(env);
 
 
@@ -1710,7 +1712,8 @@ int main()
     wedgeCover cov(env, ds);
     cov.tester();
     */
-
+   //code not needed. this is a duplicate processing of what is done in wedgetest.
+   /*
     string filepath = "wedgeData_v3_128.txt";
     vector<Event> events = FileReader::readFile(filepath);
     Environment env = events[0].env;
@@ -1722,6 +1725,7 @@ int main()
     ds.addBoundaryPoint();
 
     wedgeCover cov = wedgeCover(env, ds);
+    */
     Tester test;
     vector<int> wedgesToTest;
     wedgesToTest.push_back(24);
