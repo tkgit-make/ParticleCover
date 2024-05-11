@@ -1,6 +1,6 @@
 #include "header.h"
 
-void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, const char *v, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, const char *acceptance_method, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale)
+void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale)
 {
     int numEventsLoaded = 0;
 
@@ -30,12 +30,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         //make new environment with default parameters instead of above
         Environment new_env; 
-        float new_radii[5];
-        new_radii[0] = 5.0;
-        new_radii[1] = 10.0;
-        new_radii[2] = 15.0;
-        new_radii[3] = 20.0;
-        new_radii[4] = 25.0;
+        float new_radii[5] = {5.0, 10.0, 15.0, 20.0, 25.0};
         initEnvironment(&new_env, top_layer_cutoff, z0_luminousRegion, 5, &new_radii);
 
         fprintf(stderr, "top_layer_cutoff %d. \n", top_layer_cutoff); 
@@ -71,8 +66,6 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         for (int i = 0; i < (&cover)->n_patches; i++)
         {
             fprintf(myfile, "Patch \n");
-            //discrepancy happens below
-            //suspect issue is when solve calls makePatches_ShadowQuilt_fromEdges
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000));
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000));
             fprintf(myfile, "%ld\n", lround(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000));
@@ -95,7 +88,6 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
                 }
             }
         }
-        // revisit rounding
         for (int i = 0; i < cover.n_patches; i++)
         {
             fprintf(myfile, "[%ld, %ld]\n",
