@@ -210,7 +210,7 @@ extern index_type get_index_from_z(DataSet *data, int layer, float z_value, int 
 extern void solve(wedgeCover *cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight);
 extern void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight);
 extern void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
-extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, const char *v, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, const char *acceptance_method, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale);
+extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff, bool leftRightAlign, bool uniform_N_points, bool show_acceptance_of_cover, bool movie, bool savefig, int figSizeScale, int movieFigSizeScale);
 
 extern int floatCompare(const void *a, const void *b);
 

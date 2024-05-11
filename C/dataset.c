@@ -10,7 +10,7 @@ void initDataSetBase(DataSet *ds)
 void initDataSetExtra(DataSet *ds, Environment *envI)
 {
     //ds->total_points = 0; //not used
-    // lhs is pointer, consistent with rhs
+    //lhs is pointer, consistent with rhs
     ds->env = envI;
     memset(ds->n_points, 0, sizeof(ds->n_points));
 
@@ -25,7 +25,7 @@ void initDataSetExtra(DataSet *ds, Environment *envI)
 
 void importData(DataSet *ds, Point *data_array, int data_array_size)
 {
-    // need data_array_size. we can't eliminate the parameter and count the total number of points because we are adding points, we don't know how many
+    //need data_array_size. we can't eliminate the parameter and count the total number of points because we are adding points, we don't know how many
     //ds->total_points = data_array_size; //not used
 
     for (index_type i = 0; i < data_array_size; i++)
@@ -37,7 +37,7 @@ void importData(DataSet *ds, Point *data_array, int data_array_size)
     // iterating over the layers in DataSet
     for (index_type i = 0; i < ds->env->num_layers; i++)
     {
-        // sorts the points in the ith layer
+        //sorts the points in the ith layer
         qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints);
     }
 }

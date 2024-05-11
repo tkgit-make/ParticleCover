@@ -77,8 +77,6 @@ public:
 
         for(int i = 0; i < radii.size() - 1; i++)
         {
-            //fprintf(stderr, "radii i %d %d.", i); 
-            //fprintf(stderr, "%d %d. \n", i, radii[i]); 
             float currentVal = (radii[0] - radii[i]) / (radii[radii.size() - 1] - radii[i]);
             parallelogramSlopes.push_back(currentVal);
         }
@@ -829,7 +827,6 @@ public:
                     if(data->array[i][x].z == data->array[i][x + 1].z)
                     {
                         data->array[i][x + 1].z += 0.00001;
-                        fprintf(stderr, "in solve method loop %d. \n", data->array[i][x + 1].z ); 
                         foundIdentical = true;
                     }
                 }
@@ -885,12 +882,10 @@ public:
             float c_corner = LONG_MAX;
 
             float z_top_max = env.top_layer_lim + env.boundaryPoint_offset;
-            fprintf(stderr, "z_top_max %d. \n", z_top_max ); 
 
             if(patches.size() > 0)
             {
                 z_top_max = min(z_top_max, patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(-1 * env.beam_axis_lim, apexZ0, 0, 1, env.num_layers));
-                fprintf(stderr, "z_top_max inside %d. \n", z_top_max ); 
             }
 
             int nPatchesInColumn = 0;
@@ -1554,13 +1549,14 @@ public:
         vector< vector<int> > PRF;
 
         string data_string = v + " events";
-
+        /*
         if(uniform_N_points != false)
         {
             data_string = "Uniform 1 points";
             wedges[0] = 0;
             wedges[1] = 1;
         }
+        */
 
         vector<float> zInnerLayer;
 
@@ -1602,10 +1598,6 @@ public:
 
             Environment env = all_data[k].env;
             vector<Point> points = all_data[k].list_of_Points;
-
-            fprintf(stderr, "event.points %d. \n", all_data[k].list_of_Points[0]);
-            fprintf(stderr, "top_layer_cutoff %d. \n", top_layer_cutoff); 
-            fprintf(stderr, "z0_luminousRegion %d. \n", z0_luminousRegion); 
             
             env = Environment(top_layer_cutoff, z0_luminousRegion);
             //env.top_layer_lim = top_layer_cutoff;
@@ -1628,14 +1620,6 @@ public:
                 vector<bool> vect(5, true);
                 //data.generateUniform(vect);
             }
-
-            //debugging
-            fprintf(stderr, "data array %d. \n", data.array); 
-            fprintf(stderr, "boundary point offset %d. \n", data.boundaryPoint_offset); 
-            fprintf(stderr, "beam axis lim %d. \n", data.env->beam_axis_lim); 
-            fprintf(stderr, "parall slopes %d. \n", data.env->parallelogramSlopes); 
-            fprintf(stderr, "radii %d. \n", data.env->radii); 
-            fprintf(stderr, "trapez edges %d. \n", data.env->trapezoid_edges); 
             
             data.addBoundaryPoint();
 
@@ -1728,7 +1712,7 @@ int main()
     */
     Tester test;
     vector<int> wedgesToTest;
-    wedgesToTest.push_back(24);
-    wedgesToTest.push_back(25);
+    wedgesToTest.push_back(0);
+    wedgesToTest.push_back(128);
     test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };
