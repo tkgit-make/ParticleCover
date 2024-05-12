@@ -35,7 +35,7 @@ void importData(DataSet *ds, Point *data_array, int data_array_size)
         ds->array[layer][ds->n_points[layer]++] = data_array[i];
     }
     // iterating over the layers in DataSet
-    for (index_type i = 0; i < ds->env->num_layers; i++)
+    for (index_type i = 0; i < num_layers; i++)
     {
         //sorts the points in the ith layer
         qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints);
@@ -46,7 +46,7 @@ void addBoundaryPoint(DataSet *ds, float offset)
 {
     ds->boundaryPoint_offset = offset;
 
-    for (index_type i = 0; i < ds->env->num_layers; i++)
+    for (index_type i = 0; i < num_layers; i++)
     { // num_layers is trapezoid_edges.size(), see environment.c
         if (ds->n_points[i] + 2 <= MAX_POINTS_FOR_DATASET)
         { // there needs to be room to add the additional points
@@ -76,7 +76,7 @@ void addBoundaryPoint(DataSet *ds, float offset)
 
     //index_type total = 0;
     // iterating over the layers in DataSet
-    for (index_type i = 0; i < ds->env->num_layers; i++)
+    for (index_type i = 0; i < num_layers; i++)
     {
         // like before, sorting the points in the ith layer
         //it is worth noting that the sort could be made more efficient because it is assumed all but two points are sorted, 
@@ -88,9 +88,9 @@ void addBoundaryPoint(DataSet *ds, float offset)
     //ds->total_points = total; // size of 2D array, giving total number of points in the dataset
     //should this actually be num_layers, not total? .size for a 2D array would give you just the number of rows [if you think of it with matrix convention]
     //total_points isn't even used, don't need it.
-    //ds->total_points = ds->env->num_layers;
+    //ds->total_points = num_layers;
 
-    for (index_type i = 0; i < ds->env->num_layers; i++)
+    for (index_type i = 0; i < num_layers; i++)
     {
         ds->env->trapezoid_edges[i] += offset;
     }

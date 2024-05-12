@@ -7,6 +7,7 @@
 # - time: uses `time` program for profiling (apt install time)
 # compiles all C files into the ProcessInput executable. assumes presence of main function  
 # ./test.sh gprof, or ./test.sh time
+# Diff output file in main and dev branch: git diff main..devFPGA -- C/cOutput.txt
 
 OPTS=""
 INVOKER=""

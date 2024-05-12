@@ -10,6 +10,12 @@
 #include <float.h>
 #include <math.h>
 
+#ifdef MAIN_C
+#define EXTERN
+#else
+#define EXTERN extern
+#endif
+
 #define min(X, Y) ((X) < (Y) ? (X) : (Y))
 #define max(X, Y) ((X) < (Y) ? (Y) : (X))
 
@@ -34,11 +40,9 @@
 // #define MAX_LINES __ //only used in visualization
 #define MAX_SUPERPOINTS_IN_COVER (MAX_PATCHES * MAX_SUPERPOINTS_IN_PATCH)
 
-#ifdef MAIN_C
-#define EXTERN
-#else
-#define EXTERN extern
-#endif
+//constant from environment that have been pulled out of structure
+#define num_layers 5
+
 
 typedef struct
 {
@@ -52,7 +56,6 @@ typedef struct
 {
     float top_layer_lim;
     float beam_axis_lim;
-    index_type num_layers;
     float radii[MAX_LAYERS];
     float parallelogramSlopes[MAX_LAYERS];
     float radii_leverArm[MAX_LAYERS];

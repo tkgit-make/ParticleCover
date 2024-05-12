@@ -11,7 +11,7 @@ void initLineGenerator(LineGenerator *lg, Environment *envI, float startI)
         exit(4);
     }
 
-    float max_height = envI->radii[envI->num_layers - 1];
+    float max_height = envI->radii[num_layers - 1];
     lg->slope_ll = max_height / (-1 * envI->top_layer_lim - startI);
     lg->slope_ul = max_height / (envI->top_layer_lim - startI);
 }
@@ -25,7 +25,7 @@ void generateEvenGrid(LineGenerator *lg, Line *lines, int n)
         exit(5);
     }
 
-    float Rcoor = lg->env->radii[lg->env->num_layers - 1];
+    float Rcoor = lg->env->radii[num_layers - 1];
     float stepVal = (lg->env->top_layer_lim) * 2 / (n - 1);
 
     for (index_type i = 0; i < n; i++)

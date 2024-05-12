@@ -13,3 +13,8 @@ CPP/makePatch
 CPP/makefile:Zone.Identifier
 
 wedgeData_v3_128.txt*
+
+# output files
+C/cOutput.txt
+CPP/cppOutput.txt
+CPP/pythonOutput.txt

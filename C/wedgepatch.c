@@ -15,7 +15,7 @@ void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpo
     wp->shadow_fromTopToInnermost_topR_jL = 0;
     wp->shadow_fromTopToInnermost_topR_jR = 0;
 
-    if (superpoint_count != wp->env->num_layers)
+    if (superpoint_count != num_layers)
     {
         printf("The patch layers does not match environment layers.");
         exit(7);
@@ -101,12 +101,12 @@ void getParallelograms(wedgePatch *wp)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, wp->env->num_layers);
-        float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, wp->env->num_layers);
-        float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, wp->env->num_layers);
-        float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, wp->env->num_layers);
+        float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, num_layers);
+        float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, num_layers);
+        float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, num_layers);
+        float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, num_layers);
 
-        float pSlope = (j != wp->env->num_layers) ? wp->env->parallelogramSlopes[j - 1] : INT_MAX;
+        float pSlope = (j != num_layers) ? wp->env->parallelogramSlopes[j - 1] : INT_MAX;
 
         // directly assign the values to the array
         if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH)
@@ -134,15 +134,15 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
 {
     float zTop_min;
     float zTop_max;
-    if (wp->env->num_layers - 1 < 0)
+    if (num_layers - 1 < 0)
     {
         zTop_min = zTopMin;
         zTop_max = zTopMax;
     }
     else
     {
-        zTop_min = max(zTopMin, -wp->env->trapezoid_edges[wp->env->num_layers - 1]);
-        zTop_max = min(zTopMax, wp->env->trapezoid_edges[wp->env->num_layers - 1]);
+        zTop_min = max(zTopMin, -wp->env->trapezoid_edges[num_layers - 1]);
+        zTop_max = min(zTopMax, wp->env->trapezoid_edges[num_layers - 1]);
     }
 
     float topL_jL[MAX_SUPERPOINTS_IN_PATCH - 1];
@@ -156,10 +156,10 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        topL_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_min, wp->env->num_layers, j, 1);
-        topL_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_max, wp->env->num_layers, j, 1);
-        topR_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_min, wp->env->num_layers, j, 1);
-        topR_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_max, wp->env->num_layers, j, 1);
+        topL_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_min, num_layers, j, 1);
+        topL_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_max, num_layers, j, 1);
+        topR_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_min, num_layers, j, 1);
+        topR_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_max, num_layers, j, 1);
     }
 
     wp->shadow_fromTopToInnermost_topL_jL = topL_jL[0];
@@ -270,22 +270,22 @@ void get_acceptanceCorners(wedgePatch *wp)
     wp->d_corner[1] = d_corner_max;
 
     // the nth element of shadow_bottom is the same as the nth element in the corner lists in CPP
-    if (a_corner_min != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomL_jR)
+    if (a_corner_min != wp->parallelograms[num_layers - 2].shadow_bottomL_jR)
     {
         wp->squareAcceptance = false;
         wp->flatTop = false;
     }
-    if (b_corner_min != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomR_jR)
+    if (b_corner_min != wp->parallelograms[num_layers - 2].shadow_bottomR_jR)
     {
         wp->squareAcceptance = false;
         wp->flatTop = false;
     }
-    if (c_corner_max != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomL_jL)
+    if (c_corner_max != wp->parallelograms[num_layers - 2].shadow_bottomL_jL)
     {
         wp->squareAcceptance = false;
         wp->flatBottom = false;
     }
-    if (d_corner_max != wp->parallelograms[wp->env->num_layers - 2].shadow_bottomR_jL)
+    if (d_corner_max != wp->parallelograms[num_layers - 2].shadow_bottomR_jL)
     {
         wp->squareAcceptance = false;
         wp->flatBottom = false;
@@ -317,7 +317,7 @@ void get_end_layer(wedgePatch *wp)
     wp->right_end_layer = -1;
 
     // combined two independent loops
-    for (int i = 0; i < wp->env->num_layers; i++)
+    for (int i = 0; i < num_layers; i++)
     {
         float lambdaZ_left = (wp->superpoints[i].min - wp->apexZ0) / wp->env->radii[i];
         float lambdaZ_right = (wp->superpoints[i].max - wp->apexZ0) / wp->env->radii[i];

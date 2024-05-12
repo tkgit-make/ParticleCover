@@ -9,7 +9,7 @@ void initLine(Line *line, Environment *envI, float start, float slopeI)
     line->points[0] = start;
     line->num_points = 1;
 
-    for (index_type i = 0; i < envI->num_layers; i++)
+    for (index_type i = 0; i < num_layers; i++)
     {
         if (line->num_points < MAX_POINTS_IN_LINE)
         {

@@ -22,7 +22,7 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
         exit(2);
     }
 
-    env->num_layers = num_layersI;
+    //env->num_layers = num_layersI;
 
     // copy radii values
     for (int i = 0; i < num_layersI; i++)
