@@ -57,8 +57,8 @@ typedef struct
 typedef struct
 {
     float radii[MAX_LAYERS];
-    float parallelogramSlopes[MAX_LAYERS];
-    float radii_leverArm[MAX_LAYERS];
+    float parallelogramSlopes[MAX_LAYERS-1];
+    float radii_leverArm[MAX_LAYERS-1];
     float trapezoid_edges[MAX_LAYERS];
 } Environment;
 
