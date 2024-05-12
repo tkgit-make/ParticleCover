@@ -165,13 +165,13 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
     while (apexZ0 > -1 * cover->env->trapezoid_edges[0])
     {
-        float z_top_min = -1 * cover->env->top_layer_lim;
+        float z_top_min = -1 * top_layer_lim;
 
         float complementary_apexZ0 = 0;
         index_type first_row_count = 0;
         float c_corner = LONG_MAX;
 
-        float z_top_max = cover->env->top_layer_lim;
+        float z_top_max = top_layer_lim;
 
         if (cover->n_patches > 0)
         {
@@ -283,7 +283,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 else
                 {
                     printf("z_top_min before: %f superpoints[self.env.num_layers-1].min: %f\n", z_top_min, lastPatch->superpoints[num_layers - 1].min);
-                    z_top_min = max(-1 * cover->env->top_layer_lim, lastPatch->superpoints[num_layers - 1].min);
+                    z_top_min = max(-1 * top_layer_lim, lastPatch->superpoints[num_layers - 1].min);
                 }
                 // will need to revisit parameters when we write this method
                 makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);

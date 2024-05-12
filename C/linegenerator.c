@@ -12,8 +12,8 @@ void initLineGenerator(LineGenerator *lg, Environment *envI, float startI)
     }
 
     float max_height = envI->radii[num_layers - 1];
-    lg->slope_ll = max_height / (-1 * envI->top_layer_lim - startI);
-    lg->slope_ul = max_height / (envI->top_layer_lim - startI);
+    lg->slope_ll = max_height / (-1 * top_layer_lim - startI);
+    lg->slope_ul = max_height / (top_layer_lim - startI);
 }
 
 // editing lines through the pointer as opposed to returning a vector of lines.
@@ -26,11 +26,11 @@ void generateEvenGrid(LineGenerator *lg, Line *lines, int n)
     }
 
     float Rcoor = lg->env->radii[num_layers - 1];
-    float stepVal = (lg->env->top_layer_lim) * 2 / (n - 1);
+    float stepVal = (top_layer_lim) * 2 / (n - 1);
 
     for (index_type i = 0; i < n; i++)
     {
-        float z = (-1 * lg->env->top_layer_lim) + i * stepVal; // an entry in Zcoor in C++
+        float z = (-1 * top_layer_lim) + i * stepVal; // an entry in Zcoor in C++
         float slope = Rcoor / (z - lg->start);
         initLine(&lines[i], lg->env, lg->start, slope); // equivalent to lines.push_back(Line(env, start, Rcoor / (Zcoor[i] - start)));.
     }

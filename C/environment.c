@@ -7,7 +7,7 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
         printf("The top layer limits cannot be smaller than the bottom layer limits.");
         exit(0);
     }
-    env->top_layer_lim = top_layer_limI;
+    //env->top_layer_lim = top_layer_limI;
     env->beam_axis_lim = beam_axis_limI;
 
     /* //not checking size, assume parameters are compatible with each other
@@ -54,6 +54,6 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     for (int i = 0; i < num_layersI; i++)
     {
         float radiiCurrent = env->radii[i];
-        env->trapezoid_edges[i] = radiiCurrent * (env->top_layer_lim - env->beam_axis_lim) / radiiLast + env->beam_axis_lim;
+        env->trapezoid_edges[i] = radiiCurrent * (top_layer_limI - env->beam_axis_lim) / radiiLast + env->beam_axis_lim;
     }
 }
