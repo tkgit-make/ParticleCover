@@ -43,6 +43,7 @@
 //constant from environment that have been pulled out of structure
 #define num_layers 5
 #define top_layer_lim 50
+#define beam_axis_lim 15
 
 
 typedef struct
@@ -55,7 +56,6 @@ typedef struct
 
 typedef struct
 {
-    float beam_axis_lim;
     float radii[MAX_LAYERS];
     float parallelogramSlopes[MAX_LAYERS];
     float radii_leverArm[MAX_LAYERS];

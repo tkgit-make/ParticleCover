@@ -8,7 +8,7 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
         exit(0);
     }
     //env->top_layer_lim = top_layer_limI;
-    env->beam_axis_lim = beam_axis_limI;
+    //env->beam_axis_lim = beam_axis_limI;
 
     /* //not checking size, assume parameters are compatible with each other
     if (radiiI.size() != num_layersI) {
@@ -54,6 +54,6 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     for (int i = 0; i < num_layersI; i++)
     {
         float radiiCurrent = env->radii[i];
-        env->trapezoid_edges[i] = radiiCurrent * (top_layer_limI - env->beam_axis_lim) / radiiLast + env->beam_axis_lim;
+        env->trapezoid_edges[i] = radiiCurrent * (top_layer_limI - beam_axis_limI) / radiiLast + beam_axis_limI;
     }
 }
