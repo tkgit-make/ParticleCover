@@ -57,7 +57,6 @@ typedef struct
     float parallelogramSlopes[MAX_LAYERS];
     float radii_leverArm[MAX_LAYERS];
     float trapezoid_edges[MAX_LAYERS];
-    float boundaryPoint_offset;
 } Environment;
 
 typedef struct

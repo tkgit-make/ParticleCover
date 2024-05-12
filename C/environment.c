@@ -36,7 +36,6 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     qsort(env->radii, num_layersI, sizeof(float), floatCompare);
 
     // populating parallelogramSlopes vector
-    // bounds are correct
     float radiiLast = env->radii[num_layersI - 1];
     for (int i = 0; i < num_layersI - 1; i++)
     {
@@ -46,16 +45,12 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     }
 
     // calculate radii lever arm
-    // bounds are correct
     for (int i = 0; i < num_layersI - 1; i++)
     {
         env->radii_leverArm[i] = 1 - env->parallelogramSlopes[i];
     }
 
-    env->boundaryPoint_offset = 0;
-
     // calculate trapezoid edges
-    // bounds are correct
     for (int i = 0; i < num_layersI; i++)
     {
         float radiiCurrent = env->radii[i];

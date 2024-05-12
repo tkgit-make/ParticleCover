@@ -171,7 +171,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
         index_type first_row_count = 0;
         float c_corner = LONG_MAX;
 
-        float z_top_max = cover->env->top_layer_lim + cover->env->boundaryPoint_offset;
+        float z_top_max = cover->env->top_layer_lim;
 
         if (cover->n_patches > 0)
         {
@@ -746,16 +746,16 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
 
         for (index_type j = 0; j < row_list_size; j++)
         {
-            if (fabs((row_list[j] + cover->env->trapezoid_edges[i] + cover->env->boundaryPoint_offset)) < lbVal)
+            if (fabs((row_list[j] + cover->env->trapezoid_edges[i])) < lbVal)
             {
                 left_bound = j;
-                lbVal = fabs((row_list[j] + cover->env->trapezoid_edges[i] + cover->env->boundaryPoint_offset));
+                lbVal = fabs((row_list[j] + cover->env->trapezoid_edges[i]));
             }
 
-            if (fabs((row_list[j] - cover->env->trapezoid_edges[i] - cover->env->boundaryPoint_offset)) < rbVal)
+            if (fabs((row_list[j] - cover->env->trapezoid_edges[i])) < rbVal)
             {
                 right_bound = j;
-                rbVal = fabs((row_list[j] - cover->env->trapezoid_edges[i] - cover->env->boundaryPoint_offset));
+                rbVal = fabs((row_list[j] - cover->env->trapezoid_edges[i]));
             }
         }
 
