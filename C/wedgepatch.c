@@ -71,8 +71,8 @@ float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, 
 
 float straightLineProjector(float z_top, float z_j, int j, Environment *env)
 {
-    float radii_leverArm = env->radii_leverArm[j - 1];
-    return z_top - (z_top - z_j) * radii_leverArm;
+    float temp = radii_leverArm[j - 1];
+    return z_top - (z_top - z_j) * temp;
 }
 
 void getParallelograms(wedgePatch *wp)

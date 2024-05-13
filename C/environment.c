@@ -47,7 +47,7 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     // calculate radii lever arm
     for (int i = 0; i < num_layersI - 1; i++)
     {
-        env->radii_leverArm[i] = 1 - parallelogramSlopes[i];
+        //env->radii_leverArm[i] = 1 - parallelogramSlopes[i];
     }
 
     // calculate trapezoid edges
