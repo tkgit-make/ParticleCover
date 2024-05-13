@@ -13,7 +13,7 @@ void initLine(Line *line, Environment *envI, float start, float slopeI)
     {
         if (line->num_points < MAX_POINTS_IN_LINE)
         {
-            line->points[line->num_points++] = (1.0f / slopeI) * envI->radii[i] + start;
+            line->points[line->num_points++] = (1.0f / slopeI) * radii[i] + start;
         }
     }
 }

@@ -163,7 +163,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
     apexZ0 = cover->env->trapezoid_edges[0];
     float saved_apexZ0;
 
-    while (apexZ0 > -1 * cover->env->trapezoid_edges[0])
+    while (apexZ0 > -1 * cover->env->trapezoid_edges[0]) //consider how this works when we are expanding instead of retracting the trapezoid_edges
     {
         float z_top_min = -1 * top_layer_lim;
 
@@ -715,7 +715,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
 
     for (index_type i = 0; i < num_layers; i++)
     {
-        float y = cover->env->radii[i];
+        float y = radii[i];
         float row_list[MAX_POINTS_PER_LAYER];
         int row_list_size = 0;
 
@@ -724,8 +724,8 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
             row_list[row_list_size++] = cover->data->array[i][j].z;
         }
 
-        float r_max = cover->env->radii[num_layers - 1];
-        float projectionToRow = (z_top - apexZ0) * (y - cover->env->radii[0]) / (r_max - cover->env->radii[0]) + apexZ0;
+        float r_max = radii[num_layers - 1];
+        float projectionToRow = (z_top - apexZ0) * (y - radii[0]) / (r_max - radii[0]) + apexZ0;
 
         int start_index = 0;
         float start_value = 1000000;

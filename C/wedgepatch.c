@@ -45,7 +45,7 @@ float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, 
     }
     else
     {
-        radius_i = wp->env->radii[i - 1]; //[] directly accessing value
+        radius_i = radii[i - 1]; //[] directly accessing value
     }
     if (j == 0)
     {
@@ -53,7 +53,7 @@ float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, 
     }
     else
     {
-        radius_j = wp->env->radii[j - 1];
+        radius_j = radii[j - 1];
     }
     if (k == 0)
     {
@@ -61,7 +61,7 @@ float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, 
     }
     else
     {
-        radius_k = wp->env->radii[k - 1];
+        radius_k = radii[k - 1];
     }
 
     float radii_leverArm = (radius_k - radius_i) / (radius_j - radius_i);
@@ -319,8 +319,8 @@ void get_end_layer(wedgePatch *wp)
     // combined two independent loops
     for (int i = 0; i < num_layers; i++)
     {
-        float lambdaZ_left = (wp->superpoints[i].min - wp->apexZ0) / wp->env->radii[i];
-        float lambdaZ_right = (wp->superpoints[i].max - wp->apexZ0) / wp->env->radii[i];
+        float lambdaZ_left = (wp->superpoints[i].min - wp->apexZ0) / radii[i];
+        float lambdaZ_right = (wp->superpoints[i].max - wp->apexZ0) / radii[i];
 
         if (lambdaZ_left > lambdaZLeftMax)
         {

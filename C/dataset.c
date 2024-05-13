@@ -80,7 +80,7 @@ void addBoundaryPoint(DataSet *ds, float offset)
     {
         // like before, sorting the points in the ith layer
         //it is worth noting that the sort could be made more efficient because it is assumed all but two points are sorted, 
-        //and they are at the endpoints. we just need to fit the endpoints where they should go.
+        //and they are at the endpoints. we just need to fit the endpoints where they should go. and they should be the min and max point anyway
         qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints); 
         // our code ensures n_points stays up to date and fresh and doesn't need to be recomputed here
         //total += ds->n_points[i]; // summing sizes of 1D array
@@ -92,6 +92,6 @@ void addBoundaryPoint(DataSet *ds, float offset)
 
     for (index_type i = 0; i < num_layers; i++)
     {
-        ds->env->trapezoid_edges[i] += offset;
+        ds->env->trapezoid_edges[i] += offset; //
     }
 }

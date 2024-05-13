@@ -27,20 +27,20 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     // copy radii values
     for (int i = 0; i < num_layersI; i++)
     {
-        env->radii[i] = radiiI[i];
+        //env->radii[i] = radiiI[i];
         //fprintf(stderr, "radii i %d %d.", i); 
         //fprintf(stderr, "%d %d. \n", i, radiiI[i]); 
     }
 
     // qsort rearranges the elements within the block of memory
-    qsort(env->radii, num_layersI, sizeof(float), floatCompare);
+    //qsort(env->radii, num_layersI, sizeof(float), floatCompare);
 
     // populating parallelogramSlopes vector
-    float radiiLast = env->radii[num_layersI - 1];
+    float radiiLast = radiiI[num_layersI - 1];
     for (int i = 0; i < num_layersI - 1; i++)
     {
-        float radiiFirst = env->radii[0];
-        float radiiCurrent = env->radii[i];
+        float radiiFirst = radiiI[0];
+        float radiiCurrent = radiiI[i];
         env->parallelogramSlopes[i] = (radiiFirst - radiiCurrent) / (radiiLast - radiiCurrent);
     }
 
@@ -53,7 +53,7 @@ void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_lim
     // calculate trapezoid edges
     for (int i = 0; i < num_layersI; i++)
     {
-        float radiiCurrent = env->radii[i];
+        float radiiCurrent = radiiI[i];
         env->trapezoid_edges[i] = radiiCurrent * (top_layer_limI - beam_axis_limI) / radiiLast + beam_axis_limI;
     }
 }
