@@ -45,9 +45,11 @@
 #define top_layer_lim 50
 #define beam_axis_lim 15
 #ifdef MAIN_C
-const float radii[] = {5, 10, 15, 20, 25};
+const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
+const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
 #else
-extern float radii[];
+extern float radii[MAX_LAYERS];
+extern float parallelogramSlopes[MAX_LAYERS-1];
 #endif
 
 
@@ -61,7 +63,6 @@ typedef struct
 
 typedef struct
 {
-    float parallelogramSlopes[MAX_LAYERS-1];
     float radii_leverArm[MAX_LAYERS-1];
     float trapezoid_edges[MAX_LAYERS];
 } Environment;

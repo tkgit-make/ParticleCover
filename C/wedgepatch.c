@@ -106,7 +106,7 @@ void getParallelograms(wedgePatch *wp)
         float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, num_layers);
         float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, num_layers);
 
-        float pSlope = (j != num_layers) ? wp->env->parallelogramSlopes[j - 1] : INT_MAX;
+        float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
 
         // directly assign the values to the array
         if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH)
