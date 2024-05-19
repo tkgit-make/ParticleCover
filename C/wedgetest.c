@@ -31,7 +31,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         //initEnvironment(&new_env, top_layer_cutoff, z0_luminousRegion, 5, &new_radii);
 
         DataSet data;
-        initDataSetExtra(&data);
+        initDataSet(&data);
 
         // no need to implement logic if show_acceptance_of_cover == true
         if (!uniform_N_points)

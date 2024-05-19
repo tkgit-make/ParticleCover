@@ -1,13 +1,7 @@
 #include "header.h"
 
-// c doesn't support overloading
-void initDataSetBase(DataSet *ds)
-{
-    //ds->total_points = 0; //not used
-    memset(ds->n_points, 0, sizeof(ds->n_points)); // initialize n_points with 0
-}
 
-void initDataSetExtra(DataSet *ds)
+void initDataSet(DataSet *ds)
 {
     //ds->total_points = 0; //not used
     ds->trapezoid_edges[0] = 22;
