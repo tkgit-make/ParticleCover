@@ -48,6 +48,7 @@
 const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
 const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
 const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
+
 #else
 extern float radii[MAX_LAYERS];
 extern float parallelogramSlopes[MAX_LAYERS-1];
@@ -65,7 +66,6 @@ typedef struct
 
 typedef struct
 {
-    float trapezoid_edges[MAX_LAYERS];
 } Environment;
 
 typedef struct
@@ -82,6 +82,7 @@ typedef struct
     int n_points[MAX_LAYERS];                        // number of points in each layer of the array
     //index_type total_points; //not used
     float boundaryPoint_offset;
+    float trapezoid_edges[MAX_LAYERS]; //transferred from environment structure, updated once with addBoundaryPoint
 } DataSet;
 
 typedef struct
@@ -118,6 +119,7 @@ typedef struct
 typedef struct
 {
     Environment* env;
+    DataSet* ds;
     int end_layer;
     int left_end_layer;
     int right_end_layer;
@@ -176,7 +178,7 @@ extern void initLine(Line *line, Environment *envI, float start, float slopeI);
 extern void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 extern int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
 extern void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
-extern void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I);
+extern void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *ds);
 extern float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k);
 extern float straightLineProjector(float z_top, float z_j, int j, Environment *env);
 extern void getParallelograms(wedgePatch *wp);

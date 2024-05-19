@@ -1,8 +1,9 @@
 #include "header.h"
 
-void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I)
+void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *dsI)
 {
     wp->env = envI;    // accessing values in wp and changing the pointer of env to point to where envI points to
+    wp->ds = dsI; //needed for trapezoid edges. the only purpose of having a dataset object is to access the trapezoid edges which is an array of xi, or xi+0.0001. 
     wp->end_layer = -1; // end_layer not a pointer, accessing its value.
     wp->left_end_layer = -1;
     wp->right_end_layer = -1;
@@ -77,12 +78,12 @@ float straightLineProjector(float z_top, float z_j, int j, Environment *env)
 
 void getParallelograms(wedgePatch *wp)
 {
-    float z1_min = max(wp->superpoints[0].min, -1 * wp->env->trapezoid_edges[0]);
-    float z1_max = min(wp->superpoints[0].max, wp->env->trapezoid_edges[0]);
+    float z1_min = max(wp->superpoints[0].min, -1 * wp->ds->trapezoid_edges[0]);
+    float z1_max = min(wp->superpoints[0].max, wp->ds->trapezoid_edges[0]);
 
     if (z1_min > z1_max)
     {
-        z1_min = wp->env->trapezoid_edges[0] + 1;
+        z1_min = wp->ds->trapezoid_edges[0] + 1;
         z1_max = z1_min;
     }
 
@@ -141,8 +142,8 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
     }
     else
     {
-        zTop_min = max(zTopMin, -wp->env->trapezoid_edges[num_layers - 1]);
-        zTop_max = min(zTopMax, wp->env->trapezoid_edges[num_layers - 1]);
+        zTop_min = max(zTopMin, -wp->ds->trapezoid_edges[num_layers - 1]);
+        zTop_max = min(zTopMax, wp->ds->trapezoid_edges[num_layers - 1]);
     }
 
     float topL_jL[MAX_SUPERPOINTS_IN_PATCH - 1];

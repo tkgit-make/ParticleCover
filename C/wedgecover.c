@@ -160,10 +160,10 @@ void solve(wedgeCover *cover, int lining, float apexZ0, int ppl, int nlines, boo
 void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight)
 {
     bool fix42 = true;
-    apexZ0 = cover->env->trapezoid_edges[0];
+    apexZ0 = cover->data->trapezoid_edges[0];
     float saved_apexZ0;
 
-    while (apexZ0 > -1 * cover->env->trapezoid_edges[0]) //consider how this works when we are expanding instead of retracting the trapezoid_edges
+    while (apexZ0 > -1 * cover->data->trapezoid_edges[0]) //consider how this works when we are expanding instead of retracting the trapezoid_edges
     {
         float z_top_min = -1 * top_layer_lim;
 
@@ -182,7 +182,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
         index_type nPatchesInColumn = 0;
         float projectionOfCornerToBeam = 0;
 
-        while ((c_corner > -1 * cover->env->trapezoid_edges[num_layers - 1]) && (projectionOfCornerToBeam < beam_axis_lim))
+        while ((c_corner > -1 * cover->data->trapezoid_edges[num_layers - 1]) && (projectionOfCornerToBeam < beam_axis_lim))
         {
             nPatchesInColumn++;
             printf("%f %d %f %d\n", apexZ0, ppl, z_top_max, leftRight);
@@ -273,7 +273,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
             printf("squareAcceptance: %d triangleAcceptance: %d projectionOfCornerToBeam: %f notChoppedPatch %d\n",
                    lastPatch->squareAcceptance, lastPatch->triangleAcceptance, projectionOfCornerToBeam, notChoppedPatch);
 
-            if (!notChoppedPatch && (lastPatch->c_corner[1] > -1 * cover->env->trapezoid_edges[num_layers - 1]) && (projectionOfCornerToBeam < beam_axis_lim))
+            if (!notChoppedPatch && (lastPatch->c_corner[1] > -1 * cover->data->trapezoid_edges[num_layers - 1]) && (projectionOfCornerToBeam < beam_axis_lim))
             {
                 complementary_apexZ0 = lastPatch->superpoints[0].min;
                 if (lastPatch->triangleAcceptance && !repeat_original)
@@ -308,7 +308,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 double previous_z_top_min = -999;
 
                 while (!(white_space_height <= 0 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000001) &&
-                       ((cover->patches[lastPatchIndex].c_corner[1] > -1 * cover->env->trapezoid_edges[num_layers - 1]) ||
+                       ((cover->patches[lastPatchIndex].c_corner[1] > -1 * cover->data->trapezoid_edges[num_layers - 1]) ||
                         (white_space_height > 0)) &&
                        (current_z_top_index < (int)(cover->data->n_points[num_layers - 1]) &&
                         !(repeat_patch) && !(repeat_original)))
@@ -746,16 +746,16 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
 
         for (index_type j = 0; j < row_list_size; j++)
         {
-            if (fabs((row_list[j] + cover->env->trapezoid_edges[i])) < lbVal)
+            if (fabs((row_list[j] + cover->data->trapezoid_edges[i])) < lbVal)
             {
                 left_bound = j;
-                lbVal = fabs((row_list[j] + cover->env->trapezoid_edges[i]));
+                lbVal = fabs((row_list[j] + cover->data->trapezoid_edges[i]));
             }
 
-            if (fabs((row_list[j] - cover->env->trapezoid_edges[i])) < rbVal)
+            if (fabs((row_list[j] - cover->data->trapezoid_edges[i])) < rbVal)
             {
                 right_bound = j;
-                rbVal = fabs((row_list[j] - cover->env->trapezoid_edges[i]));
+                rbVal = fabs((row_list[j] - cover->data->trapezoid_edges[i]));
             }
         }
 
@@ -827,9 +827,12 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
         initWedgeSuperPoint(&init_patch[init_patch_size++], temp, temp_size);
     }
 
-    // once all points are added to init_patch, add the entire patch to the cover (first init it)
+    // once all points are added to patch new_patch, add the entire patch to the cover (first init it)
     wedgePatch new_patch;
-    //init_patch will disappear from memory once makePatch_alignedToLine terminates, so we don't want wedgePatch_init to point superpoints to it. 
-    wedgePatch_init(&new_patch, cover->env, init_patch, init_patch_size, apexZ0);
+    //new_patch will disappear from memory once makePatch_alignedToLine terminates, so we don't want wedgePatch_init to point superpoints to it. 
+    //init_patch will also disappear for the same scope reasons
+    wedgePatch_init(&new_patch, cover->env, init_patch, init_patch_size, apexZ0, cover->data);
+    //indeed, add_patch is working fine as it is copying the values over: cover->patches[cover->n_patches] = *curr_patch;
+    //doesn't matter how wedgePatch_init works since we're dereferencing the patch to store by value in an array belonging to cover.
     add_patch(cover, &new_patch);
 }
