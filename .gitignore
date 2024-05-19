@@ -16,5 +16,6 @@ wedgeData_v3_128.txt*
 
 # output files
 C/cOutput.txt
+C/cOutputMain.txt
 CPP/cppOutput.txt
 CPP/pythonOutput.txt
