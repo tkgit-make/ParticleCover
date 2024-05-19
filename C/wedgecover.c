@@ -1,9 +1,8 @@
 #include "header.h"
 
-void initWedgeCover(wedgeCover *wc, Environment *envI, DataSet *dataI)
+void initWedgeCover(wedgeCover *wc, DataSet *dataI)
 {
     wc->n_patches = 0;
-    wc->env = envI;
     wc->data = dataI;
     /*
     for (index_type i = 0; i < MAX_PATCHES; i++) {
@@ -831,7 +830,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
     wedgePatch new_patch;
     //new_patch will disappear from memory once makePatch_alignedToLine terminates, so we don't want wedgePatch_init to point superpoints to it. 
     //init_patch will also disappear for the same scope reasons
-    wedgePatch_init(&new_patch, cover->env, init_patch, init_patch_size, apexZ0, cover->data);
+    wedgePatch_init(&new_patch, init_patch, init_patch_size, apexZ0, cover->data);
     //indeed, add_patch is working fine as it is copying the values over: cover->patches[cover->n_patches] = *curr_patch;
     //doesn't matter how wedgePatch_init works since we're dereferencing the patch to store by value in an array belonging to cover.
     add_patch(cover, &new_patch);

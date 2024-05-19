@@ -56,7 +56,7 @@ index_type Event_load(Event *e)
 
     e->count = n;
 
-    initEnvironment(&e->env, 100.0, 15.0, numUniqueRadii, uniqueRadii);
+    //initEnvironment(&e->env, 100.0, 15.0, numUniqueRadii, uniqueRadii);
 
     return n > 0;
 }

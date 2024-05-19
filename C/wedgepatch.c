@@ -1,8 +1,7 @@
 #include "header.h"
 
-void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *dsI)
+void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *dsI)
 {
-    wp->env = envI;    // accessing values in wp and changing the pointer of env to point to where envI points to
     wp->ds = dsI; //needed for trapezoid edges. the only purpose of having a dataset object is to access the trapezoid edges which is an array of xi, or xi+0.0001. 
     wp->end_layer = -1; // end_layer not a pointer, accessing its value.
     wp->left_end_layer = -1;
@@ -70,7 +69,7 @@ float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, 
     return z_i + (z_j - z_i) * radii_leverArm;
 }
 
-float straightLineProjector(float z_top, float z_j, int j, Environment *env)
+float straightLineProjector(float z_top, float z_j, int j)
 {
     float temp = radii_leverArm[j - 1];
     return z_top - (z_top - z_j) * temp;

@@ -66,18 +66,12 @@ typedef struct
 
 typedef struct
 {
-} Environment;
-
-typedef struct
-{
     Point points[MAX_POINTS_IN_EVENT];
     index_type count;
-    Environment env;
 } Event;
 
 typedef struct
 {
-    Environment *env;
     Point array[MAX_LAYERS][MAX_POINTS_FOR_DATASET]; // 2D array of points
     int n_points[MAX_LAYERS];                        // number of points in each layer of the array
     //index_type total_points; //not used
@@ -87,7 +81,6 @@ typedef struct
 
 typedef struct
 {
-    Environment *env;
     float slope;
     float points[MAX_POINTS_IN_LINE];
     index_type num_points; // number of points in the line
@@ -118,7 +111,6 @@ typedef struct
 
 typedef struct
 {
-    Environment* env;
     DataSet* ds;
     int end_layer;
     int left_end_layer;
@@ -157,7 +149,6 @@ typedef struct
 {
     index_type n_patches;
     wedgePatch patches[MAX_PATCHES];
-    Environment *env;
     DataSet *data;
     // Line fitting_lines[MAX_LINES]; //only used in visualization
     //wedgeSuperPoint *superPoints[MAX_SUPERPOINTS_IN_COVER]; //not used
@@ -169,23 +160,22 @@ extern int Point_load(Point *p, float *radius);
 // extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
 // extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
 extern index_type Event_load(Event *e);
-extern void initEnvironment(Environment *env, float top_layer_limI, float beam_axis_limI, int num_layersI, float *radiiI);
 extern void initDataSetBase(DataSet *ds);
-extern void initDataSetExtra(DataSet *ds, Environment *envI);
+extern void initDataSetExtra(DataSet *ds);
 extern void importData(DataSet *ds, Point *data_array, int data_array_size);
 extern void addBoundaryPoint(DataSet *ds, float offset);
-extern void initLine(Line *line, Environment *envI, float start, float slopeI);
+extern void initLine(Line *line, float start, float slopeI);
 extern void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 extern int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
 extern void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
-extern void wedgePatch_init(wedgePatch *wp, Environment *envI, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *ds);
+extern void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *ds);
 extern float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k);
-extern float straightLineProjector(float z_top, float z_j, int j, Environment *env);
+extern float straightLineProjector(float z_top, float z_j, int j);
 extern void getParallelograms(wedgePatch *wp);
 extern void getShadows(wedgePatch *wp, float zTopMin, float zTopMax);
 extern void get_acceptanceCorners(wedgePatch *wp);
 extern void get_end_layer(wedgePatch *wp);
-extern void initWedgeCover(wedgeCover *wc, Environment *envI, DataSet *dataI);
+extern void initWedgeCover(wedgeCover *wc, DataSet *dataI);
 extern int comparePoints(const void *a, const void *b);
 extern void add_patch(wedgeCover *cover, wedgePatch *curr_patch);
 extern void delete_patch(wedgeCover *cover, int index);

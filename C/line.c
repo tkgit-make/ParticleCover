@@ -1,8 +1,7 @@
 #include "header.h"
 
-void initLine(Line *line, Environment *envI, float start, float slopeI)
+void initLine(Line *line, float start, float slopeI)
 {
-    line->env = envI; // line->env points to envI
     line->slope = slopeI;
 
     // adding the start point

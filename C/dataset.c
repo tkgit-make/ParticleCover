@@ -7,7 +7,7 @@ void initDataSetBase(DataSet *ds)
     memset(ds->n_points, 0, sizeof(ds->n_points)); // initialize n_points with 0
 }
 
-void initDataSetExtra(DataSet *ds, Environment *envI)
+void initDataSetExtra(DataSet *ds)
 {
     //ds->total_points = 0; //not used
     ds->trapezoid_edges[0] = 22;
@@ -16,7 +16,6 @@ void initDataSetExtra(DataSet *ds, Environment *envI)
     ds->trapezoid_edges[3] = 43;
     ds->trapezoid_edges[4] = 50;
 
-    ds->env = envI;
     memset(ds->n_points, 0, sizeof(ds->n_points));
 
     for (index_type i = 0; i < MAX_LAYERS; i++)
