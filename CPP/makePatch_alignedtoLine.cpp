@@ -1713,6 +1713,6 @@ int main()
     Tester test;
     vector<int> wedgesToTest;
     wedgesToTest.push_back(0);
-    wedgesToTest.push_back(128);
+    wedgesToTest.push_back(6400);
     test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };
