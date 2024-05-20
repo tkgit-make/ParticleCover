@@ -149,9 +149,7 @@ typedef struct
     bool real_patch_list[MAX_PATCHES];
 } wedgeCover;
 
-extern int Point_load(Point *p, float *radius);
-// extern void Point_init(Point* p, int layerNum, float rad, float ph, float zVal);
-// extern void Event_init(Event* e, Environment* envI, Point* pointsArray, int numPoints);
+extern int Point_load(Point *p);
 extern index_type Event_load(Event *e);
 extern void initDataSet(DataSet *ds);
 extern void importData(DataSet *ds, Point *data_array, int data_array_size);
@@ -178,4 +176,3 @@ extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminou
 
 extern int floatCompare(const void *a, const void *b);
 
-//cm to microns x10000 for points.

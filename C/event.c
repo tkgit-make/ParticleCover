@@ -44,8 +44,9 @@ index_type Event_load(Event *e)
 
     while ((ch == ',') && (n < MAX_POINTS_IN_EVENT))
     {
-        if (Point_load(&e->points[n], &radius) < 1)
+        if (Point_load(&e->points[n]) < 1)
             break;
+        radius = e->points[n].radius;
         if (isUniqueRadius(radius, uniqueRadii, numUniqueRadii))
         {
             uniqueRadii[numUniqueRadii++] = radius;

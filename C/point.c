@@ -9,11 +9,11 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
 }
 */
 
-int Point_load(Point *p, float *radius)
+int Point_load(Point *p)
 {
+
     if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
     {
-        *radius = p->radius; // set the radius via pointer
         return 1;            // successful load
     }
 
