@@ -16,9 +16,4 @@ void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z
 
     pg->z1_min = z1_minI;
     pg->z1_max = z1_maxI;
-
-    if ((pg->z1_min > 22.0) || (pg->z1_max < -22.0))
-    {
-        printf("z1_min or z1_max is out of expected range of +-22");
-    }
 }

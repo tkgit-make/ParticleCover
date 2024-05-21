@@ -4,15 +4,6 @@ void initWedgeCover(wedgeCover *wc, DataSet *dataI)
 {
     wc->n_patches = 0;
     wc->data = dataI;
-    /*
-    for (index_type i = 0; i < MAX_PATCHES; i++) {
-        wc -> all_patches[i] = NULL;
-        wc -> real_patch_list[i] = false;
-    }
-    for (index_type i = 0; i < MAX_SUPERPOINTS_IN_COVER; i++) {
-        wc -> superPoints[i] = NULL;
-    }
-    */
 }
 
 void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
@@ -76,7 +67,7 @@ void delete_patch(wedgeCover *cover, int index)
 }
 
 // can't provide default parameters
-index_type get_index_from_z(DataSet *data, int layer, float z_value, int alignment)
+index_type get_index_from_z(DataSet *data, int layer, float z_value)
 {
     // c doesn't support string comparison directly, using integer comparison for effiency
     // CLOSEST = 11, ABOVE = 12, BELOW = 13
@@ -93,30 +84,7 @@ index_type get_index_from_z(DataSet *data, int layer, float z_value, int alignme
         }
     }
 
-    if (alignment == CLOSEST)
-    {
-        return index;
-    }
-
-    if (alignment == ABOVE)
-    {
-        if (data->array[layer][index].z > z_value)
-        {
-            return index;
-        }
-        // potential bounds issue
-        return index + 1;
-    }
-
-    if (alignment == BELOW)
-    {
-        if (data->array[layer][index].z < z_value)
-        {
-            return index;
-        }
-        return index - 1;
-    }
-
+    //alignment always equals closest so we can just return index
     return index;
 }
 
@@ -324,7 +292,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                            complementary_a, cover->patches[lastPatchIndex].a_corner[1],
                            complementary_b, cover->patches[lastPatchIndex].b_corner[1]);
 
-                    current_z_top_index = get_index_from_z(cover->data, num_layers - 1, z_top_min, CLOSEST); // CLOSEST was default param in C++
+                    current_z_top_index = get_index_from_z(cover->data, num_layers - 1, z_top_min); 
                     printf("current white_space_height: %f\n", white_space_height);
                     printf("counter: %d counterUpshift: %d\n", counter, counterUpshift);
                     printf("orig_ztop: %d orig_z_top_min: %f\n", current_z_top_index, z_top_min);
@@ -337,7 +305,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
-                        current_z_i_index[i] = get_index_from_z(cover->data, i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, i + 1), CLOSEST);
+                        current_z_i_index[i] = get_index_from_z(cover->data, i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, i + 1));
                     }
 
                     if (z_top_min == previous_z_top_min)
