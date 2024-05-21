@@ -90,8 +90,8 @@ index_type get_index_from_z(DataSet *data, int layer, float z_value)
 
 // not implementing the logic corresponding to show = true (that would involve Line Generators, etc)
 // Line Generator and its accompanying methods have been coded, but we are not going to implement show=true case here as main method passes with show=false.
-// MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES defined as 33
-void solve(wedgeCover *cover, int lining, float apexZ0, int ppl, int nlines, bool leftRight)
+// lining is always MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES. assumes this in code
+void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
 {
     for (index_type i = 0; i < num_layers; i++)
     {
@@ -117,11 +117,7 @@ void solve(wedgeCover *cover, int lining, float apexZ0, int ppl, int nlines, boo
             }
         }
     }
-
-    if (lining == MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES)
-    {
-        makePatches_ShadowQuilt_fromEdges(cover, apexZ0, 1, ppl, leftRight);
-    }
+    makePatches_ShadowQuilt_fromEdges(cover, apexZ0, 1, ppl, leftRight);
 }
 
 void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight)

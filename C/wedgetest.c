@@ -45,7 +45,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         wedgeCover cover;
         initWedgeCover(&cover, &data);
 
-        solve(&cover, 33, apexZ0, ppl, 100, leftRightAlign); // solve modifies cover
+        solve(&cover, apexZ0, ppl, 100, leftRightAlign); // solve modifies cover
 
         // num_covers and num_all_patches not needed
 
