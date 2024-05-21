@@ -2,12 +2,6 @@
 
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
 {
-    if (pointCount != 16 && pointCount != 32 && pointCount != 31)
-    {
-        printf("This patch does not have 16 or 32/31 points in each layer");
-        exit(6);
-    }
-
     wsp->point_count = pointCount;
     wsp->min = FLT_MAX;
     wsp->max = -FLT_MAX;

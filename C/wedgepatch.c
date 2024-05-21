@@ -15,12 +15,6 @@ void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoi
     wp->shadow_fromTopToInnermost_topR_jL = 0;
     wp->shadow_fromTopToInnermost_topR_jR = 0;
 
-    if (superpoint_count != num_layers)
-    {
-        printf("The patch layers does not match environment layers.");
-        exit(7);
-    }
-
     for (size_t i = 0; i < superpoint_count; i++)
     {                                          // size_t objects should only be non-negative and are more performant than ints
         wp->superpoints[i] = superpointsI[i]; // wp->superpoints is an array of pointers. Making the elements point to the elements in superpointsI.
@@ -45,7 +39,7 @@ float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, 
     }
     else
     {
-        radius_i = radii[i - 1]; //[] directly accessing value
+        radius_i = radii[i - 1]; 
     }
     if (j == 0)
     {
@@ -122,12 +116,6 @@ void getParallelograms(wedgePatch *wp)
             p->z1_max = z1_max;
         }
     }
-    // clear out any remaining old parallelograms if the new count is less than the old
-    // filling a block of memory with a certain value: 0. applies to every field within the parallelogram structure. for pointers, this essentially means they point to null.
-    for (int i = wp->parallelogram_count; i < previous_count && i < MAX_PARALLELOGRAMS_PER_PATCH; i++)
-    {
-        memset(&wp->parallelograms[i], 0, sizeof(Parallelogram));
-    }
 }
 
 void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
@@ -188,42 +176,6 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
         }
     }
 }
-
-/*
-void getParallelograms_v1(wedgePatch* wp) {
-    float top_layer_zmin = max(wp->superpoints[wp->superpoint_count - 1]->min, -1 * wp->env->top_layer_lim);
-    float top_layer_zmax = min(wp->superpoints[wp->superpoint_count - 1]->max, wp->env->top_layer_lim);
-
-    if (top_layer_zmin > top_layer_zmax) {
-        top_layer_zmin = wp->env->top_layer_lim + 1;
-        top_layer_zmax = top_layer_zmin;
-    }
-
-    wp->parallelogram_v1_count = 0;
-
-    for (int i = 0; i < wp->superpoint_count - 1; i++) {
-        int j = i + 1;
-
-        float z_j_min = wp->superpoints[i]->min;
-        float z_j_max = wp->superpoints[i]->max;
-
-        float a = straightLineProjector(top_layer_zmax, z_j_min, j, wp->env); //don't need to pass in the whole wp structure
-        float b = straightLineProjector(top_layer_zmax, z_j_max, j, wp->env);
-
-        float pSlope = wp->env->parallelogramSlopes[j - 1];
-
-        if (wp->parallelogram_v1_count < MAX_PARALLELOGRAMS_PER_PATCH) {
-            Parallelogram_v1* p = &wp->parallelograms_v1[wp->parallelogram_v1_count++]; //making a pointer to the address of the first empty element in the array
-            p->layer_num = j; //then dereferencing and assigning values to the properties
-            p->pSlope = pSlope;
-            p->shadow_topR_jL = a;
-            p->shadow_topR_jR = b;
-            p->top_layer_zmin = top_layer_zmin;
-            p->top_layer_zmax = top_layer_zmax;
-        }
-    }
-}
-*/
 
 void get_acceptanceCorners(wedgePatch *wp)
 {

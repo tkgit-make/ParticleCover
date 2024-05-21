@@ -248,7 +248,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     printf("z_top_min before: %f superpoints[self.env.num_layers-1].min: %f\n", z_top_min, lastPatch->superpoints[num_layers - 1].min);
                     z_top_min = max(-1 * top_layer_lim, lastPatch->superpoints[num_layers - 1].min);
                 }
-                // will need to revisit parameters when we write this method
+
                 makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
                 // updating the last patch index because makePatch_alignedToLine will add more patches to the patches array. Should revisit after writing method
                 // makePatch_alignedToLine will call the add patch method, so we must get a new last patch index.
@@ -295,9 +295,6 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     index_type current_z_i_index[MAX_LAYERS];
                     index_type new_z_i_index[MAX_LAYERS];
-                    // initalizing with 0s, revisit if this is needed
-                    // memset(current_z_i_index, 0, sizeof(current_z_i_index));
-                    // memset(new_z_i_index, 0, sizeof(new_z_i_index));
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
@@ -343,10 +340,10 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     }
 
                     for (index_type i = 0; i < num_layers; i++)
-                    { // replaced loop variables with macro index_type. made index_type unsigned int.
+                    { 
                         new_z_i_index[i] = max(new_z_i_index[i], 0.0f);
                     }
-                    float new_z_i[MAX_LAYERS]; // unsigned integer.
+                    float new_z_i[MAX_LAYERS];
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
