@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "wedgeCover::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-wedgeCover-Debug-41b4b43f5149d75032c0.json",
+					"jsonFile" : "target-wedgeCover-Debug-c24dc91115b30358f545.json",
 					"name" : "wedgeCover",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/tanish/CLionProjects/wedgeCover/cmake-build-debug",
-		"source" : "/Users/tanish/CLionProjects/wedgeCover"
+		"build" : "/Users/tanish/Documents/GitHub/ParticleCover/CPP/wedgeCover/cmake-build-debug",
+		"source" : "/Users/tanish/Documents/GitHub/ParticleCover/CPP/wedgeCover"
 	},
 	"version" : 
 	{
