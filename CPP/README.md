@@ -7,65 +7,65 @@ The following sections outline the major changes.
 The following code block (lines 1779 - 1814) is used to output key information about patches to [cppOutput.txt](wedgeCover%2Fcmake-build-debug%2FcppOutput.txt). The two main pieces of information are the a, b, c, and d corners of the patches, and the points within the superpoints of all patches in each wedge. 
 ```c++
 for(int i = 0; i < cover.patches.size(); i++)
-            {
-                myfile << "Patch " << endl;
-                //myfile << fixed;
-                //myfile.precision(4);
-                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000) << endl;
-                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000) << endl;
-                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000) << endl;
-                myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jR * 10000) << endl;
+{
+    myfile << "Patch " << endl;
+    //myfile << fixed;
+    //myfile.precision(4);
+    myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000) << endl;
+    myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000) << endl;
+    myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000) << endl;
+    myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jR * 10000) << endl;
 
-                for(int j = 0; j < cover.patches[i].superpoints.size(); j++)
-                {
-                    myfile << "Superpoint " << endl;
-                    for(int r = 0; r < cover.patches[i].superpoints[j].points.size(); r++)
-                    {
-                        //myfile << fixed;
-                        //myfile.precision(4);
-                        Point currentPt = cover.patches[i].superpoints[j].points[r];
-                        myfile << currentPt.layer_num << " " <<  currentPt.phi << " " << int(currentPt.radius);
-                        //myfile << fixed;
-                        //myfile.precision(4);
-                        myfile << " " << currentPt.z << endl;
-                    }
-                }
-            }
+    for(int j = 0; j < cover.patches[i].superpoints.size(); j++)
+    {
+        myfile << "Superpoint " << endl;
+        for(int r = 0; r < cover.patches[i].superpoints[j].points.size(); r++)
+        {
             //myfile << fixed;
             //myfile.precision(4);
+            Point currentPt = cover.patches[i].superpoints[j].points[r];
+            myfile << currentPt.layer_num << " " <<  currentPt.phi << " " << int(currentPt.radius);
+            //myfile << fixed;
+            //myfile.precision(4);
+            myfile << " " << currentPt.z << endl;
+        }
+    }
+}
+//myfile << fixed;
+//myfile.precision(4);
 
-            for(int i = 0; i < cover.patches.size(); i++)
-            {
-                myfile << "[" << round(cover.patches[i].a_corner[0] * 10000) << ", " << round(cover.patches[i].a_corner[1] * 10000) << "]" << endl;
-                myfile << "[" << round(cover.patches[i].b_corner[0] * 10000) << ", " << round(cover.patches[i].b_corner[1] * 10000) << "]" << endl;
-                myfile << "[" << round(cover.patches[i].c_corner[0] * 10000) << ", " << round(cover.patches[i].c_corner[1] * 10000) << "]" << endl;
-                myfile << "[" << round(cover.patches[i].d_corner[0] * 10000) << ", " << round(cover.patches[i].d_corner[1] * 10000) << "]" << endl;
-                myfile << endl;
-            }
+for(int i = 0; i < cover.patches.size(); i++)
+{
+    myfile << "[" << round(cover.patches[i].a_corner[0] * 10000) << ", " << round(cover.patches[i].a_corner[1] * 10000) << "]" << endl;
+    myfile << "[" << round(cover.patches[i].b_corner[0] * 10000) << ", " << round(cover.patches[i].b_corner[1] * 10000) << "]" << endl;
+    myfile << "[" << round(cover.patches[i].c_corner[0] * 10000) << ", " << round(cover.patches[i].c_corner[1] * 10000) << "]" << endl;
+    myfile << "[" << round(cover.patches[i].d_corner[0] * 10000) << ", " << round(cover.patches[i].d_corner[1] * 10000) << "]" << endl;
+    myfile << endl;
+}
 ```
 
 The following code block (lines 1890 - 1909) is used to output the acceptance percentages for each wedge to [accOutputC.txt](wedgeCover%2Fcmake-build-debug%2FaccOutputC.txt). 
 ```c++
 ofstream accFile;
-        accFile.open ("accOutputC.txt", ios::out | ios::trunc);
+accFile.open ("accOutputC.txt", ios::out | ios::trunc);
 
-        for (int a = 0; a < mean_list.size(); a++)
-        {
-            vector<float> curVector = mean_list[a];
-            float average = reduce(curVector.begin(), curVector.end(), 0.0) / curVector.size();
-            accFile << "wedge " << a << endl;
-            if (average == 100.0)
-            {
-                accFile << "100.0" << endl;
+for (int a = 0; a < mean_list.size(); a++)
+{
+    vector<float> curVector = mean_list[a];
+    float average = reduce(curVector.begin(), curVector.end(), 0.0) / curVector.size();
+    accFile << "wedge " << a << endl;
+    if (average == 100.0)
+    {
+        accFile << "100.0" << endl;
 
-            }
-            else
-            {
-                accFile << average << endl;
-            }
-        }
+    }
+    else
+    {
+        accFile << average << endl;
+    }
+}
 
-        accFile.close();
+accFile.close();
 ```
 
 ## Loop Condition Changes
