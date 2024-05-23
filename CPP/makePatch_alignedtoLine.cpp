@@ -1743,7 +1743,7 @@ public:
 
         for(int k = wedges[0]; k < wedges[1]; k++)
         {
-            cout << "wedge: " << k << endl;
+            cout << "wedge " << k << endl;
             myfile << "wedge " << k << endl;
 
             Environment env = all_data[k].env;
@@ -1785,6 +1785,8 @@ public:
                 myfile << "Patch " << endl;
                 //myfile << fixed;
                 //myfile.precision(4);
+                myfile << std::fixed; 
+                myfile.precision(0);
                 myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jL * 10000) << endl;
                 myfile << round(cover.patches[i].shadow_fromTopToInnermost_topL_jR * 10000) << endl;
                 myfile << round(cover.patches[i].shadow_fromTopToInnermost_topR_jL * 10000) << endl;
@@ -1795,6 +1797,9 @@ public:
                     myfile << "Superpoint " << endl;
                     for(int r = 0; r < cover.patches[i].superpoints[j].points.size(); r++)
                     {
+
+                        myfile << std::fixed; 
+                        myfile.precision(4);
                         //myfile << fixed;
                         //myfile.precision(4);
                         Point currentPt = cover.patches[i].superpoints[j].points[r];
@@ -1807,7 +1812,7 @@ public:
             }
             //myfile << fixed;
             //myfile.precision(4);
-
+            myfile.precision(0);
             for(int i = 0; i < cover.patches.size(); i++)
             {
                 myfile << "[" << round(cover.patches[i].a_corner[0] * 10000) << ", " << round(cover.patches[i].a_corner[1] * 10000) << "]" << endl;
@@ -1949,6 +1954,6 @@ int main()
     Tester test;
     vector<int> wedgesToTest;
     wedgesToTest.push_back(0);
-    wedgesToTest.push_back(6400);
+    wedgesToTest.push_back(128);
     test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.025, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };

@@ -50,7 +50,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
                 for (int r = 0; r < cover.patches[i].superpoints[j].point_count; r++)
                 {
                     Point currentPt = cover.patches[i].superpoints[j].points[r];
-                    fprintf(myfile, "%d %g %d %g\n",
+                    fprintf(myfile, "%d %.4f %d %.4f\n",
                             currentPt.layer_num,
                             currentPt.phi,
                             (int)currentPt.radius,

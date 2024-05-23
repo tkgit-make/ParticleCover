@@ -145,7 +145,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
         index_type nPatchesInColumn = 0;
         float projectionOfCornerToBeam = 0;
 
-        while ((c_corner > -1 * cover->data->trapezoid_edges[num_layers - 1]) && (projectionOfCornerToBeam < beam_axis_lim))
+        while((c_corner > -1 * cover->data->trapezoid_edges[num_layers - 1]) && (nPatchesInColumn<100000000) && (projectionOfCornerToBeam < beam_axis_lim))
         {
             nPatchesInColumn++;
             printf("%f %d %f %d\n", apexZ0, ppl, z_top_max, leftRight);
@@ -270,9 +270,9 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 index_type current_z_top_index = -1;
                 double previous_z_top_min = -999;
 
-                while (!(white_space_height <= 0 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000001) &&
+                while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.0000005) &&
                        ((cover->patches[lastPatchIndex].c_corner[1] > -1 * cover->data->trapezoid_edges[num_layers - 1]) ||
-                        (white_space_height > 0)) &&
+                        (white_space_height > 0.0000005)) &&
                        (current_z_top_index < (int)(cover->data->n_points[num_layers - 1]) &&
                         !(repeat_patch) && !(repeat_original)))
                 {
@@ -523,17 +523,18 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                                           (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topR_jL, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
                 float original_topL_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
-                bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && (original_topL_jL < apexZ0) &&
-                                             (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topL_jL, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
-
+                
+                bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001) &&
+                                             (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topL_jL, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
+                
                 float complementary_topR_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+                
                 bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) &&
                                                (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
                 float complementary_topL_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
-                //CPP Old: bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
-                //CPP New: bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < 0.0001) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
-                bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && (complementary_topL_jR - apexZ0 < 0.0001) &&
+                
+                bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && (complementary_topL_jR - apexZ0 < -0.0001) &&
                                                   (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topL_jR, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
                 float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
@@ -584,7 +585,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 }
 
                 //while (((horizontalShiftTop > 0 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
-                while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
+                while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0.000001 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
                 {
                     printf("horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
 
