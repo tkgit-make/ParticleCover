@@ -1340,8 +1340,6 @@ public:
                         cout << "originalPartialTop: " << originalPartialTop << " complementaryPartialTop: " << complementaryPartialTop << " originalPartialBottom: " << originalPartialBottom << " complementaryPartialBottom: " << complementaryPartialBottom << " " << original_topR_jL << " " << original_topL_jL << " " << complementary_topR_jR << " " << complementary_topL_jR << " h orizontalOverlapTop: " << horizontalOverlapTop << " horizontalOverlapBottom: " << horizontalOverlapBottom << endl;
                     }
 
-                    //remove currentLoopCounter
-                    int currentLoopCounter = 0;
                     // while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
                     while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0.000001 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
                     {
@@ -1399,12 +1397,6 @@ public:
                         makeHorizontallyShiftedPatch = true;
 
                         cout << "updated_horizontalShifts: " << horizontalShiftTop << " " << horizontalShiftBottom << " shifted_Align: " << shifted_Align << endl;
-                        currentLoopCounter += 1;
-
-                        if (currentLoopCounter > 25)
-                        {
-                            cout << "stuck" << endl;
-                        }
                     }
 
                     if (makeHorizontallyShiftedPatch)
@@ -1687,7 +1679,7 @@ public:
         if(wedges[1] - wedges[0] > 50)
         {
             show_acceptance_of_cover = false;
-            z0_spacing = 0.2; // Fix back to 0.2
+            z0_spacing = 0.2;
         }
 
         vector<int> num_covers;
@@ -1750,7 +1742,7 @@ public:
 
             if(show_acceptance_of_cover)
             {
-                cout << "unimplemented" << endl; //fix
+                cout << "unimplemented" << endl;
                 throw "show_acceptance_of_cover unimplemented";
             }
             if(uniform_N_points == false)
