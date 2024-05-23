@@ -1956,4 +1956,5 @@ int main()
     wedgesToTest.push_back(0);
     wedgesToTest.push_back(128);
     test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.025, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
+    //std::cout << "Size of float in C++: " << sizeof(float) << " bytes" << std::endl;
 };

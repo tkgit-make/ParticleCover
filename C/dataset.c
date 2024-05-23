@@ -77,6 +77,6 @@ void addBoundaryPoint(DataSet *ds, float offset)
 
     for (index_type i = 0; i < num_layers; i++)
     {
-        ds->trapezoid_edges[i] += offset; //
+        ds->trapezoid_edges[i] += offset; 
     }
 }
