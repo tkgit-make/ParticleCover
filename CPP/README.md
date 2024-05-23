@@ -4,7 +4,7 @@ While translating the algorithm from Python to C++, a number of bugs arose. Thes
 The following sections outline the major changes. 
 
 ## Text File Outputs
-The following code block (lines 1779 - 1814) is used to output key information about patches to [cppOutput.txt](wedgeCover%2Fcmake-build-debug%2FcppOutput.txt). The two main pieces of information are the a, b, c, and d corners of the patches, and the points within the superpoints of all patches in each wedge. 
+The following code block (lines 1779 - 1814) is used to output key information about patches to [cppOutput.txt](wedgeCover/cmake-build-debug/cppOutput.txt). The two main pieces of information are the a, b, c, and d corners of the patches, and the points within the superpoints of all patches in each wedge. 
 ```c++
 for(int i = 0; i < cover.patches.size(); i++)
 {
@@ -44,7 +44,7 @@ for(int i = 0; i < cover.patches.size(); i++)
 }
 ```
 
-The following code block (lines 1890 - 1909) is used to output the acceptance percentages for each wedge to [accOutputC.txt](wedgeCover%2Fcmake-build-debug%2FaccOutputC.txt). 
+The following code block (lines 1890 - 1909) is used to output the acceptance percentages for each wedge to [accOutputC.txt](wedgeCover/cmake-build-debug/accOutputC.txt). 
 ```c++
 ofstream accFile;
 accFile.open ("accOutputC.txt", ios::out | ios::trunc);
