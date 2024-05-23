@@ -9,6 +9,8 @@ python/temp_image_dir
 
 *.o
 
+.vscode/
+
 CPP/makePatch
 CPP/makefile:Zone.Identifier
 

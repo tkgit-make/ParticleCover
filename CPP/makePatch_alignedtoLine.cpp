@@ -10,6 +10,8 @@
 #include <cmath>
 #include <ios>
 #include <iomanip>
+#include <numeric>
+#include <numeric>
 
 using namespace std;
 
@@ -147,7 +149,6 @@ public:
         }
     }
 
-    //potential off by one issue based on code output
     void addBoundaryPoint(float offset = 0.0001)
     {
         boundaryPoint_offset = offset;
@@ -214,6 +215,114 @@ public:
         }
     }
 };
+
+class lineSegment
+{
+public:
+
+    float min_z5_accepted;
+    float max_z5_accepted;
+
+    lineSegment(float min_z5_acceptedI, float max_z5_acceptedI)
+    {
+
+        if (min_z5_acceptedI > max_z5_acceptedI)
+        {
+            cout << "min_z5_accepted: " << min_z5_acceptedI << " max_z5_accepted: " << max_z5_acceptedI << endl;
+            throw "The minimum z5 accepted is greater than the maximum z5 accepted.";
+        }
+
+        min_z5_accepted = min_z5_acceptedI;
+        max_z5_accepted = max_z5_acceptedI;
+    }
+
+    static lineSegment intersection(Environment env, vector<lineSegment> lineSegments, bool forParallelograms)
+    {
+        if (forParallelograms)
+        {
+            if (lineSegments.size() != env.num_layers - 1)
+            {
+                throw "The number of line segments does not match the number of layers in the environment minus 1";
+            }
+        }
+        else
+        {
+            if (lineSegments.size() != env.num_layers)
+            {
+                throw "The number of line segments does not match the number of layers in the environment";
+            }
+        }
+
+        vector<float> all_minimums;
+        vector<float> all_maximums;
+
+        for(int i = 0; i < lineSegments.size(); i++)
+        {
+            all_minimums.push_back(lineSegments[i].min_z5_accepted);
+            all_maximums.push_back(lineSegments[i].max_z5_accepted);
+        }
+
+
+        float max_of_mins = *max_element(all_minimums.begin(), all_minimums.end());
+        float min_of_maxes = *min_element(all_maximums.begin(), all_maximums.end());
+
+        if (max_of_mins > min_of_maxes)
+        {
+            return lineSegment(max_of_mins, max_of_mins);
+        }
+        else
+        {
+            return lineSegment(max_of_mins, min_of_maxes);
+        }
+    }
+
+    static float insideFunction(vector<lineSegment> sorted_lineSegments, float total_measure = 0.0)
+    {
+        if (sorted_lineSegments.size() != 1)
+        {
+            lineSegment first = sorted_lineSegments[0];
+            lineSegment second = sorted_lineSegments[1];
+
+            if (second.min_z5_accepted > first.max_z5_accepted)
+            {
+                total_measure += first.max_z5_accepted - first.min_z5_accepted;
+            }
+            else
+            {
+                lineSegment unionLine = lineSegment(first.min_z5_accepted, max(first.max_z5_accepted, second.max_z5_accepted));
+                sorted_lineSegments[1] = unionLine;
+            }
+
+            sorted_lineSegments.erase(sorted_lineSegments.begin(),sorted_lineSegments.begin() + 1);
+
+            return insideFunction(sorted_lineSegments, total_measure);
+        }
+
+        else
+        {
+            total_measure += sorted_lineSegments[0].max_z5_accepted - sorted_lineSegments[0].min_z5_accepted;
+            return total_measure;
+        }
+    }
+
+    static struct lineComparison
+    {
+        bool operator()(lineSegment& a, lineSegment& b)  { return a.min_z5_accepted < b.min_z5_accepted; }
+    } lC;
+
+    static float unionOfLineSegments(vector<lineSegment> lineSegments)
+    {
+        float total_measure = 0.0;
+
+        sort(lineSegments.begin(), lineSegments.end(), lC);
+
+        total_measure = insideFunction(lineSegments);
+
+        return total_measure;
+    }
+};
+
+
 
 class LineGenerator
 {
@@ -295,6 +404,34 @@ public:
         {
             //cout << top_layer_zmin << " " << top_layer_zmax << endl;
         }
+    }
+
+    lineSegment crossSection(float z1)
+    {
+
+        if ((z1 < z1_min) || (z1 > z1_max))
+        {
+            return lineSegment(0.0, 0.0);
+        }
+        else if (z1 == z1_min)
+        {
+            return lineSegment(shadow_bottomL_jL, shadow_bottomL_jR);
+        }
+        else if (z1 == z1_max)
+        {
+            return lineSegment(shadow_bottomR_jL, shadow_bottomR_jR);
+        }
+
+        if (layer_num == 5)
+        {
+            return lineSegment(shadow_bottomL_jL, shadow_bottomL_jR);
+        }
+
+        float segment_max = shadow_bottomR_jR + (z1 - z1_max) / pSlope;
+
+        float segment_min = shadow_bottomR_jL + (z1 - z1_max) / pSlope;
+
+        return lineSegment(segment_min, segment_max);
     }
 };
 
@@ -891,7 +1028,7 @@ public:
             int nPatchesInColumn = 0;
             float projectionOfCornerToBeam = 0;
 
-            while((c_corner > -1 * env.trapezoid_edges[env.num_layers - 1]) && (projectionOfCornerToBeam < env.beam_axis_lim))
+            while((c_corner > -1 * env.trapezoid_edges[env.num_layers - 1]) && (nPatchesInColumn<100000000) && (projectionOfCornerToBeam < env.beam_axis_lim))
             {
                 nPatchesInColumn++;
                 cout << apexZ0 << " " << ppl << " " << z_top_max << " " << leftRight << endl;
@@ -970,7 +1107,7 @@ public:
                     int current_z_top_index = -1;
                     double previous_z_top_min = -999;
 
-                    while (!(white_space_height <= 0 && (previous_white_space_height >= 0)) && (abs(white_space_height) > 0.000001) && ((patches[patches.size() - 1].c_corner[1] > -1 * env.trapezoid_edges[env.num_layers - 1]) || (white_space_height > 0)) && (current_z_top_index < (int) (data->array[env.num_layers - 1].size() - 1)) && !(repeat_patch) && !(repeat_original))
+                    while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (abs(white_space_height) > 0.000005) && ((patches[patches.size() - 1].c_corner[1] > -1 * env.trapezoid_edges[env.num_layers - 1]) || (white_space_height > 0.000005)) && (current_z_top_index < (int) (data->array[env.num_layers - 1].size() - 1)) && !(repeat_patch) && !(repeat_original)) // check that this is ok: (abs(white_space_height) > 0.000005), white_space_height <= 0.0000005, white_space_height > 0.000005
                     {
                         cout << endl;
                         if(patches.size() > 2)
@@ -1156,11 +1293,12 @@ public:
                     float original_topR_jL = patches[patches.size() - 2].shadow_fromTopToInnermost_topR_jL;
                     bool originalPartialTop = (original_topR_jL > complementary_apexZ0) && (original_topR_jL < apexZ0) && (abs(patches[patches.size() - 2].straightLineProjectorFromLayerIJtoK(original_topR_jL,z_top_max,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
                     float original_topL_jL = patches[patches.size() - 2].shadow_fromTopToInnermost_topL_jL;
-                    bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && (original_topL_jL < apexZ0) && (abs(patches[patches.size() - 2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
+                    bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001) && (abs(patches[patches.size() - 2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
+                    //bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && (original_topL_jL < apexZ0) && (abs(patches[patches.size() - 2].straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
                     float complementary_topR_jR = patches[patches.size() - 1].shadow_fromTopToInnermost_topR_jR;
                     bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topR_jR,z_top_max,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
                     float complementary_topL_jR = patches[patches.size() - 1].shadow_fromTopToInnermost_topL_jR;
-                    bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < 0.0001) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
+                    bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < -0.0001) && (abs(patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,env.num_layers,0)) < 20 * env.beam_axis_lim);
                     //   complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) and (complementary_topL_jR < apexZ0) and (abs(self.patches[-1].straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min,1,self.env.num_layers,0))<20*self.env.beam_axis_lim)
                     // NOTE THAT (complementary_topL_jR - apexZ0) < 0.0001 is hack to avoid an infinite loop due to Wedge 42
                     float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
@@ -1206,7 +1344,10 @@ public:
                         cout << "originalPartialTop: " << originalPartialTop << " complementaryPartialTop: " << complementaryPartialTop << " originalPartialBottom: " << originalPartialBottom << " complementaryPartialBottom: " << complementaryPartialBottom << " " << original_topR_jL << " " << original_topL_jL << " " << complementary_topR_jR << " " << complementary_topL_jR << " h orizontalOverlapTop: " << horizontalOverlapTop << " horizontalOverlapBottom: " << horizontalOverlapBottom << endl;
                     }
 
-                    while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
+                    //remove currentLoopCounter
+                    int currentLoopCounter = 0;
+                    // while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
+                    while (((horizontalShiftTop > 0.000001 && originalPartialTop && complementaryPartialTop) || (horizontalShiftBottom > 0.000001 && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && (newGapTop < 0 || newGapBottom < 0))
                     {
                         cout << "horizontalShifts: " << horizontalShiftTop << " " << horizontalShiftBottom << " shifted_Align: " << shifted_Align << endl;
 
@@ -1262,6 +1403,12 @@ public:
                         makeHorizontallyShiftedPatch = true;
 
                         cout << "updated_horizontalShifts: " << horizontalShiftTop << " " << horizontalShiftBottom << " shifted_Align: " << shifted_Align << endl;
+                        currentLoopCounter += 1;
+
+                        if (currentLoopCounter > 25)
+                        {
+                            cout << "stuck" << endl;
+                        }
                     }
 
                     if (makeHorizontallyShiftedPatch)
@@ -1291,6 +1438,8 @@ public:
 
 	void makePatch_alignedToLine(float apexZ0 = 0, float z_top = -50, int ppl = 16, bool leftRight = true, bool float_middleLayers_ppl = false)
 	{
+        ofstream myfile;
+        myfile.open("wedge24cpp.txt",std::ios_base::app);
 		vector<wedgeSuperPoint> init_patch; 
 		int original_ppl = ppl; 
 		float alignmentAccuracy = 0.00001; 
@@ -1343,6 +1492,8 @@ public:
                     rbVal = abs((row_list[j] - env.trapezoid_edges[i] - env.boundaryPoint_offset));
 				}
 			}
+
+            myfile << left_bound << " " << right_bound << endl;
 
 			if ((float_middleLayers_ppl == true) && (i != 0) && (i != env.num_layers - 1))
 			{
@@ -1399,7 +1550,7 @@ public:
 				}
 			}
 		}
-
+        myfile.close();
         add_patch(wedgePatch(env, init_patch, apexZ0 = apexZ0));
     }
 
@@ -1540,7 +1691,7 @@ public:
         if(wedges[1] - wedges[0] > 50)
         {
             show_acceptance_of_cover = false;
-            z0_spacing = 0.2;
+            z0_spacing = 0.2; // Fix back to 0.2
         }
 
         vector<int> num_covers;
@@ -1549,14 +1700,13 @@ public:
         vector< vector<int> > PRF;
 
         string data_string = v + " events";
-        /*
+
         if(uniform_N_points != false)
         {
             data_string = "Uniform 1 points";
             wedges[0] = 0;
             wedges[1] = 1;
         }
-        */
 
         vector<float> zInnerLayer;
 
@@ -1567,16 +1717,16 @@ public:
 
         vector<float> z0Array;
 
-        for(float i = -1 * z0_luminousRegion; i < z0_luminousRegion + z0_spacing; i += z0_spacing)
+        for(float i = -1 * z0_luminousRegion; i < z0_luminousRegion; i += z0_spacing)
         {
             z0Array.push_back(i);
         }
 
-        vector< vector<int> > mean_list;
+        vector< vector<float> > mean_list;
 
         for(int i = 0; i < (wedges[1] - wedges[0]); i++)
         {
-            vector<int> vect(z0Array.size(), 0);
+            vector<float> vect(z0Array.size(), 0);
             mean_list.push_back(vect);
         }
 
@@ -1593,17 +1743,14 @@ public:
 
         for(int k = wedges[0]; k < wedges[1]; k++)
         {
-            cout << "wedge " << k << endl;
+            cout << "wedge: " << k << endl;
             myfile << "wedge " << k << endl;
 
             Environment env = all_data[k].env;
             vector<Point> points = all_data[k].list_of_Points;
-            
-            env = Environment(top_layer_cutoff, z0_luminousRegion);
-            //env.top_layer_lim = top_layer_cutoff;
-            //env.beam_axis_lim = z0_luminousRegion;
-            DataSet data(env);
 
+            env = Environment(top_layer_cutoff, z0_luminousRegion);
+            DataSet data(env);
 
             if(show_acceptance_of_cover)
             {
@@ -1620,7 +1767,7 @@ public:
                 vector<bool> vect(5, true);
                 //data.generateUniform(vect);
             }
-            
+
             data.addBoundaryPoint();
 
             wedgeCover cover(env, data);
@@ -1669,13 +1816,104 @@ public:
                 myfile << "[" << round(cover.patches[i].d_corner[0] * 10000) << ", " << round(cover.patches[i].d_corner[1] * 10000) << "]" << endl;
                 myfile << endl;
             }
+
+            // Acceptance calculator
+            for(int iz = 0; iz < z0Array.size(); iz++)
+            {
+                float z0 = z0Array[iz];
+                float percentage_accepted = 0;
+
+                if (acceptance_method == "Analytic")
+                {
+                    vector<lineSegment> list_of_z0intersections;
+                    vector<lineSegment> list_of_z0intersectionsCopy;
+
+                    for(int i = 0; i < cover.patches.size(); i++)
+                    {
+                        wedgePatch patch = cover.patches[i];
+
+                        vector<lineSegment> list_of_segs_z0Scan;
+
+                        for(int spLayer = 0; spLayer < patch.superpoints.size(); spLayer++)
+                        {
+                            wedgeSuperPoint SuPoint = patch.superpoints[spLayer];
+
+                            list_of_segs_z0Scan.push_back(lineSegment(min(patch.env.top_layer_lim,max(-patch.env.top_layer_lim, patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.min,0,spLayer+1,patch.env.num_layers))), max(-patch.env.top_layer_lim,min(patch.env.top_layer_lim, patch.straightLineProjectorFromLayerIJtoK(z0,SuPoint.max,0,spLayer+1,patch.env.num_layers)))));
+                        }
+
+                        lineSegment overlap_of_superpoints_z0Scan = lineSegment::intersection(patch.env, list_of_segs_z0Scan, false);
+                        list_of_z0intersections.push_back(overlap_of_superpoints_z0Scan);
+                    }
+
+                    list_of_z0intersectionsCopy = list_of_z0intersections;
+                    float total_measure = lineSegment::unionOfLineSegments(list_of_z0intersections);
+
+                    percentage_accepted = 100.0 * total_measure/(2.0 * cover.patches[cover.patches.size() - 1].env.top_layer_lim);
+
+                    if ((percentage_accepted < 99.0) && (abs(z0) < z0_luminousRegion))
+                    {
+                        cout << "wedge: " << k << " underEfficiency percentage_accepted: " << percentage_accepted << " z0: " << z0 << endl;
+                        z0Imperfect.push_back(z0);
+
+                        for (int z = 0; z < list_of_z0intersectionsCopy.size(); z++)
+                        {
+                            cout << "segment: " << list_of_z0intersectionsCopy[z].min_z5_accepted << " " << list_of_z0intersectionsCopy[z].max_z5_accepted << endl;
+                        }
+                    }
+                    if ((percentage_accepted > 100.0001) && (abs(z0) < z0_luminousRegion))
+                    {
+                        cout << "wedge: " << k << " overEfficiency percentage_accepted: " << percentage_accepted << " z0: " << z0 << endl;
+                        z0OverEfficiency.push_back(z0);
+                    }
+
+                    /*
+                    if (showZimperfect && show_acceptance_of_cover)
+                    {
+                        vector<float> zTopVal = {-1 * top_layer_cutoff, top_layer_cutoff};
+
+                        for(int z = 0; z < z0Imperfect.size(); z++)
+                        {
+                            float zImperfect = z0Imperfect[z];
+
+                            float z1Left = cover.patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(-top_layer_cutoff,zImperfect,env.num_layers,0,1);
+                            float z1Right = cover.patches[patches.size() - 1].straightLineProjectorFromLayerIJtoK(top_layer_cutoff,zImperfect,env.num_layers,0,1);
+                            vector<float> z1Val = {z1Left, z1Right};
+                        }
+                    }
+                    */
+                }
+
+                mean_list[ik][iz] = mean_list[ik][iz] + percentage_accepted;
+            }
+
             ik++;
         }
 
         myfile.close();
 
+        ofstream accFile;
+        accFile.open ("accOutputC.txt", ios::out | ios::trunc);
+
+        for (int a = 0; a < mean_list.size(); a++)
+        {
+            vector<float> curVector = mean_list[a];
+            float average = reduce(curVector.begin(), curVector.end(), 0.0) / curVector.size();
+            accFile << "wedge " << a << endl;
+            if (average == 100.0)
+            {
+                accFile << "100.0" << endl;
+
+            }
+            else
+            {
+                accFile << average << endl;
+            }
+        }
+
+        accFile.close();
     }
 };
+
 
 int main()
 {
@@ -1696,8 +1934,7 @@ int main()
     wedgeCover cov(env, ds);
     cov.tester();
     */
-   //code not needed. this is a duplicate processing of what is done in wedgetest.
-   /*
+
     string filepath = "wedgeData_v3_128.txt";
     vector<Event> events = FileReader::readFile(filepath);
     Environment env = events[0].env;
@@ -1709,10 +1946,9 @@ int main()
     ds.addBoundaryPoint();
 
     wedgeCover cov = wedgeCover(env, ds);
-    */
     Tester test;
     vector<int> wedgesToTest;
     wedgesToTest.push_back(0);
     wedgesToTest.push_back(6400);
-    test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.5, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
+    test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.025, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };
