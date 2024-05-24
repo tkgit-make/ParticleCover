@@ -9,19 +9,19 @@ void initDataSet(DataSet *ds)
 void importData(DataSet *ds, Point *data_array, int data_array_size)
 {
     //need data_array_size. we can't eliminate the parameter and count the total number of points because we are adding points, we don't know how many
-    //ds->total_points = data_array_size; //not used
 
     for (index_type i = 0; i < data_array_size; i++)
     {
         index_type layer = data_array[i].layer_num - 1;
-        //if (ds->n_points[layer] < MAX_POINTS_FOR_DATASET) //not needed, coming from event that already can't store more than MAX_POINTS_FOR_DATASET
-        ds->array[layer][ds->n_points[layer]++] = data_array[i];
+        ds->array[layer][ds->n_points[layer]+1] = data_array[i];
+        ds->n_points[layer]++;
+        
     }
     // iterating over the layers in DataSet
     for (index_type i = 0; i < num_layers; i++)
     {
         //sorts the points in the ith layer
-        qsort(ds->array[i], ds->n_points[i], sizeof(Point), comparePoints);
+        qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
     }
 }
 
@@ -34,7 +34,7 @@ void addBoundaryPoint(DataSet *ds, float offset)
         // there needs to be room to add the additional points
         // shifting the array to make room for the new point at the beginning. That first point is left uninitialized
         // parameters: (address of where to start writing data, address of what to put where you start writing, number of bytes that need to be moved)
-        memmove(&ds->array[i][1], &ds->array[i][0], ds->n_points[i] * sizeof(Point));
+        //memmove(&ds->array[i][1], &ds->array[i][0], ds->n_points[i] * sizeof(Point));
 
         // inserting at the beginning
         ds->array[i][0].layer_num = i + 1;
