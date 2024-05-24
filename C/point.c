@@ -22,7 +22,17 @@ int Point_load(Point *p)
 
 int comparePoints(const void *a, const void *b)
 {
-    float a_z = ((const Point *)a)->z;
-    float b_z = ((const Point *)b)->z;
-    return (a_z < b_z) ? -1 : 1; //turnary equivalent treating point equality in the second case
+    const Point *pointA = (const Point *)a;
+    const Point *pointB = (const Point *)b;
+
+    if (pointA->z < pointB->z) return -1;
+    if (pointA->z > pointB->z) return 1;
+
+    if (pointA->layer_num < pointB->layer_num) return -1;
+    if (pointA->layer_num > pointB->layer_num) return 1;
+
+    if (pointA->phi < pointB->phi) return -1;
+    if (pointA->phi > pointB->phi) return 1;
+
+    return 0;
 }
