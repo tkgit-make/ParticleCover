@@ -22,8 +22,12 @@ int Point_load(Point *p)
 
 int comparePoints(const void *a, const void *b)
 {
+
     const Point *pointA = (const Point *)a;
     const Point *pointB = (const Point *)b;
+    
+    //the below line is all that is needed. we perform additional checks to guarentee a unique ordering of points in debugging.
+    //return (a_z < b_z) ? -1 : 1;
 
     if (pointA->z < pointB->z) return -1;
     if (pointA->z > pointB->z) return 1;

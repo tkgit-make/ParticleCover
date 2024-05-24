@@ -48,11 +48,13 @@
 const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
 const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
 const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
+const float trapezoid_edges[MAX_LAYERS] = {22.0001, 29.0001, 36.0001, 43.0001, 50.0001};
 
 #else
 extern float radii[MAX_LAYERS];
 extern float parallelogramSlopes[MAX_LAYERS-1];
 extern float radii_leverArm[MAX_LAYERS-1];
+extern float trapezoid_edges[MAX_LAYERS];
 #endif
 
 
@@ -76,7 +78,6 @@ typedef struct
     int n_points[MAX_LAYERS];                        // number of points in each layer of the array
     //index_type total_points; //not used
     float boundaryPoint_offset;
-    float trapezoid_edges[MAX_LAYERS]; //transferred from environment structure, updated once with addBoundaryPoint
 } DataSet;
 
 typedef struct
@@ -104,7 +105,6 @@ typedef struct
 
 typedef struct
 {
-    DataSet* ds;
     int end_layer;
     int left_end_layer;
     int right_end_layer;

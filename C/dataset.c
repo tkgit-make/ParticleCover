@@ -3,13 +3,6 @@
 
 void initDataSet(DataSet *ds)
 {
-    //ds->total_points = 0; //not used
-    ds->trapezoid_edges[0] = 22;
-    ds->trapezoid_edges[1] = 29;
-    ds->trapezoid_edges[2] = 36;
-    ds->trapezoid_edges[3] = 43;
-    ds->trapezoid_edges[4] = 50;
-
     memset(ds->n_points, 0, sizeof(ds->n_points));
 }
 
@@ -47,14 +40,14 @@ void addBoundaryPoint(DataSet *ds, float offset)
         ds->array[i][0].layer_num = i + 1;
         ds->array[i][0].radius = (i + 1) * 5;
         ds->array[i][0].phi = ds->array[i][1].phi; // 1 gets what was originally the index 0, but is not index 1 due to the insertion.
-        ds->array[i][0].z = -1 * ds->trapezoid_edges[i] - offset;
+        ds->array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
 
         // appending at the end
         index_type lastIndex = ds->n_points[i] + 1; // after shifting, there's one more point
         ds->array[i][lastIndex].layer_num = i + 1;
         ds->array[i][lastIndex].radius = (i + 1) * 5;
         ds->array[i][lastIndex].phi = ds->array[i][1].phi; // 1 gets what was originally the index 0, but is not index 1 due to the insertion.
-        ds->array[i][lastIndex].z = ds->trapezoid_edges[i] + offset;
+        ds->array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
 
         ds->n_points[i] += 2;    
     }
@@ -75,8 +68,4 @@ void addBoundaryPoint(DataSet *ds, float offset)
     //total_points isn't even used, don't need it.
     //ds->total_points = num_layers;
 
-    for (index_type i = 0; i < num_layers; i++)
-    {
-        ds->trapezoid_edges[i] += offset; 
-    }
 }
