@@ -34,14 +34,15 @@ void addBoundaryPoint(DataSet *ds, float offset)
         // inserting at the beginning
         ds->array[i][0].layer_num = i + 1;
         ds->array[i][0].radius = (i + 1) * 5;
-        ds->array[i][0].phi = ds->array[i][1].phi; // 1 gets what was originally the index 0, but is not index 1 due to the insertion.
+        //is the phi for the boundary points used (answer: no)? so, instead of sorting in importData, we could wait and add boundary points, and then sort, without any shifting of boundary points needed. MlogM vs NlogN + 2N, where M = N+2
+        ds->array[i][0].phi = ds->array[i][1].phi; // getting the first phi in the array sorted by z
         ds->array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
 
         // appending at the end
         index_type lastIndex = ds->n_points[i] + 1; // after shifting, there's one more point
         ds->array[i][lastIndex].layer_num = i + 1;
         ds->array[i][lastIndex].radius = (i + 1) * 5;
-        ds->array[i][lastIndex].phi = ds->array[i][1].phi; // 1 gets what was originally the index 0, but is not index 1 due to the insertion.
+        ds->array[i][lastIndex].phi = ds->array[i][1].phi; // getting the first phi in the array sorted by z
         ds->array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
 
         //now factors in the addition of both boundary points because n_points previously was counting true point additions, and did not count the blank index 0.

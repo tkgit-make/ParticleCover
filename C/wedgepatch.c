@@ -1,6 +1,6 @@
 #include "header.h"
 
-void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *dsI)
+void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I)
 {
     wp->end_layer = -1; 
     wp->left_end_layer = -1;

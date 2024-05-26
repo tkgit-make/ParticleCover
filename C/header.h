@@ -10,6 +10,10 @@
 #include <float.h>
 #include <math.h>
 
+
+#define KEEP_DELETED_PATCHES true
+//make conversion ratio to micron macro
+
 #ifdef MAIN_C
 #define EXTERN
 #else
@@ -56,7 +60,6 @@ extern float parallelogramSlopes[MAX_LAYERS-1];
 extern float radii_leverArm[MAX_LAYERS-1];
 extern float trapezoid_edges[MAX_LAYERS];
 #endif
-
 
 typedef struct
 {
@@ -133,20 +136,17 @@ typedef struct
 
     Parallelogram parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
     index_type parallelogram_count;
-
-    // Parallelogram_v1* parallelograms_v1[MAX_PARALLELOGRAMS_PER_PATCH];
-    // int parallelogram_v1_count;
 } wedgePatch;
 
 typedef struct
 {
-    index_type n_patches;
+    index_type n_patches; //make global
     wedgePatch patches[MAX_PATCHES];
-    DataSet *data;
-    // Line fitting_lines[MAX_LINES]; //only used in visualization
-    //wedgeSuperPoint *superPoints[MAX_SUPERPOINTS_IN_COVER]; //not used
-    //wedgePatch *all_patches[MAX_PATCHES]; //not needed anymore
-    bool real_patch_list[MAX_PATCHES];
+    //DataSet *data; //make global
+    #if KEEP_DELETED_PATCHES == true
+        bool real_patch_list[MAX_PATCHES]; //only needed for video
+    #endif
+
 } wedgeCover;
 
 extern int Point_load(Point *p);
@@ -157,18 +157,18 @@ extern void addBoundaryPoint(DataSet *ds, float offset);
 extern void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 extern int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
 extern void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
-extern void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I, DataSet *ds);
+extern void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I);
 extern float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k);
 extern float straightLineProjector(float z_top, float z_j, int j);
 extern void getParallelograms(wedgePatch *wp);
 extern void getShadows(wedgePatch *wp, float zTopMin, float zTopMax);
 extern void get_acceptanceCorners(wedgePatch *wp);
 extern void get_end_layer(wedgePatch *wp);
-extern void initWedgeCover(wedgeCover *wc, DataSet *dataI);
+extern void initWedgeCover(wedgeCover *wc);
 extern int comparePoints(const void *a, const void *b);
 extern void add_patch(wedgeCover *cover, wedgePatch *curr_patch);
 extern void delete_patch(wedgeCover *cover, int index);
-extern index_type get_index_from_z(DataSet *data, int layer, float z_value);
+extern index_type get_index_from_z(int layer, float z_value);
 extern void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight);
 extern void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight);
 extern void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
@@ -176,3 +176,4 @@ extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminou
 
 extern int floatCompare(const void *a, const void *b);
 
+EXTERN DataSet Gdata;

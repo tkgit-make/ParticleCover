@@ -23,16 +23,16 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         Point *points = event.points;
 
-        DataSet data;
-        initDataSet(&data);
+        //DataSet Gdata;
+        initDataSet(&Gdata);
         
         //uniform_N_points, previously a parameter, is false, so we importData
-        importData(&data, points, event.count);
+        importData(&Gdata, points, event.count);
         
-        addBoundaryPoint(&data, 0.0001); // with default param
+        addBoundaryPoint(&Gdata, 0.0001); // with default param
 
         wedgeCover cover;
-        initWedgeCover(&cover, &data);
+        initWedgeCover(&cover);
 
         solve(&cover, apexZ0, ppl, 100, false); // solve modifies cover. false is from the left right align (previously a parameter in wedge test)
 

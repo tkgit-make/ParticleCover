@@ -1,9 +1,9 @@
 #include "header.h"
 
-void initWedgeCover(wedgeCover *wc, DataSet *dataI)
+void initWedgeCover(wedgeCover *wc)
 {
     wc->n_patches = 0;
-    wc->data = dataI;
+    //wc->data = dataI;
 }
 
 void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
@@ -12,7 +12,9 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
     {
         cover->patches[0] = *curr_patch; //copy the patch directly
         //cover->all_patches[0] = curr_patch;
-        cover->real_patch_list[0] = true;
+        #if KEEP_DELETED_PATCHES == true
+            cover->real_patch_list[0] = true;
+        #endif
         cover->n_patches = 1;
     }
     else
@@ -37,7 +39,9 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
             {
                 cover->patches[cover->n_patches] = *curr_patch;
                 //cover->all_patches[cover->n_patches] = curr_patch;
-                cover->real_patch_list[cover->n_patches] = true;
+                #if KEEP_DELETED_PATCHES == true
+                    cover->real_patch_list[cover->n_patches] = true;
+                #endif
                 cover->n_patches += 1;
             }
         }
@@ -50,33 +54,37 @@ void delete_patch(wedgeCover *cover, int index)
     {
         return;
     }
-
-    cover->real_patch_list[index] = false;
-
+    #if KEEP_DELETED_PATCHES == true
+        cover->real_patch_list[index] = false;
+    #endif
     for (index_type i = index; i < cover->n_patches - 1; i++)
     {
         cover->patches[i] = cover->patches[i + 1];
-        cover->real_patch_list[i] = cover->real_patch_list[i + 1];
+        #if KEEP_DELETED_PATCHES == true
+            cover->real_patch_list[i] = cover->real_patch_list[i + 1];
+        #endif
     }
 
     // resetting the last elements
     memset(&cover->patches[cover->n_patches - 1], 0, sizeof(wedgePatch));
-    cover->real_patch_list[cover->n_patches - 1] = false;
+    #if KEEP_DELETED_PATCHES == true
+        cover->real_patch_list[cover->n_patches - 1] = false;
+    #endif
 
     cover->n_patches -= 1;
 }
 
 // can't provide default parameters
-index_type get_index_from_z(DataSet *data, int layer, float z_value)
+index_type get_index_from_z(int layer, float z_value)
 {
     // c doesn't support string comparison directly, using integer comparison for effiency
     // CLOSEST = 11, ABOVE = 12, BELOW = 13
     float minVal = 1000000;
     index_type index = 0;
 
-    for (index_type i = 0; i < data->n_points[layer]; i++)
+    for (index_type i = 0; i < Gdata.n_points[layer]; i++)
     {
-        float diff = fabs(data->array[layer][i].z - z_value); // absolute difference
+        float diff = fabs(Gdata.array[layer][i].z - z_value); // absolute difference
         if (diff < minVal)
         {
             minVal = diff;
@@ -101,11 +109,11 @@ void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
         while (foundIdentical || firstTime)
         {
             foundIdentical = false;
-            for (index_type x = 0; x < cover->data->n_points[i] - 1; x++)
+            for (index_type x = 0; x < Gdata.n_points[i] - 1; x++)
             {
-                if (cover->data->array[i][x].z == cover->data->array[i][x + 1].z)
+                if (Gdata.array[i][x].z == Gdata.array[i][x + 1].z)
                 {
-                    cover->data->array[i][x + 1].z += 0.00001;
+                    Gdata.array[i][x + 1].z += 0.00001;
                     foundIdentical = true;
                 }
             }
@@ -113,7 +121,7 @@ void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
             firstTime = false;
             if (foundIdentical)
             {
-                qsort(cover->data->array[i], cover->data->n_points[i], sizeof(Point), comparePoints);
+                qsort(Gdata.array[i], Gdata.n_points[i], sizeof(Point), comparePoints);
             }
         }
     }
@@ -273,7 +281,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
                        ((cover->patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
                         (white_space_height > 0.000005)) &&
-                       (current_z_top_index < (int)(cover->data->n_points[num_layers - 1])) &&
+                       (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                         !(repeat_patch) && !(repeat_original))
                 {
                     printf("\n");
@@ -288,7 +296,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                            complementary_a, cover->patches[lastPatchIndex].a_corner[1],
                            complementary_b, cover->patches[lastPatchIndex].b_corner[1]);
 
-                    current_z_top_index = get_index_from_z(cover->data, num_layers - 1, z_top_min); 
+                    current_z_top_index = get_index_from_z(num_layers - 1, z_top_min); 
                     printf("current white_space_height: %f\n", white_space_height);
                     printf("counter: %d counterUpshift: %d\n", counter, counterUpshift);
                     printf("orig_ztop: %d orig_z_top_min: %f\n", current_z_top_index, z_top_min);
@@ -298,7 +306,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
-                        current_z_i_index[i] = get_index_from_z(cover->data, i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, i + 1));
+                        current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, i + 1));
                     }
 
                     if (z_top_min == previous_z_top_min)
@@ -331,12 +339,12 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                         }
                     }
 
-                    int x = cover->data->n_points[num_layers - 1] - 1;
-                    current_z_top_index = min(current_z_top_index, cover->data->n_points[num_layers - 1] - 1); // n_points is an array of the sizes of each element of 'array'
+                    int x = Gdata.n_points[num_layers - 1] - 1;
+                    current_z_top_index = min(current_z_top_index, Gdata.n_points[num_layers - 1] - 1); // n_points is an array of the sizes of each element of 'array'
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
-                        new_z_i_index[i] = min(new_z_i_index[i], (float)cover->data->n_points[i] - 1);
+                        new_z_i_index[i] = min(new_z_i_index[i], (float)Gdata.n_points[i] - 1);
                     }
 
                     for (index_type i = 0; i < num_layers; i++)
@@ -347,7 +355,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
-                        new_z_i[i] = cover->data->array[i][new_z_i_index[i]].z;
+                        new_z_i[i] = Gdata.array[i][new_z_i_index[i]].z;
                     }
 
                     float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
@@ -381,22 +389,22 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                                i + 1, new_z_i_atTop[i], new_z_i_atTop[i] - previous_z_top_min, layerWithSmallestShift + 1);
                     }
 
-                    z_top_min = cover->data->array[num_layers - 1][current_z_top_index].z;
+                    z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
                     z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
                     if (fabs(z_top_min - previous_z_top_min) < 0.000001)
                     {
-                        z_top_min = cover->data->array[num_layers - 1][current_z_top_index].z;
+                        z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
                     }
 
                     if (fabs(z_top_min - previous_z_top_min) < 0.000001)
                     {
-                        z_top_min = cover->data->array[num_layers - 2][current_z_top_index].z;
+                        z_top_min = Gdata.array[num_layers - 2][current_z_top_index].z;
                     }
 
                     if (fabs(z_top_min - previous_z_top_min) < 0.000001)
                     {
-                        z_top_min = cover->data->array[num_layers - 3][current_z_top_index].z;
+                        z_top_min = Gdata.array[num_layers - 3][current_z_top_index].z;
                     }
 
                     if (((z_top_min - previous_z_top_min) * white_space_height) < 0)
@@ -404,7 +412,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                         z_top_min = new_z_i_atTop[num_layers - 2];
                     }
 
-                    printf(" new_def_z_top_min_diff: %f\n", z_top_min - cover->data->array[num_layers - 1][current_z_top_index].z);
+                    printf(" new_def_z_top_min_diff: %f\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
 
                     printf(" new_ztop_index: %d new_z_i_index: ", current_z_top_index);
                     for (index_type i = 0; i < num_layers; i++)
@@ -494,7 +502,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                             current_z_top_index -= 1;
 
-                            z_top_min = cover->data->array[num_layers - 1][current_z_top_index].z;
+                            z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
                             z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
                             makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
@@ -679,9 +687,9 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
         float row_list[MAX_POINTS_PER_LAYER];
         int row_list_size = 0;
 
-        for (index_type j = 0; j < cover->data->n_points[i]; j++)
+        for (index_type j = 0; j < Gdata.n_points[i]; j++)
         {
-            row_list[row_list_size++] = cover->data->array[i][j].z;
+            row_list[row_list_size++] = Gdata.array[i][j].z;
         }
 
         float r_max = radii[num_layers - 1];
@@ -742,7 +750,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
             {
                 for (index_type j = right_bound + 1 - ppl; j <= right_bound; j++)
                 {
-                    temp[temp_size++] = cover->data->array[i][j];
+                    temp[temp_size++] = Gdata.array[i][j];
                 }
                 // similarly
             }
@@ -750,7 +758,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
             {
                 for (index_type j = start_index; j < start_index + ppl; j++)
                 {
-                    temp[temp_size++] = cover->data->array[i][j];
+                    temp[temp_size++] = Gdata.array[i][j];
                 }
             }
         }
@@ -771,7 +779,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
             {
                 for (index_type j = left_bound; j < left_bound + ppl; j++)
                 {
-                    temp[temp_size++] = cover->data->array[i][j];
+                    temp[temp_size++] = Gdata.array[i][j];
                 }
                 // similarly
             }
@@ -779,7 +787,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
             {
                 for (index_type j = start_index - ppl + 1; j <= start_index; j++)
                 {
-                    temp[temp_size++] = cover->data->array[i][j];
+                    temp[temp_size++] = Gdata.array[i][j];
                 }
             }
         }
@@ -791,7 +799,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
     wedgePatch new_patch;
     //new_patch will disappear from memory once makePatch_alignedToLine terminates, so we don't want wedgePatch_init to point superpoints to it. 
     //init_patch will also disappear for the same scope reasons
-    wedgePatch_init(&new_patch, init_patch, init_patch_size, apexZ0, cover->data);
+    wedgePatch_init(&new_patch, init_patch, init_patch_size, apexZ0);
     //indeed, add_patch is working fine as it is copying the values over: cover->patches[cover->n_patches] = *curr_patch;
     //doesn't matter how wedgePatch_init works since we're dereferencing the patch to store by value in an array belonging to cover.
     add_patch(cover, &new_patch);
