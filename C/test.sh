@@ -24,7 +24,8 @@ if ! gcc -g $OPTS C/*.c -o bin/ProcessInput -lm; then
 	echo "compile fail"
 	exit
 fi
-zcat C/wedgedata.txt.gz | $INVOKER bin/ProcessInput
+gunzip -c C/wedgedata.txt.gz | $INVOKER bin/ProcessInput
+# zcat C/wedgedata.txt.gz | $INVOKER bin/ProcessInput
 # cat wedgedata-sample.txt | $INVOKER bin/ProcessInput
 if [[ $1 == "gprof" ]]; then
 	date > bin/gprof.results.txt

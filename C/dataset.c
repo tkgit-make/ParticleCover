@@ -1,5 +1,33 @@
 #include "header.h"
 
+void adjustPointPositionFront(Point *array, int n_points, int start_index) {
+    // move the point at start_index to its correct position to maintain sorted order
+    Point toInsert = array[start_index];
+    int j = start_index;
+    //by checking if j < n_points-2, we are not going to the last index, thus, we will never have a situation where the end boundary point gets shifted before we position it
+    //we check n_points-2 instead of n_points-1 because we have j+1 logic, j is the baseline and the comparison is with the next index, so we need j+1 to be not the end, but 1 away from it.
+    //this is a valid cutoff because the z is the primary (first [and only in the case of the implementation, non-debugging comparator]) comparison in the comparator, and the trapezoid edges are always positive integers, so -x < x when x is a positive integer. 
+    //it cannot be 0, so there is no possible equality as well, which could affect the debugging comparator.
+    while (j < n_points - 2 && comparePoints(&array[j + 1], &toInsert) < 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
+        array[j] = array[j + 1]; // shift elements left, the other element(s) should come before the boundary point
+        j++;
+    }
+    array[j] = toInsert; // place the element at its correct position
+}
+
+void adjustPointPositionBack(Point *array, int n_points, int start_index) {
+    // move the point at start_index to its correct position to maintain sorted order
+    Point toInsert = array[start_index];
+    int j = start_index;
+    //similarly, j > 1 ensures it doesn't reach the first index [j will end at 1 after checking if 2 should swap with 1], which while it wouldn't throw off the front position such that the adjustFront method doesn't work because that has already been called,
+    //it is beneficial not to check the first index because it is a pointless computation. we can guarentee it will not shift.
+    while (j > 1 && comparePoints(&array[j - 1], &toInsert) > 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
+        array[j] = array[j - 1]; // shift elements right, the other element(s) should come after the boundary point
+        j--;
+    } 
+    array[j] = toInsert; // place the element at its correct position
+}
+
 void importData(DataSet *ds)
 {
     // initDataSet line. The global DataSet is reused, so we just need to reset the number of points, or set it if this is the first time. 0 across all layers.
@@ -65,33 +93,3 @@ void addBoundaryPoint(DataSet *ds, float offset)
     }
 
 }
-
-void adjustPointPositionFront(Point *array, int n_points, int start_index) {
-    // move the point at start_index to its correct position to maintain sorted order
-    Point toInsert = array[start_index];
-    int j = start_index;
-    //by checking if j < n_points-2, we are not going to the last index, thus, we will never have a situation where the end boundary point gets shifted before we position it
-    //we check n_points-2 instead of n_points-1 because we have j+1 logic, j is the baseline and the comparison is with the next index, so we need j+1 to be not the end, but 1 away from it.
-    //this is a valid cutoff because the z is the primary (first [and only in the case of the implementation, non-debugging comparator]) comparison in the comparator, and the trapezoid edges are always positive integers, so -x < x when x is a positive integer. 
-    //it cannot be 0, so there is no possible equality as well, which could affect the debugging comparator.
-    while (j < n_points - 2 && comparePoints(&array[j + 1], &toInsert) < 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
-        array[j] = array[j + 1]; // shift elements left, the other element(s) should come before the boundary point
-        j++;
-    }
-    array[j] = toInsert; // place the element at its correct position
-}
-
-void adjustPointPositionBack(Point *array, int n_points, int start_index) {
-    // move the point at start_index to its correct position to maintain sorted order
-    Point toInsert = array[start_index];
-    int j = start_index;
-    //similarly, j > 1 ensures it doesn't reach the first index [j will end at 1 after checking if 2 should swap with 1], which while it wouldn't throw off the front position such that the adjustFront method doesn't work because that has already been called,
-    //it is beneficial not to check the first index because it is a pointless computation. we can guarentee it will not shift.
-    while (j > 1 && comparePoints(&array[j - 1], &toInsert) > 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
-        array[j] = array[j - 1]; // shift elements right, the other element(s) should come after the boundary point
-        j--;
-    } 
-    array[j] = toInsert; // place the element at its correct position
-}
-
-
