@@ -1,14 +1,11 @@
 #include "header.h"
 
-
-void initDataSet(DataSet *ds)
-{
-    memset(ds->n_points, 0, sizeof(ds->n_points));
-}
-
 void importData(DataSet *ds)
 {
-    
+    // initDataSet line. The global DataSet is reused, so we just need to reset the number of points, or set it if this is the first time. 0 across all layers.
+    // n_points being set to 0 when we reuse the DataSet will stop it from accessing any information from a past wedge.
+    memset(ds->n_points, 0, sizeof(ds->n_points));
+
     index_type n = 0;
     char ch = ',';
 

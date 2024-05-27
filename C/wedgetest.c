@@ -14,19 +14,11 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
     }
 
     for (index_type z = 0; z < wedges[1]; z++)
-    {
-        //Event event;
-        //Event_load(&event);
+    { 
         if(z<wedges[0]) continue;
         printf("wedge %d\n", z); //main print
         fprintf(myfile, "wedge %d\n", z); //file to diff
 
-        //Point *points = event.points;
-
-        //DataSet Gdata;
-        initDataSet(&Gdata);
-        
-        //uniform_N_points, previously a parameter, is false, so we importData
         importData(&Gdata);
         
         addBoundaryPoint(&Gdata, 0.0001); // with default param

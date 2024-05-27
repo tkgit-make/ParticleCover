@@ -143,7 +143,6 @@ typedef struct
 } wedgeCover;
 
 extern int Point_load(Point *p);
-extern void initDataSet(DataSet *ds);
 extern void importData(DataSet *ds);
 extern void addBoundaryPoint(DataSet *ds, float offset);
 extern void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
