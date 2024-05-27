@@ -30,7 +30,6 @@
 #define BELOW 13
 #define MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES 33
 
-#define MAX_EVENTS_TO_READ 16000
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_PER_LAYER 256    // max size of vector of points "vect" in CPP. equivalent to MAX_POINTS_PER_DATASET
@@ -68,12 +67,6 @@ typedef struct
     float phi;
     float z;
 } Point;
-
-typedef struct
-{
-    Point points[MAX_POINTS_IN_EVENT];
-    index_type count;
-} Event;
 
 typedef struct
 {
@@ -150,9 +143,8 @@ typedef struct
 } wedgeCover;
 
 extern int Point_load(Point *p);
-extern index_type Event_load(Event *e);
 extern void initDataSet(DataSet *ds);
-extern void importData(DataSet *ds, Point *data_array, int data_array_size);
+extern void importData(DataSet *ds);
 extern void addBoundaryPoint(DataSet *ds, float offset);
 extern void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 extern int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);

@@ -6,17 +6,28 @@ void initDataSet(DataSet *ds)
     memset(ds->n_points, 0, sizeof(ds->n_points));
 }
 
-void importData(DataSet *ds, Point *data_array, int data_array_size)
+void importData(DataSet *ds)
 {
-    //need data_array_size. we can't eliminate the parameter and count the total number of points because we are adding points, we don't know how many
+    
+    index_type n = 0;
+    char ch = ',';
 
-    for (index_type i = 0; i < data_array_size; i++)
+    // read points until a non-comma is encountered or maximum points are read
+    while ((ch == ',') && (n < MAX_POINTS_IN_EVENT))
     {
-        index_type layer = data_array[i].layer_num - 1;
-        ds->array[layer][ds->n_points[layer]+1] = data_array[i];
+        Point p;
+        if (Point_load(&p) < 1)
+            break;
+        
+        index_type layer = p.layer_num - 1;
+        ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
         ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
         
+        n++;
+        scanf("%c", &ch);
+
     }
+       
     // iterating over the layers in DataSet
     for (index_type i = 0; i < num_layers; i++)
     {

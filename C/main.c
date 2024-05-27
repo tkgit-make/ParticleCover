@@ -1,9 +1,6 @@
 #define MAIN_C
 #include "header.h"
 
-
-DataSet Gdata;
-
 int main()
 {
     int wedgesToTest[] = {0, 6400};
