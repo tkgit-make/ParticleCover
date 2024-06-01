@@ -12,9 +12,6 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
     {
         cover->patches[0] = *curr_patch; //copy the patch directly
         //cover->all_patches[0] = curr_patch;
-        #if KEEP_DELETED_PATCHES == true
-            cover->real_patch_list[0] = true;
-        #endif
         cover->n_patches = 1;
     }
     else
@@ -39,9 +36,6 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
             {
                 cover->patches[cover->n_patches] = *curr_patch;
                 //cover->all_patches[cover->n_patches] = curr_patch;
-                #if KEEP_DELETED_PATCHES == true
-                    cover->real_patch_list[cover->n_patches] = true;
-                #endif
                 cover->n_patches += 1;
             }
         }
@@ -54,22 +48,14 @@ void delete_patch(wedgeCover *cover, int index)
     {
         return;
     }
-    #if KEEP_DELETED_PATCHES == true
-        cover->real_patch_list[index] = false;
-    #endif
+
     for (index_type i = index; i < cover->n_patches - 1; i++)
     {
         cover->patches[i] = cover->patches[i + 1];
-        #if KEEP_DELETED_PATCHES == true
-            cover->real_patch_list[i] = cover->real_patch_list[i + 1];
-        #endif
     }
 
     // resetting the last elements
     memset(&cover->patches[cover->n_patches - 1], 0, sizeof(wedgePatch));
-    #if KEEP_DELETED_PATCHES == true
-        cover->real_patch_list[cover->n_patches - 1] = false;
-    #endif
 
     cover->n_patches -= 1;
 }

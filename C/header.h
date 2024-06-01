@@ -11,7 +11,6 @@
 #include <math.h>
 
 
-#define KEEP_DELETED_PATCHES true
 //make conversion ratio to micron macro
 
 #ifdef MAIN_C
@@ -136,9 +135,6 @@ typedef struct
     index_type n_patches; //make global
     wedgePatch patches[MAX_PATCHES];
     //DataSet *data; //make global
-    #if KEEP_DELETED_PATCHES == true
-        bool real_patch_list[MAX_PATCHES]; //only needed for video
-    #endif
 
 } wedgeCover;
 
