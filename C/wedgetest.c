@@ -23,8 +23,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         
         addBoundaryPoint(&Gdata, 0.0001); // with default param
 
-        wedgeCover cover;
-        initWedgeCover(&cover);
+        initWedgeCover();
 
         solve(apexZ0, ppl, 100, false); // solve modifies  false is from the left right align (previously a parameter in wedge test)
 

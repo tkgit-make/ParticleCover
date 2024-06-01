@@ -129,14 +129,6 @@ typedef struct
     index_type parallelogram_count;
 } wedgePatch;
 
-typedef struct
-{
-    //index_type n_patches; 
-    //wedgePatch patches[MAX_PATCHES];
-    //DataSet *data; //make global
-
-} wedgeCover;
-
 extern int Point_load(Point *p);
 extern void importData(DataSet *ds);
 extern void addBoundaryPoint(DataSet *ds, float offset);
