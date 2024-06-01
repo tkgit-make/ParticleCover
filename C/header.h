@@ -51,12 +51,14 @@ const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
 const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
 const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
 const float trapezoid_edges[MAX_LAYERS] = {22.0001, 29.0001, 36.0001, 43.0001, 50.0001};
+index_type n_patches = 0;
 
 #else
 extern float radii[MAX_LAYERS];
 extern float parallelogramSlopes[MAX_LAYERS-1];
 extern float radii_leverArm[MAX_LAYERS-1];
 extern float trapezoid_edges[MAX_LAYERS];
+extern index_type n_patches;
 #endif
 
 typedef struct
@@ -132,8 +134,8 @@ typedef struct
 
 typedef struct
 {
-    index_type n_patches; //make global
-    wedgePatch patches[MAX_PATCHES];
+    //index_type n_patches; 
+    //wedgePatch patches[MAX_PATCHES];
     //DataSet *data; //make global
 
 } wedgeCover;
@@ -164,3 +166,4 @@ extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminou
 extern int floatCompare(const void *a, const void *b);
 
 EXTERN DataSet Gdata;
+EXTERN wedgePatch patches[MAX_PATCHES];

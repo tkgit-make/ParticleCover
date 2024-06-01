@@ -2,21 +2,21 @@
 
 void initWedgeCover(wedgeCover *wc)
 {
-    wc->n_patches = 0;
+    n_patches = 0;
     //wc->data = dataI;
 }
 
 void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
 {
-    if (cover->n_patches == 0)
+    if (n_patches == 0)
     {
-        cover->patches[0] = *curr_patch; //copy the patch directly
-        //cover->all_patches[0] = curr_patch;
-        cover->n_patches = 1;
+        patches[0] = *curr_patch; //copy the patch directly
+        //all_patches[0] = curr_patch;
+        n_patches = 1;
     }
     else
     {
-        wedgePatch *prev_patch = &(cover->patches[cover->n_patches - 1]);
+        wedgePatch *prev_patch = &(patches[n_patches - 1]);
         bool different = false;
 
         for (index_type i = 0; i < prev_patch->superpoint_count; i++)
@@ -32,11 +32,11 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
         // if the min and max are the same for each superpoint, don't add a patch
         if (different)
         {
-            if (cover->n_patches < MAX_PATCHES)
+            if (n_patches < MAX_PATCHES)
             {
-                cover->patches[cover->n_patches] = *curr_patch;
-                //cover->all_patches[cover->n_patches] = curr_patch;
-                cover->n_patches += 1;
+                patches[n_patches] = *curr_patch;
+                //all_patches[n_patches] = curr_patch;
+                n_patches += 1;
             }
         }
     }
@@ -44,20 +44,20 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
 
 void delete_patch(wedgeCover *cover, int index)
 {
-    if (index < 0 || index >= cover->n_patches)
+    if (index < 0 || index >= n_patches)
     {
         return;
     }
 
-    for (index_type i = index; i < cover->n_patches - 1; i++)
+    for (index_type i = index; i < n_patches - 1; i++)
     {
-        cover->patches[i] = cover->patches[i + 1];
+        patches[i] = patches[i + 1];
     }
 
     // resetting the last elements
-    memset(&cover->patches[cover->n_patches - 1], 0, sizeof(wedgePatch));
+    memset(&patches[n_patches - 1], 0, sizeof(wedgePatch));
 
-    cover->n_patches -= 1;
+    n_patches -= 1;
 }
 
 // can't provide default parameters
@@ -130,9 +130,9 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
         float z_top_max = top_layer_lim;
 
-        if (cover->n_patches > 0)
+        if (n_patches > 0)
         {
-            z_top_max = min(z_top_max, straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], -1 * beam_axis_lim, apexZ0, 0, 1, num_layers // includes passing a pointer to the last patch
+            z_top_max = min(z_top_max, straightLineProjectorFromLayerIJtoK(&patches[n_patches - 1], -1 * beam_axis_lim, apexZ0, 0, 1, num_layers // includes passing a pointer to the last patch
                             ));
         }
 
@@ -147,43 +147,43 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
             makePatch_alignedToLine(cover, apexZ0, z_top_max, ppl, false, false);
 
-            index_type lastPatchIndex = cover->n_patches - 1;
+            index_type lastPatchIndex = n_patches - 1;
 
             printf("top layer from %f to %f z_top_max: %f\n",
-                   cover->patches[lastPatchIndex].superpoints[num_layers - 1].max,
-                   cover->patches[lastPatchIndex].superpoints[num_layers - 1].min,
+                   patches[lastPatchIndex].superpoints[num_layers - 1].max,
+                   patches[lastPatchIndex].superpoints[num_layers - 1].min,
                    z_top_max);
             printf("original: [%f, %f] for patch %d\n",
-                   cover->patches[lastPatchIndex].a_corner[0],
-                   cover->patches[lastPatchIndex].a_corner[1],
-                   cover->n_patches);
+                   patches[lastPatchIndex].a_corner[0],
+                   patches[lastPatchIndex].a_corner[1],
+                   n_patches);
             printf("original: [%f, %f]\n",
-                   cover->patches[lastPatchIndex].b_corner[0],
-                   cover->patches[lastPatchIndex].b_corner[1]);
+                   patches[lastPatchIndex].b_corner[0],
+                   patches[lastPatchIndex].b_corner[1]);
 
             printf("original: [%f, %f]\n",
-                   cover->patches[lastPatchIndex].c_corner[0],
-                   cover->patches[lastPatchIndex].c_corner[1]);
+                   patches[lastPatchIndex].c_corner[0],
+                   patches[lastPatchIndex].c_corner[1]);
 
             printf("original: [%f, %f]\n",
-                   cover->patches[lastPatchIndex].d_corner[0],
-                   cover->patches[lastPatchIndex].d_corner[1]);
+                   patches[lastPatchIndex].d_corner[0],
+                   patches[lastPatchIndex].d_corner[1]);
 
-            for (index_type i = 1; i < cover->patches[lastPatchIndex].superpoint_count - 1; i++)
+            for (index_type i = 1; i < patches[lastPatchIndex].superpoint_count - 1; i++)
             {
                 index_type j = i + 1;
                 printf("%d superpoint: %f %f shadowTop from L1Max: %f %f from L1 min: %f %f\n",
                        j,
-                       cover->patches[lastPatchIndex].superpoints[i].min,
-                       cover->patches[lastPatchIndex].superpoints[i].max,
-                       straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].max, cover->patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
-                       straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].max, cover->patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers),
-                       straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].min, cover->patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
-                       straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].min, cover->patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers));
+                       patches[lastPatchIndex].superpoints[i].min,
+                       patches[lastPatchIndex].superpoints[i].max,
+                       straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], patches[lastPatchIndex].superpoints[0].max, patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
+                       straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], patches[lastPatchIndex].superpoints[0].max, patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers),
+                       straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], patches[lastPatchIndex].superpoints[0].min, patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
+                       straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], patches[lastPatchIndex].superpoints[0].min, patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers));
             }
 
-            float original_c = cover->patches[lastPatchIndex].c_corner[1];
-            float original_d = cover->patches[lastPatchIndex].d_corner[1];
+            float original_c = patches[lastPatchIndex].c_corner[1];
+            float original_d = patches[lastPatchIndex].d_corner[1];
 
             c_corner = original_c;
 
@@ -192,23 +192,23 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
             // code written assuming number of layers is 5.
             /*
-            if (cover->n_patches > 2) {
+            if (n_patches > 2) {
                 int thirdLastPatchIndex = lastPatchIndex - 2;
-                repeat_original = (cover->patches[lastPatchIndex].superpoints[num_layers - 1] == cover->patches[thirdLastPatchIndex].superpoints[num_layers - 1]) &&
-                        (cover->patches[lastPatchIndex].superpoints[0] == cover->patches[thirdLastPatchIndex].superpoints[0]) &&
-                        (cover->patches[lastPatchIndex].superpoints[1] == cover->patches[thirdLastPatchIndex].superpoints[1]) &&
-                        (cover->patches[lastPatchIndex].superpoints[2] == cover->patches[thirdLastPatchIndex].superpoints[2]) &&
-                        (cover->patches[lastPatchIndex].superpoints[3] == cover->patches[thirdLastPatchIndex].superpoints[3]);
+                repeat_original = (patches[lastPatchIndex].superpoints[num_layers - 1] == patches[thirdLastPatchIndex].superpoints[num_layers - 1]) &&
+                        (patches[lastPatchIndex].superpoints[0] == patches[thirdLastPatchIndex].superpoints[0]) &&
+                        (patches[lastPatchIndex].superpoints[1] == patches[thirdLastPatchIndex].superpoints[1]) &&
+                        (patches[lastPatchIndex].superpoints[2] == patches[thirdLastPatchIndex].superpoints[2]) &&
+                        (patches[lastPatchIndex].superpoints[3] == patches[thirdLastPatchIndex].superpoints[3]);
             }
             */
             // dynamic version below
-            if (cover->n_patches > 2)
+            if (n_patches > 2)
             {
                 index_type thirdLastPatchIndex = lastPatchIndex - 2;
                 repeat_original = true; // assume they are the same initially
                 for (index_type i = 0; i < MAX_SUPERPOINTS_IN_PATCH; i++)
                 { // iterating over the first (five) superpoints
-                    if (!areWedgeSuperPointsEqual(&cover->patches[lastPatchIndex].superpoints[i], &cover->patches[thirdLastPatchIndex].superpoints[i]))
+                    if (!areWedgeSuperPointsEqual(&patches[lastPatchIndex].superpoints[i], &patches[thirdLastPatchIndex].superpoints[i]))
                     {
                         repeat_original = false; // if any pair of superpoints don't match, set to false
                         break;                   // no need to check further if a mismatch is found
@@ -217,7 +217,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
             }
 
             float seed_apexZ0 = apexZ0;
-            wedgePatch *lastPatch = &cover->patches[lastPatchIndex];
+            wedgePatch *lastPatch = &patches[lastPatchIndex];
             projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(lastPatch, lastPatch->c_corner[1], lastPatch->c_corner[0], num_layers, 1, 0);
             bool squarePatch_alternate1 = (lastPatch->a_corner[1] > z_top_max) && (lastPatch->b_corner[1] > z_top_max) && (lastPatch->flatBottom);
             bool squarePatch_alternate2 = (lastPatch->a_corner[1] > z_top_max) && (lastPatch->flatBottom);
@@ -225,7 +225,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
             bool notChoppedPatch = (lastPatch->squareAcceptance) || squarePatch_alternate1 || squarePatch_alternate2;
             bool madeComplementaryPatch = false;
 
-            int nPatchesAtOriginal = cover->n_patches;
+            int nPatchesAtOriginal = n_patches;
 
             printf("squareAcceptance: %d triangleAcceptance: %d projectionOfCornerToBeam: %f notChoppedPatch %d\n",
                    lastPatch->squareAcceptance, lastPatch->triangleAcceptance, projectionOfCornerToBeam, notChoppedPatch);
@@ -246,16 +246,16 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
                 // updating the last patch index because makePatch_alignedToLine will add more patches to the patches array. Should revisit after writing method
                 // makePatch_alignedToLine will call the add patch method, so we must get a new last patch index.
-                lastPatchIndex = cover->n_patches - 1;
+                lastPatchIndex = n_patches - 1;
 
                 madeComplementaryPatch = true;
-                printf("complementary: [%f, %f] for z_top_min: %f\n", cover->patches[lastPatchIndex].a_corner[0], cover->patches[lastPatchIndex].a_corner[1], z_top_min);
-                printf("complementary: [%f, %f] for patch %d\n", cover->patches[lastPatchIndex].b_corner[0], cover->patches[lastPatchIndex].b_corner[1], cover->n_patches);
-                printf("complementary: [%f, %f]\n", cover->patches[lastPatchIndex].c_corner[0], cover->patches[lastPatchIndex].c_corner[1]);
-                printf("complementary: [%f, %f]\n", cover->patches[lastPatchIndex].d_corner[0], cover->patches[lastPatchIndex].d_corner[1]);
+                printf("complementary: [%f, %f] for z_top_min: %f\n", patches[lastPatchIndex].a_corner[0], patches[lastPatchIndex].a_corner[1], z_top_min);
+                printf("complementary: [%f, %f] for patch %d\n", patches[lastPatchIndex].b_corner[0], patches[lastPatchIndex].b_corner[1], n_patches);
+                printf("complementary: [%f, %f]\n", patches[lastPatchIndex].c_corner[0], patches[lastPatchIndex].c_corner[1]);
+                printf("complementary: [%f, %f]\n", patches[lastPatchIndex].d_corner[0], patches[lastPatchIndex].d_corner[1]);
 
-                float complementary_a = cover->patches[lastPatchIndex].a_corner[1];
-                float complementary_b = cover->patches[lastPatchIndex].b_corner[1];
+                float complementary_a = patches[lastPatchIndex].a_corner[1];
+                float complementary_b = patches[lastPatchIndex].b_corner[1];
 
                 float white_space_height = max(original_c - complementary_a, original_d - complementary_b);
                 float previous_white_space_height = -1;
@@ -265,22 +265,22 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 double previous_z_top_min = -999;
 
                 while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
-                       ((cover->patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
+                       ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
                         (white_space_height > 0.000005)) &&
                        (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                         !(repeat_patch) && !(repeat_original))
                 {
                     printf("\n");
-                    if (cover->n_patches > 2)
+                    if (n_patches > 2)
                     {
                         index_type secondLastPatchIndex = lastPatchIndex - 1;
                         printf("original c: %f %f || original d: %f %f\n",
-                               original_c, cover->patches[secondLastPatchIndex].c_corner[1],
-                               original_d, cover->patches[secondLastPatchIndex].d_corner[1]);
+                               original_c, patches[secondLastPatchIndex].c_corner[1],
+                               original_d, patches[secondLastPatchIndex].d_corner[1]);
                     }
                     printf("complementary_a: %f %f || complementary_b: %f %f\n",
-                           complementary_a, cover->patches[lastPatchIndex].a_corner[1],
-                           complementary_b, cover->patches[lastPatchIndex].b_corner[1]);
+                           complementary_a, patches[lastPatchIndex].a_corner[1],
+                           complementary_b, patches[lastPatchIndex].b_corner[1]);
 
                     current_z_top_index = get_index_from_z(num_layers - 1, z_top_min); 
                     printf("current white_space_height: %f\n", white_space_height);
@@ -292,7 +292,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     for (index_type i = 0; i < num_layers; i++)
                     {
-                        current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, i + 1));
+                        current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, i + 1));
                     }
 
                     if (z_top_min == previous_z_top_min)
@@ -347,7 +347,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
                     for (index_type i = 1; i < num_layers; i++)
                     {
-                        new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex],
+                        new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex],
                                                                                    complementary_apexZ0,
                                                                                    new_z_i[i],
                                                                                    1,
@@ -407,39 +407,39 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     }
                     printf("new_z_top_min: %f shift_ztop: %f\n", z_top_min, z_top_min - previous_z_top_min);
 
-                    int nPatchesAtComplementary = cover->n_patches;
-                    lastPatchIndex = cover->n_patches - 1; // this may have already been updated at the end of the last call, but just to be sure
+                    int nPatchesAtComplementary = n_patches;
+                    lastPatchIndex = n_patches - 1; // this may have already been updated at the end of the last call, but just to be sure
                     if (nPatchesAtComplementary > nPatchesAtOriginal)
                     {
                         printf("deleted complementary: [%f, %f] for patch %d\n",
-                               cover->patches[lastPatchIndex].a_corner[0],
-                               cover->patches[lastPatchIndex].a_corner[1],
-                               cover->n_patches);
+                               patches[lastPatchIndex].a_corner[0],
+                               patches[lastPatchIndex].a_corner[1],
+                               n_patches);
                         printf("deleted complementary: [%f, %f]\n",
-                               cover->patches[lastPatchIndex].b_corner[0],
-                               cover->patches[lastPatchIndex].b_corner[1]);
+                               patches[lastPatchIndex].b_corner[0],
+                               patches[lastPatchIndex].b_corner[1]);
                         printf("deleted complementary: [%f, %f]\n",
-                               cover->patches[lastPatchIndex].c_corner[0],
-                               cover->patches[lastPatchIndex].c_corner[1]);
+                               patches[lastPatchIndex].c_corner[0],
+                               patches[lastPatchIndex].c_corner[1]);
                         printf("deleted complementary: [%f, %f]\n",
-                               cover->patches[lastPatchIndex].d_corner[0],
-                               cover->patches[lastPatchIndex].d_corner[1]);
+                               patches[lastPatchIndex].d_corner[0],
+                               patches[lastPatchIndex].d_corner[1]);
 
                         // Call delete_patch to remove the last patch
                         delete_patch(cover, lastPatchIndex);
                         // no need to manually decrement n_patches, delete_patch will handle it
                     }
-                    lastPatchIndex = cover->n_patches - 1; // lastPatchIndex has changed because of the delete patch
+                    lastPatchIndex = n_patches - 1; // lastPatchIndex has changed because of the delete patch
                     // it may be not needed to update lastPatchIndex, but for now, I did it, so it wouldn't be forgotten later.
 
                     // call makePatch_alignedToLine to add a new patch based on the complementary apex and top z values.
                     makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
                     // update the lastPatchIndex to point to the newly added patch.
-                    lastPatchIndex = cover->n_patches - 1;
+                    lastPatchIndex = n_patches - 1;
 
                     // retrieve the a and b corner values from the latest patch.
-                    complementary_a = cover->patches[lastPatchIndex].a_corner[1];
-                    complementary_b = cover->patches[lastPatchIndex].b_corner[1];
+                    complementary_a = patches[lastPatchIndex].a_corner[1];
+                    complementary_b = patches[lastPatchIndex].b_corner[1];
 
                     // update the previous white space height for the next iteration.
                     previous_white_space_height = white_space_height;
@@ -447,21 +447,21 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     white_space_height = max(original_c - complementary_a, original_d - complementary_b);
 
                     printf("complementary_a: %f %f || complementary_b: %f %f new z_top_min: %f\n",
-                           complementary_a, cover->patches[lastPatchIndex].a_corner[1],
-                           complementary_b, cover->patches[lastPatchIndex].b_corner[1], z_top_min);
+                           complementary_a, patches[lastPatchIndex].a_corner[1],
+                           complementary_b, patches[lastPatchIndex].b_corner[1], z_top_min);
                     printf("new white_space_height: %f\n", white_space_height);
                     printf("adjusted complementary: [%f, %f] for z_top_min: %f\n",
-                           cover->patches[lastPatchIndex].a_corner[0], cover->patches[lastPatchIndex].a_corner[1], z_top_min);
+                           patches[lastPatchIndex].a_corner[0], patches[lastPatchIndex].a_corner[1], z_top_min);
                     printf("adjusted complementary: [%f, %f] for patch %d\n",
-                           cover->patches[lastPatchIndex].b_corner[0], cover->patches[lastPatchIndex].b_corner[1], cover->n_patches);
+                           patches[lastPatchIndex].b_corner[0], patches[lastPatchIndex].b_corner[1], n_patches);
                     printf("adjusted complementary: [%f, %f]\n",
-                           cover->patches[lastPatchIndex].c_corner[0], cover->patches[lastPatchIndex].c_corner[1]);
+                           patches[lastPatchIndex].c_corner[0], patches[lastPatchIndex].c_corner[1]);
                     printf("adjusted complementary: [%f, %f]\n",
-                           cover->patches[lastPatchIndex].d_corner[0], cover->patches[lastPatchIndex].d_corner[1]);
+                           patches[lastPatchIndex].d_corner[0], patches[lastPatchIndex].d_corner[1]);
 
-                    if ((cover->n_patches > 3) && fix42)
+                    if ((n_patches > 3) && fix42)
                     {
-                        index_type lastPatchIdx = cover->n_patches - 1;
+                        index_type lastPatchIdx = n_patches - 1;
                         index_type thirdLastPatchIdx = lastPatchIdx - 2;
 
                         // checking if the superpoints of the last and third last patches are the same
@@ -470,7 +470,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                         // that code checked 0 to 4
                         for (index_type i = 0; i < num_layers; i++)
                         {
-                            if (!areWedgeSuperPointsEqual(&cover->patches[lastPatchIdx].superpoints[i], &cover->patches[thirdLastPatchIdx].superpoints[i]))
+                            if (!areWedgeSuperPointsEqual(&patches[lastPatchIdx].superpoints[i], &patches[thirdLastPatchIdx].superpoints[i]))
                             {
                                 repeat_patch = false;
                                 break;
@@ -480,8 +480,8 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                         if (repeat_patch)
                         {
                             printf("%f %f repeat_patch: %d\n",
-                                   cover->patches[lastPatchIdx].superpoints[num_layers - 1].min,
-                                   cover->patches[lastPatchIdx].superpoints[num_layers - 1].max,
+                                   patches[lastPatchIdx].superpoints[num_layers - 1].min,
+                                   patches[lastPatchIdx].superpoints[num_layers - 1].max,
                                    repeat_patch);
 
                             delete_patch(cover, lastPatchIdx);
@@ -497,47 +497,47 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 }
             }
 
-            lastPatchIndex = cover->n_patches - 1; // just to keep fresh in case we use it
-            c_corner = cover->patches[lastPatchIndex].c_corner[1];
+            lastPatchIndex = n_patches - 1; // just to keep fresh in case we use it
+            c_corner = patches[lastPatchIndex].c_corner[1];
 
-            projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], c_corner, cover->patches[lastPatchIndex].c_corner[0], num_layers, 1, 0);
+            projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], c_corner, patches[lastPatchIndex].c_corner[0], num_layers, 1, 0);
 
-            saved_apexZ0 = cover->patches[lastPatchIndex].c_corner[0];
+            saved_apexZ0 = patches[lastPatchIndex].c_corner[0];
 
             if (madeComplementaryPatch)
             {
                 int secondLastPatchIndex = lastPatchIndex - 1;
 
                 // modifying patches, not adding patches, so index variables do not need to be updated.
-                getShadows(&cover->patches[lastPatchIndex], z_top_min, z_top_max);
-                getShadows(&cover->patches[secondLastPatchIndex], z_top_min, z_top_max);
+                getShadows(&patches[lastPatchIndex], z_top_min, z_top_max);
+                getShadows(&patches[secondLastPatchIndex], z_top_min, z_top_max);
 
-                float original_topR_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jL;
+                float original_topR_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jL;
                 bool originalPartialTop = (original_topR_jL > complementary_apexZ0) && (original_topR_jL < apexZ0) &&
-                                          (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topR_jL, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
+                                          (fabs(straightLineProjectorFromLayerIJtoK(&patches[secondLastPatchIndex], original_topR_jL, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
-                float original_topL_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
+                float original_topL_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
                 
                 bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001) &&
-                                             (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topL_jL, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
+                                             (fabs(straightLineProjectorFromLayerIJtoK(&patches[secondLastPatchIndex], original_topL_jL, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
                 
-                float complementary_topR_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+                float complementary_topR_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
                 
                 bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) &&
-                                               (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
+                                               (fabs(straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
-                float complementary_topL_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
+                float complementary_topL_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
                 
                 bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < -0.0001) &&
-                                                  (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topL_jR, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
+                                                  (fabs(straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], complementary_topL_jR, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
                 float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
                 float horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
 
-                float complementary_topR_jL = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jL;
-                float complementary_topL_jL = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jL;
-                float original_topR_jR = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jR;
-                float original_topL_jR = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jR;
+                float complementary_topR_jL = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jL;
+                float complementary_topL_jL = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jL;
+                float original_topR_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+                float original_topL_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jR;
 
                 float horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
                 float horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
@@ -553,8 +553,8 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                 float newZtop = 0;
 
-                float z0_original_bCorner = straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], apexZ0, z_top_max, 1, num_layers, 0);
-                float z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, 0);
+                float z0_original_bCorner = straightLineProjectorFromLayerIJtoK(&patches[secondLastPatchIndex], apexZ0, z_top_max, 1, num_layers, 0);
+                float z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(&patches[lastPatchIndex], complementary_apexZ0, z_top_min, 1, num_layers, 0);
                 bool shiftOriginal = true;
 
                 if (z0_original_bCorner < 0)
@@ -596,33 +596,33 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     if (makeHorizontallyShiftedPatch)
                     {
-                        delete_patch(cover, cover->n_patches - 1);
+                        delete_patch(cover, n_patches - 1);
                         // decrement n_patches is handled by delete_patch
                     }
 
                     makePatch_alignedToLine(cover, shifted_Align, newZtop, ppl, !shiftOriginal, false);
 
-                    getShadows(&cover->patches[cover->n_patches - 1], z_top_min, z_top_max);
+                    getShadows(&patches[n_patches - 1], z_top_min, z_top_max);
 
                     if (shiftOriginal)
                     {
-                        original_topR_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jL;
-                        original_topL_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jL;
-                        original_topR_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jR;
-                        original_topL_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jR;
+                        original_topR_jL = patches[n_patches - 1].shadow_fromTopToInnermost_topR_jL;
+                        original_topL_jL = patches[n_patches - 1].shadow_fromTopToInnermost_topL_jL;
+                        original_topR_jR = patches[n_patches - 1].shadow_fromTopToInnermost_topR_jR;
+                        original_topL_jR = patches[n_patches - 1].shadow_fromTopToInnermost_topL_jR;
                     }
                     else
                     {
-                        complementary_topR_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jR;
-                        complementary_topL_jR = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jR;
-                        complementary_topR_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topR_jL;
-                        complementary_topL_jL = cover->patches[cover->n_patches - 1].shadow_fromTopToInnermost_topL_jL;
+                        complementary_topR_jR = patches[n_patches - 1].shadow_fromTopToInnermost_topR_jR;
+                        complementary_topL_jR = patches[n_patches - 1].shadow_fromTopToInnermost_topL_jR;
+                        complementary_topR_jL = patches[n_patches - 1].shadow_fromTopToInnermost_topR_jL;
+                        complementary_topL_jL = patches[n_patches - 1].shadow_fromTopToInnermost_topL_jL;
                     }
 
                     horizontalShiftTop = original_topR_jL - complementary_topR_jR;
                     horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
 
-                    if (shiftOriginal && straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], original_topR_jR, z_top_max, 1, num_layers, 0) < beam_axis_lim)
+                    if (shiftOriginal && straightLineProjectorFromLayerIJtoK(&patches[n_patches - 1], original_topR_jR, z_top_max, 1, num_layers, 0) < beam_axis_lim)
                     {
                         horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
                         horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
@@ -638,11 +638,11 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                 }
                 if (makeHorizontallyShiftedPatch)
                 {
-                    if ((straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], shifted_Align, newZtop, 1, num_layers, 0) > beam_axis_lim) && shiftOriginal)
+                    if ((straightLineProjectorFromLayerIJtoK(&patches[n_patches - 1], shifted_Align, newZtop, 1, num_layers, 0) > beam_axis_lim) && shiftOriginal)
                     {
-                        if (cover->n_patches > 2)
+                        if (n_patches > 2)
                         {
-                            delete_patch(cover, cover->n_patches - 3);
+                            delete_patch(cover, n_patches - 3);
                         }
                     }
                 }
@@ -653,7 +653,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
             printf("+++++++++++++++++++++++ c_corner: %f\n", c_corner);
         }
 
-        apexZ0 = cover->patches[cover->n_patches - 1].c_corner[0];
+        apexZ0 = patches[n_patches - 1].c_corner[0];
         apexZ0 = saved_apexZ0;
         printf("'=======================================================  z1_Align: %f\n", apexZ0);
     }
@@ -786,7 +786,7 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
     //new_patch will disappear from memory once makePatch_alignedToLine terminates, so we don't want wedgePatch_init to point superpoints to it. 
     //init_patch will also disappear for the same scope reasons
     wedgePatch_init(&new_patch, init_patch, init_patch_size, apexZ0);
-    //indeed, add_patch is working fine as it is copying the values over: cover->patches[cover->n_patches] = *curr_patch;
+    //indeed, add_patch is working fine as it is copying the values over: patches[n_patches] = *curr_patch;
     //doesn't matter how wedgePatch_init works since we're dereferencing the patch to store by value in an array belonging to cover.
     add_patch(cover, &new_patch);
 }
