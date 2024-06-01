@@ -1,12 +1,12 @@
 #include "header.h"
 
-void initWedgeCover(wedgeCover *wc)
+void initWedgeCover()
 {
     n_patches = 0;
     //wc->data = dataI;
 }
 
-void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
+void add_patch(wedgePatch *curr_patch)
 {
     if (n_patches == 0)
     {
@@ -42,7 +42,7 @@ void add_patch(wedgeCover *cover, wedgePatch *curr_patch)
     }
 }
 
-void delete_patch(wedgeCover *cover, int index)
+void delete_patch(int index)
 {
     if (index < 0 || index >= n_patches)
     {
@@ -85,7 +85,7 @@ index_type get_index_from_z(int layer, float z_value)
 // not implementing the logic corresponding to show = true (that would involve Line Generators, etc)
 // Line Generator and its accompanying methods have been coded, but we are not going to implement show=true case here as main method passes with show=false.
 // lining is always MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES. assumes this in code
-void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
+void solve(float apexZ0, int ppl, int nlines, bool leftRight)
 {
     for (index_type i = 0; i < num_layers; i++)
     {
@@ -111,10 +111,10 @@ void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
             }
         }
     }
-    makePatches_ShadowQuilt_fromEdges(cover, apexZ0, 1, ppl, leftRight);
+    makePatches_ShadowQuilt_fromEdges(apexZ0, 1, ppl, leftRight);
 }
 
-void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight)
+void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool leftRight)
 {
     bool fix42 = true;
     apexZ0 = trapezoid_edges[0];
@@ -145,7 +145,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
             nPatchesInColumn++;
             printf("%f %d %f %d\n", apexZ0, ppl, z_top_max, leftRight);
 
-            makePatch_alignedToLine(cover, apexZ0, z_top_max, ppl, false, false);
+            makePatch_alignedToLine(apexZ0, z_top_max, ppl, false, false);
 
             index_type lastPatchIndex = n_patches - 1;
 
@@ -243,7 +243,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     z_top_min = max(-1 * top_layer_lim, lastPatch->superpoints[num_layers - 1].min);
                 }
 
-                makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
+                makePatch_alignedToLine(complementary_apexZ0, z_top_min, ppl, true, false);
                 // updating the last patch index because makePatch_alignedToLine will add more patches to the patches array. Should revisit after writing method
                 // makePatch_alignedToLine will call the add patch method, so we must get a new last patch index.
                 lastPatchIndex = n_patches - 1;
@@ -425,15 +425,14 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                                patches[lastPatchIndex].d_corner[0],
                                patches[lastPatchIndex].d_corner[1]);
 
-                        // Call delete_patch to remove the last patch
-                        delete_patch(cover, lastPatchIndex);
+                        delete_patch(lastPatchIndex);
                         // no need to manually decrement n_patches, delete_patch will handle it
                     }
                     lastPatchIndex = n_patches - 1; // lastPatchIndex has changed because of the delete patch
                     // it may be not needed to update lastPatchIndex, but for now, I did it, so it wouldn't be forgotten later.
 
                     // call makePatch_alignedToLine to add a new patch based on the complementary apex and top z values.
-                    makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
+                    makePatch_alignedToLine(complementary_apexZ0, z_top_min, ppl, true, false);
                     // update the lastPatchIndex to point to the newly added patch.
                     lastPatchIndex = n_patches - 1;
 
@@ -484,14 +483,14 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                                    patches[lastPatchIdx].superpoints[num_layers - 1].max,
                                    repeat_patch);
 
-                            delete_patch(cover, lastPatchIdx);
+                            delete_patch(lastPatchIdx);
 
                             current_z_top_index -= 1;
 
                             z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
                             z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
-                            makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
+                            makePatch_alignedToLine(complementary_apexZ0, z_top_min, ppl, true, false);
                         }
                     }
                 }
@@ -596,11 +595,11 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
 
                     if (makeHorizontallyShiftedPatch)
                     {
-                        delete_patch(cover, n_patches - 1);
+                        delete_patch(n_patches - 1);
                         // decrement n_patches is handled by delete_patch
                     }
 
-                    makePatch_alignedToLine(cover, shifted_Align, newZtop, ppl, !shiftOriginal, false);
+                    makePatch_alignedToLine(shifted_Align, newZtop, ppl, !shiftOriginal, false);
 
                     getShadows(&patches[n_patches - 1], z_top_min, z_top_max);
 
@@ -642,7 +641,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
                     {
                         if (n_patches > 2)
                         {
-                            delete_patch(cover, n_patches - 3);
+                            delete_patch(n_patches - 3);
                         }
                     }
                 }
@@ -659,7 +658,7 @@ void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop
     }
 }
 
-void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl)
+void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl)
 {
     wedgeSuperPoint init_patch[MAX_LAYERS]; // correct
     int original_ppl = ppl;
@@ -788,5 +787,5 @@ void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int p
     wedgePatch_init(&new_patch, init_patch, init_patch_size, apexZ0);
     //indeed, add_patch is working fine as it is copying the values over: patches[n_patches] = *curr_patch;
     //doesn't matter how wedgePatch_init works since we're dereferencing the patch to store by value in an array belonging to cover.
-    add_patch(cover, &new_patch);
+    add_patch(&new_patch);
 }

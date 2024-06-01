@@ -47,18 +47,15 @@
 #define top_layer_lim 50
 #define beam_axis_lim 15
 #ifdef MAIN_C
-const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
-const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
-const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
-const float trapezoid_edges[MAX_LAYERS] = {22.0001, 29.0001, 36.0001, 43.0001, 50.0001};
-index_type n_patches = 0;
-
+    const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
+    const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
+    const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
+    const float trapezoid_edges[MAX_LAYERS] = {22.0001, 29.0001, 36.0001, 43.0001, 50.0001};
 #else
-extern float radii[MAX_LAYERS];
-extern float parallelogramSlopes[MAX_LAYERS-1];
-extern float radii_leverArm[MAX_LAYERS-1];
-extern float trapezoid_edges[MAX_LAYERS];
-extern index_type n_patches;
+    extern float radii[MAX_LAYERS];
+    extern float parallelogramSlopes[MAX_LAYERS-1];
+    extern float radii_leverArm[MAX_LAYERS-1];
+    extern float trapezoid_edges[MAX_LAYERS];
 #endif
 
 typedef struct
@@ -153,17 +150,18 @@ extern void getParallelograms(wedgePatch *wp);
 extern void getShadows(wedgePatch *wp, float zTopMin, float zTopMax);
 extern void get_acceptanceCorners(wedgePatch *wp);
 extern void get_end_layer(wedgePatch *wp);
-extern void initWedgeCover(wedgeCover *wc);
+extern void initWedgeCover();
 extern int comparePoints(const void *a, const void *b);
-extern void add_patch(wedgeCover *cover, wedgePatch *curr_patch);
-extern void delete_patch(wedgeCover *cover, int index);
+extern void add_patch(wedgePatch *curr_patch);
+extern void delete_patch(int index);
 extern index_type get_index_from_z(int layer, float z_value);
-extern void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight);
-extern void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight);
-extern void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
+extern void solve(float apexZ0, int ppl, int nlines, bool leftRight);
+extern void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool leftRight);
+extern void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
 extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
 
 extern int floatCompare(const void *a, const void *b);
 
 EXTERN DataSet Gdata;
 EXTERN wedgePatch patches[MAX_PATCHES];
+EXTERN index_type n_patches;

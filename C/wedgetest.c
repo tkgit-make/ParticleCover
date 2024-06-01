@@ -26,7 +26,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         wedgeCover cover;
         initWedgeCover(&cover);
 
-        solve(&cover, apexZ0, ppl, 100, false); // solve modifies  false is from the left right align (previously a parameter in wedge test)
+        solve(apexZ0, ppl, 100, false); // solve modifies  false is from the left right align (previously a parameter in wedge test)
 
         for (int i = 0; i < n_patches; i++)
         {
