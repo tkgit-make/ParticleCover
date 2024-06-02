@@ -47,11 +47,36 @@
 #define top_layer_lim 50
 #define beam_axis_lim 15
 #ifdef MAIN_C
-    const index_type radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
-    const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
-    const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
-    const float trapezoid_edges[MAX_LAYERS] = {22.0001, 29.0001, 36.0001, 43.0001, 50.0001};
-    const index_type CONVERSION_FACTOR = 100000;
+    const index_type CONVERSION_FACTOR = 1;
+    const float TOP_LAYER_LIM = 50 * CONVERSION_FACTOR;
+    const float BEAM_AXIS_LIM = 15 * CONVERSION_FACTOR;
+    const int NUM_LAYERS = 5;
+    const index_type radii[MAX_LAYERS] = {
+        5 * CONVERSION_FACTOR, 
+        10 * CONVERSION_FACTOR, 
+        15 * CONVERSION_FACTOR, 
+        20 * CONVERSION_FACTOR, 
+        25 * CONVERSION_FACTOR
+    };
+    const float parallelogramSlopes[MAX_LAYERS-1] = {
+        0,
+        (radii[0] - radii[1]) / (radii[4] - radii[1]), 
+        (radii[0] - radii[2]) / (radii[4] - radii[2]), 
+        (radii[0] - radii[3]) / (radii[4] - radii[3])
+    };
+    const float radii_leverArm[MAX_LAYERS-1] = {
+        1 - parallelogramSlopes[0], 
+        1 - parallelogramSlopes[1], 
+        1 - parallelogramSlopes[2], 
+        1 - parallelogramSlopes[3]
+    };
+    const float trapezoid_edges[MAX_LAYERS] = {
+        radii[0] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
+        radii[1] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
+        radii[2] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
+        radii[3] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
+        radii[4] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR
+    };
 #else
     extern index_type radii[MAX_LAYERS];
     extern float parallelogramSlopes[MAX_LAYERS-1];
