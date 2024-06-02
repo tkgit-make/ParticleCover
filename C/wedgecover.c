@@ -721,7 +721,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
             ppl = original_ppl;
         }
 
-        Point temp[MAX_POINTS_PER_LAYER]; // check
+        Point temp[MAX_POINTS_PER_LAYER];
         int temp_size = 0;
 
         if (leftRight)

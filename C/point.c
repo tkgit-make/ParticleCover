@@ -12,7 +12,7 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
 int Point_load(Point *p)
 {
     
-    if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
+    if (scanf("(%d,%d,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
     {
         return 1;            // successful load
     }
