@@ -1,4 +1,52 @@
 #include "header.h"
+void getParallelograms(wedgePatch *wp)
+{
+    float z1_min = max(wp->superpoints[0].min, -1 * trapezoid_edges[0]);
+    float z1_max = min(wp->superpoints[0].max, trapezoid_edges[0]);
+
+    if (z1_min > z1_max)
+    {
+        z1_min = trapezoid_edges[0] + 1;
+        z1_max = z1_min;
+    }
+
+    int previous_count = wp->parallelogram_count;
+
+    // the code now handles the case below
+    // if (! wp->parallelogram_count <= wp->superpoint_count - 1 ) {
+    //     printf("Instead of assigning a temp array, we are overwriting the first superpoint_count-1 elements in the parallelogam array. If the current number of elements in the array is greater than superpoint_count-1, then we will have remaining elements that need to be deleted to replicate the functionality correctly");
+    //     //exit(8);
+    // }
+    wp->parallelogram_count = 0; // we want to start at index 0 regardless and overwrite any old elements in the array to replicate the functionality of assigning a temp array.
+    for (int i = 1; i < wp->superpoint_count; i++)
+    {
+        int j = i + 1;
+
+        float z_j_min = wp->superpoints[i].min;
+        float z_j_max = wp->superpoints[i].max;
+
+        float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, num_layers);
+        float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, num_layers);
+        float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, num_layers);
+        float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, num_layers);
+
+        float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
+
+        // directly assign the values to the array
+        if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH)
+        {
+            Parallelogram *p = &wp->parallelograms[wp->parallelogram_count++]; // making a pointer to the address of first empty element in the array
+            p->layer_num = j;                                                  // then dereferencing and assigning values to the properties
+            p->pSlope = pSlope;
+            p->shadow_bottomL_jR = a;
+            p->shadow_bottomR_jR = b;
+            p->shadow_bottomL_jL = c;
+            p->shadow_bottomR_jL = d;
+            p->z1_min = z1_min;
+            p->z1_max = z1_max;
+        }
+    }
+}
 
 void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I)
 {
@@ -66,55 +114,6 @@ float straightLineProjector(float z_top, float z_j, int j)
 {
     float temp = radii_leverArm[j - 1];
     return z_top - (z_top - z_j) * temp;
-}
-
-void getParallelograms(wedgePatch *wp)
-{
-    float z1_min = max(wp->superpoints[0].min, -1 * trapezoid_edges[0]);
-    float z1_max = min(wp->superpoints[0].max, trapezoid_edges[0]);
-
-    if (z1_min > z1_max)
-    {
-        z1_min = trapezoid_edges[0] + 1;
-        z1_max = z1_min;
-    }
-
-    int previous_count = wp->parallelogram_count;
-
-    // the code now handles the case below
-    // if (! wp->parallelogram_count <= wp->superpoint_count - 1 ) {
-    //     printf("Instead of assigning a temp array, we are overwriting the first superpoint_count-1 elements in the parallelogam array. If the current number of elements in the array is greater than superpoint_count-1, then we will have remaining elements that need to be deleted to replicate the functionality correctly");
-    //     //exit(8);
-    // }
-    wp->parallelogram_count = 0; // we want to start at index 0 regardless and overwrite any old elements in the array to replicate the functionality of assigning a temp array.
-    for (int i = 1; i < wp->superpoint_count; i++)
-    {
-        int j = i + 1;
-
-        float z_j_min = wp->superpoints[i].min;
-        float z_j_max = wp->superpoints[i].max;
-
-        float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, num_layers);
-        float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, num_layers);
-        float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, num_layers);
-        float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, num_layers);
-
-        float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
-
-        // directly assign the values to the array
-        if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH)
-        {
-            Parallelogram *p = &wp->parallelograms[wp->parallelogram_count++]; // making a pointer to the address of first empty element in the array
-            p->layer_num = j;                                                  // then dereferencing and assigning values to the properties
-            p->pSlope = pSlope;
-            p->shadow_bottomL_jR = a;
-            p->shadow_bottomR_jR = b;
-            p->shadow_bottomL_jL = c;
-            p->shadow_bottomR_jL = d;
-            p->z1_min = z1_min;
-            p->z1_max = z1_max;
-        }
-    }
 }
 
 void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)

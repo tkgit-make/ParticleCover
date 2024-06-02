@@ -20,7 +20,7 @@ fi
 
 mkdir -p bin
 rm -f bin/ProcessInput
-if ! g++ -g $OPTS C/*.cpp -o bin/ProcessInput -lm; then # Original compiler was gcc 
+if ! g++ -g $OPTS cppForSynthesis/*.cpp -o bin/ProcessInput -lm; then # Original compiler was gcc 
 	echo "compile fail"
 	exit
 fi

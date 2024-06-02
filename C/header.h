@@ -13,6 +13,7 @@
 
 #define KEEP_DELETED_PATCHES true
 //make conversion ratio to micron macro
+#define MAIN_C
 
 #ifdef MAIN_C
 #define EXTERN
@@ -162,9 +163,11 @@ extern void delete_patch(wedgeCover *cover, int index);
 extern index_type get_index_from_z(int layer, float z_value);
 extern void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight);
 extern void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight);
-extern void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
+extern float solveNextColumn(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float saved_apexZ0); 
+extern void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float saved_apexZ0, int *nPatchesInColumn, float *c_corner, float *projectionOfCornerToBeam, float *z_top_min, float *z_top_max, float *complementary_apexZ0); 
+extern void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float *z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
 extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
 
 extern int floatCompare(const void *a, const void *b);
 
-EXTERN DataSet Gdata;
+extern DataSet Gdata;
