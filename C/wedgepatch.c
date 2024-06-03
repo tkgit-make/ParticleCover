@@ -26,7 +26,7 @@ void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoi
     get_end_layer(wp);
 }
 
-float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k)
+float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k)
 {
     float radius_i = 0;
     float radius_j = 0;
@@ -94,10 +94,10 @@ void getParallelograms(wedgePatch *wp)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, num_layers);
-        float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, num_layers);
-        float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, num_layers);
-        float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, num_layers);
+        float a = straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, num_layers);
+        float b = straightLineProjectorFromLayerIJtoK(z1_max, z_j_max, 1, j, num_layers);
+        float c = straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, num_layers);
+        float d = straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, num_layers);
 
         float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
 
@@ -143,10 +143,10 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        topL_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_min, num_layers, j, 1);
-        topL_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_max, num_layers, j, 1);
-        topR_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_min, num_layers, j, 1);
-        topR_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_max, num_layers, j, 1);
+        topL_jL[i] = straightLineProjectorFromLayerIJtoK(zTop_min, z_j_min, num_layers, j, 1);
+        topL_jR[i] = straightLineProjectorFromLayerIJtoK(zTop_min, z_j_max, num_layers, j, 1);
+        topR_jL[i] = straightLineProjectorFromLayerIJtoK(zTop_max, z_j_min, num_layers, j, 1);
+        topR_jR[i] = straightLineProjectorFromLayerIJtoK(zTop_max, z_j_max, num_layers, j, 1);
     }
 
     wp->shadow_fromTopToInnermost_topL_jL = topL_jL[0];

@@ -42,15 +42,11 @@
 // #define MAX_LINES __ //only used in visualization
 #define MAX_SUPERPOINTS_IN_COVER (MAX_PATCHES * MAX_SUPERPOINTS_IN_PATCH)
 
-//constant from environment that have been pulled out of structure
-#define num_layers 5
-#define top_layer_lim 50
-#define beam_axis_lim 15
 #ifdef MAIN_C
     const index_type CONVERSION_FACTOR = 1;
-    const float TOP_LAYER_LIM = 50 * CONVERSION_FACTOR;
-    const float BEAM_AXIS_LIM = 15 * CONVERSION_FACTOR;
-    const int NUM_LAYERS = 5;
+    const float top_layer_lim = 50 * CONVERSION_FACTOR;
+    const float beam_axis_lim = 15 * CONVERSION_FACTOR;
+    const index_type num_layers = 5;
     const index_type radii[MAX_LAYERS] = {
         5 * CONVERSION_FACTOR, 
         10 * CONVERSION_FACTOR, 
@@ -71,11 +67,11 @@
         1 - parallelogramSlopes[3]
     };
     const float trapezoid_edges[MAX_LAYERS] = {
-        radii[0] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
-        radii[1] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
-        radii[2] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
-        radii[3] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR, 
-        radii[4] * (TOP_LAYER_LIM - BEAM_AXIS_LIM) / radii[4] + BEAM_AXIS_LIM + 0.0001 * CONVERSION_FACTOR
+        radii[0] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
+        radii[1] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
+        radii[2] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
+        radii[3] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
+        radii[4] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR
     };
 #else
     extern index_type radii[MAX_LAYERS];
@@ -83,7 +79,11 @@
     extern float radii_leverArm[MAX_LAYERS-1];
     extern float trapezoid_edges[MAX_LAYERS];
     extern index_type CONVERSION_FACTOR;
+    extern float top_layer_lim;
+    extern float beam_axis_lim;
+    extern index_type num_layers;
 #endif
+
 
 typedef struct
 {
@@ -157,13 +157,13 @@ typedef struct
 } wedgePatch;
 
 extern int Point_load(Point *p);
-extern void importData(DataSet *ds);
-extern void addBoundaryPoint(DataSet *ds, float offset);
+extern void importData();
+extern void addBoundaryPoint(float offset);
 extern void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 extern int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
 extern void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
 extern void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I);
-extern float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k);
+extern float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k);
 extern float straightLineProjector(float z_top, float z_j, int j);
 extern void getParallelograms(wedgePatch *wp);
 extern void getShadows(wedgePatch *wp, float zTopMin, float zTopMax);
@@ -177,8 +177,7 @@ extern index_type get_index_from_z(int layer, float z_value);
 extern void solve(float apexZ0, int ppl, int nlines, bool leftRight);
 extern void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool leftRight);
 extern void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
-extern void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
-
+extern void wedge_test(float apexZ0, int ppl, int wedges[]);
 extern int floatCompare(const void *a, const void *b);
 
 EXTERN DataSet Gdata;

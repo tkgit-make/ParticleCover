@@ -1,6 +1,6 @@
 #include "header.h"
 
-void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff)
+void wedge_test(float apexZ0, int ppl, int wedges[])
 {
     int numEventsLoaded = 0;
 
@@ -19,9 +19,9 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         printf("wedge %d\n", z); //main print
         fprintf(myfile, "wedge %d\n", z); //file to diff
 
-        importData(&Gdata);
+        importData();
         
-        addBoundaryPoint(&Gdata, 0.0001); // with default param
+        addBoundaryPoint(0.0001); // with default param
 
         initWedgeCover();
 

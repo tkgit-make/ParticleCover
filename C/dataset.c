@@ -28,11 +28,11 @@ void adjustPointPositionBack(Point *array, int n_points, int start_index) {
     array[j] = toInsert; // place the element at its correct position
 }
 
-void importData(DataSet *ds)
+void importData()
 {
     // initDataSet line. The global DataSet is reused, so we just need to reset the number of points, or set it if this is the first time. 0 across all layers.
     // n_points being set to 0 when we reuse the DataSet will stop it from accessing any information from a past wedge.
-    memset(ds->n_points, 0, sizeof(ds->n_points));
+    memset(Gdata.n_points, 0, sizeof(Gdata.n_points));
 
     index_type n = 0;
     char ch = ',';
@@ -45,8 +45,8 @@ void importData(DataSet *ds)
             break;
         
         index_type layer = p.layer_num - 1;
-        ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
-        ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
+        Gdata.array[layer][Gdata.n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
+        Gdata.n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
         
         n++;
         scanf("%c", &ch);
@@ -57,39 +57,39 @@ void importData(DataSet *ds)
     for (index_type i = 0; i < num_layers; i++)
     {
         //sorts the points in the ith layer
-        qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
+        qsort(&Gdata.array[i][1], Gdata.n_points[i], sizeof(Point), comparePoints);
     }
 }
 
-void addBoundaryPoint(DataSet *ds, float offset)
+void addBoundaryPoint(float offset)
 {
-    ds->boundaryPoint_offset = offset;
+    Gdata.boundaryPoint_offset = offset;
 
     for (index_type i = 0; i < num_layers; i++) {
         //adding two boundary points in each layer
         // inserting at the beginning
-        ds->array[i][0].layer_num = i + 1;
-        ds->array[i][0].radius = (i + 1) * 5;
+        Gdata.array[i][0].layer_num = i + 1;
+        Gdata.array[i][0].radius = (i + 1) * 5;
         //is the phi for the boundary points used (answer: no)? so, instead of sorting in importData, we could wait and add boundary points, and then sort, without any shifting of boundary points needed. MlogM vs NlogN + 2N, where M = N+2
-        ds->array[i][0].phi = ds->array[i][1].phi; // getting the first phi in the array sorted by z
-        ds->array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
+        Gdata.array[i][0].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
+        Gdata.array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
 
         // appending at the end
-        index_type lastIndex = ds->n_points[i] + 1; // after shifting, there's one more point
-        ds->array[i][lastIndex].layer_num = i + 1;
-        ds->array[i][lastIndex].radius = (i + 1) * 5;
-        ds->array[i][lastIndex].phi = ds->array[i][1].phi; // getting the first phi in the array sorted by z
-        ds->array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
+        index_type lastIndex = Gdata.n_points[i] + 1; // after shifting, there's one more point
+        Gdata.array[i][lastIndex].layer_num = i + 1;
+        Gdata.array[i][lastIndex].radius = (i + 1) * 5;
+        Gdata.array[i][lastIndex].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
+        Gdata.array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
 
         //now factors in the addition of both boundary points because n_points previously was counting true point additions, and did not count the blank index 0.
-        ds->n_points[i] += 2;    
+        Gdata.n_points[i] += 2;    
 
         // adjusting positions using insertion sort techniques as opposed to sorting the entire array. 
         // we have the guarentee from importData that the array was sorted
         // assigned points to indices first to avoid risk of comparing uninitialized "blank" points.
         // as opposed to full sorting algorithms like mergesort, each call here is O(N) and has the potential to escape much earlier. 
-        adjustPointPositionFront(ds->array[i], ds->n_points[i], 0); // adjust the start boundary
-        adjustPointPositionBack(ds->array[i], ds->n_points[i], lastIndex); // adjust the end boundary
+        adjustPointPositionFront(Gdata.array[i], Gdata.n_points[i], 0); // adjust the start boundary
+        adjustPointPositionBack(Gdata.array[i], Gdata.n_points[i], lastIndex); // adjust the end boundary
     }
 
 }
