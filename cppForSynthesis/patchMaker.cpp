@@ -137,7 +137,7 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
 void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
 void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I);
-float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k);
+float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k);
 float straightLineProjector(float z_top, float z_j, int j);
 void getParallelograms(wedgePatch *wp);
 void getShadows(wedgePatch *wp, float zTopMin, float zTopMax);
@@ -388,10 +388,10 @@ void getParallelograms(wedgePatch *wp)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        float a = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_max, 1, j, num_layers);
-        float b = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_max, 1, j, num_layers);
-        float c = straightLineProjectorFromLayerIJtoK(wp, z1_min, z_j_min, 1, j, num_layers);
-        float d = straightLineProjectorFromLayerIJtoK(wp, z1_max, z_j_min, 1, j, num_layers);
+        float a = straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, num_layers);
+        float b = straightLineProjectorFromLayerIJtoK(z1_max, z_j_max, 1, j, num_layers);
+        float c = straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, num_layers);
+        float d = straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, num_layers);
 
         float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
 
@@ -437,7 +437,7 @@ void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoi
     get_end_layer(wp);
 }
 
-float straightLineProjectorFromLayerIJtoK(wedgePatch *wp, float z_i, float z_j, int i, int j, int k)
+float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k)
 {
     float radius_i = 0;
     float radius_j = 0;
@@ -505,10 +505,10 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        topL_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_min, num_layers, j, 1);
-        topL_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_min, z_j_max, num_layers, j, 1);
-        topR_jL[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_min, num_layers, j, 1);
-        topR_jR[i] = straightLineProjectorFromLayerIJtoK(wp, zTop_max, z_j_max, num_layers, j, 1);
+        topL_jL[i] = straightLineProjectorFromLayerIJtoK(zTop_min, z_j_min, num_layers, j, 1);
+        topL_jR[i] = straightLineProjectorFromLayerIJtoK(zTop_min, z_j_max, num_layers, j, 1);
+        topR_jL[i] = straightLineProjectorFromLayerIJtoK(zTop_max, z_j_min, num_layers, j, 1);
+        topR_jR[i] = straightLineProjectorFromLayerIJtoK(zTop_max, z_j_max, num_layers, j, 1);
     }
 
     wp->shadow_fromTopToInnermost_topL_jL = topL_jL[0];
@@ -806,7 +806,7 @@ float solveNextColumn(wedgeCover *cover, float apexZ0, int stop, int ppl, bool l
 
     if (cover->n_patches > 0)
     {
-        z_top_max = min(z_top_max, straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], -1 * beam_axis_lim, apexZ0, 0, 1, num_layers // includes passing a pointer to the last patch
+        z_top_max = min(z_top_max, straightLineProjectorFromLayerIJtoK(-1 * beam_axis_lim, apexZ0, 0, 1, num_layers // includes passing a pointer to the last patch
                         ));
     }
 
@@ -862,10 +862,10 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
                 j,
                 cover->patches[lastPatchIndex].superpoints[i].min,
                 cover->patches[lastPatchIndex].superpoints[i].max,
-                straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].max, cover->patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
-                straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].max, cover->patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers),
-                straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].min, cover->patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
-                straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], cover->patches[lastPatchIndex].superpoints[0].min, cover->patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers));
+                straightLineProjectorFromLayerIJtoK(cover->patches[lastPatchIndex].superpoints[0].max, cover->patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
+                straightLineProjectorFromLayerIJtoK(cover->patches[lastPatchIndex].superpoints[0].max, cover->patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers),
+                straightLineProjectorFromLayerIJtoK(cover->patches[lastPatchIndex].superpoints[0].min, cover->patches[lastPatchIndex].superpoints[i].min, 1, j, num_layers),
+                straightLineProjectorFromLayerIJtoK(cover->patches[lastPatchIndex].superpoints[0].min, cover->patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers));
     }
 
     float original_c = cover->patches[lastPatchIndex].c_corner[1];
@@ -904,7 +904,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
 
     float seed_apexZ0 = apexZ0;
     wedgePatch *lastPatch = &cover->patches[lastPatchIndex];
-    projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(lastPatch, lastPatch->c_corner[1], lastPatch->c_corner[0], num_layers, 1, 0);
+    projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(lastPatch->c_corner[1], lastPatch->c_corner[0], num_layers, 1, 0);
     bool squarePatch_alternate1 = (lastPatch->a_corner[1] > z_top_max) && (lastPatch->b_corner[1] > z_top_max) && (lastPatch->flatBottom);
     bool squarePatch_alternate2 = (lastPatch->a_corner[1] > z_top_max) && (lastPatch->flatBottom);
 
@@ -963,7 +963,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
     lastPatchIndex = cover->n_patches - 1; // just to keep fresh in case we use it
    c_corner = cover->patches[lastPatchIndex].c_corner[1];
 
-   projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex],c_corner, cover->patches[lastPatchIndex].c_corner[0], num_layers, 1, 0);
+   projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(c_corner, cover->patches[lastPatchIndex].c_corner[0], num_layers, 1, 0);
 
     saved_apexZ0 = cover->patches[lastPatchIndex].c_corner[0];
 
@@ -977,22 +977,22 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
 
         float original_topR_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jL;
         bool originalPartialTop = (original_topR_jL > complementary_apexZ0) && (original_topR_jL < apexZ0) &&
-                                    (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topR_jL, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
+                                    (fabs(straightLineProjectorFromLayerIJtoK(original_topR_jL, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
         float original_topL_jL = cover->patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
         
         bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001) &&
-                                        (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], original_topL_jL,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
+                                        (fabs(straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
         
         float complementary_topR_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
         
         bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) &&
-                                        (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
+                                        (fabs(straightLineProjectorFromLayerIJtoK(complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
         float complementary_topL_jR = cover->patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
         
         bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < -0.0001) &&
-                                            (fabs(straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_topL_jR,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
+                                            (fabs(straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
         float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
         float horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
@@ -1016,8 +1016,8 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
 
         float newZtop = 0;
 
-        float z0_original_bCorner = straightLineProjectorFromLayerIJtoK(&cover->patches[secondLastPatchIndex], apexZ0, z_top_max, 1, num_layers, 0);
-        float z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0,z_top_min, 1, num_layers, 0);
+        float z0_original_bCorner = straightLineProjectorFromLayerIJtoK(apexZ0, z_top_max, 1, num_layers, 0);
+        float z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min, 1, num_layers, 0);
         bool shiftOriginal = true;
 
         if (z0_original_bCorner < 0)
@@ -1085,7 +1085,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
             horizontalShiftTop = original_topR_jL - complementary_topR_jR;
             horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
 
-            if (shiftOriginal && straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], original_topR_jR, z_top_max, 1, num_layers, 0) < beam_axis_lim)
+            if (shiftOriginal && straightLineProjectorFromLayerIJtoK(original_topR_jR, z_top_max, 1, num_layers, 0) < beam_axis_lim)
             {
                 horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
                 horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
@@ -1101,7 +1101,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
         }
         if (makeHorizontallyShiftedPatch)
         {
-            if ((straightLineProjectorFromLayerIJtoK(&cover->patches[cover->n_patches - 1], shifted_Align, newZtop, 1, num_layers, 0) > beam_axis_lim) && shiftOriginal)
+            if ((straightLineProjectorFromLayerIJtoK(shifted_Align, newZtop, 1, num_layers, 0) > beam_axis_lim) && shiftOriginal)
             {
                 if (cover->n_patches > 2)
                 {
@@ -1140,7 +1140,7 @@ void solveComplmentaryPatch(wedgeCover *cover, float &previous_white_space_heigh
 
     for (index_type i = 0; i < num_layers; i++)
     {
-        current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0,z_top_min, 1, num_layers, i + 1));
+        current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min, 1, num_layers, i + 1));
     }
 
     if (z_top_min == previous_z_top_min)
@@ -1195,8 +1195,7 @@ void solveComplmentaryPatch(wedgeCover *cover, float &previous_white_space_heigh
     float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
     for (index_type i = 1; i < num_layers; i++)
     {
-        new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex],
-                                                                    complementary_apexZ0,
+        new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(complementary_apexZ0,
                                                                     new_z_i[i],
                                                                     1,
                                                                     i + 1,
