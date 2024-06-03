@@ -13,7 +13,6 @@
 
 #define KEEP_DELETED_PATCHES true
 //make conversion ratio to micron macro
-#define MAIN_C
 
 #ifdef MAIN_C
 #define EXTERN

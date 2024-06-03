@@ -152,6 +152,7 @@ void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
 void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight);
 float solveNextColumn(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float saved_apexZ0); 
 void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float &saved_apexZ0, int &nPatchesInColumn, float &c_corner, float &projectionOfCornerToBeam, float &z_top_min, float &z_top_max, float &complementary_apexZ0);
+void solveComplmentaryPatch(wedgeCover *cover, float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type &lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original);
 void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl);
 void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
 
@@ -773,14 +774,14 @@ void solve(wedgeCover *cover, float apexZ0, int ppl, int nlines, bool leftRight)
             firstTime = false;
             if (foundIdentical)
             {
-                qsort(Gdata.array[i], Gdata.n_points[i], sizeof(Point), comparePoints);
+                qsort(Gdata.array[i], Gdata.n_points[i], sizeof(Point), comparePoints); // Chip will ultimately have sorted data coming through, not needed for synthesis
             }
         }
     }
     makePatches_ShadowQuilt_fromEdges(cover, apexZ0, 1, ppl, leftRight);
 }
 
-void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight)
+void makePatches_ShadowQuilt_fromEdges(wedgeCover *cover, float apexZ0, int stop, int ppl, bool leftRight) // TOP-LEVEL FUNCTION FOR VITIS
 {
     bool fix42 = true;
     apexZ0 = trapezoid_edges[0];
@@ -947,7 +948,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
         int counter = 0;
         int counterUpshift = 0;
         index_type current_z_top_index = -1;
-        double previous_z_top_min = -999;
+        float previous_z_top_min = -999;
 
         while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
                 ((cover->patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
@@ -955,234 +956,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
                 (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                 !(repeat_patch) && !(repeat_original))
         {
-            if(counter > 25)
-            {
-                exit(0); 
-            }
-            printf("\n");
-            if (cover->n_patches > 2)
-            {
-                index_type secondLastPatchIndex = lastPatchIndex - 1;
-                printf("original c: %f %f || original d: %f %f\n",
-                        original_c, cover->patches[secondLastPatchIndex].c_corner[1],
-                        original_d, cover->patches[secondLastPatchIndex].d_corner[1]);
-            }
-            printf("complementary_a: %f %f || complementary_b: %f %f\n",
-                    complementary_a, cover->patches[lastPatchIndex].a_corner[1],
-                    complementary_b, cover->patches[lastPatchIndex].b_corner[1]);
-
-            current_z_top_index = get_index_from_z(num_layers - 1,z_top_min); 
-            printf("current white_space_height: %f\n", white_space_height);
-            printf("counter: %d counterUpshift: %d\n", counter, counterUpshift);
-            printf("orig_ztop: %d orig_z_top_min: %f\n", current_z_top_index,z_top_min);
-
-            index_type current_z_i_index[MAX_LAYERS];
-            index_type new_z_i_index[MAX_LAYERS];
-
-            for (index_type i = 0; i < num_layers; i++)
-            {
-                current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0,z_top_min, 1, num_layers, i + 1));
-            }
-
-            if (z_top_min == previous_z_top_min)
-            {
-                current_z_top_index += 1;
-                for (index_type i = 0; i < num_layers; i++)
-                {
-                    new_z_i_index[i] = current_z_i_index[i] + 1;
-                }
-            }
-
-            previous_z_top_min = z_top_min;
-
-            if (white_space_height < 0)
-            {
-                counter += 1;
-                current_z_top_index -= 1;
-                for (index_type i = 0; i < num_layers; i++)
-                {
-                    new_z_i_index[i] = current_z_i_index[i] - 1;
-                }
-            }
-            else
-            {
-                counterUpshift += 1;
-                current_z_top_index += 1;
-                for (index_type i = 0; i < num_layers; i++)
-                {
-                    new_z_i_index[i] = current_z_i_index[i] + 1;
-                }
-            }
-
-            int x = Gdata.n_points[num_layers - 1] - 1;
-            current_z_top_index = min(current_z_top_index, Gdata.n_points[num_layers - 1] - 1); // n_points is an array of the sizes of each element of 'array'
-
-            for (index_type i = 0; i < num_layers; i++)
-            {
-                new_z_i_index[i] = min(new_z_i_index[i], (float)Gdata.n_points[i] - 1);
-            }
-
-            for (index_type i = 0; i < num_layers; i++)
-            { 
-                new_z_i_index[i] = max(new_z_i_index[i], 0.0f);
-            }
-            float new_z_i[MAX_LAYERS];
-
-            for (index_type i = 0; i < num_layers; i++)
-            {
-                new_z_i[i] = Gdata.array[i][new_z_i_index[i]].z;
-            }
-
-            float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
-            for (index_type i = 1; i < num_layers; i++)
-            {
-                new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex],
-                                                                            complementary_apexZ0,
-                                                                            new_z_i[i],
-                                                                            1,
-                                                                            i + 1,
-                                                                            num_layers);
-            }
-
-            index_type layerWithSmallestShift = 0;
-            float layerSMin = FLT_MAX;
-
-            for (index_type i = 0; i < num_layers - 1; i++)
-            {
-                if (fabs(new_z_i_atTop[i] - previous_z_top_min) < layerSMin)
-                { // fabs is for floats. abs is only int
-                    layerSMin = fabs(new_z_i_atTop[i] - previous_z_top_min);
-                    layerWithSmallestShift = i;
-                }
-            }
-
-            layerWithSmallestShift += 1;
-
-            for (index_type i = 0; i < num_layers - 1; i++)
-            {
-                printf("%u new_z_i_atTop: %f shift_i_ztop: %f layerWithSmallestShift: %u\n",
-                        i + 1, new_z_i_atTop[i], new_z_i_atTop[i] - previous_z_top_min, layerWithSmallestShift + 1);
-            }
-
-            z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
-            z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
-
-            if (fabs(z_top_min - previous_z_top_min) < 0.000001)
-            {
-               z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
-            }
-
-            if (fabs(z_top_min - previous_z_top_min) < 0.000001)
-            {
-               z_top_min = Gdata.array[num_layers - 2][current_z_top_index].z;
-            }
-
-            if (fabs(z_top_min - previous_z_top_min) < 0.000001)
-            {
-               z_top_min = Gdata.array[num_layers - 3][current_z_top_index].z;
-            }
-
-            if (((z_top_min - previous_z_top_min) * white_space_height) < 0)
-            {
-               z_top_min = new_z_i_atTop[num_layers - 2];
-            }
-
-            printf(" new_def_z_top_min_diff: %f\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
-
-            printf(" new_ztop_index: %d new_z_i_index: ", current_z_top_index);
-            for (index_type i = 0; i < num_layers; i++)
-            {
-                printf("%u ", new_z_i_index[i]);
-            }
-            printf("new_z_top_min: %f shift_ztop: %f\n", z_top_min, z_top_min - previous_z_top_min);
-
-            int nPatchesAtComplementary = cover->n_patches;
-            lastPatchIndex = cover->n_patches - 1; // this may have already been updated at the end of the last call, but just to be sure
-            if (nPatchesAtComplementary > nPatchesAtOriginal)
-            {
-                printf("deleted complementary: [%f, %f] for patch %d\n",
-                        cover->patches[lastPatchIndex].a_corner[0],
-                        cover->patches[lastPatchIndex].a_corner[1],
-                        cover->n_patches);
-                printf("deleted complementary: [%f, %f]\n",
-                        cover->patches[lastPatchIndex].b_corner[0],
-                        cover->patches[lastPatchIndex].b_corner[1]);
-                printf("deleted complementary: [%f, %f]\n",
-                        cover->patches[lastPatchIndex].c_corner[0],
-                        cover->patches[lastPatchIndex].c_corner[1]);
-                printf("deleted complementary: [%f, %f]\n",
-                        cover->patches[lastPatchIndex].d_corner[0],
-                        cover->patches[lastPatchIndex].d_corner[1]);
-
-                // Call delete_patch to remove the last patch
-                delete_patch(cover, lastPatchIndex);
-                // no need to manually decrement n_patches, delete_patch will handle it
-            }
-            lastPatchIndex = cover->n_patches - 1; // lastPatchIndex has changed because of the delete patch
-            // it may be not needed to update lastPatchIndex, but for now, I did it, so it wouldn't be forgotten later.
-
-            // call makePatch_alignedToLine to add a new patch based on the complementary apex and top z values.
-            makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
-            // update the lastPatchIndex to point to the newly added patch.
-            lastPatchIndex = cover->n_patches - 1;
-
-            // retrieve the a and b corner values from the latest patch.
-            complementary_a = cover->patches[lastPatchIndex].a_corner[1];
-            complementary_b = cover->patches[lastPatchIndex].b_corner[1];
-
-            // update the previous white space height for the next iteration.
-            previous_white_space_height = white_space_height;
-            // calculate the new white space height based on the original and complementary corners.
-            white_space_height = max(original_c - complementary_a, original_d - complementary_b);
-
-            printf("complementary_a: %f %f || complementary_b: %f %f new z_top_min: %f\n",
-                    complementary_a, cover->patches[lastPatchIndex].a_corner[1],
-                    complementary_b, cover->patches[lastPatchIndex].b_corner[1],z_top_min);
-            printf("new white_space_height: %f\n", white_space_height);
-            printf("adjusted complementary: [%f, %f] for z_top_min: %f\n",
-                    cover->patches[lastPatchIndex].a_corner[0], cover->patches[lastPatchIndex].a_corner[1],z_top_min);
-            printf("adjusted complementary: [%f, %f] for patch %d\n",
-                    cover->patches[lastPatchIndex].b_corner[0], cover->patches[lastPatchIndex].b_corner[1], cover->n_patches);
-            printf("adjusted complementary: [%f, %f]\n",
-                    cover->patches[lastPatchIndex].c_corner[0], cover->patches[lastPatchIndex].c_corner[1]);
-            printf("adjusted complementary: [%f, %f]\n",
-                    cover->patches[lastPatchIndex].d_corner[0], cover->patches[lastPatchIndex].d_corner[1]);
-
-            if ((cover->n_patches > 3) && fix42)
-            {
-                index_type lastPatchIdx = cover->n_patches - 1;
-                index_type thirdLastPatchIdx = lastPatchIdx - 2;
-
-                // checking if the superpoints of the last and third last patches are the same
-                bool repeat_patch = true;
-                // turned this into a for loop, dynamic. if ((patches[patches.size() - 1].superpoints[env.num_layers - 1] == patches[patches.size() - 3].superpoints[env.num_layers - 1]) && (patches[patches.size() - 1].superpoints[0] == patches[patches.size() - 3].superpoints[0]) && (patches[patches.size() - 1].superpoints[1] == patches[patches.size() - 3].superpoints[1]) && (patches[patches.size() - 1].superpoints[2] == patches[patches.size() - 3].superpoints[2]) && (patches[patches.size() - 1].superpoints[3] == patches[patches.size() - 3].superpoints[3]))
-                // that code checked 0 to 4
-                for (index_type i = 0; i < num_layers; i++)
-                {
-                    if (!areWedgeSuperPointsEqual(&cover->patches[lastPatchIdx].superpoints[i], &cover->patches[thirdLastPatchIdx].superpoints[i]))
-                    {
-                        repeat_patch = false;
-                        break;
-                    }
-                }
-
-                if (repeat_patch)
-                {
-                    printf("%f %f repeat_patch: %d\n",
-                            cover->patches[lastPatchIdx].superpoints[num_layers - 1].min,
-                            cover->patches[lastPatchIdx].superpoints[num_layers - 1].max,
-                            repeat_patch);
-
-                    delete_patch(cover, lastPatchIdx);
-
-                    current_z_top_index -= 1;
-
-                   z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
-                   z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
-
-                    makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
-                }
-            }
+            solveComplmentaryPatch(cover, previous_white_space_height, ppl, fix42, nPatchesAtOriginal, previous_z_top_min, complementary_apexZ0, white_space_height, lastPatchIndex, original_c, original_d, complementary_a, complementary_b, current_z_top_index, counter, counterUpshift, z_top_min, repeat_patch, repeat_original);
         }
     }
 
@@ -1193,7 +967,7 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
 
     saved_apexZ0 = cover->patches[lastPatchIndex].c_corner[0];
 
-    if (madeComplementaryPatch)
+    if (madeComplementaryPatch) // Create separate function for this
     {
         int secondLastPatchIndex = lastPatchIndex - 1;
 
@@ -1340,6 +1114,234 @@ void solveNextPatchPair(wedgeCover *cover, float apexZ0, int stop, int ppl, bool
     z_top_max = c_corner;
 
     printf("+++++++++++++++++++++++ c_corner: %f\n", c_corner);
+}
+
+void solveComplmentaryPatch(wedgeCover *cover, float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type &lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original)
+{
+    printf("\n");
+    if (cover->n_patches > 2)
+    {
+        index_type secondLastPatchIndex = lastPatchIndex - 1;
+        printf("original c: %f %f || original d: %f %f\n",
+                original_c, cover->patches[secondLastPatchIndex].c_corner[1],
+                original_d, cover->patches[secondLastPatchIndex].d_corner[1]);
+    }
+    printf("complementary_a: %f %f || complementary_b: %f %f\n",
+            complementary_a, cover->patches[lastPatchIndex].a_corner[1],
+            complementary_b, cover->patches[lastPatchIndex].b_corner[1]);
+
+    current_z_top_index = get_index_from_z(num_layers - 1,z_top_min); 
+    printf("current white_space_height: %f\n", white_space_height);
+    printf("counter: %d counterUpshift: %d\n", counter, counterUpshift);
+    printf("orig_ztop: %d orig_z_top_min: %f\n", current_z_top_index,z_top_min);
+
+    index_type current_z_i_index[MAX_LAYERS];
+    index_type new_z_i_index[MAX_LAYERS];
+
+    for (index_type i = 0; i < num_layers; i++)
+    {
+        current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex], complementary_apexZ0,z_top_min, 1, num_layers, i + 1));
+    }
+
+    if (z_top_min == previous_z_top_min)
+    {
+        current_z_top_index += 1;
+        for (index_type i = 0; i < num_layers; i++)
+        {
+            new_z_i_index[i] = current_z_i_index[i] + 1;
+        }
+    }
+
+    previous_z_top_min = z_top_min;
+
+    if (white_space_height < 0)
+    {
+        counter += 1;
+        current_z_top_index -= 1;
+        for (index_type i = 0; i < num_layers; i++)
+        {
+            new_z_i_index[i] = current_z_i_index[i] - 1;
+        }
+    }
+    else
+    {
+        counterUpshift += 1;
+        current_z_top_index += 1;
+        for (index_type i = 0; i < num_layers; i++)
+        {
+            new_z_i_index[i] = current_z_i_index[i] + 1;
+        }
+    }
+
+    int x = Gdata.n_points[num_layers - 1] - 1;
+    current_z_top_index = min(current_z_top_index, Gdata.n_points[num_layers - 1] - 1); // n_points is an array of the sizes of each element of 'array'
+
+    for (index_type i = 0; i < num_layers; i++)
+    {
+        new_z_i_index[i] = min(new_z_i_index[i], (float)Gdata.n_points[i] - 1);
+    }
+
+    for (index_type i = 0; i < num_layers; i++)
+    { 
+        new_z_i_index[i] = max(new_z_i_index[i], 0.0f);
+    }
+    float new_z_i[MAX_LAYERS];
+
+    for (index_type i = 0; i < num_layers; i++)
+    {
+        new_z_i[i] = Gdata.array[i][new_z_i_index[i]].z;
+    }
+
+    float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
+    for (index_type i = 1; i < num_layers; i++)
+    {
+        new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(&cover->patches[lastPatchIndex],
+                                                                    complementary_apexZ0,
+                                                                    new_z_i[i],
+                                                                    1,
+                                                                    i + 1,
+                                                                    num_layers);
+    }
+
+    index_type layerWithSmallestShift = 0;
+    float layerSMin = FLT_MAX;
+
+    for (index_type i = 0; i < num_layers - 1; i++)
+    {
+        if (fabs(new_z_i_atTop[i] - previous_z_top_min) < layerSMin)
+        { // fabs is for floats. abs is only int
+            layerSMin = fabs(new_z_i_atTop[i] - previous_z_top_min);
+            layerWithSmallestShift = i;
+        }
+    }
+
+    layerWithSmallestShift += 1;
+
+    for (index_type i = 0; i < num_layers - 1; i++)
+    {
+        printf("%u new_z_i_atTop: %f shift_i_ztop: %f layerWithSmallestShift: %u\n",
+                i + 1, new_z_i_atTop[i], new_z_i_atTop[i] - previous_z_top_min, layerWithSmallestShift + 1);
+    }
+
+    z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
+    z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
+
+    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
+    {
+        z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
+    }
+
+    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
+    {
+        z_top_min = Gdata.array[num_layers - 2][current_z_top_index].z;
+    }
+
+    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
+    {
+        z_top_min = Gdata.array[num_layers - 3][current_z_top_index].z;
+    }
+
+    if (((z_top_min - previous_z_top_min) * white_space_height) < 0)
+    {
+        z_top_min = new_z_i_atTop[num_layers - 2];
+    }
+
+    printf(" new_def_z_top_min_diff: %f\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
+
+    printf(" new_ztop_index: %d new_z_i_index: ", current_z_top_index);
+    for (index_type i = 0; i < num_layers; i++)
+    {
+        printf("%u ", new_z_i_index[i]);
+    }
+    printf("new_z_top_min: %f shift_ztop: %f\n", z_top_min, z_top_min - previous_z_top_min);
+
+    int nPatchesAtComplementary = cover->n_patches;
+    lastPatchIndex = cover->n_patches - 1; // this may have already been updated at the end of the last call, but just to be sure
+    if (nPatchesAtComplementary > nPatchesAtOriginal)
+    {
+        printf("deleted complementary: [%f, %f] for patch %d\n",
+                cover->patches[lastPatchIndex].a_corner[0],
+                cover->patches[lastPatchIndex].a_corner[1],
+                cover->n_patches);
+        printf("deleted complementary: [%f, %f]\n",
+                cover->patches[lastPatchIndex].b_corner[0],
+                cover->patches[lastPatchIndex].b_corner[1]);
+        printf("deleted complementary: [%f, %f]\n",
+                cover->patches[lastPatchIndex].c_corner[0],
+                cover->patches[lastPatchIndex].c_corner[1]);
+        printf("deleted complementary: [%f, %f]\n",
+                cover->patches[lastPatchIndex].d_corner[0],
+                cover->patches[lastPatchIndex].d_corner[1]);
+
+        // Call delete_patch to remove the last patch
+        delete_patch(cover, lastPatchIndex);
+        // no need to manually decrement n_patches, delete_patch will handle it
+    }
+    lastPatchIndex = cover->n_patches - 1; // lastPatchIndex has changed because of the delete patch
+    // it may be not needed to update lastPatchIndex, but for now, I did it, so it wouldn't be forgotten later.
+
+    // call makePatch_alignedToLine to add a new patch based on the complementary apex and top z values.
+    makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
+    // update the lastPatchIndex to point to the newly added patch.
+    lastPatchIndex = cover->n_patches - 1;
+
+    // retrieve the a and b corner values from the latest patch.
+    complementary_a = cover->patches[lastPatchIndex].a_corner[1];
+    complementary_b = cover->patches[lastPatchIndex].b_corner[1];
+
+    // update the previous white space height for the next iteration.
+    previous_white_space_height = white_space_height;
+    // calculate the new white space height based on the original and complementary corners.
+    white_space_height = max(original_c - complementary_a, original_d - complementary_b);
+
+    printf("complementary_a: %f %f || complementary_b: %f %f new z_top_min: %f\n",
+            complementary_a, cover->patches[lastPatchIndex].a_corner[1],
+            complementary_b, cover->patches[lastPatchIndex].b_corner[1],z_top_min);
+    printf("new white_space_height: %f\n", white_space_height);
+    printf("adjusted complementary: [%f, %f] for z_top_min: %f\n",
+            cover->patches[lastPatchIndex].a_corner[0], cover->patches[lastPatchIndex].a_corner[1],z_top_min);
+    printf("adjusted complementary: [%f, %f] for patch %d\n",
+            cover->patches[lastPatchIndex].b_corner[0], cover->patches[lastPatchIndex].b_corner[1], cover->n_patches);
+    printf("adjusted complementary: [%f, %f]\n",
+            cover->patches[lastPatchIndex].c_corner[0], cover->patches[lastPatchIndex].c_corner[1]);
+    printf("adjusted complementary: [%f, %f]\n",
+            cover->patches[lastPatchIndex].d_corner[0], cover->patches[lastPatchIndex].d_corner[1]);
+
+    if ((cover->n_patches > 3) && fix42)
+    {
+        index_type lastPatchIdx = cover->n_patches - 1;
+        index_type thirdLastPatchIdx = lastPatchIdx - 2;
+
+        // checking if the superpoints of the last and third last patches are the same
+        repeat_patch = true;
+        // turned this into a for loop, dynamic. if ((patches[patches.size() - 1].superpoints[env.num_layers - 1] == patches[patches.size() - 3].superpoints[env.num_layers - 1]) && (patches[patches.size() - 1].superpoints[0] == patches[patches.size() - 3].superpoints[0]) && (patches[patches.size() - 1].superpoints[1] == patches[patches.size() - 3].superpoints[1]) && (patches[patches.size() - 1].superpoints[2] == patches[patches.size() - 3].superpoints[2]) && (patches[patches.size() - 1].superpoints[3] == patches[patches.size() - 3].superpoints[3]))
+        // that code checked 0 to 4
+        for (index_type i = 0; i < num_layers; i++)
+        {
+            if (!areWedgeSuperPointsEqual(&cover->patches[lastPatchIdx].superpoints[i], &cover->patches[thirdLastPatchIdx].superpoints[i]))
+            {
+                repeat_patch = false;
+                break;
+            }
+        }
+
+        if (repeat_patch)
+        {
+            printf("%f %f repeat_patch: %d\n",
+                    cover->patches[lastPatchIdx].superpoints[num_layers - 1].min,
+                    cover->patches[lastPatchIdx].superpoints[num_layers - 1].max,
+                    repeat_patch);
+
+            delete_patch(cover, lastPatchIdx);
+
+            current_z_top_index -= 1;
+
+            z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
+            z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
+
+            makePatch_alignedToLine(cover, complementary_apexZ0, z_top_min, ppl, true, false);
+        }
+    }
 }
 
 void makePatch_alignedToLine(wedgeCover *cover, float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl)
@@ -1547,8 +1549,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
     fclose(myfile);
 }
 
-
-int main()
+int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
     int wedgesToTest[] = {0, 1};
 
