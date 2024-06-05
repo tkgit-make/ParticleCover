@@ -314,8 +314,6 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
         for(int i = 0; i < master_list[k].size(); i++)
         {
             Point p = master_list[k][i];
-
-            cout << p.z << endl; 
             
             index_type layer = p.layer_num - 1;
             ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
