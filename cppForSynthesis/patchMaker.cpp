@@ -1,6 +1,9 @@
 // gdb bin/ProcessInput
 // run < CPP/wedgeData_v3_128.txt
 // bt
+
+#define VITIS_SYNTHESIS false
+
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -10,6 +13,20 @@
 #include <float.h>
 #include <math.h>
 #include <algorithm>
+
+#if VITIS_SYNTHESIS == false
+    using namespace std; 
+    #include <iostream>
+    #include <fstream>
+    #include <string>
+    #include <vector>
+    #include <regex>
+    #include <set>
+    #include <format>
+    #include <ios>
+    #include <iomanip>
+    #include <numeric>
+#endif
 
 
 #define KEEP_DELETED_PATCHES false
@@ -158,8 +175,11 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
 void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl);
 void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, float alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size);
 void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
-
 int floatCompare(const void *a, const void *b);
+
+#if VITIS_SYNTHESIS == false
+    vector< vector<Point> > master_list;
+#endif
 
 DataSet Gdata;
 wedgePatch patches[MAX_PATCHES];
@@ -198,15 +218,159 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
 }
 */
 
-int Point_load(Point *p)
-{
-    if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
+#if VITIS_SYNTHESIS == false
+    static vector<string> splitString(string str, string splitter = "),(")
     {
-        return 1;            // successful load
+        vector<string> result;
+        string currentStr = "";
+        for (int i = 0; i < str.size(); i++)
+        {
+            bool flag = true;
+            for (int j = 0; j < splitter.size(); j++)
+            {
+                if (str[i + j] != splitter[j]) flag = false;
+            }
+            if (flag) {
+                if (currentStr.size() > 0) {
+                    result.push_back(currentStr);
+                    currentStr = "";
+                    i += splitter.size() - 1;
+                }
+            }
+            else
+            {
+                currentStr += str[i];
+            }
+        }
+        result.push_back(currentStr);
+        return result;
     }
 
-    return 0; // failed to load
-}
+    void readFile(string filepath, int stop = 128, bool performance = false)
+    {
+        ifstream currentFile;
+        currentFile.open(filepath);
+        string line;
+        if(currentFile.is_open())
+        {
+            int line_index = 0;
+
+            while(getline(currentFile, line))
+            {
+                line = regex_replace(line, regex("(^[ ]+)|([ ]+$)"),"");
+                if(!line.empty())
+                {
+                    line = line.substr(1, line.size() - 2);
+
+                    vector<string> tuples = splitString(line);
+                    vector< vector<string> > finalTuples;
+
+                    for(int i = 0; i < tuples.size(); i++)
+                    {
+                        vector<string> temp = splitString(tuples[i], ",");
+                        finalTuples.push_back(temp);
+                    }
+
+                    vector<Point> list_of_Points;
+
+                    for(int i = 0; i < finalTuples.size(); i++)
+                    {
+                        vector<string> ct = finalTuples[i];
+                        Point temp; 
+                        temp.layer_num = stoi(ct[0]); 
+                        temp.phi = stof(ct[2]);
+                        temp.radius = stof(ct[1]); 
+                        temp.z = stof(ct[3]);
+                        list_of_Points.push_back(temp);
+                    }
+
+                    master_list.push_back(list_of_Points);
+
+                    line_index++;
+
+                    if(line_index == stop)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            currentFile.close();
+        }
+        else
+        {
+            cout << "Error opening file." << endl;
+        }
+    }
+
+    void importData(DataSet *ds, index_type k)
+    {
+        memset(ds->n_points, 0, sizeof(ds->n_points));
+
+        index_type n = 0;
+        char ch = ',';
+
+        // read points until a non-comma is encountered or maximum points are read
+        for(int i = 0; i < master_list[k].size(); i++)
+        {
+            Point p = master_list[k][i];
+
+            cout << p.z << endl; 
+            
+            index_type layer = p.layer_num - 1;
+            ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
+            ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
+        }
+
+        for (index_type i = 0; i < num_layers; i++)
+        {
+            //sorts the points in the ith layer
+            qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
+        }
+    }
+#else
+    int Point_load(Point *p)
+    {
+        if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
+        {
+            return 1;            // successful load
+        }
+
+        return 0; // failed to load
+    }
+    
+    void importData(DataSet *ds)
+    {
+        // initDataSet line. The global DataSet is reused, so we just need to reset the number of points, or set it if this is the first time. 0 across all layers.
+        // n_points being set to 0 when we reuse the DataSet will stop it from accessing any information from a past wedge.
+        memset(ds->n_points, 0, sizeof(ds->n_points));
+
+        index_type n = 0;
+        char ch = ',';
+
+        // read points until a non-comma is encountered or maximum points are read
+        while ((ch == ',') && (n < MAX_POINTS_IN_EVENT))
+        {
+            Point p;
+            if (Point_load(&p) < 1)
+                break;
+            
+            index_type layer = p.layer_num - 1;
+            ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
+            ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
+            
+            n++;
+            scanf("%c", &ch);
+        }
+        
+        // iterating over the layers in DataSet
+        for (index_type i = 0; i < num_layers; i++)
+        {
+            //sorts the points in the ith layer
+            qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
+        }
+    }
+#endif
 
 int comparePoints(const void *a, const void *b)
 {
@@ -256,38 +420,6 @@ void adjustPointPositionBack(Point *array, int n_points, int start_index) {
         j--;
     } 
     array[j] = toInsert; // place the element at its correct position
-}
-
-void importData(DataSet *ds)
-{
-    // initDataSet line. The global DataSet is reused, so we just need to reset the number of points, or set it if this is the first time. 0 across all layers.
-    // n_points being set to 0 when we reuse the DataSet will stop it from accessing any information from a past wedge.
-    memset(ds->n_points, 0, sizeof(ds->n_points));
-
-    index_type n = 0;
-    char ch = ',';
-
-    // read points until a non-comma is encountered or maximum points are read
-    while ((ch == ',') && (n < MAX_POINTS_IN_EVENT))
-    {
-        Point p;
-        if (Point_load(&p) < 1)
-            break;
-        
-        index_type layer = p.layer_num - 1;
-        ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
-        ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
-        
-        n++;
-        scanf("%c", &ch);
-    }
-       
-    // iterating over the layers in DataSet
-    for (index_type i = 0; i < num_layers; i++)
-    {
-        //sorts the points in the ith layer
-        qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
-    }
 }
 
 void addBoundaryPoint(DataSet *ds, float offset)
@@ -1378,115 +1510,117 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight
 void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, float alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size)
 {
     float y = radii[i];
-        float row_list[MAX_POINTS_PER_LAYER];
-        int row_list_size = 0;
+    float row_list[MAX_POINTS_PER_LAYER];
+    int row_list_size = 0;
 
-        for (index_type j = 0; j < Gdata.n_points[i]; j++)
+    for (index_type j = 0; j < Gdata.n_points[i]; j++)
+    {
+        row_list[row_list_size++] = Gdata.array[i][j].z;
+    }
+
+    float r_max = radii[num_layers - 1];
+    float projectionToRow = (z_top - apexZ0) * (y - radii[0]) / (r_max - radii[0]) + apexZ0;
+
+    int start_index = 0;
+    float start_value = 1000000;
+
+    for (index_type j = 0; j < row_list_size; j++)
+    {
+        if (fabs(row_list[j] - projectionToRow) < fabs(start_value))
         {
-            row_list[row_list_size++] = Gdata.array[i][j].z;
+            start_index = j;
+            start_value = row_list[j] - projectionToRow;
+        }
+    }
+
+    cout << "STARTINDEX------------------------------------" << start_index << endl;
+
+    int left_bound = 0;
+    float lbVal = INT_MAX;
+    int right_bound = 0;
+    float rbVal = INT_MAX;
+
+    for (index_type j = 0; j < row_list_size; j++)
+    {
+        if (fabs((row_list[j] + trapezoid_edges[i])) < lbVal)
+        {
+            left_bound = j;
+            lbVal = fabs((row_list[j] + trapezoid_edges[i]));
         }
 
-        float r_max = radii[num_layers - 1];
-        float projectionToRow = (z_top - apexZ0) * (y - radii[0]) / (r_max - radii[0]) + apexZ0;
-
-        int start_index = 0;
-        float start_value = 1000000;
-
-        for (index_type j = 0; j < row_list_size; j++)
+        if (fabs((row_list[j] - trapezoid_edges[i])) < rbVal)
         {
-            if (fabs(row_list[j] - projectionToRow) < fabs(start_value))
-            {
-                start_index = j;
-                start_value = row_list[j] - projectionToRow;
-            }
+            right_bound = j;
+            rbVal = fabs((row_list[j] - trapezoid_edges[i]));
         }
+    }
 
-        int left_bound = 0;
-        float lbVal = INT_MAX;
-        int right_bound = 0;
-        float rbVal = INT_MAX;
+    if (float_middleLayers_ppl && i != 0 && i != num_layers - 1)
+    {
+        ppl = original_ppl * 2 - 1;
+    }
+    else
+    {
+        ppl = original_ppl;
+    }
 
-        for (index_type j = 0; j < row_list_size; j++)
+    Point temp[MAX_POINTS_PER_LAYER]; // check
+    int temp_size = 0;
+
+    if (leftRight)
+    {
+        if (start_index != 0 && start_value > alignmentAccuracy)
         {
-            if (fabs((row_list[j] + trapezoid_edges[i])) < lbVal)
-            {
-                left_bound = j;
-                lbVal = fabs((row_list[j] + trapezoid_edges[i]));
-            }
-
-            if (fabs((row_list[j] - trapezoid_edges[i])) < rbVal)
-            {
-                right_bound = j;
-                rbVal = fabs((row_list[j] - trapezoid_edges[i]));
-            }
+            start_index -= 1;
         }
-
-        if (float_middleLayers_ppl && i != 0 && i != num_layers - 1)
+        // making and adding a new vector that is a subset of "row_data" or array, going from right+1-ppl to right+1?
+        if ((start_index + ppl) > (right_bound + 1))
         {
-            ppl = original_ppl * 2 - 1;
-        }
-        else
-        {
-            ppl = original_ppl;
-        }
-
-        Point temp[MAX_POINTS_PER_LAYER]; // check
-        int temp_size = 0;
-
-        if (leftRight)
-        {
-            if (start_index != 0 && start_value > alignmentAccuracy)
+            for (index_type j = right_bound + 1 - ppl; j <= right_bound; j++)
             {
-                start_index -= 1;
+                temp[temp_size++] = Gdata.array[i][j];
             }
-            // making and adding a new vector that is a subset of "row_data" or array, going from right+1-ppl to right+1?
-            if ((start_index + ppl) > (right_bound + 1))
-            {
-                for (index_type j = right_bound + 1 - ppl; j <= right_bound; j++)
-                {
-                    temp[temp_size++] = Gdata.array[i][j];
-                }
-                // similarly
-            }
-            else
-            {
-                for (index_type j = start_index; j < start_index + ppl; j++)
-                {
-                    temp[temp_size++] = Gdata.array[i][j];
-                }
-            }
+            // similarly
         }
         else
         {
-            if (start_index != row_list_size - 1)
+            for (index_type j = start_index; j < start_index + ppl; j++)
             {
-                printf("row %d start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
-                if (start_value < -1 * alignmentAccuracy)
-                {
-                    start_index += 1;
-                    start_value = row_list[start_index] - projectionToRow;
-                    printf("row %d updated start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
-                }
-            }
-            // similarly adding subset of 'array' which represents row_data
-            if ((start_index - ppl + 1) < left_bound)
-            {
-                for (index_type j = left_bound; j < left_bound + ppl; j++)
-                {
-                    temp[temp_size++] = Gdata.array[i][j];
-                }
-                // similarly
-            }
-            else
-            {
-                for (index_type j = start_index - ppl + 1; j <= start_index; j++)
-                {
-                    temp[temp_size++] = Gdata.array[i][j];
-                }
+                temp[temp_size++] = Gdata.array[i][j];
             }
         }
-        // passing in address to an uninitialized WedgeSuperPoint structure in the init_patch array with the points from temp to initialize it.
-        initWedgeSuperPoint(&init_patch[init_patch_size++], temp, temp_size);  
+    }
+    else
+    {
+        if (start_index != row_list_size - 1)
+        {
+            printf("row %d start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
+            if (start_value < -1 * alignmentAccuracy)
+            {
+                start_index += 1;
+                start_value = row_list[start_index] - projectionToRow;
+                printf("row %d updated start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
+            }
+        }
+        // similarly adding subset of 'array' which represents row_data
+        if ((start_index - ppl + 1) < left_bound)
+        {
+            for (index_type j = left_bound; j < left_bound + ppl; j++)
+            {
+                temp[temp_size++] = Gdata.array[i][j];
+            }
+            // similarly
+        }
+        else
+        {
+            for (index_type j = start_index - ppl + 1; j <= start_index; j++)
+            {
+                temp[temp_size++] = Gdata.array[i][j];
+            }
+        }
+    }
+    // passing in address to an uninitialized WedgeSuperPoint structure in the init_patch array with the points from temp to initialize it.
+    initWedgeSuperPoint(&init_patch[init_patch_size++], temp, temp_size);
 }
 
 void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff)
@@ -1502,6 +1636,10 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         return;
     }
 
+    #if VITIS_SYNTHESIS == false
+        readFile("cppForSynthesis/wedgeData_v3_128.txt");
+    #endif
+
     for (index_type z = 0; z < wedges[1]; z++)
     { 
         if(z<wedges[0]) continue;
@@ -1510,7 +1648,11 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
         initWedgeCover(); 
 
-        importData(&Gdata);
+        #if VITIS_SYNTHESIS == true
+            importData(&Gdata);
+        #else
+            importData(&Gdata, z); 
+        #endif
         
         addBoundaryPoint(&Gdata, 0.0001); // with default param
 
@@ -1562,7 +1704,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {0, 10};
+    int wedgesToTest[] = {107, 108};
 
     wedge_test(0, 0.025, 16, 15.0, wedgesToTest, 2, 1000, 50, 15.0);
 

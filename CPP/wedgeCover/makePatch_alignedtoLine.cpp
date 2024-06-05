@@ -1461,7 +1461,9 @@ public:
 				}
 			}
 
-			int left_bound = 0;
+            cout << "STARTINDEX------------------------------------" << start_index << endl;
+
+            int left_bound = 0;
             float lbVal = INT_MAX;
 			int right_bound = 0;
             float rbVal = INT_MAX;
@@ -1885,7 +1887,7 @@ public:
         for (int a = 0; a < mean_list.size(); a++)
         {
             vector<float> curVector = mean_list[a];
-            float average = reduce(curVector.begin(), curVector.end(), 0.0) / curVector.size();
+            float average = accumulate(curVector.begin(), curVector.end(), 0.0) / curVector.size();
             accFile << "wedge " << a << endl;
             if (average == 100.0)
             {
@@ -1936,7 +1938,7 @@ int main()
     wedgeCover cov = wedgeCover(env, ds);
     Tester test;
     vector<int> wedgesToTest;
-    wedgesToTest.push_back(0);
-    wedgesToTest.push_back(6400);
+    wedgesToTest.push_back(107);
+    wedgesToTest.push_back(108);
     test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.025, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };
