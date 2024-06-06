@@ -2,7 +2,7 @@
 // run < CPP/wedgeData_v3_128.txt
 // bt
 
-#define VITIS_SYNTHESIS false
+#define VITIS_SYNTHESIS true
 
 #include <stdio.h>
 #include <limits.h>
@@ -150,8 +150,8 @@ typedef struct
 
 void initWedgeCover(); 
 int Point_load(Point *p);
-void importData(DataSet *ds);
-void addBoundaryPoint(DataSet *ds, float offset);
+void importData();
+void addBoundaryPoint(float offset);
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
 void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
@@ -178,7 +178,8 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 int floatCompare(const void *a, const void *b);
 
 #if VITIS_SYNTHESIS == false
-    vector< vector<Point> > master_list;
+    Point master_list[6400][MAX_POINTS_IN_EVENT];
+    int lastPointArray[6400];
 #endif
 
 DataSet Gdata;
@@ -271,8 +272,6 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
                         finalTuples.push_back(temp);
                     }
 
-                    vector<Point> list_of_Points;
-
                     for(int i = 0; i < finalTuples.size(); i++)
                     {
                         vector<string> ct = finalTuples[i];
@@ -281,10 +280,10 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
                         temp.phi = stof(ct[2]);
                         temp.radius = stof(ct[1]); 
                         temp.z = stof(ct[3]);
-                        list_of_Points.push_back(temp);
+                        master_list[line_index][i] = temp;
                     }
 
-                    master_list.push_back(list_of_Points);
+                    lastPointArray[line_index] = finalTuples.size();
 
                     line_index++;
 
@@ -303,27 +302,26 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
         }
     }
 
-    void importData(DataSet *ds, index_type k)
+    void importData(index_type k)
     {
-        memset(ds->n_points, 0, sizeof(ds->n_points));
+        memset(Gdata.n_points, 0, sizeof(Gdata.n_points));
 
         index_type n = 0;
         char ch = ',';
-
         // read points until a non-comma is encountered or maximum points are read
-        for(int i = 0; i < master_list[k].size(); i++)
+        for(int i = 0; i < lastPointArray[k]; i++)
         {
             Point p = master_list[k][i];
             
             index_type layer = p.layer_num - 1;
-            ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
-            ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
+            Gdata.array[layer][Gdata.n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
+            Gdata.n_points[layer]++; //here n_points is not counting the blank spot at index 0.
         }
 
         for (index_type i = 0; i < num_layers; i++)
         {
             //sorts the points in the ith layer
-            qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
+            qsort(&Gdata.array[i][1], Gdata.n_points[i], sizeof(Point), comparePoints);
         }
     }
 #else
@@ -337,11 +335,11 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
         return 0; // failed to load
     }
     
-    void importData(DataSet *ds)
+    void importData()
     {
         // initDataSet line. The global DataSet is reused, so we just need to reset the number of points, or set it if this is the first time. 0 across all layers.
         // n_points being set to 0 when we reuse the DataSet will stop it from accessing any information from a past wedge.
-        memset(ds->n_points, 0, sizeof(ds->n_points));
+        memset(Gdata.n_points, 0, sizeof(Gdata.n_points));
 
         index_type n = 0;
         char ch = ',';
@@ -354,8 +352,8 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
                 break;
             
             index_type layer = p.layer_num - 1;
-            ds->array[layer][ds->n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
-            ds->n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
+            Gdata.array[layer][Gdata.n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
+            Gdata.n_points[layer]++; //here n_points is not counting the blank spot at index 0.
             
             n++;
             scanf("%c", &ch);
@@ -365,7 +363,7 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
         for (index_type i = 0; i < num_layers; i++)
         {
             //sorts the points in the ith layer
-            qsort(&ds->array[i][1], ds->n_points[i], sizeof(Point), comparePoints);
+            qsort(&Gdata.array[i][1], Gdata.n_points[i], sizeof(Point), comparePoints);
         }
     }
 #endif
@@ -420,35 +418,35 @@ void adjustPointPositionBack(Point *array, int n_points, int start_index) {
     array[j] = toInsert; // place the element at its correct position
 }
 
-void addBoundaryPoint(DataSet *ds, float offset)
+void addBoundaryPoint(float offset)
 {
-    ds->boundaryPoint_offset = offset;
+    Gdata.boundaryPoint_offset = offset;
 
     for (index_type i = 0; i < num_layers; i++) {
         //adding two boundary points in each layer
         // inserting at the beginning
-        ds->array[i][0].layer_num = i + 1;
-        ds->array[i][0].radius = (i + 1) * 5;
+        Gdata.array[i][0].layer_num = i + 1;
+        Gdata.array[i][0].radius = (i + 1) * 5;
         //is the phi for the boundary points used (answer: no)? so, instead of sorting in importData, we could wait and add boundary points, and then sort, without any shifting of boundary points needed. MlogM vs NlogN + 2N, where M = N+2
-        ds->array[i][0].phi = ds->array[i][1].phi; // getting the first phi in the array sorted by z
-        ds->array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
+        Gdata.array[i][0].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
+        Gdata.array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
 
         // appending at the end
-        index_type lastIndex = ds->n_points[i] + 1; // after shifting, there's one more point
-        ds->array[i][lastIndex].layer_num = i + 1;
-        ds->array[i][lastIndex].radius = (i + 1) * 5;
-        ds->array[i][lastIndex].phi = ds->array[i][1].phi; // getting the first phi in the array sorted by z
-        ds->array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
+        index_type lastIndex = Gdata.n_points[i] + 1; // after shifting, there's one more point
+        Gdata.array[i][lastIndex].layer_num = i + 1;
+        Gdata.array[i][lastIndex].radius = (i + 1) * 5;
+        Gdata.array[i][lastIndex].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
+        Gdata.array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
 
         //now factors in the addition of both boundary points because n_points previously was counting true point additions, and did not count the blank index 0.
-        ds->n_points[i] += 2;    
+        Gdata.n_points[i] += 2;
 
         // adjusting positions using insertion sort techniques as opposed to sorting the entire array. 
         // we have the guarentee from importData that the array was sorted
         // assigned points to indices first to avoid risk of comparing uninitialized "blank" points.
         // as opposed to full sorting algorithms like mergesort, each call here is O(N) and has the potential to escape much earlier. 
-        adjustPointPositionFront(ds->array[i], ds->n_points[i], 0); // adjust the start boundary
-        adjustPointPositionBack(ds->array[i], ds->n_points[i], lastIndex); // adjust the end boundary
+        adjustPointPositionFront(Gdata.array[i], Gdata.n_points[i], 0); // adjust the start boundary
+        adjustPointPositionBack(Gdata.array[i], Gdata.n_points[i], lastIndex); // adjust the end boundary
     }
 
 }
@@ -758,8 +756,6 @@ void get_acceptanceCorners(wedgePatch *wp)
         wp->b_corner[1] = wp->c_corner[1];
         wp->d_corner[1] = wp->c_corner[1];
     }
-
-    cout << wp->c_corner[1] << endl;
 }
 
 void get_end_layer(wedgePatch *wp)
@@ -1085,43 +1081,15 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         index_type current_z_top_index = -1;
         float previous_z_top_min = -999;
 
-        cout << white_space_height << endl;
-        cout << previous_white_space_height << endl;
-        cout << ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) || (white_space_height > 0.000005)) << endl;
-        cout << lastPatchIndex << endl;
-        cout << patches[lastPatchIndex].c_corner[1] << endl;
-        cout << -1 * trapezoid_edges[num_layers - 1] << endl;
-        cout << current_z_top_index << endl;
-        cout << repeat_patch << endl;
-        cout << repeat_original << endl;
-
         while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
                 ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
                 (white_space_height > 0.000005)) &&
                 (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                 !(repeat_patch) && !(repeat_original))
         {
-            cout << white_space_height << endl;
-            cout << previous_white_space_height << endl;
-            cout << ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) || (white_space_height > 0.000005)) << endl;
-            cout << lastPatchIndex << endl;
-            cout << patches[lastPatchIndex].c_corner[1] << endl;
-            cout << -1 * trapezoid_edges[num_layers - 1] << endl;
-            cout << current_z_top_index << endl;
-            cout << repeat_patch << endl;
-            cout << repeat_original << endl;
             solveComplmentaryPatch(previous_white_space_height, ppl, fix42, nPatchesAtOriginal, previous_z_top_min, complementary_apexZ0, white_space_height, lastPatchIndex, original_c, original_d, complementary_a, complementary_b, current_z_top_index, counter, counterUpshift, z_top_min, repeat_patch, repeat_original);
         }
 
-        cout << white_space_height << endl;
-        cout << previous_white_space_height << endl;
-        cout << ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) || (white_space_height > 0.000005)) << endl;
-        cout << lastPatchIndex << endl;
-        cout << patches[lastPatchIndex].c_corner[1] << endl;
-        cout << -1 * trapezoid_edges[num_layers - 1] << endl;
-        cout << current_z_top_index << endl;
-        cout << repeat_patch << endl;
-        cout << repeat_original << endl;
     }
 
     lastPatchIndex = n_patches - 1; // just to keep fresh in case we use it
@@ -1511,8 +1479,6 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
             makePatch_alignedToLine(complementary_apexZ0, z_top_min, ppl, true, false);
         }
     }
-
-    printf("LASTPATCHINDEXFINAL--------------%i \n", lastPatchIndex);
 }
 
 void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl)
@@ -1678,12 +1644,12 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
         initWedgeCover(); 
 
         #if VITIS_SYNTHESIS == true
-            importData(&Gdata);
+            importData();
         #else
-            importData(&Gdata, z); 
+            importData(z);
         #endif
         
-        addBoundaryPoint(&Gdata, 0.0001); // with default param
+        addBoundaryPoint(0.0001); // with default param
 
         solve(apexZ0, ppl, 100, false); // solve modifies cover. false is from the left right align (previously a parameter in wedge test)
 
@@ -1733,7 +1699,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {0, 10};
+    int wedgesToTest[] = {0, 6400};
 
     wedge_test(0, 0.025, 16, 15.0, wedgesToTest, 2, 1000, 50, 15.0);
 
