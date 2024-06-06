@@ -171,7 +171,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool lef
 float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float saved_apexZ0); 
 void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float &saved_apexZ0, int &nPatchesInColumn, float &c_corner, float &projectionOfCornerToBeam, float &z_top_min, float &z_top_max, float &complementary_apexZ0);
 void makeThirdPatch(int lastPatchIndex, float z_top_min, float z_top_max, float complementary_apexZ0, float apexZ0, int ppl);
-void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original);
+void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type &lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original);
 void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl);
 void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, float alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size);
 void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
@@ -758,6 +758,8 @@ void get_acceptanceCorners(wedgePatch *wp)
         wp->b_corner[1] = wp->c_corner[1];
         wp->d_corner[1] = wp->c_corner[1];
     }
+
+    cout << wp->c_corner[1] << endl;
 }
 
 void get_end_layer(wedgePatch *wp)
@@ -1083,14 +1085,43 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         index_type current_z_top_index = -1;
         float previous_z_top_min = -999;
 
+        cout << white_space_height << endl;
+        cout << previous_white_space_height << endl;
+        cout << ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) || (white_space_height > 0.000005)) << endl;
+        cout << lastPatchIndex << endl;
+        cout << patches[lastPatchIndex].c_corner[1] << endl;
+        cout << -1 * trapezoid_edges[num_layers - 1] << endl;
+        cout << current_z_top_index << endl;
+        cout << repeat_patch << endl;
+        cout << repeat_original << endl;
+
         while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
                 ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
                 (white_space_height > 0.000005)) &&
                 (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                 !(repeat_patch) && !(repeat_original))
         {
+            cout << white_space_height << endl;
+            cout << previous_white_space_height << endl;
+            cout << ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) || (white_space_height > 0.000005)) << endl;
+            cout << lastPatchIndex << endl;
+            cout << patches[lastPatchIndex].c_corner[1] << endl;
+            cout << -1 * trapezoid_edges[num_layers - 1] << endl;
+            cout << current_z_top_index << endl;
+            cout << repeat_patch << endl;
+            cout << repeat_original << endl;
             solveComplmentaryPatch(previous_white_space_height, ppl, fix42, nPatchesAtOriginal, previous_z_top_min, complementary_apexZ0, white_space_height, lastPatchIndex, original_c, original_d, complementary_a, complementary_b, current_z_top_index, counter, counterUpshift, z_top_min, repeat_patch, repeat_original);
         }
+
+        cout << white_space_height << endl;
+        cout << previous_white_space_height << endl;
+        cout << ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) || (white_space_height > 0.000005)) << endl;
+        cout << lastPatchIndex << endl;
+        cout << patches[lastPatchIndex].c_corner[1] << endl;
+        cout << -1 * trapezoid_edges[num_layers - 1] << endl;
+        cout << current_z_top_index << endl;
+        cout << repeat_patch << endl;
+        cout << repeat_original << endl;
     }
 
     lastPatchIndex = n_patches - 1; // just to keep fresh in case we use it
@@ -1110,9 +1141,9 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
     printf("+++++++++++++++++++++++ c_corner: %f\n", c_corner);
 }
 
-void makeThirdPatch(int lastPatchIndex, float z_top_min, float z_top_max, float complementary_apexZ0, float apexZ0, int ppl)
+void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max, float complementary_apexZ0, float apexZ0, int ppl)
 {
-    int secondLastPatchIndex = lastPatchIndex - 1;
+    index_type secondLastPatchIndex = lastPatchIndex - 1;
 
     // modifying patches, not adding patches, so index variables do not need to be updated.
     getShadows(&patches[lastPatchIndex],z_top_min, z_top_max);
@@ -1254,7 +1285,7 @@ void makeThirdPatch(int lastPatchIndex, float z_top_min, float z_top_max, float 
     }
 }
 
-void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original)
+void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type &lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original)
 {
     printf("\n");
     if (n_patches > 2)
@@ -1394,6 +1425,7 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
 
     int nPatchesAtComplementary = n_patches;
     lastPatchIndex = n_patches - 1; // this may have already been updated at the end of the last call, but just to be sure
+    printf("%i \n", lastPatchIndex);
     if (nPatchesAtComplementary > nPatchesAtOriginal)
     {
         printf("deleted complementary: [%f, %f] for patch %d\n",
@@ -1450,7 +1482,7 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
         index_type thirdLastPatchIdx = lastPatchIdx - 2;
 
         // checking if the superpoints of the last and third last patches are the same
-        repeat_patch = true;
+        bool repeat_patch = true;
         // turned this into a for loop, dynamic. if ((patches[patches.size() - 1].superpoints[env.num_layers - 1] == patches[patches.size() - 3].superpoints[env.num_layers - 1]) && (patches[patches.size() - 1].superpoints[0] == patches[patches.size() - 3].superpoints[0]) && (patches[patches.size() - 1].superpoints[1] == patches[patches.size() - 3].superpoints[1]) && (patches[patches.size() - 1].superpoints[2] == patches[patches.size() - 3].superpoints[2]) && (patches[patches.size() - 1].superpoints[3] == patches[patches.size() - 3].superpoints[3]))
         // that code checked 0 to 4
         for (index_type i = 0; i < num_layers; i++)
@@ -1470,7 +1502,6 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
                     repeat_patch);
 
             delete_patch(lastPatchIdx);
-            lastPatchIndex = n_patches - 1;
 
             current_z_top_index -= 1;
 
@@ -1480,6 +1511,8 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
             makePatch_alignedToLine(complementary_apexZ0, z_top_min, ppl, true, false);
         }
     }
+
+    printf("LASTPATCHINDEXFINAL--------------%i \n", lastPatchIndex);
 }
 
 void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl)
@@ -1530,8 +1563,6 @@ void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_
             start_value = row_list[j] - projectionToRow;
         }
     }
-
-    cout << "STARTINDEX------------------------------------" << start_index << endl;
 
     int left_bound = 0;
     float lbVal = INT_MAX;
@@ -1635,7 +1666,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
     }
 
     #if VITIS_SYNTHESIS == false
-        readFile("cppForSynthesis/wedgeData_v3_128.txt");
+        readFile("cppForSynthesis/wedgeData_v3_128.txt", wedges[1], false);
     #endif
 
     for (index_type z = 0; z < wedges[1]; z++)
@@ -1702,7 +1733,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {107, 108};
+    int wedgesToTest[] = {0, 10};
 
     wedge_test(0, 0.025, 16, 15.0, wedgesToTest, 2, 1000, 50, 15.0);
 
