@@ -2,7 +2,7 @@
 // run < CPP/wedgeData_v3_128.txt
 // bt
 
-#define VITIS_SYNTHESIS true
+#define VITIS_SYNTHESIS false
 
 #include <stdio.h>
 #include <limits.h>
@@ -137,23 +137,12 @@ typedef struct
     index_type parallelogram_count;
 } wedgePatch;
 
-typedef struct
-{
-    index_type n_patches; //make global
-    wedgePatch patches[MAX_PATCHES];
-    //DataSet *data; //make global
-    #if KEEP_DELETED_PATCHES == true
-        bool real_patch_list[MAX_PATCHES]; //only needed for video
-    #endif
-
-} wedgeCover;
-
 void initWedgeCover(); 
 int Point_load(Point *p);
 void importData();
 void addBoundaryPoint(float offset);
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
-int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2);
+int areWedgeSuperPointsEqual(wedgeSuperPoint wsp1, wedgeSuperPoint wsp2);
 void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
 void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I);
 float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k);
@@ -176,6 +165,12 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight
 void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, float alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size);
 void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
 int floatCompare(const void *a, const void *b);
+
+bool getSolveNextPatchPairWhileCondition(int lastPatchIndex, bool repeat_patch, bool repeat_original,
+                                         float white_space_height, float previous_white_space_height,
+                                         int current_z_top_index);
+
+bool getSolveNextColumnWhileConditional(float c_corner, int nPatchesInColumn, float projectionOfCornerToBeam);
 
 #if VITIS_SYNTHESIS == false
     Point master_list[6400][MAX_POINTS_IN_EVENT];
@@ -389,7 +384,6 @@ int comparePoints(const void *a, const void *b)
     return 0;
 }
 
-
 void adjustPointPositionFront(Point *array, int n_points, int start_index) {
     // move the point at start_index to its correct position to maintain sorted order
     Point toInsert = array[start_index];
@@ -493,11 +487,11 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
 }
 
 // operator overloading not allowed in C, write separate method to check equality
-int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2)
+int areWedgeSuperPointsEqual(wedgeSuperPoint wsp1, wedgeSuperPoint wsp2)
 {
     //return (wsp1->min == wsp2->min) && (wsp1->max == wsp2->max);
     const float tolerance = 0.0001;
-    return (fabs(wsp1->min - wsp2->min) < tolerance) && (fabs(wsp1->max - wsp2->max) < tolerance);
+    return (fabs(wsp1.min - wsp2.min) < tolerance) && (fabs(wsp1.max - wsp2.max) < tolerance);
 }
 
 void getParallelograms(wedgePatch *wp)
@@ -945,7 +939,7 @@ float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix4
     float projectionOfCornerToBeam = 0;
     //returnArray[6] = {nPatchesInColumn, c_corner, projectionOfCornerToBeam, z_top_min, z_top_max, complementary_apexZ0}
     //remove nPatchesInColumn once debugging finishes
-    while((c_corner > -1 * trapezoid_edges[num_layers - 1]) && (nPatchesInColumn<100000000) && (projectionOfCornerToBeam < beam_axis_lim))
+    while(getSolveNextColumnWhileConditional(c_corner, nPatchesInColumn, projectionOfCornerToBeam))
     {
         solveNextPatchPair(apexZ0, stop, ppl, leftRight, fix42, saved_apexZ0, nPatchesInColumn, c_corner, projectionOfCornerToBeam, z_top_min, z_top_max, complementary_apexZ0); 
     }
@@ -956,6 +950,9 @@ float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix4
 
     return apexZ0; 
 }
+
+bool getSolveNextColumnWhileConditional(float c_corner, int nPatchesInColumn,
+                                        float projectionOfCornerToBeam) { return (c_corner > -1 * trapezoid_edges[num_layers - 1]) && (nPatchesInColumn < 100000000) && (projectionOfCornerToBeam < beam_axis_lim); }
 
 void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float &saved_apexZ0, int &nPatchesInColumn, float &c_corner, float &projectionOfCornerToBeam, float &z_top_min, float &z_top_max, float &complementary_apexZ0)
 {
@@ -1025,7 +1022,7 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         repeat_original = true; // assume they are the same initially
         for (index_type i = 0; i < MAX_SUPERPOINTS_IN_PATCH; i++)
         { // iterating over the first (five) superpoints
-            if (!areWedgeSuperPointsEqual(&patches[lastPatchIndex].superpoints[i], &patches[thirdLastPatchIndex].superpoints[i]))
+            if (!areWedgeSuperPointsEqual(patches[lastPatchIndex].superpoints[i], patches[thirdLastPatchIndex].superpoints[i]))
             {
                 repeat_original = false; // if any pair of superpoints don't match, set to false
                 break;                   // no need to check further if a mismatch is found
@@ -1081,11 +1078,8 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         index_type current_z_top_index = -1;
         float previous_z_top_min = -999;
 
-        while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
-                ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
-                (white_space_height > 0.000005)) &&
-                (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
-                !(repeat_patch) && !(repeat_original))
+        while (getSolveNextPatchPairWhileCondition(lastPatchIndex, repeat_patch, repeat_original, white_space_height,
+                                                   previous_white_space_height, current_z_top_index))
         {
             solveComplmentaryPatch(previous_white_space_height, ppl, fix42, nPatchesAtOriginal, previous_z_top_min, complementary_apexZ0, white_space_height, lastPatchIndex, original_c, original_d, complementary_a, complementary_b, current_z_top_index, counter, counterUpshift, z_top_min, repeat_patch, repeat_original);
         }
@@ -1107,6 +1101,16 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
     z_top_max = c_corner;
 
     printf("+++++++++++++++++++++++ c_corner: %f\n", c_corner);
+}
+
+bool getSolveNextPatchPairWhileCondition(int lastPatchIndex, bool repeat_patch, bool repeat_original,
+                                         float white_space_height, float previous_white_space_height,
+                                         int current_z_top_index) {
+    return !(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
+               ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
+                    (white_space_height > 0.000005)) &&
+               (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
+               !(repeat_patch) && !(repeat_original);
 }
 
 void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max, float complementary_apexZ0, float apexZ0, int ppl)
@@ -1455,7 +1459,7 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
         // that code checked 0 to 4
         for (index_type i = 0; i < num_layers; i++)
         {
-            if (!areWedgeSuperPointsEqual(&patches[lastPatchIdx].superpoints[i], &patches[thirdLastPatchIdx].superpoints[i]))
+            if (!areWedgeSuperPointsEqual(patches[lastPatchIdx].superpoints[i], patches[thirdLastPatchIdx].superpoints[i]))
             {
                 repeat_patch = false;
                 break;
@@ -1699,7 +1703,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {0, 6400};
+    int wedgesToTest[] = {0, 10};
 
     wedge_test(0, 0.025, 16, 15.0, wedgesToTest, 2, 1000, 50, 15.0);
 
