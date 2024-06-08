@@ -57,6 +57,7 @@ float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, in
         radius_k = radii[k - 1];
     }
 
+    //local, shadows the global
     float radii_leverArm = (radius_k - radius_i) / (radius_j - radius_i);
 
     return z_i + (z_j - z_i) * radii_leverArm;
@@ -64,6 +65,7 @@ float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, in
 
 float straightLineProjector(float z_top, float z_j, int j)
 {
+    //global radii_leverArm
     float temp = radii_leverArm[j - 1];
     return z_top - (z_top - z_j) * temp;
 }
@@ -75,7 +77,7 @@ void getParallelograms(wedgePatch *wp)
 
     if (z1_min > z1_max)
     {
-        z1_min = trapezoid_edges[0] + 1;
+        z1_min = trapezoid_edges[0] + 1*CONVERSION_FACTOR;
         z1_max = z1_min;
     }
 
@@ -94,7 +96,7 @@ void getParallelograms(wedgePatch *wp)
         float z_j_min = wp->superpoints[i].min;
         float z_j_max = wp->superpoints[i].max;
 
-        float a = straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, num_layers);
+        float a = straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, num_layers); //1 is fine, not in cm/micron
         float b = straightLineProjectorFromLayerIJtoK(z1_max, z_j_max, 1, j, num_layers);
         float c = straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, num_layers);
         float d = straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, num_layers);

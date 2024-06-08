@@ -25,6 +25,6 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
 int areWedgeSuperPointsEqual(wedgeSuperPoint *wsp1, wedgeSuperPoint *wsp2)
 {
     //return (wsp1->min == wsp2->min) && (wsp1->max == wsp2->max);
-    const float tolerance = 0.0001;
+    const float tolerance = 0.0001*CONVERSION_FACTOR;
     return (fabs(wsp1->min - wsp2->min) < tolerance) && (fabs(wsp1->max - wsp2->max) < tolerance);
 }

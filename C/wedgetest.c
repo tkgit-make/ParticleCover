@@ -21,19 +21,19 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
 
         importData();
         
-        addBoundaryPoint(0.0001); // with default param
+        addBoundaryPoint(0.0001*CONVERSION_FACTOR); // with default param
 
         initWedgeCover();
 
-        solve(apexZ0, ppl, 100, false); // solve modifies  false is from the left right align (previously a parameter in wedge test)
+        solve(apexZ0, ppl, false); // solve modifies  false is from the left right align (previously a parameter in wedge test)
 
         for (int i = 0; i < n_patches; i++)
         {
             fprintf(myfile, "Patch \n");
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jL * 10000));
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jR * 10000));
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jL * 10000));
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jR * 10000));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jL * 10000/CONVERSION_FACTOR));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jR * 10000/CONVERSION_FACTOR));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jL * 10000/CONVERSION_FACTOR));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jR * 10000/CONVERSION_FACTOR));
 
             for (int j = 0; j < patches[i].superpoint_count; j++)
             {
@@ -43,26 +43,26 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
                     Point currentPt = patches[i].superpoints[j].points[r];
                     fprintf(myfile, "%d %.4f %d %.4f\n",
                             currentPt.layer_num,
-                            currentPt.phi,
-                            (int)currentPt.radius,
-                            currentPt.z);
+                            currentPt.phi/CONVERSION_FACTOR,
+                            (int)(currentPt.radius/CONVERSION_FACTOR),
+                            currentPt.z/CONVERSION_FACTOR);
                 }
             }
         }
         for (int i = 0; i < n_patches; i++)
         {
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].a_corner[0] * 10000),
-                    lround(patches[i].a_corner[1] * 10000));
+                    lround(patches[i].a_corner[0] * 10000/CONVERSION_FACTOR),
+                    lround(patches[i].a_corner[1] * 10000/CONVERSION_FACTOR));
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].b_corner[0] * 10000),
-                    lround(patches[i].b_corner[1] * 10000));
+                    lround(patches[i].b_corner[0] * 10000/CONVERSION_FACTOR),
+                    lround(patches[i].b_corner[1] * 10000/CONVERSION_FACTOR));
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].c_corner[0] * 10000),
-                    lround(patches[i].c_corner[1] * 10000));
+                    lround(patches[i].c_corner[0] * 10000/CONVERSION_FACTOR),
+                    lround(patches[i].c_corner[1] * 10000/CONVERSION_FACTOR));
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].d_corner[0] * 10000),
-                    lround(patches[i].d_corner[1] * 10000));
+                    lround(patches[i].d_corner[0] * 10000/CONVERSION_FACTOR),
+                    lround(patches[i].d_corner[1] * 10000/CONVERSION_FACTOR));
             fprintf(myfile, "\n");
         }
         // instead of making an array of all events and passing them in, we only need access to them individually, so we will loop through and process as we create them.
