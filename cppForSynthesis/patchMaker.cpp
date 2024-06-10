@@ -57,21 +57,27 @@
 
 //constant from environment that have been pulled out of structure
 #define num_layers 5
-#define top_layer_lim 50
-#define beam_axis_lim 15
+#define top_layer_lim (50 * INTEGER_FACTOR_CM)
+#define beam_axis_lim (15 * INTEGER_FACTOR_CM)
 
+#define INTEGER_FACTOR_CM 100000
+#define INTEGER_FACTOR_RAD (pow(10, 7))
 
-const float radii[MAX_LAYERS] = {5, 10, 15, 20, 25};
+const long int radii[MAX_LAYERS] = {5 * INTEGER_FACTOR_CM, 10 * INTEGER_FACTOR_CM, 15 * INTEGER_FACTOR_CM, 20 * INTEGER_FACTOR_CM, 25 * INTEGER_FACTOR_CM};
 const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
 const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
-const float trapezoid_edges[MAX_LAYERS] = {22.0001, 29.0001, 36.0001, 43.0001, 50.0001};
+const long int trapezoid_edges[MAX_LAYERS] = {static_cast<long>(22.0001 * INTEGER_FACTOR_CM),
+                                              static_cast<long>(29.0001 * INTEGER_FACTOR_CM),
+                                              static_cast<long>(36.0001 * INTEGER_FACTOR_CM),
+                                              static_cast<long>(43.0001 * INTEGER_FACTOR_CM),
+                                              static_cast<long>(50.0001 * INTEGER_FACTOR_CM)};
 
 typedef struct
 {
     index_type layer_num;
-    float radius;
-    float phi;
-    float z;
+    long int radius;
+    long int phi;
+    long int z;
 } Point;
 
 typedef struct
@@ -79,7 +85,7 @@ typedef struct
     Point array[MAX_LAYERS][MAX_POINTS_FOR_DATASET]; // 2D array of points
     int n_points[MAX_LAYERS];                        // number of points in each layer of the array
     //index_type total_points; //not used
-    float boundaryPoint_offset;
+    long int boundaryPoint_offset;
 } DataSet;
 
 typedef struct
@@ -87,22 +93,22 @@ typedef struct
     index_type layer_num;
     float pSlope;
 
-    float shadow_bottomL_jR;
-    float shadow_bottomR_jR;
-    float shadow_bottomL_jL;
-    float shadow_bottomR_jL;
+    long shadow_bottomL_jR;
+    long shadow_bottomR_jR;
+    long shadow_bottomL_jL;
+    long shadow_bottomR_jL;
 
-    float z1_min;
-    float z1_max;
+    long z1_min;
+    long z1_max;
 } Parallelogram;
 
 typedef struct
 {
     Point points[MAX_POINTS_IN_SUPERPOINT];
-    float z_values[MAX_POINTS_IN_SUPERPOINT];
+    long z_values[MAX_POINTS_IN_SUPERPOINT];
     index_type point_count;
-    float min;
-    float max;
+    long min;
+    long max;
 } wedgeSuperPoint;
 
 typedef struct
@@ -110,19 +116,19 @@ typedef struct
     int end_layer;
     int left_end_layer;
     int right_end_layer;
-    float left_end_lambdaZ;
-    float right_end_lambdaZ;
-    float apexZ0;
+    long left_end_lambdaZ;
+    long right_end_lambdaZ;
+    long apexZ0;
 
-    float shadow_fromTopToInnermost_topL_jL;
-    float shadow_fromTopToInnermost_topL_jR;
-    float shadow_fromTopToInnermost_topR_jL;
-    float shadow_fromTopToInnermost_topR_jR;
+    long shadow_fromTopToInnermost_topL_jL;
+    long shadow_fromTopToInnermost_topL_jR;
+    long shadow_fromTopToInnermost_topR_jL;
+    long shadow_fromTopToInnermost_topR_jR;
 
-    float a_corner[2];
-    float b_corner[2];
-    float c_corner[2];
-    float d_corner[2];
+    long a_corner[2];
+    long b_corner[2];
+    long c_corner[2];
+    long d_corner[2];
 
     wedgeSuperPoint superpoints[MAX_SUPERPOINTS_IN_PATCH]; //changed to direct assignment as opposed to pointer
     index_type superpoint_count;
@@ -140,37 +146,37 @@ typedef struct
 void initWedgeCover(); 
 int Point_load(Point *p);
 void importData();
-void addBoundaryPoint(float offset);
+void addBoundaryPoint(long offset);
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
 int areWedgeSuperPointsEqual(wedgeSuperPoint wsp1, wedgeSuperPoint wsp2);
 void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
-void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I);
-float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k);
+void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, long apexZ0I);
+long straightLineProjectorFromLayerIJtoK(long z_i, long z_j, int i, int j, int k);
 float straightLineProjector(float z_top, float z_j, int j);
 void getParallelograms(wedgePatch *wp);
-void getShadows(wedgePatch *wp, float zTopMin, float zTopMax);
+void getShadows(wedgePatch *wp, long zTopMin, long zTopMax);
 void get_acceptanceCorners(wedgePatch *wp);
 void get_end_layer(wedgePatch *wp);
 int comparePoints(const void *a, const void *b);
 void add_patch(wedgePatch *curr_patch);
 void delete_patch(int index);
-index_type get_index_from_z(int layer, float z_value);
-void solve(float apexZ0, int ppl, int nlines, bool leftRight);
-void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool leftRight);
-float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float saved_apexZ0); 
-void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float &saved_apexZ0, int &nPatchesInColumn, float &c_corner, float &projectionOfCornerToBeam, float &z_top_min, float &z_top_max, float &complementary_apexZ0);
-void makeThirdPatch(int lastPatchIndex, float z_top_min, float z_top_max, float complementary_apexZ0, float apexZ0, int ppl);
-void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type &lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original);
-void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl);
-void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, float alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size);
-void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff);
+index_type get_index_from_z(int layer, long z_value);
+void solve(long apexZ0, int ppl, int nlines, bool leftRight);
+void makePatches_ShadowQuilt_fromEdges(long apexZ0, int stop, int ppl, bool leftRight);
+long solveNextColumn(long apexZ0, int stop, int ppl, bool leftRight, bool fix42, long saved_apexZ0);
+void solveNextPatchPair(long apexZ0, int stop, int ppl, bool leftRight, bool fix42, long &saved_apexZ0, int &nPatchesInColumn, long &c_corner, long &projectionOfCornerToBeam, long &z_top_min, long &z_top_max, long &complementary_apexZ0);
+void makeThirdPatch(int lastPatchIndex, long z_top_min, long z_top_max, long complementary_apexZ0, long apexZ0, int ppl);
+void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, long &previous_z_top_min, long complementary_apexZ0, long &white_space_height, index_type &lastPatchIndex, long original_c, long original_d, long &complementary_a, long &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, long &z_top_min, bool &repeat_patch, bool &repeat_original);
+void makePatch_alignedToLine(long apexZ0, long z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl);
+void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, long alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size);
+void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, int wedges[], int wedge_count, int lines, long top_layer_cutoff, long accept_cutoff);
 int floatCompare(const void *a, const void *b);
 
 bool getSolveNextPatchPairWhileCondition(int lastPatchIndex, bool repeat_patch, bool repeat_original,
-                                         float white_space_height, float previous_white_space_height,
+                                         long white_space_height, long previous_white_space_height,
                                          int current_z_top_index);
 
-bool getSolveNextColumnWhileConditional(float c_corner, int nPatchesInColumn, float projectionOfCornerToBeam);
+bool getSolveNextColumnWhileConditional(long c_corner, int nPatchesInColumn, long projectionOfCornerToBeam);
 
 #if VITIS_SYNTHESIS == false
     Point master_list[6400][MAX_POINTS_IN_EVENT];
@@ -271,10 +277,10 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
                     {
                         vector<string> ct = finalTuples[i];
                         Point temp; 
-                        temp.layer_num = stoi(ct[0]); 
-                        temp.phi = stof(ct[2]);
-                        temp.radius = stof(ct[1]); 
-                        temp.z = stof(ct[3]);
+                        temp.layer_num = stoi(ct[0]);
+                        temp.phi = static_cast<long>(stof(ct[2]) * INTEGER_FACTOR_RAD);
+                        temp.radius = static_cast<long>(stof(ct[1]) * INTEGER_FACTOR_CM);
+                        temp.z = static_cast<long>(stof(ct[3]) * INTEGER_FACTOR_CM);
                         master_list[line_index][i] = temp;
                     }
 
@@ -322,8 +328,17 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
 #else
     int Point_load(Point *p)
     {
-        if (scanf("(%d,%f,%f,%f)", &p->layer_num, &p->radius, &p->phi, &p->z) == 4)
+        printf("IN \n");
+        int ln = 0;
+        float r, pI, zI = 0.0;
+
+        if (scanf("(%d,%f,%f,%f)", &ln, &r, &pI, &zI) == 4)
         {
+            p->layer_num = ln;
+            p->radius = static_cast<long>(r * INTEGER_FACTOR_CM);
+            p->phi = static_cast<long>(pI * INTEGER_FACTOR_RAD);
+            p->z = static_cast<long>(zI * INTEGER_FACTOR_CM);
+
             return 1;            // successful load
         }
 
@@ -345,7 +360,7 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
             Point p;
             if (Point_load(&p) < 1)
                 break;
-            
+
             index_type layer = p.layer_num - 1;
             Gdata.array[layer][Gdata.n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
             Gdata.n_points[layer]++; //here n_points is not counting the blank spot at index 0.
@@ -412,7 +427,7 @@ void adjustPointPositionBack(Point *array, int n_points, int start_index) {
     array[j] = toInsert; // place the element at its correct position
 }
 
-void addBoundaryPoint(float offset)
+void addBoundaryPoint(long offset)
 {
     Gdata.boundaryPoint_offset = offset;
 
@@ -468,8 +483,8 @@ void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
 {
     wsp->point_count = pointCount;
-    wsp->min = FLT_MAX;
-    wsp->max = -FLT_MAX;
+    wsp->min = LONG_MAX;
+    wsp->max = LONG_MIN;
 
     // more efficient approach
     // instead of making a temp array and then transferring contents, add the values directly
@@ -490,14 +505,14 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
 int areWedgeSuperPointsEqual(wedgeSuperPoint wsp1, wedgeSuperPoint wsp2)
 {
     //return (wsp1->min == wsp2->min) && (wsp1->max == wsp2->max);
-    const float tolerance = 0.0001;
-    return (fabs(wsp1.min - wsp2.min) < tolerance) && (fabs(wsp1.max - wsp2.max) < tolerance);
+    const long tolerance = static_cast<long>(0.0001 * INTEGER_FACTOR_CM);
+    return (static_cast<long>(fabs(wsp1.min - wsp2.min)) < tolerance) && (static_cast<long>(fabs(wsp1.max - wsp2.max)) < tolerance);
 }
 
 void getParallelograms(wedgePatch *wp)
 {
-    float z1_min = max(wp->superpoints[0].min, -1 * trapezoid_edges[0]);
-    float z1_max = min(wp->superpoints[0].max, trapezoid_edges[0]);
+    long z1_min = max(wp->superpoints[0].min, -1 * trapezoid_edges[0]);
+    long z1_max = min(wp->superpoints[0].max, trapezoid_edges[0]);
 
     if (z1_min > z1_max)
     {
@@ -517,13 +532,13 @@ void getParallelograms(wedgePatch *wp)
     {
         int j = i + 1;
 
-        float z_j_min = wp->superpoints[i].min;
-        float z_j_max = wp->superpoints[i].max;
+        long z_j_min = wp->superpoints[i].min;
+        long z_j_max = wp->superpoints[i].max;
 
-        float a = straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, num_layers);
-        float b = straightLineProjectorFromLayerIJtoK(z1_max, z_j_max, 1, j, num_layers);
-        float c = straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, num_layers);
-        float d = straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, num_layers);
+        long a = straightLineProjectorFromLayerIJtoK(z1_min, z_j_max, 1, j, num_layers);
+        long b = straightLineProjectorFromLayerIJtoK(z1_max, z_j_max, 1, j, num_layers);
+        long c = straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, num_layers);
+        long d = straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, num_layers);
 
         float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
 
@@ -543,7 +558,7 @@ void getParallelograms(wedgePatch *wp)
     }
 }
 
-void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, float apexZ0I)
+void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, long apexZ0I)
 {
     wp->end_layer = -1; 
     wp->left_end_layer = -1;
@@ -569,11 +584,11 @@ void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoi
     get_end_layer(wp);
 }
 
-float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, int k)
+long straightLineProjectorFromLayerIJtoK(long z_i, long z_j, int i, int j, int k)
 {
-    float radius_i = 0;
-    float radius_j = 0;
-    float radius_k = 0;
+    long radius_i = 0;
+    long radius_j = 0;
+    long radius_k = 0;
 
     if (i == 0)
     {
@@ -600,9 +615,9 @@ float straightLineProjectorFromLayerIJtoK(float z_i, float z_j, int i, int j, in
         radius_k = radii[k - 1];
     }
 
-    float radii_leverArm = (radius_k - radius_i) / (radius_j - radius_i);
+    float radii_leverArmF = (radius_k - radius_i) / (radius_j - radius_i);
 
-    return z_i + (z_j - z_i) * radii_leverArm;
+    return z_i + static_cast<long>((z_j - z_i) * radii_leverArmF);
 }
 
 float straightLineProjector(float z_top, float z_j, int j)
@@ -611,10 +626,10 @@ float straightLineProjector(float z_top, float z_j, int j)
     return z_top - (z_top - z_j) * temp;
 }
 
-void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
+void getShadows(wedgePatch *wp, long zTopMin, long zTopMax)
 {
-    float zTop_min;
-    float zTop_max;
+    long zTop_min;
+    long zTop_max;
     if (num_layers - 1 < 0)
     {
         zTop_min = zTopMin;
@@ -626,16 +641,16 @@ void getShadows(wedgePatch *wp, float zTopMin, float zTopMax)
         zTop_max = min(zTopMax, trapezoid_edges[num_layers - 1]);
     }
 
-    float topL_jL[MAX_SUPERPOINTS_IN_PATCH - 1];
-    float topL_jR[MAX_SUPERPOINTS_IN_PATCH - 1];
-    float topR_jL[MAX_SUPERPOINTS_IN_PATCH - 1];
-    float topR_jR[MAX_SUPERPOINTS_IN_PATCH - 1];
+    long topL_jL[MAX_SUPERPOINTS_IN_PATCH - 1];
+    long topL_jR[MAX_SUPERPOINTS_IN_PATCH - 1];
+    long topR_jL[MAX_SUPERPOINTS_IN_PATCH - 1];
+    long topR_jR[MAX_SUPERPOINTS_IN_PATCH - 1];
 
     for (int i = 0; i < wp->superpoint_count - 1; ++i)
     {
         int j = i + 1;
-        float z_j_min = wp->superpoints[i].min;
-        float z_j_max = wp->superpoints[i].max;
+        long z_j_min = wp->superpoints[i].min;
+        long z_j_max = wp->superpoints[i].max;
 
         topL_jL[i] = straightLineProjectorFromLayerIJtoK(zTop_min, z_j_min, num_layers, j, 1);
         topL_jR[i] = straightLineProjectorFromLayerIJtoK(zTop_min, z_j_max, num_layers, j, 1);
@@ -677,10 +692,10 @@ void get_acceptanceCorners(wedgePatch *wp)
     wp->flatBottom = true;
     wp->triangleAcceptance = false;
 
-    float a_corner_min = FLT_MAX;
-    float b_corner_min = FLT_MAX;
-    float c_corner_max = -FLT_MAX;
-    float d_corner_max = -FLT_MAX;
+    long a_corner_min = LONG_MAX;
+    long b_corner_min = LONG_MAX;
+    long c_corner_max = LONG_MIN;
+    long d_corner_max = LONG_MIN;
 
     // getting min or max corners in all parallelograms
     for (int i = 0; i < wp->parallelogram_count; ++i)
@@ -755,8 +770,8 @@ void get_acceptanceCorners(wedgePatch *wp)
 void get_end_layer(wedgePatch *wp)
 {
     // naming counterintuitive
-    float lambdaZLeftMax = -1 * INT_MAX + 2;
-    float lambdaZRightMin = INT_MAX - 2;
+    long lambdaZLeftMax = LONG_MIN;
+    long lambdaZRightMin = LONG_MAX;
     // assigning -1 to start because they should only hold non-negative integers
     wp->left_end_layer = -1;
     wp->right_end_layer = -1;
@@ -764,8 +779,8 @@ void get_end_layer(wedgePatch *wp)
     // combined two independent loops
     for (int i = 0; i < num_layers; i++)
     {
-        float lambdaZ_left = (wp->superpoints[i].min - wp->apexZ0) / radii[i];
-        float lambdaZ_right = (wp->superpoints[i].max - wp->apexZ0) / radii[i];
+        long lambdaZ_left = static_cast<long>((wp->superpoints[i].min - wp->apexZ0) / radii[i]);
+        long lambdaZ_right = static_cast<long>((wp->superpoints[i].max - wp->apexZ0) / radii[i]);
 
         if (lambdaZ_left > lambdaZLeftMax)
         {
@@ -853,16 +868,16 @@ void delete_patch(int index)
 }
 
 // can't provide default parameters
-index_type get_index_from_z(int layer, float z_value)
+index_type get_index_from_z(int layer, long z_value)
 {
     // c doesn't support string comparison directly, using integer comparison for effiency
     // CLOSEST = 11, ABOVE = 12, BELOW = 13
-    float minVal = 1000000;
+    long minVal = LONG_MAX;
     index_type index = 0;
 
     for (index_type i = 0; i < Gdata.n_points[layer]; i++)
     {
-        float diff = fabs(Gdata.array[layer][i].z - z_value); // absolute difference
+        long diff = static_cast<long>(fabs(Gdata.array[layer][i].z - z_value)); // absolute difference
         if (diff < minVal)
         {
             minVal = diff;
@@ -877,7 +892,7 @@ index_type get_index_from_z(int layer, float z_value)
 // not implementing the logic corresponding to show = true (that would involve Line Generators, etc)
 // Line Generator and its accompanying methods have been coded, but we are not going to implement show=true case here as main method passes with show=false.
 // lining is always MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES. assumes this in code
-void solve(float apexZ0, int ppl, int nlines, bool leftRight)
+void solve(long apexZ0, int ppl, int nlines, bool leftRight)
 {
     for (index_type i = 0; i < num_layers; i++)
     {
@@ -891,7 +906,7 @@ void solve(float apexZ0, int ppl, int nlines, bool leftRight)
             {
                 if (Gdata.array[i][x].z == Gdata.array[i][x + 1].z)
                 {
-                    Gdata.array[i][x + 1].z += 0.00001;
+                    Gdata.array[i][x + 1].z += static_cast<long>(0.00001 * INTEGER_FACTOR_CM);
                     foundIdentical = true;
                 }
             }
@@ -906,11 +921,11 @@ void solve(float apexZ0, int ppl, int nlines, bool leftRight)
     makePatches_ShadowQuilt_fromEdges(apexZ0, 1, ppl, leftRight);
 }
 
-void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool leftRight) // TOP-LEVEL FUNCTION FOR VITIS
+void makePatches_ShadowQuilt_fromEdges(long apexZ0, int stop, int ppl, bool leftRight) // TOP-LEVEL FUNCTION FOR VITIS
 {
     bool fix42 = true;
     apexZ0 = trapezoid_edges[0];
-    float saved_apexZ0;
+    long saved_apexZ0;
 
     while (apexZ0 > -1 * trapezoid_edges[0]) //consider how this works when we are expanding instead of retracting the trapezoid_edges
     {
@@ -919,15 +934,15 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int stop, int ppl, bool lef
     }
 }
 
-float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float saved_apexZ0)
+long solveNextColumn(long apexZ0, int stop, int ppl, bool leftRight, bool fix42, long saved_apexZ0)
 {
-    float z_top_min = -1 * top_layer_lim;
+    long z_top_min = -1 * top_layer_lim;
 
-    float complementary_apexZ0 = 0;
+    long complementary_apexZ0 = 0;
     index_type first_row_count = 0;
-    float c_corner = LONG_MAX;
+    long c_corner = LONG_MAX;
 
-    float z_top_max = top_layer_lim;
+    long z_top_max = top_layer_lim;
 
     if (n_patches > 0)
     {
@@ -936,7 +951,7 @@ float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix4
     }
 
     index_type nPatchesInColumn = 0;
-    float projectionOfCornerToBeam = 0;
+    long projectionOfCornerToBeam = 0;
     //returnArray[6] = {nPatchesInColumn, c_corner, projectionOfCornerToBeam, z_top_min, z_top_max, complementary_apexZ0}
     //remove nPatchesInColumn once debugging finishes
     while(getSolveNextColumnWhileConditional(c_corner, nPatchesInColumn, projectionOfCornerToBeam))
@@ -946,47 +961,47 @@ float solveNextColumn(float apexZ0, int stop, int ppl, bool leftRight, bool fix4
 
     apexZ0 = patches[n_patches - 1].c_corner[0];
     apexZ0 = saved_apexZ0;
-    printf("'=======================================================  z1_Align: %f\n", apexZ0);
+    printf("'=======================================================  z1_Align: %ld\n", apexZ0);
 
     return apexZ0; 
 }
 
-bool getSolveNextColumnWhileConditional(float c_corner, int nPatchesInColumn,
-                                        float projectionOfCornerToBeam) { return (c_corner > -1 * trapezoid_edges[num_layers - 1]) && (nPatchesInColumn < 100000000) && (projectionOfCornerToBeam < beam_axis_lim); }
+bool getSolveNextColumnWhileConditional(long c_corner, int nPatchesInColumn,
+                                        long projectionOfCornerToBeam) { return (c_corner > -1 * trapezoid_edges[num_layers - 1]) && (nPatchesInColumn < 100000000) && (projectionOfCornerToBeam < beam_axis_lim); }
 
-void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fix42, float &saved_apexZ0, int &nPatchesInColumn, float &c_corner, float &projectionOfCornerToBeam, float &z_top_min, float &z_top_max, float &complementary_apexZ0)
+void solveNextPatchPair(long apexZ0, int stop, int ppl, bool leftRight, bool fix42, long &saved_apexZ0, int &nPatchesInColumn, long &c_corner, long &projectionOfCornerToBeam, long &z_top_min, long &z_top_max, long &complementary_apexZ0)
 {
     nPatchesInColumn++;
-    printf("%f %d %f %d\n", apexZ0, ppl, z_top_max, leftRight);
+    printf("%ld %d %ld %d\n", apexZ0, ppl, z_top_max, leftRight);
 
     makePatch_alignedToLine(apexZ0, z_top_max, ppl, false, false);
 
     index_type lastPatchIndex = n_patches - 1;
 
-    printf("top layer from %f to %f z_top_max: %f\n",
+    printf("top layer from %ld to %ld z_top_max: %ld\n",
             patches[lastPatchIndex].superpoints[num_layers - 1].max,
             patches[lastPatchIndex].superpoints[num_layers - 1].min,
             z_top_max);
-    printf("original: [%f, %f] for patch %d\n",
+    printf("original: [%ld, %ld] for patch %d\n",
             patches[lastPatchIndex].a_corner[0],
             patches[lastPatchIndex].a_corner[1],
             n_patches);
-    printf("original: [%f, %f]\n",
+    printf("original: [%ld, %ld]\n",
             patches[lastPatchIndex].b_corner[0],
             patches[lastPatchIndex].b_corner[1]);
 
-    printf("original: [%f, %f]\n",
+    printf("original: [%ld, %ld]\n",
             patches[lastPatchIndex].c_corner[0],
             patches[lastPatchIndex].c_corner[1]);
 
-    printf("original: [%f, %f]\n",
+    printf("original: [%ld, %ld]\n",
             patches[lastPatchIndex].d_corner[0],
             patches[lastPatchIndex].d_corner[1]);
 
     for (index_type i = 1; i < patches[lastPatchIndex].superpoint_count - 1; i++)
     {
         index_type j = i + 1;
-        printf("%d superpoint: %f %f shadowTop from L1Max: %f %f from L1 min: %f %f\n",
+        printf("%d superpoint: %ld %ld shadowTop from L1Max: %ld %ld from L1 min: %ld %ld\n",
                 j,
                 patches[lastPatchIndex].superpoints[i].min,
                 patches[lastPatchIndex].superpoints[i].max,
@@ -996,8 +1011,8 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
                 straightLineProjectorFromLayerIJtoK(patches[lastPatchIndex].superpoints[0].min, patches[lastPatchIndex].superpoints[i].max, 1, j, num_layers));
     }
 
-    float original_c = patches[lastPatchIndex].c_corner[1];
-    float original_d = patches[lastPatchIndex].d_corner[1];
+    long original_c = patches[lastPatchIndex].c_corner[1];
+    long original_d = patches[lastPatchIndex].d_corner[1];
 
     c_corner = original_c;
 
@@ -1030,7 +1045,7 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         }
     }
 
-    float seed_apexZ0 = apexZ0;
+    long seed_apexZ0 = apexZ0;
     wedgePatch *lastPatch = &patches[lastPatchIndex];
     projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(lastPatch->c_corner[1], lastPatch->c_corner[0], num_layers, 1, 0);
     bool squarePatch_alternate1 = (lastPatch->a_corner[1] > z_top_max) && (lastPatch->b_corner[1] > z_top_max) && (lastPatch->flatBottom);
@@ -1041,7 +1056,7 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
 
     int nPatchesAtOriginal = n_patches;
 
-    printf("squareAcceptance: %d triangleAcceptance: %d projectionOfCornerToBeam: %f notChoppedPatch %d\n",
+    printf("squareAcceptance: %d triangleAcceptance: %d projectionOfCornerToBeam: %ld notChoppedPatch %d\n",
             lastPatch->squareAcceptance, lastPatch->triangleAcceptance,projectionOfCornerToBeam, notChoppedPatch);
 
     if (!notChoppedPatch && (lastPatch->c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) && ((projectionOfCornerToBeam < beam_axis_lim)))
@@ -1053,7 +1068,7 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         }
         else
         {
-            printf("z_top_min before: %f superpoints[self.env.num_layers-1].min: %f\n", z_top_min, lastPatch->superpoints[num_layers - 1].min);
+            printf("z_top_min before: %ld superpoints[self.env.num_layers-1].min: %ld\n", z_top_min, lastPatch->superpoints[num_layers - 1].min);
             z_top_min = max(-1 * top_layer_lim, lastPatch->superpoints[num_layers - 1].min);
         }
 
@@ -1063,33 +1078,37 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
         lastPatchIndex = n_patches - 1;
 
         madeComplementaryPatch = true;
-        printf("complementary: [%f, %f] for z_top_min: %f\n", patches[lastPatchIndex].a_corner[0], patches[lastPatchIndex].a_corner[1], z_top_min);
-        printf("complementary: [%f, %f] for patch %d\n", patches[lastPatchIndex].b_corner[0], patches[lastPatchIndex].b_corner[1], n_patches);
-        printf("complementary: [%f, %f]\n", patches[lastPatchIndex].c_corner[0], patches[lastPatchIndex].c_corner[1]);
-        printf("complementary: [%f, %f]\n", patches[lastPatchIndex].d_corner[0], patches[lastPatchIndex].d_corner[1]);
+        printf("complementary: [%ld, %ld] for z_top_min: %ld\n", patches[lastPatchIndex].a_corner[0], patches[lastPatchIndex].a_corner[1], z_top_min);
+        printf("complementary: [%ld, %ld] for patch %d\n", patches[lastPatchIndex].b_corner[0], patches[lastPatchIndex].b_corner[1], n_patches);
+        printf("complementary: [%ld, %ld]\n", patches[lastPatchIndex].c_corner[0], patches[lastPatchIndex].c_corner[1]);
+        printf("complementary: [%ld, %ld]\n", patches[lastPatchIndex].d_corner[0], patches[lastPatchIndex].d_corner[1]);
 
-        float complementary_a = patches[lastPatchIndex].a_corner[1];
-        float complementary_b = patches[lastPatchIndex].b_corner[1];
+        long complementary_a = patches[lastPatchIndex].a_corner[1];
+        long complementary_b = patches[lastPatchIndex].b_corner[1];
 
-        float white_space_height = max(original_c - complementary_a, original_d - complementary_b);
-        float previous_white_space_height = -1;
+        long white_space_height = max(original_c - complementary_a, original_d - complementary_b);
+        long previous_white_space_height = -1;
         int counter = 0;
         int counterUpshift = 0;
         index_type current_z_top_index = -1;
-        float previous_z_top_min = -999;
+        long previous_z_top_min = -999;
 
         while (getSolveNextPatchPairWhileCondition(lastPatchIndex, repeat_patch, repeat_original, white_space_height,
                                                    previous_white_space_height, current_z_top_index))
         {
             solveComplmentaryPatch(previous_white_space_height, ppl, fix42, nPatchesAtOriginal, previous_z_top_min, complementary_apexZ0, white_space_height, lastPatchIndex, original_c, original_d, complementary_a, complementary_b, current_z_top_index, counter, counterUpshift, z_top_min, repeat_patch, repeat_original);
+            if(counter > 25)
+            {
+                exit(0);
+            }
         }
 
     }
 
     lastPatchIndex = n_patches - 1; // just to keep fresh in case we use it
-   c_corner = patches[lastPatchIndex].c_corner[1];
+    c_corner = patches[lastPatchIndex].c_corner[1];
 
-   projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(c_corner, patches[lastPatchIndex].c_corner[0], num_layers, 1, 0);
+    projectionOfCornerToBeam = straightLineProjectorFromLayerIJtoK(c_corner, patches[lastPatchIndex].c_corner[0], num_layers, 1, 0);
 
     saved_apexZ0 = patches[lastPatchIndex].c_corner[0];
 
@@ -1100,20 +1119,20 @@ void solveNextPatchPair(float apexZ0, int stop, int ppl, bool leftRight, bool fi
 
     z_top_max = c_corner;
 
-    printf("+++++++++++++++++++++++ c_corner: %f\n", c_corner);
+    printf("+++++++++++++++++++++++ c_corner: %ld\n", c_corner);
 }
 
 bool getSolveNextPatchPairWhileCondition(int lastPatchIndex, bool repeat_patch, bool repeat_original,
-                                         float white_space_height, float previous_white_space_height,
+                                         long white_space_height, long previous_white_space_height,
                                          int current_z_top_index) {
-    return !(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
+    return !(white_space_height <= static_cast<long>(0.0000005 * INTEGER_FACTOR_CM) && (previous_white_space_height >= 0)) && (fabs(white_space_height) > static_cast<long>(0.000005 * INTEGER_FACTOR_CM)) &&
                ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
-                    (white_space_height > 0.000005)) &&
+                    (white_space_height > static_cast<long>(0.000005 * INTEGER_FACTOR_CM))) &&
                (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                !(repeat_patch) && !(repeat_original);
 }
 
-void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max, float complementary_apexZ0, float apexZ0, int ppl)
+void makeThirdPatch(index_type lastPatchIndex, long z_top_min, long z_top_max, long complementary_apexZ0, long apexZ0, int ppl)
 {
     index_type secondLastPatchIndex = lastPatchIndex - 1;
 
@@ -1121,49 +1140,49 @@ void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max,
     getShadows(&patches[lastPatchIndex],z_top_min, z_top_max);
     getShadows(&patches[secondLastPatchIndex],z_top_min, z_top_max);
 
-    float original_topR_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jL;
+    long original_topR_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jL;
     bool originalPartialTop = (original_topR_jL > complementary_apexZ0) && (original_topR_jL < apexZ0) &&
                                 (fabs(straightLineProjectorFromLayerIJtoK(original_topR_jL, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
-    float original_topL_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
+    long original_topL_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
     
-    bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001) &&
-                                    (fabs(straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
-    
-    float complementary_topR_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+    bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < static_cast<long>(-0.0001 * INTEGER_FACTOR_CM)) &&
+                                    (fabs(straightLineProjectorFromLayerIJtoK(original_topL_jL,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
+
+    long complementary_topR_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
     
     bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) &&
                                     (fabs(straightLineProjectorFromLayerIJtoK(complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
-    float complementary_topL_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
+    long complementary_topL_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
     
-    bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < -0.0001) &&
+    bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < static_cast<long>(-0.0001 * INTEGER_FACTOR_CM)) &&
                                         (fabs(straightLineProjectorFromLayerIJtoK(complementary_topL_jR,z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
-    float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
-    float horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
+    long horizontalShiftTop = original_topR_jL - complementary_topR_jR;
+    long horizontalShiftBottom = original_topL_jL - complementary_topL_jR;
 
-    float complementary_topR_jL = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jL;
-    float complementary_topL_jL = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jL;
-    float original_topR_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jR;
-    float original_topL_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jR;
+    long complementary_topR_jL = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jL;
+    long complementary_topL_jL = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jL;
+    long original_topR_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jR;
+    long original_topL_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jR;
 
-    float horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
-    float horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
+    long horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
+    long horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
 
     horizontalOverlapTop = -1;
     horizontalOverlapBottom = -1;
-    float newGapTop = -0.000001;
-    float newGapBottom = -0.000001;
+    long newGapTop = static_cast<long>(-0.000001 * INTEGER_FACTOR_CM);
+    long newGapBottom = static_cast<long>(-0.000001 * INTEGER_FACTOR_CM);
 
     bool makeHorizontallyShiftedPatch = false;
-    float shifted_Align = apexZ0;
+    long shifted_Align = apexZ0;
     bool doShiftedPatch = true;
 
-    float newZtop = 0;
+    long newZtop = 0;
 
-    float z0_original_bCorner = straightLineProjectorFromLayerIJtoK(apexZ0, z_top_max, 1, num_layers, 0);
-    float z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min, 1, num_layers, 0);
+    long z0_original_bCorner = straightLineProjectorFromLayerIJtoK(apexZ0, z_top_max, 1, num_layers, 0);
+    long z0_complementary_cCorner = straightLineProjectorFromLayerIJtoK(complementary_apexZ0,z_top_min, 1, num_layers, 0);
     bool shiftOriginal = true;
 
     if (z0_original_bCorner < 0)
@@ -1179,17 +1198,17 @@ void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max,
     }
 
     //if (horizontalShiftTop > 0 || horizontalShiftBottom > 0)
-    if (horizontalShiftTop > 0.000001 || horizontalShiftBottom > 0) // NOTE THAT horizontalShiftTop > 0.000001 is a "hack" to avoid infinite loop from Wedge 42 in this condition and the next
+    if (horizontalShiftTop > static_cast<long>(0.000001*INTEGER_FACTOR_CM) || horizontalShiftBottom > 0) // NOTE THAT horizontalShiftTop > 0.000001 is a "hack" to avoid infinite loop from Wedge 42 in this condition and the next
     {
-        printf("originalPartialTop: %d complementaryPartialTop: %d originalPartialBottom: %d complementaryPartialBottom: %d %f %f %f %f horizontalOverlapTop: %f horizontalOverlapBottom: %f\n",
+        printf("originalPartialTop: %d complementaryPartialTop: %d originalPartialBottom: %d complementaryPartialBottom: %d %ld %ld %ld %ld horizontalOverlapTop: %ld horizontalOverlapBottom: %ld\n",
                 originalPartialTop, complementaryPartialTop, originalPartialBottom, complementaryPartialBottom,
                 original_topR_jL, original_topL_jL, complementary_topR_jR, complementary_topL_jR,
                 horizontalOverlapTop, horizontalOverlapBottom);
     }
 
-    while ((((horizontalShiftTop > 0.000001) && originalPartialTop && complementaryPartialTop) || ((horizontalShiftBottom > 0.000001) && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && ((newGapTop < 0) || (newGapBottom < 0)))
+    while ((((horizontalShiftTop > static_cast<long>(0.000001*INTEGER_FACTOR_CM)) && originalPartialTop && complementaryPartialTop) || ((horizontalShiftBottom > static_cast<long>(0.000001*INTEGER_FACTOR_CM)) && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && ((newGapTop < 0) || (newGapBottom < 0)))
     {
-        printf("horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
+        printf("horizontalShifts: %ld %ld shifted_Align: %ld\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
 
         newZtop = z_top_max;
 
@@ -1235,15 +1254,15 @@ void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max,
         {
             horizontalOverlapTop = max(complementary_topR_jL - original_topR_jL, complementary_topR_jR - original_topR_jR);
             horizontalOverlapBottom = max(complementary_topL_jL - original_topL_jL, complementary_topL_jR - original_topL_jR);
-            printf(" horizontalOverlapTop: %f horizontalOverlapBottom: %f\n", horizontalOverlapTop, horizontalOverlapBottom);
+            printf(" horizontalOverlapTop: %ld horizontalOverlapBottom: %ld\n", horizontalOverlapTop, horizontalOverlapBottom);
         }
 
-        printf("original_topR_jL: %f complementary_topR_jR %f original_topL_jL %f complementary_topL_jR %f shiftOriginal %d\n",
+        printf("original_topR_jL: %ld complementary_topR_jR %ld original_topL_jL %ld complementary_topL_jR %ld shiftOriginal %d\n",
                 original_topR_jL, complementary_topR_jR, original_topL_jL, complementary_topL_jR, shiftOriginal);
 
         makeHorizontallyShiftedPatch = true;
 
-        printf("updated_horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
+        printf("updated_horizontalShifts: %ld %ld shifted_Align: %ld\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
     }
     if (makeHorizontallyShiftedPatch)
     {
@@ -1257,24 +1276,24 @@ void makeThirdPatch(index_type lastPatchIndex, float z_top_min, float z_top_max,
     }
 }
 
-void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, float &previous_z_top_min, float complementary_apexZ0, float &white_space_height, index_type &lastPatchIndex, float original_c, float original_d, float &complementary_a, float &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, float &z_top_min, bool &repeat_patch, bool &repeat_original)
+void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix42, int nPatchesAtOriginal, long &previous_z_top_min, long complementary_apexZ0, long &white_space_height, index_type &lastPatchIndex, long original_c, long original_d, long &complementary_a, long &complementary_b, index_type &current_z_top_index, int &counter, int &counterUpshift, long &z_top_min, bool &repeat_patch, bool &repeat_original)
 {
     printf("\n");
     if (n_patches > 2)
     {
         index_type secondLastPatchIndex = lastPatchIndex - 1;
-        printf("original c: %f %f || original d: %f %f\n",
+        printf("original c: %ld %ld || original d: %ld %ld\n",
                 original_c, patches[secondLastPatchIndex].c_corner[1],
                 original_d, patches[secondLastPatchIndex].d_corner[1]);
     }
-    printf("complementary_a: %f %f || complementary_b: %f %f\n",
+    printf("complementary_a: %ld %ld || complementary_b: %ld %ld\n",
             complementary_a, patches[lastPatchIndex].a_corner[1],
             complementary_b, patches[lastPatchIndex].b_corner[1]);
 
     current_z_top_index = get_index_from_z(num_layers - 1,z_top_min); 
-    printf("current white_space_height: %f\n", white_space_height);
+    printf("current white_space_height: %ld\n", white_space_height);
     printf("counter: %d counterUpshift: %d\n", counter, counterUpshift);
-    printf("orig_ztop: %d orig_z_top_min: %f\n", current_z_top_index,z_top_min);
+    printf("orig_ztop: %d orig_z_top_min: %ld\n", current_z_top_index,z_top_min);
 
     index_type current_z_i_index[MAX_LAYERS];
     index_type new_z_i_index[MAX_LAYERS];
@@ -1326,14 +1345,14 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
     { 
         new_z_i_index[i] = max(new_z_i_index[i], 0.0f);
     }
-    float new_z_i[MAX_LAYERS];
+    long new_z_i[MAX_LAYERS];
 
     for (index_type i = 0; i < num_layers; i++)
     {
         new_z_i[i] = Gdata.array[i][new_z_i_index[i]].z;
     }
 
-    float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
+    long new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
     for (index_type i = 1; i < num_layers; i++)
     {
         new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(complementary_apexZ0,
@@ -1344,13 +1363,13 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
     }
 
     index_type layerWithSmallestShift = 0;
-    float layerSMin = FLT_MAX;
+    long layerSMin = LONG_MAX;
 
     for (index_type i = 0; i < num_layers - 1; i++)
     {
-        if (fabs(new_z_i_atTop[i] - previous_z_top_min) < layerSMin)
+        if (static_cast<long>(fabs(new_z_i_atTop[i] - previous_z_top_min)) < layerSMin)
         { // fabs is for floats. abs is only int
-            layerSMin = fabs(new_z_i_atTop[i] - previous_z_top_min);
+            layerSMin = static_cast<long>(fabs(new_z_i_atTop[i] - previous_z_top_min));
             layerWithSmallestShift = i;
         }
     }
@@ -1359,24 +1378,24 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
 
     for (index_type i = 0; i < num_layers - 1; i++)
     {
-        printf("%u new_z_i_atTop: %f shift_i_ztop: %f layerWithSmallestShift: %u\n",
+        printf("%u new_z_i_atTop: %ld shift_i_ztop: %ld layerWithSmallestShift: %u\n",
                 i + 1, new_z_i_atTop[i], new_z_i_atTop[i] - previous_z_top_min, layerWithSmallestShift + 1);
     }
 
     z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
     z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
-    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
+    if (fabs(z_top_min - previous_z_top_min) < static_cast<long>(0.000001 * INTEGER_FACTOR_CM))
     {
         z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
     }
 
-    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
+    if (fabs(z_top_min - previous_z_top_min) < static_cast<long>(0.000001 * INTEGER_FACTOR_CM))
     {
         z_top_min = Gdata.array[num_layers - 2][current_z_top_index].z;
     }
 
-    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
+    if (fabs(z_top_min - previous_z_top_min) < static_cast<long>(0.000001 * INTEGER_FACTOR_CM))
     {
         z_top_min = Gdata.array[num_layers - 3][current_z_top_index].z;
     }
@@ -1386,31 +1405,30 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
         z_top_min = new_z_i_atTop[num_layers - 2];
     }
 
-    printf(" new_def_z_top_min_diff: %f\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
+    printf(" new_def_z_top_min_diff: %ld\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
 
     printf(" new_ztop_index: %d new_z_i_index: ", current_z_top_index);
     for (index_type i = 0; i < num_layers; i++)
     {
         printf("%u ", new_z_i_index[i]);
     }
-    printf("new_z_top_min: %f shift_ztop: %f\n", z_top_min, z_top_min - previous_z_top_min);
+    printf("new_z_top_min: %ld shift_ztop: %ld\n", z_top_min, z_top_min - previous_z_top_min);
 
     int nPatchesAtComplementary = n_patches;
     lastPatchIndex = n_patches - 1; // this may have already been updated at the end of the last call, but just to be sure
-    printf("%i \n", lastPatchIndex);
     if (nPatchesAtComplementary > nPatchesAtOriginal)
     {
-        printf("deleted complementary: [%f, %f] for patch %d\n",
+        printf("deleted complementary: [%ld, %ld] for patch %d\n",
                 patches[lastPatchIndex].a_corner[0],
                 patches[lastPatchIndex].a_corner[1],
                 n_patches);
-        printf("deleted complementary: [%f, %f]\n",
+        printf("deleted complementary: [%ld, %ld]\n",
                 patches[lastPatchIndex].b_corner[0],
                 patches[lastPatchIndex].b_corner[1]);
-        printf("deleted complementary: [%f, %f]\n",
+        printf("deleted complementary: [%ld, %ld]\n",
                 patches[lastPatchIndex].c_corner[0],
                 patches[lastPatchIndex].c_corner[1]);
-        printf("deleted complementary: [%f, %f]\n",
+        printf("deleted complementary: [%ld, %ld]\n",
                 patches[lastPatchIndex].d_corner[0],
                 patches[lastPatchIndex].d_corner[1]);
 
@@ -1435,17 +1453,17 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
     // calculate the new white space height based on the original and complementary corners.
     white_space_height = max(original_c - complementary_a, original_d - complementary_b);
 
-    printf("complementary_a: %f %f || complementary_b: %f %f new z_top_min: %f\n",
+    printf("complementary_a: %ld %ld || complementary_b: %ld %ld new z_top_min: %ld\n",
             complementary_a, patches[lastPatchIndex].a_corner[1],
             complementary_b, patches[lastPatchIndex].b_corner[1],z_top_min);
-    printf("new white_space_height: %f\n", white_space_height);
-    printf("adjusted complementary: [%f, %f] for z_top_min: %f\n",
+    printf("new white_space_height: %ld\n", white_space_height);
+    printf("adjusted complementary: [%ld, %ld] for z_top_min: %ld\n",
             patches[lastPatchIndex].a_corner[0], patches[lastPatchIndex].a_corner[1],z_top_min);
-    printf("adjusted complementary: [%f, %f] for patch %d\n",
+    printf("adjusted complementary: [%ld, %ld] for patch %d\n",
             patches[lastPatchIndex].b_corner[0], patches[lastPatchIndex].b_corner[1], n_patches);
-    printf("adjusted complementary: [%f, %f]\n",
+    printf("adjusted complementary: [%ld, %ld]\n",
             patches[lastPatchIndex].c_corner[0], patches[lastPatchIndex].c_corner[1]);
-    printf("adjusted complementary: [%f, %f]\n",
+    printf("adjusted complementary: [%ld, %ld]\n",
             patches[lastPatchIndex].d_corner[0], patches[lastPatchIndex].d_corner[1]);
 
     if ((n_patches > 3) && fix42)
@@ -1468,7 +1486,7 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
 
         if (repeat_patch)
         {
-            printf("%f %f repeat_patch: %d\n",
+            printf("%ld %ld repeat_patch: %d\n",
                     patches[lastPatchIdx].superpoints[num_layers - 1].min,
                     patches[lastPatchIdx].superpoints[num_layers - 1].max,
                     repeat_patch);
@@ -1485,11 +1503,11 @@ void solveComplmentaryPatch(float &previous_white_space_height, int ppl, bool fi
     }
 }
 
-void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl)
+void makePatch_alignedToLine(long apexZ0, long z_top, int &ppl, bool leftRight, bool float_middleLayers_ppl)
 {
     wedgeSuperPoint init_patch[MAX_LAYERS]; // correct
     int original_ppl = ppl;
-    float alignmentAccuracy = 0.00001;
+    long alignmentAccuracy = static_cast<long>(0.00001 * INTEGER_FACTOR_CM);
     // Point row_data[MAX_LAYERS][MAX_POINTS_FOR_DATASET];
     index_type init_patch_size = 0;
 
@@ -1508,10 +1526,10 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int &ppl, bool leftRight
     add_patch(&new_patch);
 }
 
-void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, float alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size)
+void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_middleLayers_ppl, int &ppl, int original_ppl, bool leftRight, long alignmentAccuracy, wedgeSuperPoint init_patch[], index_type &init_patch_size)
 {
-    float y = radii[i];
-    float row_list[MAX_POINTS_PER_LAYER];
+    long y = radii[i];
+    long row_list[MAX_POINTS_PER_LAYER];
     int row_list_size = 0;
 
     for (index_type j = 0; j < Gdata.n_points[i]; j++)
@@ -1519,11 +1537,11 @@ void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_
         row_list[row_list_size++] = Gdata.array[i][j].z;
     }
 
-    float r_max = radii[num_layers - 1];
-    float projectionToRow = (z_top - apexZ0) * (y - radii[0]) / (r_max - radii[0]) + apexZ0;
+    long r_max = radii[num_layers - 1];
+    long projectionToRow = static_cast<long>((z_top - apexZ0) * (y - radii[0]) / (r_max - radii[0]) + apexZ0);
 
     int start_index = 0;
-    float start_value = 1000000;
+    long start_value = LONG_MAX;
 
     for (index_type j = 0; j < row_list_size; j++)
     {
@@ -1535,22 +1553,22 @@ void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_
     }
 
     int left_bound = 0;
-    float lbVal = INT_MAX;
+    long lbVal = LONG_MAX;
     int right_bound = 0;
-    float rbVal = INT_MAX;
+    long rbVal = LONG_MAX;
 
     for (index_type j = 0; j < row_list_size; j++)
     {
-        if (fabs((row_list[j] + trapezoid_edges[i])) < lbVal)
+        if (static_cast<long>(fabs((row_list[j] + trapezoid_edges[i]))) < lbVal)
         {
             left_bound = j;
-            lbVal = fabs((row_list[j] + trapezoid_edges[i]));
+            lbVal = static_cast<long>(fabs((row_list[j] + trapezoid_edges[i])));
         }
 
-        if (fabs((row_list[j] - trapezoid_edges[i])) < rbVal)
+        if (static_cast<long>(fabs((row_list[j] - trapezoid_edges[i]))) < rbVal)
         {
             right_bound = j;
-            rbVal = fabs((row_list[j] - trapezoid_edges[i]));
+            rbVal = static_cast<long>(fabs((row_list[j] - trapezoid_edges[i])));
         }
     }
 
@@ -1593,12 +1611,12 @@ void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_
     {
         if (start_index != row_list_size - 1)
         {
-            printf("row %d start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
+            printf("row %d start_index %d start_value %ld z: %ld\n", i + 1, start_index, start_value, row_list[start_index]);
             if (start_value < -1 * alignmentAccuracy)
             {
                 start_index += 1;
                 start_value = row_list[start_index] - projectionToRow;
-                printf("row %d updated start_index %d start_value %f z: %f\n", i + 1, start_index, start_value, row_list[start_index]);
+                printf("row %d updated start_index %d start_value %ld z: %ld\n", i + 1, start_index, start_value, row_list[start_index]);
             }
         }
         // similarly adding subset of 'array' which represents row_data
@@ -1622,7 +1640,7 @@ void makeSuperPoint_alignedToLine(int i, float z_top, float apexZ0, float float_
     initWedgeSuperPoint(&init_patch[init_patch_size++], temp, temp_size);
 }
 
-void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion, int wedges[], int wedge_count, int lines, float top_layer_cutoff, float accept_cutoff)
+void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, int wedges[], int wedge_count, int lines, long top_layer_cutoff, long accept_cutoff)
 {
     int numEventsLoaded = 0;
 
@@ -1653,7 +1671,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
             importData(z);
         #endif
         
-        addBoundaryPoint(0.0001); // with default param
+        addBoundaryPoint(static_cast<long>(0.0001 * INTEGER_FACTOR_CM)); // with default param
 
         solve(apexZ0, ppl, 100, false); // solve modifies cover. false is from the left right align (previously a parameter in wedge test)
 
@@ -1671,7 +1689,7 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
                 for (int r = 0; r < patches[i].superpoints[j].point_count; r++)
                 {
                     Point currentPt = patches[i].superpoints[j].points[r];
-                    fprintf(myfile, "%d %.4f %d %.4f\n",
+                    fprintf(myfile, "%d %ld %d %ld\n",
                             currentPt.layer_num,
                             currentPt.phi,
                             (int)currentPt.radius,
@@ -1703,9 +1721,9 @@ void wedge_test(float apexZ0, float z0_spacing, int ppl, float z0_luminousRegion
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {0, 10};
+    int wedgesToTest[] = {0, 1};
 
-    wedge_test(0, 0.025, 16, 15.0, wedgesToTest, 2, 1000, 50, 15.0);
+    wedge_test(0, static_cast<long>(0.025), 16, static_cast<long>(15.0 * INTEGER_FACTOR_CM), wedgesToTest, 2, 1000, static_cast<long>(50 * INTEGER_FACTOR_CM), static_cast<long>(15.0 * INTEGER_FACTOR_CM));
 
     //printf("Size of float in C: %zu bytes\n", sizeof(float));
     
