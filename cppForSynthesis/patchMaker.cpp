@@ -435,7 +435,7 @@ void addBoundaryPoint(long offset)
         //adding two boundary points in each layer
         // inserting at the beginning
         Gdata.array[i][0].layer_num = i + 1;
-        Gdata.array[i][0].radius = (i + 1) * 5;
+        Gdata.array[i][0].radius = (i + 1) * 5 * INTEGER_FACTOR_CM;
         //is the phi for the boundary points used (answer: no)? so, instead of sorting in importData, we could wait and add boundary points, and then sort, without any shifting of boundary points needed. MlogM vs NlogN + 2N, where M = N+2
         Gdata.array[i][0].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
         Gdata.array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
@@ -443,7 +443,7 @@ void addBoundaryPoint(long offset)
         // appending at the end
         index_type lastIndex = Gdata.n_points[i] + 1; // after shifting, there's one more point
         Gdata.array[i][lastIndex].layer_num = i + 1;
-        Gdata.array[i][lastIndex].radius = (i + 1) * 5;
+        Gdata.array[i][lastIndex].radius = (i + 1) * 5 * INTEGER_FACTOR_CM;
         Gdata.array[i][lastIndex].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
         Gdata.array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
 
@@ -615,7 +615,7 @@ long straightLineProjectorFromLayerIJtoK(long z_i, long z_j, int i, int j, int k
         radius_k = radii[k - 1];
     }
 
-    float radii_leverArmF = (radius_k - radius_i) / (radius_j - radius_i);
+    float radii_leverArmF = ((float) (radius_k - radius_i)) / (float) (radius_j - radius_i);
 
     return z_i + static_cast<long>((z_j - z_i) * radii_leverArmF);
 }
@@ -1097,10 +1097,6 @@ void solveNextPatchPair(long apexZ0, int stop, int ppl, bool leftRight, bool fix
                                                    previous_white_space_height, current_z_top_index))
         {
             solveComplmentaryPatch(previous_white_space_height, ppl, fix42, nPatchesAtOriginal, previous_z_top_min, complementary_apexZ0, white_space_height, lastPatchIndex, original_c, original_d, complementary_a, complementary_b, current_z_top_index, counter, counterUpshift, z_top_min, repeat_patch, repeat_original);
-            if(counter > 25)
-            {
-                exit(0);
-            }
         }
 
     }
@@ -1678,10 +1674,10 @@ void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, i
         for (int i = 0; i < n_patches; i++)
         {
             fprintf(myfile, "Patch \n");
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jL * 10000));
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jR * 10000));
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jL * 10000));
-            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jR * 10000));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jL / (float) INTEGER_FACTOR_CM * 10000));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jR / (float) INTEGER_FACTOR_CM * 10000));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jL / (float) INTEGER_FACTOR_CM * 10000));
+            fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jR / (float) INTEGER_FACTOR_CM * 10000));
 
             for (int j = 0; j < patches[i].superpoint_count; j++)
             {
@@ -1689,28 +1685,28 @@ void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, i
                 for (int r = 0; r < patches[i].superpoints[j].point_count; r++)
                 {
                     Point currentPt = patches[i].superpoints[j].points[r];
-                    fprintf(myfile, "%d %ld %d %ld\n",
+                    fprintf(myfile, "%d %.4f %d %.4f\n",
                             currentPt.layer_num,
-                            currentPt.phi,
-                            (int)currentPt.radius,
-                            currentPt.z);
+                            currentPt.phi  / (float) INTEGER_FACTOR_RAD,
+                            (int) (currentPt.radius /  (float) INTEGER_FACTOR_CM),
+                            currentPt.z / (float) INTEGER_FACTOR_CM);
                 }
             }
         }
         for (int i = 0; i < n_patches; i++)
         {
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].a_corner[0] * 10000),
-                    lround(patches[i].a_corner[1] * 10000));
+                    lround(patches[i].a_corner[0] / (float) INTEGER_FACTOR_CM * 10000),
+                    lround(patches[i].a_corner[1] / (float) INTEGER_FACTOR_CM * 10000));
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].b_corner[0] * 10000),
-                    lround(patches[i].b_corner[1] * 10000));
+                    lround(patches[i].b_corner[0] / (float) INTEGER_FACTOR_CM * 10000),
+                    lround(patches[i].b_corner[1] / (float) INTEGER_FACTOR_CM * 10000));
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].c_corner[0] * 10000),
-                    lround(patches[i].c_corner[1] * 10000));
+                    lround(patches[i].c_corner[0] / (float) INTEGER_FACTOR_CM * 10000),
+                    lround(patches[i].c_corner[1] / (float) INTEGER_FACTOR_CM * 10000));
             fprintf(myfile, "[%ld, %ld]\n",
-                    lround(patches[i].d_corner[0] * 10000),
-                    lround(patches[i].d_corner[1] * 10000));
+                    lround(patches[i].d_corner[0] / (float) INTEGER_FACTOR_CM * 10000),
+                    lround(patches[i].d_corner[1] / (float) INTEGER_FACTOR_CM * 10000));
             fprintf(myfile, "\n");
         }
         // instead of making an array of all events and passing them in, we only need access to them individually, so we will loop through and process as we create them.
@@ -1721,7 +1717,7 @@ void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, i
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {0, 1};
+    int wedgesToTest[] = {42, 43};
 
     wedge_test(0, static_cast<long>(0.025), 16, static_cast<long>(15.0 * INTEGER_FACTOR_CM), wedgesToTest, 2, 1000, static_cast<long>(50 * INTEGER_FACTOR_CM), static_cast<long>(15.0 * INTEGER_FACTOR_CM));
 
