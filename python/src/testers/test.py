@@ -45,7 +45,7 @@ def wedge_test(lining:str = "makePatches_Projective_center", apexZ0 = 0, z0_spac
     z0Imperfect = []
     z0OverEfficiency = []
     #read wedgeData file and create environment
-    all_data = readFile(f'python/data/wedgeData_{v}_128.txt', wedges[1])
+    all_data = readFile(f'data/wedgeData_{v}_128.txt', wedges[1])
     #loop through all events
     for ik, k in enumerate(np.arange(wedges[0], wedges[1])):
         print('wedge: ', k)

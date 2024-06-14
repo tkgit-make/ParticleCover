@@ -63,7 +63,7 @@
 #define INTEGER_FACTOR_CM 100000
 #define INTEGER_FACTOR_RAD (pow(10, 7))
 
-const long int radii[MAX_LAYERS] = {5 * INTEGER_FACTOR_CM, 10 * INTEGER_FACTOR_CM, 15 * INTEGER_FACTOR_CM, 20 * INTEGER_FACTOR_CM, 25 * INTEGER_FACTOR_CM};
+const long radii[MAX_LAYERS] = {5 * INTEGER_FACTOR_CM, 10 * INTEGER_FACTOR_CM, 15 * INTEGER_FACTOR_CM, 20 * INTEGER_FACTOR_CM, 25 * INTEGER_FACTOR_CM};
 const float parallelogramSlopes[MAX_LAYERS-1] = {0, -0.333333, -1, -3};
 const float radii_leverArm[MAX_LAYERS-1] = {1, 1.333333, 2, 4};
 const long int trapezoid_edges[MAX_LAYERS] = {static_cast<long>(22.0001 * INTEGER_FACTOR_CM),
@@ -116,8 +116,8 @@ typedef struct
     int end_layer;
     int left_end_layer;
     int right_end_layer;
-    long left_end_lambdaZ;
-    long right_end_lambdaZ;
+    float left_end_lambdaZ;
+    float right_end_lambdaZ;
     long apexZ0;
 
     long shadow_fromTopToInnermost_topL_jL;
@@ -617,7 +617,7 @@ long straightLineProjectorFromLayerIJtoK(long z_i, long z_j, int i, int j, int k
 
     float radii_leverArmF = ((float) (radius_k - radius_i)) / (float) (radius_j - radius_i);
 
-    return z_i + static_cast<long>((z_j - z_i) * radii_leverArmF);
+    return z_i + static_cast<long>(z_j * radii_leverArmF) - static_cast<long>(z_i * radii_leverArmF);
 }
 
 float straightLineProjector(float z_top, float z_j, int j)
@@ -770,8 +770,8 @@ void get_acceptanceCorners(wedgePatch *wp)
 void get_end_layer(wedgePatch *wp)
 {
     // naming counterintuitive
-    long lambdaZLeftMax = LONG_MIN;
-    long lambdaZRightMin = LONG_MAX;
+    float lambdaZLeftMax = INT_MIN;
+    float lambdaZRightMin = INT_MAX;
     // assigning -1 to start because they should only hold non-negative integers
     wp->left_end_layer = -1;
     wp->right_end_layer = -1;
@@ -779,8 +779,8 @@ void get_end_layer(wedgePatch *wp)
     // combined two independent loops
     for (int i = 0; i < num_layers; i++)
     {
-        long lambdaZ_left = static_cast<long>((wp->superpoints[i].min - wp->apexZ0) / radii[i]);
-        long lambdaZ_right = static_cast<long>((wp->superpoints[i].max - wp->apexZ0) / radii[i]);
+        float lambdaZ_left = ((float) (wp->superpoints[i].min - wp->apexZ0)) / ((float) radii[i]);
+        float lambdaZ_right = ((float) (wp->superpoints[i].max - wp->apexZ0)) / ((float) radii[i]);
 
         if (lambdaZ_left > lambdaZLeftMax)
         {
@@ -1147,7 +1147,7 @@ void makeThirdPatch(index_type lastPatchIndex, long z_top_min, long z_top_max, l
 
     long complementary_topR_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
     
-    bool complementaryPartialTop = (complementary_topR_jR > complementary_apexZ0) && (complementary_topR_jR < apexZ0) &&
+    bool complementaryPartialTop = ((complementary_topR_jR - complementary_apexZ0) > static_cast<long>(0.00005 * INTEGER_FACTOR_CM)) && (complementary_topR_jR < apexZ0) && // The use of 0.00005 is "hack" to prevent a couple of wedges from creating extra patches,
                                     (fabs(straightLineProjectorFromLayerIJtoK(complementary_topR_jR, z_top_max, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
     long complementary_topL_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
@@ -1202,7 +1202,7 @@ void makeThirdPatch(index_type lastPatchIndex, long z_top_min, long z_top_max, l
                 horizontalOverlapTop, horizontalOverlapBottom);
     }
 
-    while ((((horizontalShiftTop > static_cast<long>(0.000001*INTEGER_FACTOR_CM)) && originalPartialTop && complementaryPartialTop) || ((horizontalShiftBottom > static_cast<long>(0.000001*INTEGER_FACTOR_CM)) && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && ((newGapTop < 0) || (newGapBottom < 0)))
+    while ((((horizontalShiftTop > static_cast<long>(0.000001*INTEGER_FACTOR_CM)) && originalPartialTop && complementaryPartialTop) || ((horizontalShiftBottom > static_cast<long>(0.000001*INTEGER_FACTOR_CM)) && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && ((newGapTop <= 0) || (newGapBottom <= 0)))
     {
         printf("horizontalShifts: %ld %ld shifted_Align: %ld\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
 
@@ -1717,7 +1717,7 @@ void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, i
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {42, 43};
+    int wedgesToTest[] = {4939, 4940};
 
     wedge_test(0, static_cast<long>(0.025), 16, static_cast<long>(15.0 * INTEGER_FACTOR_CM), wedgesToTest, 2, 1000, static_cast<long>(50 * INTEGER_FACTOR_CM), static_cast<long>(15.0 * INTEGER_FACTOR_CM));
 

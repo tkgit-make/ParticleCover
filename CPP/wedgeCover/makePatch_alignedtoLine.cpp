@@ -1938,7 +1938,7 @@ int main()
     wedgeCover cov = wedgeCover(env, ds);
     Tester test;
     vector<int> wedgesToTest;
-    wedgesToTest.push_back(107);
-    wedgesToTest.push_back(108);
+    wedgesToTest.push_back(145);
+    wedgesToTest.push_back(146);
     test.wedge_test("makePatches_ShadowQuilt_fromEdges", 0, 0.025, 16, 15.0, wedgesToTest, 1000, "v3", 50, 15.0, false, false, "Analytic", false, false, false, 6, 3);
 };
