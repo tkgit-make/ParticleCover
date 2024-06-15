@@ -115,7 +115,7 @@ void solve(float apexZ0, int ppl, bool leftRight)
 void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
 {
     bool fix42 = true;
-    apexZ0 = trapezoid_edges[0];
+    apexZ0 = trapezoid_edges[0]; //why reassign parameter
     float saved_apexZ0;
 
     while (apexZ0 > -1 * trapezoid_edges[0]) //consider how this works when we are expanding instead of retracting the trapezoid_edges
