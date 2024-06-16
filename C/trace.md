@@ -36,5 +36,5 @@
       - straightLineProjector
         - (nothing)
   - **Tester**
-    - wedge_test (lining = "makePatches_ShadowQuilt_fromEdges", savefig = movie = show_acceptance_of_cover = false, acceptance_method = "Analytic" 
+    - wedge_test (lining = "makePatches_ShadowQuilt_fromEdges", savefig = movie = show_acceptance_of_cover = false, acceptance_method = "Analytic") 
  

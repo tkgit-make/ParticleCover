@@ -10,7 +10,7 @@ void adjustPointPositionFront(Point *array, int n_points, int start_index) {
     //it cannot be 0, so there is no possible equality as well, which could affect the debugging comparator.
     while (j < n_points - 2 && comparePoints(&array[j + 1], &toInsert) < 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
         array[j] = array[j + 1]; // shift elements left, the other element(s) should come before the boundary point
-        j++;
+        ++j;
     }
     array[j] = toInsert; // place the element at its correct position
 }
@@ -23,7 +23,7 @@ void adjustPointPositionBack(Point *array, int n_points, int start_index) {
     //it is beneficial not to check the first index because it is a pointless computation. we can guarentee it will not shift.
     while (j > 1 && comparePoints(&array[j - 1], &toInsert) > 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
         array[j] = array[j - 1]; // shift elements right, the other element(s) should come after the boundary point
-        j--;
+        --j;
     } 
     array[j] = toInsert; // place the element at its correct position
 }
@@ -45,16 +45,15 @@ void importData()
             break;
         
         index_type layer = p.layer_num - 1;
-        Gdata.array[layer][Gdata.n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
-        Gdata.n_points[layer]++; //here n_points is not counting the blank spot at index 0. 
+        Gdata.array[layer][++Gdata.n_points[layer]] = p; //+1 leaves blank spot for the first boundary point
         
-        n++;
+        ++n;
         scanf("%c", &ch);
 
     }
        
     // iterating over the layers in DataSet
-    for (index_type i = 0; i < num_layers; i++)
+    for (index_type i = 0; i < num_layers; ++i)
     {
         //sorts the points in the ith layer
         qsort(&Gdata.array[i][1], Gdata.n_points[i], sizeof(Point), comparePoints);
@@ -65,7 +64,7 @@ void addBoundaryPoint(float offset)
 {
     Gdata.boundaryPoint_offset = offset;
 
-    for (index_type i = 0; i < num_layers; i++) {
+    for (index_type i = 0; i < num_layers; ++i) {
         //adding two boundary points in each layer
         // inserting at the beginning
         Gdata.array[i][0].layer_num = i + 1;

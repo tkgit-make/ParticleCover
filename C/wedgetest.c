@@ -13,7 +13,7 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
         return;
     }
 
-    for (index_type z = 0; z < wedges[1]; z++)
+    for (index_type z = 0; z < wedges[1]; ++z)
     { 
         if(z<wedges[0]) continue;
         printf("wedge %d\n", z); //main print
@@ -27,7 +27,7 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
 
         solve(apexZ0, ppl, false); // solve modifies  false is from the left right align (previously a parameter in wedge test)
 
-        for (int i = 0; i < n_patches; i++)
+        for (int i = 0; i < n_patches; ++i)
         {
             fprintf(myfile, "Patch \n");
             fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topL_jL * 10000/CONVERSION_FACTOR));
@@ -35,10 +35,10 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
             fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jL * 10000/CONVERSION_FACTOR));
             fprintf(myfile, "%ld\n", lround(patches[i].shadow_fromTopToInnermost_topR_jR * 10000/CONVERSION_FACTOR));
 
-            for (int j = 0; j < patches[i].superpoint_count; j++)
+            for (int j = 0; j < patches[i].superpoint_count; ++j)
             {
                 fprintf(myfile, "Superpoint \n");
-                for (int r = 0; r < patches[i].superpoints[j].point_count; r++)
+                for (int r = 0; r < patches[i].superpoints[j].point_count; ++r)
                 {
                     Point currentPt = patches[i].superpoints[j].points[r];
                     fprintf(myfile, "%d %.4f %d %.4f\n",
@@ -49,7 +49,7 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
                 }
             }
         }
-        for (int i = 0; i < n_patches; i++)
+        for (int i = 0; i < n_patches; ++i)
         {
             fprintf(myfile, "[%ld, %ld]\n",
                     lround(patches[i].a_corner[0] * 10000/CONVERSION_FACTOR),

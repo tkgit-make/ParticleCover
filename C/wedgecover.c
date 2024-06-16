@@ -19,7 +19,7 @@ void add_patch(wedgePatch *curr_patch)
         wedgePatch *prev_patch = &(patches[n_patches - 1]);
         bool different = false;
 
-        for (index_type i = 0; i < prev_patch->superpoint_count; i++)
+        for (index_type i = 0; i < prev_patch->superpoint_count; ++i)
         {
             if ((prev_patch->superpoints[i].min != curr_patch->superpoints[i].min) ||
                 (prev_patch->superpoints[i].max != curr_patch->superpoints[i].max))
@@ -49,7 +49,7 @@ void delete_patch(int index)
         return;
     }
 
-    for (index_type i = index; i < n_patches - 1; i++)
+    for (index_type i = index; i < n_patches - 1; ++i)
     {
         patches[i] = patches[i + 1];
     }
@@ -66,7 +66,7 @@ index_type get_index_from_z(int layer, float z_value)
     float minVal = 1000000*CONVERSION_FACTOR;
     index_type index = 0;
 
-    for (index_type i = 0; i < Gdata.n_points[layer]; i++)
+    for (index_type i = 0; i < Gdata.n_points[layer]; ++i)
     {
         float diff = fabs(Gdata.array[layer][i].z - z_value); // absolute difference
         if (diff < minVal)
@@ -85,7 +85,7 @@ index_type get_index_from_z(int layer, float z_value)
 // lining is always MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES. assumes this in code
 void solve(float apexZ0, int ppl, bool leftRight)
 {
-    for (index_type i = 0; i < num_layers; i++)
+    for (index_type i = 0; i < num_layers; ++i)
     {
         bool foundIdentical = false;
         bool firstTime = true;
@@ -93,7 +93,7 @@ void solve(float apexZ0, int ppl, bool leftRight)
         while (foundIdentical || firstTime)
         {
             foundIdentical = false;
-            for (index_type x = 0; x < Gdata.n_points[i] - 1; x++)
+            for (index_type x = 0; x < Gdata.n_points[i] - 1; ++x)
             {
                 if (Gdata.array[i][x].z == Gdata.array[i][x + 1].z)
                 {
@@ -138,9 +138,8 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
         float projectionOfCornerToBeam = 0;
         
         //remove nPatchesInColumn once debugging finishes
-        while((c_corner > -1 * trapezoid_edges[num_layers - 1]) && (nPatchesInColumn<100000000) && (projectionOfCornerToBeam < beam_axis_lim))
+        while((c_corner > -1 * trapezoid_edges[num_layers - 1]) && (projectionOfCornerToBeam < beam_axis_lim))
         {
-            nPatchesInColumn++;
             printf("%f %d %f %d\n", apexZ0, ppl, z_top_max, leftRight);
 
             makePatch_alignedToLine(apexZ0, z_top_max, ppl, false, false);
@@ -167,7 +166,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                    patches[lastPatchIndex].d_corner[0],
                    patches[lastPatchIndex].d_corner[1]);
 
-            for (index_type i = 1; i < patches[lastPatchIndex].superpoint_count - 1; i++)
+            for (index_type i = 1; i < patches[lastPatchIndex].superpoint_count - 1; ++i)
             {
                 index_type j = i + 1;
                 printf("%d superpoint: %f %f shadowTop from L1Max: %f %f from L1 min: %f %f\n",
@@ -204,7 +203,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
             {
                 index_type thirdLastPatchIndex = lastPatchIndex - 2;
                 repeat_original = true; // assume they are the same initially
-                for (index_type i = 0; i < MAX_SUPERPOINTS_IN_PATCH; i++)
+                for (index_type i = 0; i < MAX_SUPERPOINTS_IN_PATCH; ++i)
                 { // iterating over the first (five) superpoints
                     if (!areWedgeSuperPointsEqual(&patches[lastPatchIndex].superpoints[i], &patches[thirdLastPatchIndex].superpoints[i]))
                     {
@@ -288,7 +287,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     index_type current_z_i_index[MAX_LAYERS];
                     index_type new_z_i_index[MAX_LAYERS];
 
-                    for (index_type i = 0; i < num_layers; i++)
+                    for (index_type i = 0; i < num_layers; ++i)
                     {
                         current_z_i_index[i] = get_index_from_z(i, straightLineProjectorFromLayerIJtoK(complementary_apexZ0, z_top_min, 1, num_layers, i + 1));
                     }
@@ -296,7 +295,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     if (z_top_min == previous_z_top_min)
                     {
                         current_z_top_index += 1;
-                        for (index_type i = 0; i < num_layers; i++)
+                        for (index_type i = 0; i < num_layers; ++i)
                         {
                             new_z_i_index[i] = current_z_i_index[i] + 1;
                         }
@@ -308,7 +307,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     {
                         counter += 1;
                         current_z_top_index -= 1;
-                        for (index_type i = 0; i < num_layers; i++)
+                        for (index_type i = 0; i < num_layers; ++i)
                         {
                             new_z_i_index[i] = current_z_i_index[i] - 1;
                         }
@@ -317,7 +316,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     {
                         counterUpshift += 1;
                         current_z_top_index += 1;
-                        for (index_type i = 0; i < num_layers; i++)
+                        for (index_type i = 0; i < num_layers; ++i)
                         {
                             new_z_i_index[i] = current_z_i_index[i] + 1;
                         }
@@ -326,24 +325,24 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     int x = Gdata.n_points[num_layers - 1] - 1;
                     current_z_top_index = min(current_z_top_index, Gdata.n_points[num_layers - 1] - 1); // n_points is an array of the sizes of each element of 'array'
 
-                    for (index_type i = 0; i < num_layers; i++)
+                    for (index_type i = 0; i < num_layers; ++i)
                     {
                         new_z_i_index[i] = min(new_z_i_index[i], (float)Gdata.n_points[i] - 1);
                     }
 
-                    for (index_type i = 0; i < num_layers; i++)
+                    for (index_type i = 0; i < num_layers; ++i)
                     { 
                         new_z_i_index[i] = max(new_z_i_index[i], 0.0f);
                     }
                     float new_z_i[MAX_LAYERS];
 
-                    for (index_type i = 0; i < num_layers; i++)
+                    for (index_type i = 0; i < num_layers; ++i)
                     {
                         new_z_i[i] = Gdata.array[i][new_z_i_index[i]].z;
                     }
 
                     float new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
-                    for (index_type i = 1; i < num_layers; i++)
+                    for (index_type i = 1; i < num_layers; ++i)
                     {
                         new_z_i_atTop[i - 1] = straightLineProjectorFromLayerIJtoK(
                                                                                    complementary_apexZ0,
@@ -356,7 +355,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     index_type layerWithSmallestShift = 0;
                     float layerSMin = FLT_MAX;
 
-                    for (index_type i = 0; i < num_layers - 1; i++)
+                    for (index_type i = 0; i < num_layers - 1; ++i)
                     {
                         if (fabs(new_z_i_atTop[i] - previous_z_top_min) < layerSMin)
                         { // fabs is for floats. abs is only int
@@ -367,7 +366,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
 
                     layerWithSmallestShift += 1;
 
-                    for (index_type i = 0; i < num_layers - 1; i++)
+                    for (index_type i = 0; i < num_layers - 1; ++i)
                     {
                         printf("%u new_z_i_atTop: %f shift_i_ztop: %f layerWithSmallestShift: %u\n",
                                i + 1, new_z_i_atTop[i], new_z_i_atTop[i] - previous_z_top_min, layerWithSmallestShift + 1);
@@ -399,7 +398,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                     printf(" new_def_z_top_min_diff: %f\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
 
                     printf(" new_ztop_index: %d new_z_i_index: ", current_z_top_index);
-                    for (index_type i = 0; i < num_layers; i++)
+                    for (index_type i = 0; i < num_layers; ++i)
                     {
                         printf("%u ", new_z_i_index[i]);
                     }
@@ -465,7 +464,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                         bool repeat_patch = true;
                         // turned this into a for loop, dynamic. if ((patches[patches.size() - 1].superpoints[env.num_layers - 1] == patches[patches.size() - 3].superpoints[env.num_layers - 1]) && (patches[patches.size() - 1].superpoints[0] == patches[patches.size() - 3].superpoints[0]) && (patches[patches.size() - 1].superpoints[1] == patches[patches.size() - 3].superpoints[1]) && (patches[patches.size() - 1].superpoints[2] == patches[patches.size() - 3].superpoints[2]) && (patches[patches.size() - 1].superpoints[3] == patches[patches.size() - 3].superpoints[3]))
                         // that code checked 0 to 4
-                        for (index_type i = 0; i < num_layers; i++)
+                        for (index_type i = 0; i < num_layers; ++i)
                         {
                             if (!areWedgeSuperPointsEqual(&patches[lastPatchIdx].superpoints[i], &patches[thirdLastPatchIdx].superpoints[i]))
                             {
@@ -662,13 +661,13 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
     // Point row_data[MAX_LAYERS][MAX_POINTS_FOR_DATASET];
     index_type init_patch_size = 0;
 
-    for (index_type i = 0; i < num_layers; i++)
+    for (index_type i = 0; i < num_layers; ++i)
     {
         float y = radii[i];
         float row_list[MAX_POINTS_PER_LAYER];
         int row_list_size = 0;
 
-        for (index_type j = 0; j < Gdata.n_points[i]; j++)
+        for (index_type j = 0; j < Gdata.n_points[i]; ++j)
         {
             row_list[row_list_size++] = Gdata.array[i][j].z;
         }
@@ -679,7 +678,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
         int start_index = 0;
         float start_value = 1000000*CONVERSION_FACTOR;
 
-        for (index_type j = 0; j < row_list_size; j++)
+        for (index_type j = 0; j < row_list_size; ++j)
         {
             if (fabs(row_list[j] - projectionToRow) < fabs(start_value))
             {
@@ -693,7 +692,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
         int right_bound = 0;
         float rbVal = INT_MAX;
 
-        for (index_type j = 0; j < row_list_size; j++)
+        for (index_type j = 0; j < row_list_size; ++j)
         {
             if (fabs((row_list[j] + trapezoid_edges[i])) < lbVal)
             {
@@ -729,7 +728,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
             // making and adding a new vector that is a subset of "row_data" or array, going from right+1-ppl to right+1?
             if ((start_index + ppl) > (right_bound + 1))
             {
-                for (index_type j = right_bound + 1 - ppl; j <= right_bound; j++)
+                for (index_type j = right_bound + 1 - ppl; j <= right_bound; ++j)
                 {
                     temp[temp_size++] = Gdata.array[i][j];
                 }
@@ -737,7 +736,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
             }
             else
             {
-                for (index_type j = start_index; j < start_index + ppl; j++)
+                for (index_type j = start_index; j < start_index + ppl; ++j)
                 {
                     temp[temp_size++] = Gdata.array[i][j];
                 }
@@ -758,7 +757,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
             // similarly adding subset of 'array' which represents row_data
             if ((start_index - ppl + 1) < left_bound)
             {
-                for (index_type j = left_bound; j < left_bound + ppl; j++)
+                for (index_type j = left_bound; j < left_bound + ppl; ++j)
                 {
                     temp[temp_size++] = Gdata.array[i][j];
                 }
@@ -766,7 +765,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
             }
             else
             {
-                for (index_type j = start_index - ppl + 1; j <= start_index; j++)
+                for (index_type j = start_index - ppl + 1; j <= start_index; ++j)
                 {
                     temp[temp_size++] = Gdata.array[i][j];
                 }

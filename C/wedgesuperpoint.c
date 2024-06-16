@@ -9,7 +9,7 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
     // more efficient approach
     // instead of making a temp array and then transferring contents, add the values directly
     // simultaneously, you can determine the min and max, as opposed to doing it after the fact
-    for (int i = 0; i < pointCount; i++)
+    for (int i = 0; i < pointCount; ++i)
     {
         wsp->points[i] = points[i];
         wsp->z_values[i] = points[i].z;

@@ -14,7 +14,7 @@ void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoi
     wp->shadow_fromTopToInnermost_topR_jL = 0;
     wp->shadow_fromTopToInnermost_topR_jR = 0;
 
-    for (size_t i = 0; i < superpoint_count; i++)
+    for (size_t i = 0; i < superpoint_count; ++i)
     {                                          // size_t objects should only be non-negative and are more performant than ints
         wp->superpoints[i] = superpointsI[i]; // wp->superpoints is an array of pointers. Making the elements point to the elements in superpointsI.
     }
@@ -89,7 +89,7 @@ void getParallelograms(wedgePatch *wp)
     //     //exit(8);
     // }
     wp->parallelogram_count = 0; // we want to start at index 0 regardless and overwrite any old elements in the array to replicate the functionality of assigning a temp array.
-    for (int i = 1; i < wp->superpoint_count; i++)
+    for (int i = 1; i < wp->superpoint_count; ++i)
     {
         int j = i + 1;
 
@@ -270,7 +270,7 @@ void get_end_layer(wedgePatch *wp)
     wp->right_end_layer = -1;
 
     // combined two independent loops
-    for (int i = 0; i < num_layers; i++)
+    for (int i = 0; i < num_layers; ++i)
     {
         float lambdaZ_left = (wp->superpoints[i].min - wp->apexZ0) / radii[i];
         float lambdaZ_right = (wp->superpoints[i].max - wp->apexZ0) / radii[i];

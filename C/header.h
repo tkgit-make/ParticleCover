@@ -24,11 +24,6 @@
 
 #define index_type int //change to unsigned int once it is verified that there are no errors
 
-#define CLOSEST 11
-#define ABOVE 12
-#define BELOW 13
-#define MAKE_PATCHES_SHADOW_QUILT_FROM_EDGES 33
-
 #define MAX_LAYERS 5
 #define MAX_POINTS_IN_EVENT 512
 #define MAX_POINTS_PER_LAYER 256    // max size of vector of points "vect" in CPP. equivalent to MAX_POINTS_PER_DATASET
@@ -43,7 +38,7 @@
 #define MAX_SUPERPOINTS_IN_COVER (MAX_PATCHES * MAX_SUPERPOINTS_IN_PATCH)
 
 #ifdef MAIN_C
-    const index_type CONVERSION_FACTOR = 10000; //10k = 39k diff, 100k = 45k diff
+    const index_type CONVERSION_FACTOR = 1; //10k = 39k diff, 100k = 45k diff
     const float top_layer_lim = 50 * CONVERSION_FACTOR;
     const float beam_axis_lim = 15 * CONVERSION_FACTOR;
     const index_type num_layers = 5;
@@ -180,5 +175,6 @@ extern void wedge_test(float apexZ0, int ppl, int wedges[]);
 extern int floatCompare(const void *a, const void *b);
 
 EXTERN DataSet Gdata;
+//formerly in cover structure
 EXTERN wedgePatch patches[MAX_PATCHES];
 EXTERN index_type n_patches;
