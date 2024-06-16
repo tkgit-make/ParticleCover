@@ -60,7 +60,7 @@
 #define top_layer_lim (50 * INTEGER_FACTOR_CM)
 #define beam_axis_lim (15 * INTEGER_FACTOR_CM)
 
-#define INTEGER_FACTOR_CM 100000
+#define INTEGER_FACTOR_CM 1000000
 #define INTEGER_FACTOR_RAD (pow(10, 7))
 
 const long radii[MAX_LAYERS] = {5 * INTEGER_FACTOR_CM, 10 * INTEGER_FACTOR_CM, 15 * INTEGER_FACTOR_CM, 20 * INTEGER_FACTOR_CM, 25 * INTEGER_FACTOR_CM};
@@ -89,10 +89,10 @@ typedef struct
     long int boundaryPoint_offset;
 } DataSet;
 
+/* Deprecate Point struct into array of longs: {shadow_bottomL_jR, long shadow_bottomR_jR, long shadow_bottomL_jL, long shadow_bottomR_jL, z1_min, z1_max}
 typedef struct
 {
-    index_type layer_num;
-    float pSlope;
+    long layer_num;
 
     long shadow_bottomL_jR;
     long shadow_bottomR_jR;
@@ -102,7 +102,7 @@ typedef struct
     long z1_min;
     long z1_max;
 } Parallelogram;
-
+*/
 typedef struct
 {
     long points[MAX_POINTS_IN_SUPERPOINT][3];
@@ -140,7 +140,7 @@ typedef struct
     bool squareAcceptance;
     bool triangleAcceptance;
 
-    Parallelogram parallelograms[MAX_PARALLELOGRAMS_PER_PATCH];
+    long parallelograms[MAX_PARALLELOGRAMS_PER_PATCH][6];
     index_type parallelogram_count;
 } wedgePatch;
 
@@ -150,7 +150,6 @@ void importData();
 void addBoundaryPoint(long offset);
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, long points[MAX_POINTS_PER_LAYER][3], int pointCount);
 int areWedgeSuperPointsEqual(wedgeSuperPoint wsp1, wedgeSuperPoint wsp2);
-void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
 void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, long apexZ0I);
 long straightLineProjectorFromLayerIJtoK(long z_i, long z_j, int i, int j, int k);
 float straightLineProjector(float z_top, float z_j, int j);
@@ -480,26 +479,6 @@ void addBoundaryPoint(long offset)
 
 }
 
-
-void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI,
-                       float shadow_bottomL_jRI, float shadow_bottomR_jRI,
-                       float shadow_bottomL_jLI, float shadow_bottomR_jLI,
-                       float pSlopeI)
-{
-    pg->layer_num = layer_numI;
-    pg->pSlope = pSlopeI;
-
-    pg->shadow_bottomL_jR = shadow_bottomL_jRI;
-    pg->shadow_bottomR_jR = shadow_bottomR_jRI;
-
-    pg->shadow_bottomL_jL = shadow_bottomL_jLI;
-    pg->shadow_bottomR_jL = shadow_bottomR_jLI;
-
-    pg->z1_min = z1_minI;
-    pg->z1_max = z1_maxI;
-}
-
-
 void initWedgeSuperPoint(wedgeSuperPoint *wsp, long points[MAX_POINTS_PER_LAYER][3], int pointCount)
 {
     wsp->point_count = pointCount;
@@ -554,7 +533,7 @@ void getParallelograms(wedgePatch *wp)
     wp->parallelogram_count = 0; // we want to start at index 0 regardless and overwrite any old elements in the array to replicate the functionality of assigning a temp array.
     for (int i = 1; i < wp->superpoint_count; i++)
     {
-        int j = i + 1;
+        long j = static_cast<long>(i) + 1;
 
         long z_j_min = wp->superpoints[i].min;
         long z_j_max = wp->superpoints[i].max;
@@ -564,20 +543,17 @@ void getParallelograms(wedgePatch *wp)
         long c = straightLineProjectorFromLayerIJtoK(z1_min, z_j_min, 1, j, num_layers);
         long d = straightLineProjectorFromLayerIJtoK(z1_max, z_j_min, 1, j, num_layers);
 
-        float pSlope = (j != num_layers) ? parallelogramSlopes[j - 1] : INT_MAX;
-
         // directly assign the values to the array
         if (wp->parallelogram_count < MAX_PARALLELOGRAMS_PER_PATCH)
         {
-            Parallelogram *p = &wp->parallelograms[wp->parallelogram_count++]; // making a pointer to the address of first empty element in the array
-            p->layer_num = j;                                                  // then dereferencing and assigning values to the properties
-            p->pSlope = pSlope;
-            p->shadow_bottomL_jR = a;
-            p->shadow_bottomR_jR = b;
-            p->shadow_bottomL_jL = c;
-            p->shadow_bottomR_jL = d;
-            p->z1_min = z1_min;
-            p->z1_max = z1_max;
+            wp->parallelograms[wp->parallelogram_count][0] = a;
+            wp->parallelograms[wp->parallelogram_count][1] = b;
+            wp->parallelograms[wp->parallelogram_count][2] = c;
+            wp->parallelograms[wp->parallelogram_count][3] = d;
+            wp->parallelograms[wp->parallelogram_count][4] = z1_min;
+            wp->parallelograms[wp->parallelogram_count][5] = z1_max;
+
+            wp->parallelogram_count++;
         }
     }
 }
@@ -724,52 +700,51 @@ void get_acceptanceCorners(wedgePatch *wp)
     // getting min or max corners in all parallelograms
     for (int i = 0; i < wp->parallelogram_count; ++i)
     {
-        Parallelogram *pg = &wp->parallelograms[i];
-        if (pg->shadow_bottomL_jR < a_corner_min)
+        if (wp->parallelograms[i][0] < a_corner_min)
         {
-            a_corner_min = pg->shadow_bottomL_jR;
+            a_corner_min = wp->parallelograms[i][0];
         }
-        if (pg->shadow_bottomR_jR < b_corner_min)
+        if (wp->parallelograms[i][1] < b_corner_min)
         {
-            b_corner_min = pg->shadow_bottomR_jR;
+            b_corner_min = wp->parallelograms[i][1];
         }
-        if (pg->shadow_bottomL_jL > c_corner_max)
+        if (wp->parallelograms[i][2] > c_corner_max)
         {
-            c_corner_max = pg->shadow_bottomL_jL;
+            c_corner_max = wp->parallelograms[i][2];
         }
-        if (pg->shadow_bottomR_jL > d_corner_max)
+        if (wp->parallelograms[i][3] > d_corner_max)
         {
-            d_corner_max = pg->shadow_bottomR_jL;
+            d_corner_max = wp->parallelograms[i][3];
         }
     }
 
     // assigning to the size-2 corner arrays
-    wp->a_corner[0] = wp->parallelograms[0].z1_min;
+    wp->a_corner[0] = wp->parallelograms[0][4];
     wp->a_corner[1] = a_corner_min;
-    wp->b_corner[0] = wp->parallelograms[0].z1_max;
+    wp->b_corner[0] = wp->parallelograms[0][5];
     wp->b_corner[1] = b_corner_min;
-    wp->c_corner[0] = wp->parallelograms[0].z1_min;
+    wp->c_corner[0] = wp->parallelograms[0][4];
     wp->c_corner[1] = c_corner_max;
-    wp->d_corner[0] = wp->parallelograms[0].z1_max;
+    wp->d_corner[0] = wp->parallelograms[0][5];
     wp->d_corner[1] = d_corner_max;
 
     // the nth element of shadow_bottom is the same as the nth element in the corner lists in CPP
-    if (a_corner_min != wp->parallelograms[num_layers - 2].shadow_bottomL_jR)
+    if (a_corner_min != wp->parallelograms[num_layers - 2][0])
     {
         wp->squareAcceptance = false;
         wp->flatTop = false;
     }
-    if (b_corner_min != wp->parallelograms[num_layers - 2].shadow_bottomR_jR)
+    if (b_corner_min != wp->parallelograms[num_layers - 2][1])
     {
         wp->squareAcceptance = false;
         wp->flatTop = false;
     }
-    if (c_corner_max != wp->parallelograms[num_layers - 2].shadow_bottomL_jL)
+    if (c_corner_max != wp->parallelograms[num_layers - 2][2])
     {
         wp->squareAcceptance = false;
         wp->flatBottom = false;
     }
-    if (d_corner_max != wp->parallelograms[num_layers - 2].shadow_bottomR_jL)
+    if (d_corner_max != wp->parallelograms[num_layers - 2][3])
     {
         wp->squareAcceptance = false;
         wp->flatBottom = false;
