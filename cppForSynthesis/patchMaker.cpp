@@ -71,7 +71,7 @@ const long int trapezoid_edges[MAX_LAYERS] = {static_cast<long>(22.0001 * INTEGE
                                               static_cast<long>(36.0001 * INTEGER_FACTOR_CM),
                                               static_cast<long>(43.0001 * INTEGER_FACTOR_CM),
                                               static_cast<long>(50.0001 * INTEGER_FACTOR_CM)};
-
+/* Deprecate Point struct into array of longs: {layer_num, phi, z}
 typedef struct
 {
     index_type layer_num;
@@ -79,10 +79,11 @@ typedef struct
     long int phi;
     long int z;
 } Point;
+ */
 
 typedef struct
 {
-    Point array[MAX_LAYERS][MAX_POINTS_FOR_DATASET]; // 2D array of points
+    array<array<array<long, 3>, MAX_POINTS_FOR_DATASET>, MAX_LAYERS> array; // 3D array of points
     int n_points[MAX_LAYERS];                        // number of points in each layer of the array
     //index_type total_points; //not used
     long int boundaryPoint_offset;
@@ -104,7 +105,7 @@ typedef struct
 
 typedef struct
 {
-    Point points[MAX_POINTS_IN_SUPERPOINT];
+    long points[MAX_POINTS_IN_SUPERPOINT][3];
     long z_values[MAX_POINTS_IN_SUPERPOINT];
     index_type point_count;
     long min;
@@ -144,10 +145,10 @@ typedef struct
 } wedgePatch;
 
 void initWedgeCover(); 
-int Point_load(Point *p);
+//int Point_load(Point *p);
 void importData();
 void addBoundaryPoint(long offset);
-void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount);
+void initWedgeSuperPoint(wedgeSuperPoint *wsp, long points[MAX_POINTS_PER_LAYER][3], int pointCount);
 int areWedgeSuperPointsEqual(wedgeSuperPoint wsp1, wedgeSuperPoint wsp2);
 void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z1_maxI, float shadow_bottomL_jRI, float shadow_bottomR_jRI, float shadow_bottomL_jLI, float shadow_bottomR_jLI, float pSlopeI);
 void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoint_count, long apexZ0I);
@@ -157,7 +158,7 @@ void getParallelograms(wedgePatch *wp);
 void getShadows(wedgePatch *wp, long zTopMin, long zTopMax);
 void get_acceptanceCorners(wedgePatch *wp);
 void get_end_layer(wedgePatch *wp);
-int comparePoints(const void *a, const void *b);
+int comparePoints(const array<long, 3> &pointA, const array<long, 3> &pointB);
 void add_patch(wedgePatch *curr_patch);
 void delete_patch(int index);
 index_type get_index_from_z(int layer, long z_value);
@@ -179,7 +180,7 @@ bool getSolveNextPatchPairWhileCondition(int lastPatchIndex, bool repeat_patch, 
 bool getSolveNextColumnWhileConditional(long c_corner, int nPatchesInColumn, long projectionOfCornerToBeam);
 
 #if VITIS_SYNTHESIS == false
-    Point master_list[6400][MAX_POINTS_IN_EVENT];
+    long master_list[6400][MAX_POINTS_IN_EVENT][3];
     int lastPointArray[6400];
 #endif
 
@@ -276,12 +277,9 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
                     for(int i = 0; i < finalTuples.size(); i++)
                     {
                         vector<string> ct = finalTuples[i];
-                        Point temp; 
-                        temp.layer_num = stoi(ct[0]);
-                        temp.phi = static_cast<long>(stof(ct[2]) * INTEGER_FACTOR_RAD);
-                        temp.radius = static_cast<long>(stof(ct[1]) * INTEGER_FACTOR_CM);
-                        temp.z = static_cast<long>(stof(ct[3]) * INTEGER_FACTOR_CM);
-                        master_list[line_index][i] = temp;
+                        master_list[line_index][i][0] = stoi(ct[0]);
+                        master_list[line_index][i][1] = static_cast<long>(stof(ct[2]) * INTEGER_FACTOR_RAD);
+                        master_list[line_index][i][2] = static_cast<long>(stof(ct[3]) * INTEGER_FACTOR_CM);
                     }
 
                     lastPointArray[line_index] = finalTuples.size();
@@ -312,17 +310,20 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
         // read points until a non-comma is encountered or maximum points are read
         for(int i = 0; i < lastPointArray[k]; i++)
         {
-            Point p = master_list[k][i];
-            
-            index_type layer = p.layer_num - 1;
-            Gdata.array[layer][Gdata.n_points[layer]+1] = p; //+1 leaves blank spot for the first boundary point
+            index_type layer = master_list[k][i][0] - 1;
+            for(int z = 0; z < 3; z++)
+            {
+                Gdata.array[layer][Gdata.n_points[layer]+1][z] = master_list[k][i][z]; //+1 leaves blank spot for the first boundary point
+            }
+
             Gdata.n_points[layer]++; //here n_points is not counting the blank spot at index 0.
         }
-
+        long sample[3];
         for (index_type i = 0; i < num_layers; i++)
         {
             //sorts the points in the ith layer
-            qsort(&Gdata.array[i][1], Gdata.n_points[i], sizeof(Point), comparePoints);
+            qsort(&Gdata.array[i][1], Gdata.n_points[i], sizeof(sample),
+                  reinterpret_cast<int (*)(const void *, const void *)>(comparePoints));
         }
     }
 #else
@@ -378,53 +379,74 @@ void Point_init(Point* p, int layerNum, float rad, float ph, float zVal) {
     }
 #endif
 
-int comparePoints(const void *a, const void *b)
+int comparePoints(const array<long, 3> &pointA, const array<long, 3> &pointB)
 {
-
-    const Point *pointA = (const Point *)a;
-    const Point *pointB = (const Point *)b;
-    
     //the below line is all that is needed. we perform additional checks to guarentee a unique ordering of points in debugging.
     //return (a_z < b_z) ? -1 : 1;
 
-    if (pointA->z < pointB->z) return -1;
-    if (pointA->z > pointB->z) return 1;
+    if (pointA[2] < pointB[2]) return -1;
+    if (pointA[2] > pointB[2]) return 1;
 
-    if (pointA->layer_num < pointB->layer_num) return -1;
-    if (pointA->layer_num > pointB->layer_num) return 1;
+    if (pointA[0] < pointB[0]) return -1;
+    if (pointA[0] > pointB[0]) return 1;
 
-    if (pointA->phi < pointB->phi) return -1;
-    if (pointA->phi > pointB->phi) return 1;
+    if (pointA[1] < pointB[1]) return -1;
+    if (pointA[1] > pointB[1]) return 1;
 
     return 0;
 }
 
-void adjustPointPositionFront(Point *array, int n_points, int start_index) {
+void adjustPointPositionFront(array<array<long, 3>, MAX_POINTS_FOR_DATASET> &array, int n_points, int start_index) {
     // move the point at start_index to its correct position to maintain sorted order
-    Point toInsert = array[start_index];
+    std::array<long, 3> toInsert;
+    for(int z = 0; z < 3; z++)
+    {
+        toInsert[z] = array[start_index][z];
+    }
+
     int j = start_index;
     //by checking if j < n_points-2, we are not going to the last index, thus, we will never have a situation where the end boundary point gets shifted before we position it
     //we check n_points-2 instead of n_points-1 because we have j+1 logic, j is the baseline and the comparison is with the next index, so we need j+1 to be not the end, but 1 away from it.
     //this is a valid cutoff because the z is the primary (first [and only in the case of the implementation, non-debugging comparator]) comparison in the comparator, and the trapezoid edges are always positive integers, so -x < x when x is a positive integer. 
     //it cannot be 0, so there is no possible equality as well, which could affect the debugging comparator.
-    while (j < n_points - 2 && comparePoints(&array[j + 1], &toInsert) < 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
-        array[j] = array[j + 1]; // shift elements left, the other element(s) should come before the boundary point
+    while (j < n_points - 2 && comparePoints(array[j + 1], toInsert) < 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
+        for(int z = 0; z < 3; z++)
+        {
+            array[j][z] = array[j + 1][z];
+        }
+        // shift elements left, the other element(s) should come before the boundary point
         j++;
     }
-    array[j] = toInsert; // place the element at its correct position
+
+    for(int z = 0; z < 3; z++)
+    {
+        array[j][z] = toInsert[z];
+    } // place the element at its correct position
 }
 
-void adjustPointPositionBack(Point *array, int n_points, int start_index) {
+void adjustPointPositionBack( array<array<long, 3>, MAX_POINTS_FOR_DATASET> &array, int n_points, int start_index) {
     // move the point at start_index to its correct position to maintain sorted order
-    Point toInsert = array[start_index];
+    std::array<long, 3> toInsert;
+    for(int z = 0; z < 3; z++)
+    {
+        toInsert[z] = array[start_index][z];
+    }
     int j = start_index;
     //similarly, j > 1 ensures it doesn't reach the first index [j will end at 1 after checking if 2 should swap with 1], which while it wouldn't throw off the front position such that the adjustFront method doesn't work because that has already been called,
     //it is beneficial not to check the first index because it is a pointless computation. we can guarentee it will not shift.
-    while (j > 1 && comparePoints(&array[j - 1], &toInsert) > 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
-        array[j] = array[j - 1]; // shift elements right, the other element(s) should come after the boundary point
+    while (j > 1 && comparePoints(array[j - 1], toInsert) > 0) { // once we find one element does not need to be moved, we can stop, because the array is monotonic because it is sorted
+        for(int z = 0; z < 3; z++)
+        {
+            array[j][z] = array[j - 1][z];
+        }
+        // shift elements right, the other element(s) should come after the boundary point
         j--;
-    } 
-    array[j] = toInsert; // place the element at its correct position
+    }
+
+    for(int z = 0; z < 3; z++)
+    {
+        array[j][z] = toInsert[z];
+    }  // place the element at its correct position
 }
 
 void addBoundaryPoint(long offset)
@@ -434,18 +456,16 @@ void addBoundaryPoint(long offset)
     for (index_type i = 0; i < num_layers; i++) {
         //adding two boundary points in each layer
         // inserting at the beginning
-        Gdata.array[i][0].layer_num = i + 1;
-        Gdata.array[i][0].radius = (i + 1) * 5 * INTEGER_FACTOR_CM;
+        Gdata.array[i][0][0] = i + 1;
         //is the phi for the boundary points used (answer: no)? so, instead of sorting in importData, we could wait and add boundary points, and then sort, without any shifting of boundary points needed. MlogM vs NlogN + 2N, where M = N+2
-        Gdata.array[i][0].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
-        Gdata.array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
+        Gdata.array[i][0][1] = Gdata.array[i][1][1]; // getting the first phi in the array sorted by z
+        Gdata.array[i][0][2] = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
 
         // appending at the end
         index_type lastIndex = Gdata.n_points[i] + 1; // after shifting, there's one more point
-        Gdata.array[i][lastIndex].layer_num = i + 1;
-        Gdata.array[i][lastIndex].radius = (i + 1) * 5 * INTEGER_FACTOR_CM;
-        Gdata.array[i][lastIndex].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
-        Gdata.array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
+        Gdata.array[i][lastIndex][0] = i + 1;
+        Gdata.array[i][lastIndex][1] = Gdata.array[i][1][1]; // getting the first phi in the array sorted by z
+        Gdata.array[i][lastIndex][2] = trapezoid_edges[i]; //here we want x.0001
 
         //now factors in the addition of both boundary points because n_points previously was counting true point additions, and did not count the blank index 0.
         Gdata.n_points[i] += 2;
@@ -480,7 +500,7 @@ void initParallelogram(Parallelogram *pg, int layer_numI, float z1_minI, float z
 }
 
 
-void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
+void initWedgeSuperPoint(wedgeSuperPoint *wsp, long points[MAX_POINTS_PER_LAYER][3], int pointCount)
 {
     wsp->point_count = pointCount;
     wsp->min = LONG_MAX;
@@ -491,13 +511,17 @@ void initWedgeSuperPoint(wedgeSuperPoint *wsp, Point *points, int pointCount)
     // simultaneously, you can determine the min and max, as opposed to doing it after the fact
     for (int i = 0; i < pointCount; i++)
     {
-        wsp->points[i] = points[i];
-        wsp->z_values[i] = points[i].z;
+        for(int z = 0; z < 3; z++)
+        {
+            wsp->points[i][z] = points[i][z];
+        }
 
-        if (points[i].z < wsp->min)
-            wsp->min = points[i].z;
-        if (points[i].z > wsp->max)
-            wsp->max = points[i].z;
+        wsp->z_values[i] = points[i][2];
+
+        if (points[i][2] < wsp->min)
+            wsp->min = points[i][2];
+        if (points[i][2] > wsp->max)
+            wsp->max = points[i][2];
     }
 }
 
@@ -877,7 +901,7 @@ index_type get_index_from_z(int layer, long z_value)
 
     for (index_type i = 0; i < Gdata.n_points[layer]; i++)
     {
-        long diff = static_cast<long>(fabs(Gdata.array[layer][i].z - z_value)); // absolute difference
+        long diff = static_cast<long>(fabs(Gdata.array[layer][i][2] - z_value)); // absolute difference
         if (diff < minVal)
         {
             minVal = diff;
@@ -904,17 +928,19 @@ void solve(long apexZ0, int ppl, int nlines, bool leftRight)
             foundIdentical = false;
             for (index_type x = 0; x < Gdata.n_points[i] - 1; x++)
             {
-                if (Gdata.array[i][x].z == Gdata.array[i][x + 1].z)
+                if (Gdata.array[i][x][2] == Gdata.array[i][x + 1][2])
                 {
-                    Gdata.array[i][x + 1].z += static_cast<long>(0.00001 * INTEGER_FACTOR_CM);
+                    Gdata.array[i][x + 1][2] += static_cast<long>(0.00001 * INTEGER_FACTOR_CM);
                     foundIdentical = true;
                 }
             }
 
             firstTime = false;
+            long sample[3];
             if (foundIdentical)
             {
-                qsort(Gdata.array[i], Gdata.n_points[i], sizeof(Point), comparePoints); // Chip will ultimately have sorted data coming through, not needed for synthesis
+                qsort(&Gdata.array[i][0], Gdata.n_points[i], sizeof(sample),
+                      reinterpret_cast<int (*)(const void *, const void *)>(comparePoints)); // Chip will ultimately have sorted data coming through, not needed for synthesis
             }
         }
     }
@@ -1329,7 +1355,6 @@ void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix
         }
     }
 
-    int x = Gdata.n_points[num_layers - 1] - 1;
     current_z_top_index = min(current_z_top_index, Gdata.n_points[num_layers - 1] - 1); // n_points is an array of the sizes of each element of 'array'
 
     for (index_type i = 0; i < num_layers; i++)
@@ -1345,7 +1370,7 @@ void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix
 
     for (index_type i = 0; i < num_layers; i++)
     {
-        new_z_i[i] = Gdata.array[i][new_z_i_index[i]].z;
+        new_z_i[i] = Gdata.array[i][new_z_i_index[i]][2];
     }
 
     long new_z_i_atTop[MAX_LAYERS - 1]; // note: the size is MAX_LAYERS - 1 because the loop starts from 1
@@ -1378,22 +1403,22 @@ void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix
                 i + 1, new_z_i_atTop[i], new_z_i_atTop[i] - previous_z_top_min, layerWithSmallestShift + 1);
     }
 
-    z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
+    z_top_min = Gdata.array[num_layers - 1][current_z_top_index][2];
     z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
     if (fabs(z_top_min - previous_z_top_min) < static_cast<long>(0.000001 * INTEGER_FACTOR_CM))
     {
-        z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
+        z_top_min = Gdata.array[num_layers - 1][current_z_top_index][2];
     }
 
     if (fabs(z_top_min - previous_z_top_min) < static_cast<long>(0.000001 * INTEGER_FACTOR_CM))
     {
-        z_top_min = Gdata.array[num_layers - 2][current_z_top_index].z;
+        z_top_min = Gdata.array[num_layers - 2][current_z_top_index][2];
     }
 
     if (fabs(z_top_min - previous_z_top_min) < static_cast<long>(0.000001 * INTEGER_FACTOR_CM))
     {
-        z_top_min = Gdata.array[num_layers - 3][current_z_top_index].z;
+        z_top_min = Gdata.array[num_layers - 3][current_z_top_index][2];
     }
 
     if (((z_top_min - previous_z_top_min) * white_space_height) < 0)
@@ -1401,7 +1426,7 @@ void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix
         z_top_min = new_z_i_atTop[num_layers - 2];
     }
 
-    printf(" new_def_z_top_min_diff: %ld\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index].z);
+    printf(" new_def_z_top_min_diff: %ld\n", z_top_min - Gdata.array[num_layers - 1][current_z_top_index][2]);
 
     printf(" new_ztop_index: %d new_z_i_index: ", current_z_top_index);
     for (index_type i = 0; i < num_layers; i++)
@@ -1491,7 +1516,7 @@ void solveComplmentaryPatch(long &previous_white_space_height, int ppl, bool fix
 
             current_z_top_index -= 1;
 
-            z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
+            z_top_min = Gdata.array[num_layers - 1][current_z_top_index][2];
             z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
             makePatch_alignedToLine(complementary_apexZ0, z_top_min, ppl, true, false);
@@ -1530,7 +1555,7 @@ void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_mi
 
     for (index_type j = 0; j < Gdata.n_points[i]; j++)
     {
-        row_list[row_list_size++] = Gdata.array[i][j].z;
+        row_list[row_list_size++] = Gdata.array[i][j][2];
     }
 
     long r_max = radii[num_layers - 1];
@@ -1577,7 +1602,7 @@ void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_mi
         ppl = original_ppl;
     }
 
-    Point temp[MAX_POINTS_PER_LAYER]; // check
+    long temp[MAX_POINTS_PER_LAYER][3]; // check
     int temp_size = 0;
 
     if (leftRight)
@@ -1591,7 +1616,11 @@ void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_mi
         {
             for (index_type j = right_bound + 1 - ppl; j <= right_bound; j++)
             {
-                temp[temp_size++] = Gdata.array[i][j];
+                for(int z = 0; z < 3; z++)
+                {
+                    temp[temp_size][z] = Gdata.array[i][j][z];
+                }
+                temp_size++;
             }
             // similarly
         }
@@ -1599,7 +1628,11 @@ void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_mi
         {
             for (index_type j = start_index; j < start_index + ppl; j++)
             {
-                temp[temp_size++] = Gdata.array[i][j];
+                for(int z = 0; z < 3; z++)
+                {
+                    temp[temp_size][z] = Gdata.array[i][j][z];
+                }
+                temp_size++;
             }
         }
     }
@@ -1620,7 +1653,11 @@ void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_mi
         {
             for (index_type j = left_bound; j < left_bound + ppl; j++)
             {
-                temp[temp_size++] = Gdata.array[i][j];
+                for(int z = 0; z < 3; z++)
+                {
+                    temp[temp_size][z] = Gdata.array[i][j][z];
+                }
+                temp_size++;
             }
             // similarly
         }
@@ -1628,7 +1665,11 @@ void makeSuperPoint_alignedToLine(int i, long z_top, long apexZ0, float float_mi
         {
             for (index_type j = start_index - ppl + 1; j <= start_index; j++)
             {
-                temp[temp_size++] = Gdata.array[i][j];
+                for(int z = 0; z < 3; z++)
+                {
+                    temp[temp_size][z] = Gdata.array[i][j][z];
+                }
+                temp_size++;
             }
         }
     }
@@ -1684,12 +1725,11 @@ void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, i
                 fprintf(myfile, "Superpoint \n");
                 for (int r = 0; r < patches[i].superpoints[j].point_count; r++)
                 {
-                    Point currentPt = patches[i].superpoints[j].points[r];
                     fprintf(myfile, "%d %.4f %d %.4f\n",
-                            currentPt.layer_num,
-                            currentPt.phi  / (float) INTEGER_FACTOR_RAD,
-                            (int) (currentPt.radius /  (float) INTEGER_FACTOR_CM),
-                            currentPt.z / (float) INTEGER_FACTOR_CM);
+                            patches[i].superpoints[j].points[r][0],
+                            patches[i].superpoints[j].points[r][1]  / (float) INTEGER_FACTOR_RAD,
+                            (int) (radii[patches[i].superpoints[j].points[r][0] - 1] /  (float) INTEGER_FACTOR_CM),
+                            patches[i].superpoints[j].points[r][2] / (float) INTEGER_FACTOR_CM);
                 }
             }
         }
@@ -1717,7 +1757,7 @@ void wedge_test(long apexZ0, long z0_spacing, int ppl, long z0_luminousRegion, i
 
 int main() // Not the top-level function, so you can do any FILE I/O or other non-synthesized actions here
 {
-    int wedgesToTest[] = {4939, 4940};
+    int wedgesToTest[] = {0, 6400};
 
     wedge_test(0, static_cast<long>(0.025), 16, static_cast<long>(15.0 * INTEGER_FACTOR_CM), wedgesToTest, 2, 1000, static_cast<long>(50 * INTEGER_FACTOR_CM), static_cast<long>(15.0 * INTEGER_FACTOR_CM));
 

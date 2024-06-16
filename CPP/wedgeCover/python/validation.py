@@ -1,5 +1,5 @@
 def main():
-    filename = "cmake-build-debug/differenceNew.txt"
+    filename = "cmake-build-debug/differenceFinal.txt"
     with open(filename) as file:
         entriesList = [] 
         currentEntry = [] 
