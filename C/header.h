@@ -30,7 +30,7 @@
 #define MAX_POINTS_FOR_DATASET MAX_POINTS_PER_LAYER    // max size of vector of points "vect" in CPP
 
 #define MAX_POINTS_IN_LINE MAX_LAYERS // a point on the line is calculated for each layer in the environment.
-#define MAX_POINTS_IN_SUPERPOINT 32
+#define MAX_POINTS_IN_SUPERPOINT 16
 #define MAX_SUPERPOINTS_IN_PATCH 5
 #define MAX_PARALLELOGRAMS_PER_PATCH MAX_LAYERS - 1 // layer 1 is a vertical ribbon, the other 4 layers are sloping, so each intersects with layer 1 to make a parallelogram
 #define MAX_PATCHES 32                              // upper bound, 14-18 average.
@@ -169,7 +169,7 @@ extern void add_patch(wedgePatch *curr_patch);
 extern void delete_patch(int index);
 extern index_type get_index_from_z(int layer, float z_value);
 extern void solve(float apexZ0, int ppl, bool leftRight);
-extern void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight);
+extern void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight);
 extern void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight, bool float_middleLayers_ppl);
 extern void wedge_test(float apexZ0, int ppl, int wedges[]);
 extern int floatCompare(const void *a, const void *b);

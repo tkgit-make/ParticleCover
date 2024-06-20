@@ -15,11 +15,12 @@ void wedge_test(float apexZ0, int ppl, int wedges[])
 
     for (index_type z = 0; z < wedges[1]; ++z)
     { 
-        if(z<wedges[0]) continue;
         printf("wedge %d\n", z); //main print
         fprintf(myfile, "wedge %d\n", z); //file to diff
 
         importData();
+
+        if(z<wedges[0]) continue;
         
         addBoundaryPoint(0.0001*CONVERSION_FACTOR); // with default param
 

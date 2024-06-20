@@ -63,7 +63,7 @@ void delete_patch(int index)
 // can't provide default parameters
 index_type get_index_from_z(int layer, float z_value)
 {
-    float minVal = 1000000*CONVERSION_FACTOR;
+    float minVal = FLT_MAX;
     index_type index = 0;
 
     for (index_type i = 0; i < Gdata.n_points[layer]; ++i)
@@ -109,13 +109,13 @@ void solve(float apexZ0, int ppl, bool leftRight)
             }
         }
     }
-    makePatches_ShadowQuilt_fromEdges(apexZ0, ppl, leftRight);
+    makePatches_ShadowQuilt_fromEdges(ppl, leftRight);
 }
 
-void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
+void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
 {
     bool fix42 = true;
-    apexZ0 = trapezoid_edges[0]; //why reassign parameter
+    float apexZ0 = trapezoid_edges[0]; 
     float saved_apexZ0;
 
     while (apexZ0 > -1 * trapezoid_edges[0]) //consider how this works when we are expanding instead of retracting the trapezoid_edges
@@ -255,7 +255,7 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
                 float complementary_b = patches[lastPatchIndex].b_corner[1];
 
                 float white_space_height = max(original_c - complementary_a, original_d - complementary_b);
-                float previous_white_space_height = -1*CONVERSION_FACTOR; 
+                float previous_white_space_height = -1*CONVERSION_FACTOR;
                 int counter = 0;
                 int counterUpshift = 0;
                 index_type current_z_top_index = -1;
@@ -305,8 +305,8 @@ void makePatches_ShadowQuilt_fromEdges(float apexZ0, int ppl, bool leftRight)
 
                     if (white_space_height < 0)
                     {
-                        counter += 1;
-                        current_z_top_index -= 1;
+                        ++counter;
+                        --current_z_top_index;
                         for (index_type i = 0; i < num_layers; ++i)
                         {
                             new_z_i_index[i] = current_z_i_index[i] - 1;
@@ -676,7 +676,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
         float projectionToRow = (z_top - apexZ0) * (y - radii[0]) / (r_max - radii[0]) + apexZ0;
 
         int start_index = 0;
-        float start_value = 1000000*CONVERSION_FACTOR;
+        float start_value = FLT_MAX;
 
         for (index_type j = 0; j < row_list_size; ++j)
         {

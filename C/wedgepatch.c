@@ -14,8 +14,8 @@ void wedgePatch_init(wedgePatch *wp, wedgeSuperPoint *superpointsI, int superpoi
     wp->shadow_fromTopToInnermost_topR_jL = 0;
     wp->shadow_fromTopToInnermost_topR_jR = 0;
 
-    for (size_t i = 0; i < superpoint_count; ++i)
-    {                                          // size_t objects should only be non-negative and are more performant than ints
+    for (index_type i = 0; i < superpoint_count; ++i)
+    {
         wp->superpoints[i] = superpointsI[i]; // wp->superpoints is an array of pointers. Making the elements point to the elements in superpointsI.
     }
     wp->superpoint_count = superpoint_count;
