@@ -11,8 +11,6 @@
 #include <math.h>
 
 
-//make conversion ratio to micron macro
-
 #ifdef MAIN_C
 #define EXTERN
 #else
@@ -38,16 +36,15 @@
 #define MAX_SUPERPOINTS_IN_COVER (MAX_PATCHES * MAX_SUPERPOINTS_IN_PATCH)
 
 #ifdef MAIN_C
-    const index_type CONVERSION_FACTOR = 1; //10k = 39k diff, 100k = 45k diff
-    const float top_layer_lim = 50 * CONVERSION_FACTOR;
-    const float beam_axis_lim = 15 * CONVERSION_FACTOR;
+    const float top_layer_lim = 50;
+    const float beam_axis_lim = 15;
     const index_type num_layers = 5;
     const index_type radii[MAX_LAYERS] = {
-        5 * CONVERSION_FACTOR, 
-        10 * CONVERSION_FACTOR, 
-        15 * CONVERSION_FACTOR, 
-        20 * CONVERSION_FACTOR, 
-        25 * CONVERSION_FACTOR
+        5, 
+        10, 
+        15, 
+        20, 
+        25
     };
     const float parallelogramSlopes[MAX_LAYERS-1] = {
         0,
@@ -62,18 +59,17 @@
         1 - parallelogramSlopes[3]
     };
     const float trapezoid_edges[MAX_LAYERS] = {
-        radii[0] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
-        radii[1] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
-        radii[2] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
-        radii[3] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR, 
-        radii[4] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001 * CONVERSION_FACTOR
+        radii[0] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001, 
+        radii[1] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001, 
+        radii[2] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001, 
+        radii[3] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001, 
+        radii[4] * (top_layer_lim - beam_axis_lim) / radii[4] + beam_axis_lim + 0.0001
     };
 #else
     extern index_type radii[MAX_LAYERS];
     extern float parallelogramSlopes[MAX_LAYERS-1];
     extern float radii_leverArm[MAX_LAYERS-1];
     extern float trapezoid_edges[MAX_LAYERS];
-    extern index_type CONVERSION_FACTOR;
     extern float top_layer_lim;
     extern float beam_axis_lim;
     extern index_type num_layers;

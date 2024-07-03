@@ -97,7 +97,7 @@ void solve(float apexZ0, int ppl, bool leftRight)
             {
                 if (Gdata.array[i][x].z == Gdata.array[i][x + 1].z)
                 {
-                    Gdata.array[i][x + 1].z += 0.00001*CONVERSION_FACTOR;
+                    Gdata.array[i][x + 1].z += 0.00001;
                     foundIdentical = true;
                 }
             }
@@ -255,15 +255,15 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
                 float complementary_b = patches[lastPatchIndex].b_corner[1];
 
                 float white_space_height = max(original_c - complementary_a, original_d - complementary_b);
-                float previous_white_space_height = -1*CONVERSION_FACTOR;
+                float previous_white_space_height = -1;
                 int counter = 0;
                 int counterUpshift = 0;
                 index_type current_z_top_index = -1;
-                double previous_z_top_min = -999*CONVERSION_FACTOR;
+                double previous_z_top_min = -999;
 
-                while (!(white_space_height <= 0.0000005*CONVERSION_FACTOR && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005*CONVERSION_FACTOR) &&
+                while (!(white_space_height <= 0.0000005 && (previous_white_space_height >= 0)) && (fabs(white_space_height) > 0.000005) &&
                        ((patches[lastPatchIndex].c_corner[1] > -1 * trapezoid_edges[num_layers - 1]) ||
-                        (white_space_height > 0.000005*CONVERSION_FACTOR)) &&
+                        (white_space_height > 0.000005)) &&
                        (current_z_top_index < (int)(Gdata.n_points[num_layers - 1])) &&
                         !(repeat_patch) && !(repeat_original))
                 {
@@ -375,17 +375,17 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
                     z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
                     z_top_min = new_z_i_atTop[layerWithSmallestShift - 1];
 
-                    if (fabs(z_top_min - previous_z_top_min) < 0.000001*CONVERSION_FACTOR)
+                    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
                     {
                         z_top_min = Gdata.array[num_layers - 1][current_z_top_index].z;
                     }
 
-                    if (fabs(z_top_min - previous_z_top_min) < 0.000001*CONVERSION_FACTOR)
+                    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
                     {
                         z_top_min = Gdata.array[num_layers - 2][current_z_top_index].z;
                     }
 
-                    if (fabs(z_top_min - previous_z_top_min) < 0.000001*CONVERSION_FACTOR)
+                    if (fabs(z_top_min - previous_z_top_min) < 0.000001)
                     {
                         z_top_min = Gdata.array[num_layers - 3][current_z_top_index].z;
                     }
@@ -514,7 +514,7 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
 
                 float original_topL_jL = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jL;
                 
-                bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001*CONVERSION_FACTOR) &&
+                bool originalPartialBottom = (original_topL_jL > complementary_apexZ0) && ((original_topL_jL - apexZ0) < -0.0001) &&
                                              (fabs(straightLineProjectorFromLayerIJtoK(original_topL_jL, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);                
                 
                 float complementary_topR_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topR_jR;
@@ -524,7 +524,7 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
 
                 float complementary_topL_jR = patches[lastPatchIndex].shadow_fromTopToInnermost_topL_jR;
                 
-                bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < -0.0001*CONVERSION_FACTOR) &&
+                bool complementaryPartialBottom = (complementary_topL_jR > complementary_apexZ0) && ((complementary_topL_jR - apexZ0) < -0.0001) &&
                                                   (fabs(straightLineProjectorFromLayerIJtoK(complementary_topL_jR, z_top_min, 1, num_layers, 0)) < 20 * beam_axis_lim);
 
                 float horizontalShiftTop = original_topR_jL - complementary_topR_jR;
@@ -535,11 +535,11 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
                 float original_topR_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topR_jR;
                 float original_topL_jR = patches[secondLastPatchIndex].shadow_fromTopToInnermost_topL_jR;
 
-                float horizontalOverlapTop = -1*CONVERSION_FACTOR;
-                float horizontalOverlapBottom = -1*CONVERSION_FACTOR;
+                float horizontalOverlapTop = -1;
+                float horizontalOverlapBottom = -1;
 
-                float newGapTop = -0.000001*CONVERSION_FACTOR;
-                float newGapBottom = -0.000001*CONVERSION_FACTOR;
+                float newGapTop = -0.000001;
+                float newGapBottom = -0.000001;
 
                 bool makeHorizontallyShiftedPatch = false;
                 float shifted_Align = apexZ0;
@@ -564,7 +564,7 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
                 }
 
                 //if (horizontalShiftTop > 0 || horizontalShiftBottom > 0)
-                if (horizontalShiftTop > 0.000001*CONVERSION_FACTOR || horizontalShiftBottom > 0) // NOTE THAT horizontalShiftTop > 0.000001 is a "hack" to avoid infinite loop from Wedge 42 in this condition and the next
+                if (horizontalShiftTop > 0.000001 || horizontalShiftBottom > 0) // NOTE THAT horizontalShiftTop > 0.000001 is a "hack" to avoid infinite loop from Wedge 42 in this condition and the next
                 {
                     printf("originalPartialTop: %d complementaryPartialTop: %d originalPartialBottom: %d complementaryPartialBottom: %d %f %f %f %f horizontalOverlapTop: %f horizontalOverlapBottom: %f\n",
                            originalPartialTop, complementaryPartialTop, originalPartialBottom, complementaryPartialBottom,
@@ -572,7 +572,7 @@ void makePatches_ShadowQuilt_fromEdges(int ppl, bool leftRight)
                            horizontalOverlapTop, horizontalOverlapBottom);
                 }
 
-                while ((((horizontalShiftTop > 0.000001*CONVERSION_FACTOR) && originalPartialTop && complementaryPartialTop) || ((horizontalShiftBottom > 0.000001*CONVERSION_FACTOR) && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && ((newGapTop < 0) || (newGapBottom < 0)))
+                while ((((horizontalShiftTop > 0.000001) && originalPartialTop && complementaryPartialTop) || ((horizontalShiftBottom > 0.000001) && originalPartialBottom && complementaryPartialBottom)) && doShiftedPatch && (horizontalOverlapTop <= 0) && (horizontalOverlapBottom <= 0) && ((newGapTop < 0) || (newGapBottom < 0)))
                 {
                     printf("horizontalShifts: %f %f shifted_Align: %f\n", horizontalShiftTop, horizontalShiftBottom, shifted_Align);
 
@@ -657,7 +657,7 @@ void makePatch_alignedToLine(float apexZ0, float z_top, int ppl, bool leftRight,
 {
     wedgeSuperPoint init_patch[MAX_LAYERS]; // correct
     int original_ppl = ppl;
-    float alignmentAccuracy = 0.00001*CONVERSION_FACTOR;
+    float alignmentAccuracy = 0.00001;
     // Point row_data[MAX_LAYERS][MAX_POINTS_FOR_DATASET];
     index_type init_patch_size = 0;
 

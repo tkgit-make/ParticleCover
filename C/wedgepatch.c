@@ -77,7 +77,7 @@ void getParallelograms(wedgePatch *wp)
 
     if (z1_min > z1_max)
     {
-        z1_min = trapezoid_edges[0] + 1*CONVERSION_FACTOR;
+        z1_min = trapezoid_edges[0] + 1;
         z1_max = z1_min;
     }
 

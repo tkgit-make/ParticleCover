@@ -68,7 +68,7 @@ void addBoundaryPoint(float offset)
         //adding two boundary points in each layer
         // inserting at the beginning
         Gdata.array[i][0].layer_num = i + 1;
-        Gdata.array[i][0].radius = (i + 1) * 5 * CONVERSION_FACTOR;
+        Gdata.array[i][0].radius = (i + 1) * 5;
         //is the phi for the boundary points used (answer: no)? so, instead of sorting in importData, we could wait and add boundary points, and then sort, without any shifting of boundary points needed. MlogM vs NlogN + 2N, where M = N+2
         Gdata.array[i][0].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
         Gdata.array[i][0].z = -1 * ((trapezoid_edges[i]) - offset) - offset; //trapezoid edges is constant and initialized with the offset added. to preserve the original statement, we do it like this
@@ -76,7 +76,7 @@ void addBoundaryPoint(float offset)
         // appending at the end
         index_type lastIndex = Gdata.n_points[i] + 1; // after shifting, there's one more point
         Gdata.array[i][lastIndex].layer_num = i + 1;
-        Gdata.array[i][lastIndex].radius = (i + 1) * 5 * CONVERSION_FACTOR;
+        Gdata.array[i][lastIndex].radius = (i + 1) * 5;
         Gdata.array[i][lastIndex].phi = Gdata.array[i][1].phi; // getting the first phi in the array sorted by z
         Gdata.array[i][lastIndex].z = trapezoid_edges[i]; //here we want x.0001
 
