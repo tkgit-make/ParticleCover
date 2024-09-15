@@ -192,3 +192,9 @@ Using the same logic, there are several methods that vary on this premise.
 3. `solveS_center1`: Starts with the center 16 points in each layer then uses `S_repeated` on the right half of data and `S_repeated_reverse` on left half of data.
 4. `solveS_center2` Starts with a superpoint containing the 8 points to the left and right of 0 in each layer then uses `S_repeated` on the right half of data and `S_repeated_reverse` on left half of data.
 5. `SolveQ`: Starts at Q1 and Q3 by z value and runs `solveS_center2` starting at those points and ending at the center
+
+
+### Setting up and Running the Python Known Issues
+1. Setting up either a base environment or Anaconda environment with the appropriate packages (Numpy, Matplotlib, etc.)
+2. Need to add temp_image_dir manually
+3. Need to manually find and add the wedgeData_v3_128.txt to ./python/data
