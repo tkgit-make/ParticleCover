@@ -1,0 +1,3 @@
+[submodule "DarkMatterDirectDetection"]
+	path = DarkMatterDirectDetection
+	url = https://github.com/DR-Reg/DarkMatterDirectDetection
